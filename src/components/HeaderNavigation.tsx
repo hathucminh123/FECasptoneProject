@@ -1,0 +1,673 @@
+import {
+  Link,
+  NavLink,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import classes from "./HeaderNavigation.module.css";
+import React, { useEffect, useState } from "react";
+// import { List, Menu, Divider, Typography, MenuItem } from "@mui/material";
+import List from "@mui/material/List";
+import Menu from "@mui/material/Menu";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import MenuItem from "@mui/material/MenuItem";
+import Image from "./../assets/image/minh.jpg";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+// import { set } from "lodash";
+
+export default function HeaderNavigation() {
+  const [searchParams] = useSearchParams();
+  const isLogin = searchParams.get("mode") === "login";
+  const isSignup = searchParams.get("mode") === "signup";
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState<number>(88);
+  const [hovered, setHovered] = useState<null | string>(null);
+  const [selectedMenu, setSelectedMenu] = useState<null | string>(null);
+
+  const location = useLocation();
+
+  const handleSavePath = () => {
+    localStorage.setItem("redirectPath", location.pathname);
+  };
+
+  //profile
+  const [anchorElProflie, setAnchorElProfile] =
+    React.useState<null | HTMLElement>(null);
+  const [hoveredProflie, setHoveredProfile] = useState<null | string>(null);
+  const [selectedMenuProfile, setSelectedMenuProflie] = useState<null | string>(
+    null
+  );
+  //Company
+  const [anchorElCompany, setAnchorElCompany] =
+  React.useState<null | HTMLElement>(null);
+const [hoveredCompany, setHoveredCompany] = useState<null | string>(null);
+const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
+  null
+);
+
+  const handleMouseEnter = (event: React.MouseEvent<HTMLLIElement>) => {
+    setAnchorEl(event.currentTarget);
+    setHovered(event.currentTarget.textContent || null);
+    setSelectedMenu(event.currentTarget.textContent || null);
+  };
+
+  const handleMouseEnterCompany = (event: React.MouseEvent<HTMLLIElement>) => {
+    setAnchorElCompany(event.currentTarget);
+    setHoveredCompany(event.currentTarget.textContent || null);
+    setSelectedMenuCompany(event.currentTarget.textContent || null);
+  };
+
+  const handleMouseLeaveCompany = () => {
+    setTimeout(() => {
+      setAnchorElCompany(null);
+      setHoveredCompany(null);
+      setSelectedMenuCompany(null);
+    }, 200); // Delay to prevent accidental closing of the menu
+  };
+
+  const handleMouseEnterProfile = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorElProfile(event.currentTarget);
+    setHoveredProfile(event.currentTarget.textContent || null);
+    setSelectedMenuProflie(event.currentTarget.textContent || null);
+  };
+  const handleMouseLeaveProfile = () => {
+    setTimeout(() => {
+      setAnchorElProfile(null);
+      setHoveredProfile(null);
+      setSelectedMenuProflie(null);
+    }, 200); // Delay to prevent accidental closing of the menu
+  };
+
+  const handleMouseLeave = () => {
+    setTimeout(() => {
+      setAnchorEl(null);
+      setHovered(null);
+      setSelectedMenu(null);
+    }, 200); // Delay to prevent accidental closing of the menu
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setHeaderHeight(60);
+      } else {
+        setHeaderHeight(88);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const auth = localStorage.getItem("auth");
+
+  return (
+    <header
+      className={classes.header}
+      style={{ height: `${headerHeight}px`, transition: "height 0.3s ease" }}
+    >
+      <nav className={`${classes.nav} ${classes.fixedTop}`}>
+        <div className={classes.container}>
+          <div className={classes.containerleft}>
+            <Link to="/"> Home </Link>
+          </div>
+          <div className={classes.containerright}>
+            <ul className={classes.list}>
+              <li onMouseEnter={handleMouseEnter}>
+                <NavLink className={classes.link} to="/">
+                  All Jobs
+                </NavLink>
+              </li>
+              <li onMouseEnter={handleMouseEnterCompany}>
+                <NavLink className={classes.link} to="/about">
+                  IT Companies
+                </NavLink>
+              </li>
+              <li>
+                <NavLink className={classes.link} to="/contact">
+                  Blog
+                </NavLink>
+              </li>
+            </ul>
+
+            <ul className={classes.listright}>
+              <li>
+                <NavLink className={classes.linkk} to="/employers">
+                  For Employers
+                </NavLink>
+              </li>
+              <li>
+                {auth ? (
+                  <div
+                    className={classes.profile}
+                    onMouseEnter={handleMouseEnterProfile}
+                  >
+                    <div className={classes.profileleft}>
+                      <img
+                        src={Image}
+                        alt="profile image"
+                        style={{
+                          border: "1px solid #dedede",
+                          borderRadius: "50%",
+                          objectFit: "cover",
+                          verticalAlign: "middle",
+                          width: "32px",
+                          height: "32px",
+                          aspectRatio: "auto 32/32",
+                          cursor: "pointer",
+                          color: "#a6a6a6",
+                        }}
+                      />
+                    </div>
+                    <div className={classes.profileRight}>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          marginLeft: "12px",
+                          color: "#333",
+                          cursor: "pointer",
+                        }}
+                      >
+                        Hà Thúc Minh
+                      </Typography>
+                      <ArrowDropDownIcon />
+                    </div>
+                  </div>
+                ) : (
+                  !isLogin &&
+                  !isSignup && (
+                    <NavLink
+                      className={classes.linkk}
+                      to="/auth?mode=login"
+                      onClick={handleSavePath}
+                    >
+                      Sign in/Sign up
+                    </NavLink>
+                  )
+                )}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+     <CompanyMenu
+     
+     anchorEl={anchorElCompany}
+     handleClose={handleMouseLeaveCompany}
+     setHovered={setHoveredCompany}
+     hovered={hoveredCompany}
+     selectedMenu={selectedMenuCompany}
+     setSelectedMenu={setSelectedMenuCompany}
+     />
+
+
+      <ProfileMenu
+        anchorEl={anchorElProflie}
+        handleClose={handleMouseLeaveProfile}
+        setHovered={setHoveredProfile}
+        hovered={hoveredProflie}
+        selectedMenu={selectedMenuProfile}
+        setSelectedMenu={setSelectedMenuProflie}
+      />
+
+      <SkillsMenu
+        anchorEl={anchorEl}
+        handleClose={handleMouseLeave}
+        setHovered={setHovered}
+        hovered={hovered}
+        selectedMenu={selectedMenu}
+        setSelectedMenu={setSelectedMenu}
+      />
+    </header>
+  );
+}
+
+const SkillsMenu = ({
+  anchorEl,
+  handleClose,
+  setHovered,
+  hovered,
+  selectedMenu,
+  setSelectedMenu,
+}: {
+  anchorEl: HTMLElement | null;
+  handleClose: () => void;
+  setHovered: (item: string | null) => void;
+  hovered: string | null;
+  selectedMenu: string | null;
+  setSelectedMenu: (item: string | null) => void;
+}) => {
+  const leftMenuItems = [
+    "Jobs by Skill",
+    "Jobs by Title",
+    "Jobs by Company",
+    "Jobs by City",
+  ];
+
+  const skillsColumns = [
+    "Java",
+    "PHP",
+    "JavaScript",
+    "HTML5",
+    "Manager",
+    "SQL",
+    "Android",
+    "iOS",
+  ];
+  const CompanyColums = [
+    "MB Bank",
+    "Viet Tin Bank",
+    "Fsoft",
+    "Công ty 4 thành viên",
+    "VNG Corporation",
+    "PV COMbank",
+    "Android",
+    "iOS",
+  ];
+  const titlejobColumns = [
+    "Java Developer",
+    "PHP Developer",
+    "Javascript Developer",
+    "HTML5 Developer",
+    "SQL Developer",
+    "Mobile Developer",
+    "NodeJS Developer",
+    ".NET Developer",
+    "Project Manager",
+    "Project Manager",
+    "Project Manager",
+  ];
+
+  const cityColumn = ["Hồ Chí Minh", "Hà Nội", "Đà Nẵng", "Vũng Tàu"];
+
+  const content =
+    selectedMenu === "Jobs by Skill"
+      ? skillsColumns
+      : selectedMenu === "Jobs by City"
+      ? cityColumn
+      : selectedMenu === "Jobs by Company"
+      ? CompanyColums
+      : selectedMenu === "Jobs by Title"
+      ? titlejobColumns
+      : undefined;
+  const navigate = useNavigate();
+  const handleOnclick = (column: string) => {
+    console.log(column);
+    navigate("/it-jobs", { state: column });
+  };
+  return (
+    <Menu
+      id="skills-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+      PaperProps={{
+        style: {
+          backgroundColor: "#2c2f33",
+          color: "white",
+          width: "900px",
+          borderRadius: "10px",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+        },
+      }}
+      MenuListProps={{
+        onMouseLeave: handleClose,
+      }}
+    >
+      <div style={{ display: "flex", padding: "10px" }}>
+        {/* Left Side Menu */}
+        <div
+          style={{
+            width: "25%",
+            paddingRight: "20px",
+            borderRight: "1px solid gray",
+          }}
+        >
+          <List>
+            {leftMenuItems.map((item) => (
+              <MenuItem
+                key={item}
+                style={{
+                  color: hovered === item ? "white" : "#b0bec5",
+                  transition: "color 0.3s ease",
+                  fontWeight: hovered === item ? "bold" : "normal",
+                }}
+                onMouseEnter={() => {
+                  setHovered(item);
+                  setSelectedMenu(item);
+                }}
+                onMouseLeave={() => setHovered(null)}
+              >
+                {item}
+              </MenuItem>
+            ))}
+          </List>
+        </div>
+
+        {/* Right Side Multi-Column Skills Menu */}
+        {content && (
+          <div
+            style={{
+              width: "75%",
+              display: "flex",
+              flexDirection: "row",
+              flexWrap: "wrap",
+              paddingLeft: "10px",
+            }}
+          >
+            {content.map((column, colIdx) => (
+              <div
+                key={colIdx}
+                style={{ width: "33%" }}
+                onClick={() => handleOnclick(column)}
+              >
+                <MenuItem
+                  style={{
+                    padding: "8px 16px",
+                    borderRadius: "5px",
+                    transition: "background-color 0.3s ease",
+                  }}
+                  onClick={handleClose}
+                  onMouseEnter={(e) =>
+                    (e.currentTarget.style.backgroundColor = "#3c3f44")
+                  }
+                  onMouseLeave={(e) =>
+                    (e.currentTarget.style.backgroundColor = "transparent")
+                  }
+                >
+                  {column}
+                </MenuItem>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <Divider />
+
+      {selectedMenu && (
+        <div style={{ padding: "10px", textAlign: "center" }}>
+          <Typography
+            variant="body2"
+            style={{ color: "lightgray", cursor: "pointer" }}
+          >
+            View all {selectedMenu}
+          </Typography>
+        </div>
+      )}
+    </Menu>
+  );
+};
+
+const Menuitem = ({
+  text,
+  icon: Icon,
+  isHovered,
+  onHover,
+  onClick,
+}: {
+  text: string;
+  icon: React.ElementType;
+  isHovered: boolean;
+  onHover: () => void;
+  onClick: () => void;
+}) => (
+  <li
+    onMouseEnter={onHover}
+    onClick={onClick}
+    style={{
+      padding: "10px",
+      listStyle: "none",
+      lineHeight: "45px",
+      width: "250px",
+      borderBottom: "1px solid #ffffff1a",
+      color: "#a6a6a6",
+      paddingLeft: "16px",
+      paddingRight: "16px",
+      fontSize: "14px",
+      fontWeight: 400,
+      backgroundColor: isHovered ? "#3c3f44" : "transparent",
+      cursor: "pointer",
+    }}
+  >
+    <div style={{ display: "flex", alignItems: "center" }}>
+      <Icon sx={{ color: isHovered ? "white" : "#a6a6a6" }} />
+      <Typography
+        variant="body1"
+        sx={{
+          marginLeft: "8px",
+          cursor: "pointer",
+          fontSize: "14px",
+          fontWeight: 400,
+          color: isHovered ? "white" : "#a6a6a6",
+        }}
+      >
+        {text}
+      </Typography>
+    </div>
+  </li>
+);
+
+const ProfileMenu = ({
+  anchorEl,
+  handleClose,
+  setHovered,
+  hovered,
+  // selectedMenu,
+  setSelectedMenu,
+}: {
+  anchorEl: HTMLElement | null;
+  handleClose: () => void;
+  setHovered: (item: string | null) => void;
+  hovered: string | null;
+  selectedMenu: string | null;
+  setSelectedMenu: (item: string | null) => void;
+}) => {
+  const menuItems = [
+    {
+      text: "Profile & CV",
+      icon: PermIdentityOutlinedIcon,
+      itemKey: "Item 1",
+    },
+    {
+      text: "My jobs",
+      icon: WorkOutlineOutlinedIcon,
+      itemKey: "Item 2",
+    },
+    {
+      text: "Sign out",
+      icon: LogoutOutlinedIcon,
+      itemKey: "Item 3",
+    },
+  ];
+
+  const navigate = useNavigate();
+
+  const handleSignout = (item: string) => {
+    if (item === "Item 3") {
+      // localStorage.clear();
+      localStorage.removeItem("auth");
+    } else if (item === "Item 1") {
+      navigate("/profile-cv");
+    }else if( item ==="Item 2"){
+      navigate('/my-jobs')
+    }
+
+    setSelectedMenu(item);
+  };
+
+  return (
+    <Menu
+      id="Profile-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+      sx={{
+        "& .MuiPaper-root": {
+          backgroundColor: "#2c2f33",
+          color: "white",
+          width: "250px",
+          borderRadius: "10px",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+          mt: 2.5,
+        },
+      }}
+      MenuListProps={{
+        onMouseLeave: handleClose,
+      }}
+    >
+      <ul
+        style={{
+          margin: 0,
+          padding: 0,
+          listStyleType: "none",
+          backgroundColor: "#121212",
+          color: "#a6a6a6",
+        }}
+      >
+        {menuItems.map((menuItem) => (
+          <Menuitem
+            key={menuItem.itemKey}
+            text={menuItem.text}
+            icon={menuItem.icon}
+            isHovered={hovered === menuItem.itemKey}
+            onHover={() => setHovered(menuItem.itemKey)}
+            onClick={() => handleSignout(menuItem.itemKey)}
+          />
+        ))}
+      </ul>
+    </Menu>
+  );
+};
+
+
+const CompanyMenu = ({
+  anchorEl,
+  handleClose,
+  setHovered,
+  hovered,
+  // selectedMenu,
+  setSelectedMenu,
+}: {
+  anchorEl: HTMLElement | null;
+  handleClose: () => void;
+  setHovered: (item: string | null) => void;
+  hovered: string | null;
+  selectedMenu: string | null;
+  setSelectedMenu: (item: string | null) => void;
+}) => {
+  const leftMenuItems = [
+    "VietNam best IT company",
+    "Company Reviews",
+
+  ];
+
+  // const skillsColumns = [
+  //   "Java",
+  //   "PHP",
+  //   "JavaScript",
+  //   "HTML5",
+  //   "Manager",
+  //   "SQL",
+  //   "Android",
+  //   "iOS",
+  // ];
+  // const CompanyColums = [
+  //   "MB Bank",
+  //   "Viet Tin Bank",
+  //   "Fsoft",
+  //   "Công ty 4 thành viên",
+  //   "VNG Corporation",
+  //   "PV COMbank",
+  //   "Android",
+  //   "iOS",
+  // ];
+  // const titlejobColumns = [
+  //   "Java Developer",
+  //   "PHP Developer",
+  //   "Javascript Developer",
+  //   "HTML5 Developer",
+  //   "SQL Developer",
+  //   "Mobile Developer",
+  //   "NodeJS Developer",
+  //   ".NET Developer",
+  //   "Project Manager",
+  //   "Project Manager",
+  //   "Project Manager",
+  // ];
+
+  const navigate =useNavigate();
+
+  const handleNavigate =(item:string)=>{
+  if(item ==="VietNam best IT company")
+    navigate('/vietnam-best-it-companies')
+  else{
+    navigate('/all/company')
+  }
+  
+  }
+
+  return (
+    <Menu
+      id="skills-menu"
+      anchorEl={anchorEl}
+      keepMounted
+      open={Boolean(anchorEl)}
+      onClose={handleClose}
+      PaperProps={{
+        style: {
+          marginTop:'10px',
+          backgroundColor: "#2c2f33",
+          color: "white",
+          width: "fit-content",
+          borderRadius: "10px",
+          boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+        },
+      }}
+      MenuListProps={{
+        onMouseLeave: handleClose,
+      }}
+    >
+      <div style={{ display: "flex", padding: "10px" }}>
+        {/* Left Side Menu */}
+        <div>
+          <List>
+            {leftMenuItems.map((item) => (
+              <MenuItem
+                onClick={ () => handleNavigate(item)}
+                key={item}
+                style={{
+                  color: hovered === item ? "white" : "#b0bec5",
+                  transition: "color 0.3s ease",
+                  fontWeight: hovered === item ? "bold" : "normal",
+                }}
+                onMouseEnter={() => {
+                  setHovered(item);
+                  setSelectedMenu(item);
+                }}
+                onMouseLeave={() => setHovered(null)}
+              >
+                {item}
+              </MenuItem>
+            ))}
+          </List>
+        </div>
+
+    
+      </div>
+
+
+
+
+    </Menu>
+  );
+};

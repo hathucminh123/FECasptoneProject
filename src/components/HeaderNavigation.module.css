@@ -1,0 +1,132 @@
+.header {
+  height: 88px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+
+  /* Updated background with a vibrant red-orange gradient */
+  background: white;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition: height 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header.scrolled {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.containerleft {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333; 
+}
+
+.containerright {
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+  margin-left: 30px;
+}
+
+.list,
+.listright {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  align-items: center;
+}
+
+.link,
+.linkk {
+  color: #333; 
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 10px 15px;
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-radius: 8px;
+}
+
+.link:hover,
+.linkk:hover {
+  background-color: rgba(255, 255, 255, 0.2); 
+  color: #DD3F24; 
+}
+
+.link.active,
+.linkk.active {
+  color: #ffffff; 
+  background-color: rgba(255, 255, 255, 0.4); 
+}
+
+.listright .linkk {
+  font-weight: bold;
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .list,
+  .listright {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+.menu-item {
+  color: #ffffff;
+  padding: 10px;
+  transition: color 0.3s, background-color 0.3s;
+}
+
+.menu-item:hover {
+  background-color: rgba(255, 255, 255, 0.2); 
+  color: #ffffff; 
+}
+
+.menu-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.2); 
+}
+
+.profile{
+  display: flex;
+  height: 24px;
+  align-items: center !important;
+  cursor: pointer;
+  color: #a6a6a6;
+}
+.profileleft{
+  display: block;
+
+}
+
+.profileRight{
+  align-items: flex-end !important;
+  display: inline-flex !important;
+  cursor: pointer;
+    color: #a6a6a6;
+}

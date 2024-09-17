@@ -1,0 +1,226 @@
+.main{
+    min-height: calc(100vh - 495px);
+    flex-direction: column !important;
+    display: flex !important;   
+}
+
+.main1{
+    flex-grow: 1 !important;
+    display: block;
+}
+
+.main2{
+
+    min-height: calc(100vh - 495px);
+    background-color: #f7f7f7 !important;
+    display: block  ;
+}
+.icontainer{
+    max-width: 1340px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+.container{
+    display: flex;
+        align-items: center;
+        margin: 0 auto;
+        line-height: 1.4em;
+        padding-top: 48px !important;
+        padding-bottom: 24px !important;    
+        flex-wrap: wrap;
+}
+
+.containerLeft{
+    flex-grow: 1;
+    padding: 0;
+    flex: 0 0 auto;
+    width: 66.66666667%;
+    display: block;
+}
+
+.p{
+    color: #414042 !important;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.8 !important;
+    margin-top: 0;
+    margin-bottom: 0;   
+}
+
+.content{
+    margin: auto;
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #dedede;
+    box-shadow: 0px 6px 32px rgba(0, 0, 0, .08);
+    border-radius: 8px;
+    background-color: white;
+    display: block;
+}
+
+.company{
+    transition: all .25s ease;
+    padding: 5px 0;
+    margin-bottom: -2px;
+    z-index: 3;
+    position: relative;
+    display: block;
+}
+
+.companyName {
+    font-weight: 500;
+    margin-left: 15px;
+    line-height: 35.2px;
+    font-size: 22px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #121212;
+    transition: color 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .companyName:hover {
+    color: red;
+  }
+
+
+  .left{
+    float: left !important;
+    display: block;
+  }
+  .image{
+    display: flex;
+    align-items: center;
+  }
+  .img{
+    margin: 1em 30px;
+    width: 168px;
+    height: 168px;
+    line-height: 152px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 2px;
+    border: 1px solid #dedede;
+    text-align: center !important;
+    display: block;
+  }
+
+  .styleimg{
+
+    width: 168px;
+    height: 168px;
+    line-height: 152px;
+    background-color: #fff;
+    
+    border-radius: 2px;
+
+    text-align: center !important;
+  }
+
+  .right{
+    margin-left: 20px !important;
+    flex-grow: 1 !important;
+    display: block;
+  }
+
+
+.star{
+    --i-gutter-x: 1.5rem;
+    --i-gutter-y: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    margin-top: calc(-1* var(--i-gutter-y));
+    margin-right: calc(-0.5* var(--i-gutter-x));
+    margin-left: calc(-0.5* var(--i-gutter-x));
+}
+
+.starLeft{
+    flex: 0 0 auto;
+        width: 50%;
+        max-width: 100%;
+        padding-right: calc(var(--i-gutter-x)* .5);
+        padding-left: calc(var(--i-gutter-x)* .5);
+        margin-top: var(--i-gutter-y);
+        display: block;
+}
+
+.star1{
+    display: flex;
+    align-items: center;
+    height: 66px;
+}
+
+.quao4{
+    width: 108px;
+    height: 20px;
+    color: #dedede !important;
+    position: relative !important;
+    display: block;
+}
+
+.starRight{
+    flex: 0 0 auto;
+    width: 50%;
+    display: block;
+    padding-right: calc(var(--i-gutter-x)* .5);
+    padding-left: calc(var(--i-gutter-x)* .5);
+    margin-top: var(--i-gutter-y);
+}
+
+.star2{
+    padding-right: 50px;
+    display: flex;
+    align-items: center;    
+    float: right !important;
+}
+
+
+.comment{
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--i-gutter-x)* .5);
+    padding-left: calc(var(--i-gutter-x)* .5);
+    margin-top: var(--i-gutter-y);
+    display: block;
+}
+
+.comment1{
+    padding-right: 30px;
+    font-size: 14px;
+    display: block;
+}
+.comment2{
+    display: inline-flex;
+    align-items: center;
+
+}
+
+.view{
+    display: block;
+    margin-top: calc(-1* var(--i-gutter-y));
+    margin-right: calc(-0.5* var(--i-gutter-x));
+    margin-left: calc(-0.5* var(--i-gutter-x));
+}
+
+.view1{
+    width: 100%;
+    max-width: 100%;
+    padding-right: calc(var(--i-gutter-x)* .5);
+    padding-left: calc(var(--i-gutter-x)* .5);
+    margin-top: var(--i-gutter-y);
+    display: block;
+}
+
+.p1{
+    padding: 0 30px;
+    color: #0e2eed;
+    margin-top: .5em;
+    font-size: 14px;
+    text-align: right !important;
+    margin-bottom: 0;
+    display: block;
+}

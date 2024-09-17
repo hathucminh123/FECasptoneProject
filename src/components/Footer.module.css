@@ -1,0 +1,130 @@
+.container {
+    margin-top: 50px;
+    width: 100%;
+    background: linear-gradient(180deg, #FFE6E6 30%, #FFCCB3 70%);
+    position: relative;
+    padding: 100px 10%;
+    box-sizing: border-box;
+  }
+  
+  .content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .leftSection {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .logo {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .slogan {
+    font-size: 18px;
+    color: white;
+    margin-top: 10px;
+  }
+  
+  .socialIcons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .socialIconsItem {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, .04);
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, .1);
+    align-items: center;
+    color: #333;
+    padding: auto;
+  }
+
+  .socialIconsItem:hover {
+    color: white;
+    cursor: pointer;
+    border-color: white;
+  }
+  
+  /* .socialIcons a img {
+    width: 30px;
+    height: 30px;
+  }
+   */
+  .midSection, .rightSection, .contactSection {
+    flex: 1;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  ul li {
+    color: #333;
+    font-size: 14px;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .contactSection ul:last-child li {
+    font-size: 12px;
+  }
+  
+  ul li a {
+    color: white;
+    text-decoration: none;
+    
+  }
+  
+  ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  .copyright {
+    margin-top: 50px;
+    text-align: center;
+    color: #333;
+    font-size: 12px;
+  }
+  
+
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 20px 0px 30px 0px;
+}
+
+.separator::before,
+.separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #333;
+}
+
+.separator::before {
+  margin-right: 10px;
+}
+
+.separator::after {
+  margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+      align-items: center;
+    }
+    .leftSection, .midSection, .rightSection, .contactSection {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  }
+  

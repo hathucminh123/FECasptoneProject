@@ -1,0 +1,136 @@
+.main {
+  min-height: calc(100vh - 495px);
+  flex-direction: column !important;
+  display: flex;
+}
+
+.main1 {
+  flex-grow: 1 !important;
+  display: block;
+}
+
+.container {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  display: block;
+}
+
+
+.background{
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background-color: #f7f7f7;
+    z-index: -1;
+}
+
+.background::before{
+    content: " ";
+    width: 120vw;
+    position: absolute;
+    left: -12%;
+    top: 0;
+    height: 400px;
+    border-radius: 0 0 70% 50%;
+    background: linear-gradient(180deg, #FFE6E6 30%, #FFCCB3 70%);
+}
+
+.icontainer{
+    max-width: 884px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+}
+
+.icontainer1{
+    text-align: center !important;
+    align-items: center !important;
+    position: relative !important;
+    display: flex !important;
+ 
+}
+
+.back{
+    position: absolute !important;
+    display: block;
+    text-align: center !important;
+}
+
+.iconback{
+    color: #fff !important;
+    align-items: center !important;
+    display: flex !important;
+}
+
+
+.logo{
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
+    margin: auto !important;
+    display: block;
+}
+
+.form{
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, .06);
+    border-radius: 8px;
+    padding: 32px !important;
+    background-color: #fff !important;  
+    display: block;
+}
+
+.formupload{
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    margin-top: 16px !important;
+    padding: 16px !important;
+    display: block;
+}
+
+
+
+.formupload1{
+    background-color: #fff5f5;
+    border: 1px solid #ed1b2f;
+    border-radius: 4px;
+    margin-top: 16px !important;
+    padding: 16px !important;
+    display: block;
+}
+
+.check{
+    z-index: 0;
+    position: relative;
+    display: inline-block;
+    font-size: 16px;
+    cursor: default;
+}
+
+.file{
+    margin-left: 32px !important;
+    margin-top: 4px !important;
+    overflow: hidden !important;
+    display: block;
+}
+
+.upload4{
+    gap: .5rem !important;
+    flex-direction: column !important;
+    display: flex !important;
+}
+.upload5{
+    gap: .5rem !important;
+    align-items: center !important;
+    display: flex !important;
+    flex-direction: row !important;
+}
+
+
+
+.input{
+    margin-top: 24px !important;
+    margin-bottom: 24px !important;
+    display: block;
+}
