@@ -10,11 +10,14 @@ import '@fontsource/roboto/700.css';
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  display: block;
 }
 
 body, main {
   margin: 0;
   padding: 0;
+  display: block;
+  box-sizing: border-box;
 }
 
 .button {
@@ -31,4 +34,9 @@ body, main {
   cursor: pointer;
   color: #414042;
   transition: border 0.3s ease;
+}
+
+
+li a{
+  text-decoration: none;
 }

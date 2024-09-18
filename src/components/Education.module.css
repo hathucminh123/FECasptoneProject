@@ -1,0 +1,50 @@
+.formInput {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
+  
+
+.form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    gap: 20px;
+}
+
+  .inputGroup {
+    width: 100%;
+
+  }
+  
+  .inputGroup1 {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  
+    
+  
+  }
+  
+  .inputGroup2 {
+    width: 50%;
+
+ 
+  }
+  
+
+  @media (max-width: 600px) {
+    .inputGroup1 {
+      width: 100%; 
+    }
+  
+    .inputGroup2 {
+      width: 50%;
+    }
+  }
+  

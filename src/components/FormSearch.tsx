@@ -17,7 +17,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function FormSearch() {
   const locationcolumn = useLocation();
   const locationcolumn1: string | null = locationcolumn?.state ?? null;
-  
+
   // If locationcolumn1 is present, use it; otherwise, initialize to null
   const [location, setLocation] = useState<string | null>(locationcolumn1 || null);
   const [text, setText] = useState<string>("");
@@ -25,7 +25,8 @@ export default function FormSearch() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const data = useAppSelector((state) => state.search.search);
-console.log('met ',data)
+  console.log("met ", data);
+
   // Handle state change and trigger dispatch on location and text update
   useEffect(() => {
     if (location || text) {
@@ -33,18 +34,16 @@ console.log('met ',data)
     }
   }, [location, text, dispatch]);
 
-
   useEffect(() => {
     if (locationcolumn1) {
-   
-      if (["Hồ Chí Minh", "Hà Nội", "Đà Nẵng"].includes(locationcolumn1)) {
+      const majorCities = ["Hồ Chí Minh", "Hà Nội", "Đà Nẵng"];
+      if (majorCities.includes(locationcolumn1)) {
         setLocation(locationcolumn1);
       } else {
-        setLocation(null)
+        setLocation(null);
         setText(locationcolumn1);
       }
     }
-    // dispatch(filter({ location, text }));
   }, [locationcolumn1, dispatch]);
 
   const handleChange = (event: SelectChangeEvent) => {
@@ -55,6 +54,13 @@ console.log('met ',data)
     setText(e.target.value);
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleNavigate();
+    }
+  };
+
   const handleNavigate = () => {
     dispatch(filter({ location, text }));
     navigate("/it-jobs");
@@ -63,10 +69,9 @@ console.log('met ',data)
   return (
     <Box
       sx={{
-        width: "100%",
-        maxWidth: "1000px",
-        margin: "auto",
-        borderRadius: 2,
+        display:'block',
+        marginTop:'0em',
+        unicodeBidi:'isolate'
       }}
     >
       <Box
@@ -98,6 +103,7 @@ console.log('met ',data)
             <MenuItem value="Đà Nẵng">Đà Nẵng</MenuItem>
           </Select>
         </FormControl>
+
         <TextField
           value={text}
           id="outlined-email-input"
@@ -108,27 +114,42 @@ console.log('met ',data)
           variant="outlined"
           sx={{
             width: { xs: "100%", sm: "50%" },
-            background: "white",
+            padding: "10px",
+            fontSize: "16px",
+            border: "none",
+            borderRadius: "5px",
+       
+            "& .MuiOutlinedInput-root": {
+              backgroundColor: "white", 
+              transition: "box-shadow 0.3s ease-in-out", 
+              "&:hover": {
+                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)", 
+              },
+            },
           }}
           onChange={handleText}
+          onKeyDown={handleKeyDown} 
         />
+
         <Button
           onClick={handleNavigate}
           startIcon={<SearchIcon />}
           variant="contained"
           size="large"
           sx={{
-            backgroundColor: "#ff6b6b",
-            height: "60px",
+            backgroundColor: "#FF6F61",
             color: "white",
-            padding: "10px 20px",
-            fontSize: "16px",
+            border: "none",
             borderRadius: "5px",
+            padding: "10px 20px",
+            height:'56px',
+            mb:'2px',
+            fontSize: "16px",
             width: { xs: "100%", sm: "25%" },
-            transition: " background-color 0.3s ease",
-
+            marginTop: { xs: "10px", sm: "0" }, 
+            transition: "background-color 0.3s ease", 
             "&:hover": {
-              backgroundColor: "#ff3d3d",
+              backgroundColor: "#ff5c4f",
             },
           }}
         >

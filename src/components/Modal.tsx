@@ -17,8 +17,8 @@ export default function Modal({ title, children, onClose }: ModalProps) {
     return null;
   }
   return createPortal(
-    <div>
-   <div className={classes.backdrop} onClick={onClose ? onClose : undefined}>
+ 
+   <div className={classes.backdrop} onClick={onClose ? onClose : undefined}> 
         <motion.dialog
         onClick={(e) => e.stopPropagation()} 
           variants={{
@@ -53,8 +53,8 @@ export default function Modal({ title, children, onClose }: ModalProps) {
             </div>
           </div>
         </motion.dialog>
-      </div>
-    </div>,
+        </div>
+    ,
     modalRoot
   );
 }

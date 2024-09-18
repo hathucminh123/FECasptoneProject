@@ -1,48 +1,94 @@
 .card_item {
-    display: flex;
-    align-items: center; 
-    justify-content: flex-start; 
-    gap: 15px;
-    flex-wrap: nowrap; 
-    max-width: 300px; 
-    padding: 20px;
+  padding-top: 0px !important;
+  padding-bottom: 0px !important;
+  order: 2 !important;
+  position: relative !important;
+  box-sizing: border-box;
+  display: block;
+  text-align: center !important;
 }
-.card_shadow{
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+.card {
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  display: flex !important;
+  text-align: center;
+}
+
+.divimg {
+  margin-bottom: 0px !important;
+  margin-right: auto !important;
+  margin-left: auto !important;
+  align-items: flex-start !important;
+  display: flex !important;
+
+  box-sizing: border-box;
+  text-align: center;
+}
+.card_shadow {
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .card_image {
-    width: 60px;
-    height: auto;
-    flex-shrink: 0; 
-    margin-bottom: 80px;
+  width: 80px;
+  height: 80px;
+  vertical-align: middle;
+
+  box-sizing: border-box;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+  text-align: center !important;
 }
 
-.card_item div {
-    flex-grow: 1;
+.right {
+  margin-left: 16px !important;
+  text-align: left !important;
+  box-sizing: border-box;
+  display: block;
 }
- 
- .card_item p {
-    text-align: start;
-    margin: 0;
-    color: #121212;
- }
- 
- @media only screen and (max-width: 768px) {
-    .container {
-       padding-left: 5%;
-       padding-right: 5%;
-    }
- 
-    .card {
-       flex-direction: column;
-       align-items: center;
-    }
- 
-    .card_item {
-       justify-content: center;
-       width: 100%;
-    }
- }
- 
+
+.right1 {
+  align-items: center !important;
+  justify-content: center !important;
+  display: inline-flex !important;
+  box-sizing: border-box;
+  text-align: left !important;
+}
+.divne {
+  transform: matrix(-1, 0, 0, 1, 0, 0);
+  position: absolute;
+  top: 0;
+  left: 105%;
+  width: 32px;
+  height: 100%;
+  min-width: 32px;
+  background: radial-gradient(
+    50% 56.75% at 100% 51.25%,
+    #f8f4f2 0%,
+    rgba(242, 236, 234, 0.8) 11.46%,
+    rgba(245, 245, 245, 0) 83.85%
+  );
+  margin-right: auto !important;
+  margin-left: auto !important;
+  box-sizing: border-box;
+  display: block;
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card_item {
+    justify-content: center;
+    width: 100%;
+  }
+}

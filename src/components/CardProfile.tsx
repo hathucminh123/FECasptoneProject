@@ -8,9 +8,10 @@ interface form {
   text?: string;
   icon?: JSX.Element;
   img?: string;
+  onClick?: ()=>void;
 }
 
-export default function CardProfile({ title, text, icon, img }: form) {
+export default function CardProfile({ title, text, icon, img ,onClick}: form) {
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -22,7 +23,7 @@ export default function CardProfile({ title, text, icon, img }: form) {
             {title}
           </Typography>
 
-          <div className={classes.mainab}>{icon}</div>
+          <div onClick={onClick} className={classes.mainab}>{icon}</div>
         </div>
         <div className={classes.separator}></div>
         <Typography variant="h3" sx={{ lineHeight: 1.5, fontSize: "22px" }}>

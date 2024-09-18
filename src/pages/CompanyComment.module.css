@@ -27,7 +27,11 @@
     top: 0;
     height: 400px;
     border-radius: 0 0 70% 50%;
-    background: linear-gradient(180deg, #FFE6E6 30%, #FFCCB3 70%);
+    background: linear-gradient(
+        180deg,
+        #ff8243,
+        #ffd194
+      ); 
 }
 
 .icontainer{

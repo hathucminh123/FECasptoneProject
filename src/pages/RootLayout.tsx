@@ -1,20 +1,19 @@
-// import React from 'react'
-
+import React from "react";
 import { Outlet } from "react-router-dom";
 import HeaderNavigation from "../components/HeaderNavigation";
 import Footer from "../components/Footer";
-// import { useRedirectAfterLogin } from "../hook/useRedirectAfterLogin";
+import classes from "./RootLayout.module.css";
 
 export default function RootLayout() {
-
-  // useRedirectAfterLogin()
   return (
     <>
       <HeaderNavigation />
-      <main style={{ paddingTop: "90px" }}>
-        <Outlet />
+      <main className={classes.main}>
+        <div className={classes.main1}>
+          <Outlet />
+        </div>
       </main>
-      <footer>
+      <footer className={classes.footer}>
         <Footer />
       </footer>
     </>

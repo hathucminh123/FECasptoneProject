@@ -1,0 +1,58 @@
+.main {
+    display: flex;
+    margin-bottom: 24px;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+  }
+  
+  .main1 {
+    width: 20px;
+    height: 20px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: #ff9119;
+    border-radius: 4px;
+    padding: 4px;
+    box-sizing: border-box;
+    pointer-events: auto;
+  }
+  
+  .main2 {
+    margin-left: 8px;
+    font-size: 16px;
+    font-weight: 400;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .tipContainer {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .iconContainer {
+    width: 20px;
+    height: 20px;
+    background-color: #ff9119;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    padding: 4px;
+  }
+  
+  .tipText {
+    margin-left: 8px;
+    font-size: 16px;
+    font-weight: 400;
+  }
+  
+  .tipHighlight {
+    color: #ff9119;
+    font-weight: bolder;
+    font-size: 16px;
+  }
+  

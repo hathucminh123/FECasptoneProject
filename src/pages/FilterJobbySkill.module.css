@@ -11,12 +11,12 @@
 .container {
   padding-left: 160px !important;
   padding-right: 160px !important;
-  background: linear-gradient(180deg, #ffe6e6 30%, #ffccb3 70%);
+  background: linear-gradient(180deg, #FF8243, #FFD194);
   display: block;
 }
 
 .container1 {
-  padding-bottom: 124px !important;
+  padding-bottom: 24px !important;
   padding-top: 24px !important;
   max-width: 1220px;
   margin-right: auto;

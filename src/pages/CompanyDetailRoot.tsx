@@ -7,6 +7,8 @@ import _ from "lodash";
 import CardJob from "../components/CardJob";
 import { renderButton } from "../components/RenderButton";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { jobData ,} from "../assets/data/CompanyData";
+import { companyData } from "../assets/data/CompanyData";
 
 interface Job {
   id: number;
@@ -35,59 +37,78 @@ export default function CompanyDetailRoot() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
- 
-  const companyData: Company | null = location.state ?? null;
 
-  // Chỉ lưu state nếu companyData tồn tại
-  if (companyData) {
-    // const state = { bv: companyData };
-    console.log( JSON.stringify(companyData))
-    localStorage.setItem('redirectState', JSON.stringify(companyData));
-  }
+  // Get company data from location.state or fallback to localStorage
+  const companyDataa: Company | null =
+    location.state ??
+    JSON.parse(localStorage.getItem("redirectState") || "null");
 
-
+  // Only save companyData to localStorage if it exists
+  useEffect(() => {
+    if (companyDataa) {
+      localStorage.setItem("redirectState", JSON.stringify(companyDataa));
+    }
+  }, [companyDataa]);
 
   const handleNavigate = () => {
-    navigate('/company/Comment');
-    console.log('Navigating to /company/Comment');
+    navigate("/company/Comment");
+    console.log("Navigating to /company/Comment");
   };
 
-  const handleNavigateJob = (job: Job, companyData: Company) => {
-    // Điều hướng đến trang chi tiết công việc và truyền dữ liệu job và companyData
+  // const handleNavigateJob = (job: Job, companyData: Company) => {
+  //   // Navigate to job details and pass job and company data
+  //   navigate(`/jobs/detail/${job.id}`, {
+  //     state: { job, company: companyData },
+  //   });
+  // };
+
+  const handleNavigateJob = (job: Job) => {
+    // Navigate to job details and pass job and company data
     navigate(`/jobs/detail/${job.id}`, {
-      state: { job, company: companyData }
+      state: job,
     });
   };
-
+  const TRIGGER_HEIGHT = 200;
   const handleScroll = useCallback(
     _.debounce(() => {
       const scrollPosition = window.scrollY;
-      const triggerHeight = 250;
-      setIsScrolled(scrollPosition >= triggerHeight);
-    }, 100), // Debounce với khoảng 100ms
-    []
+      console.log(scrollPosition)
+      if ((scrollPosition >= TRIGGER_HEIGHT && !isScrolled) || (scrollPosition < TRIGGER_HEIGHT && isScrolled)) {
+        setIsScrolled(scrollPosition >= TRIGGER_HEIGHT);
+      }
+    }, 100),
+    [isScrolled] 
   );
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      handleScroll.cancel(); // Hủy bỏ debounce khi unmount
+      handleScroll.cancel(); 
     };
   }, [handleScroll]);
 
-  if (!companyData) {
+  const jobincompanyData = jobData.filter(
+    (item) => item.companyId === companyDataa?.id
+  );
+
+  console.log("qua dinh", jobincompanyData);
+
+  if (!companyDataa) {
     return (
       <div>
         <h2>Company data is not available.</h2>
         <p>Please try again later.</p>
+        <button onClick={() => navigate("/company")}>Go back</button>
       </div>
     );
   }
 
   return (
     <div className={classes.main_container}>
-      <div className={isScrolled ? classes.sticky_container : classes.container}>
+      <div
+        className={isScrolled ? classes.sticky_container : classes.container}
+      >
         <div className={classes.container1}>
           {isScrolled ? (
             <div className={classes.container2}>
@@ -102,11 +123,17 @@ export default function CompanyDetailRoot() {
                     color: "white",
                   }}
                 >
-                  {companyData.name}
+                  {companyDataa.name}
                 </Typography>
               </div>
               <div className={classes.containerscroll2}>
-                {renderButton("Write review", "#ed1b2f", "contained",{},handleNavigate)}
+                {renderButton(
+                  "Write review",
+                  "#ed1b2f",
+                  "contained",
+                  {},
+                  handleNavigate
+                )}
                 {renderButton("Follow", "white", "outlined", {
                   minWidth: "180px",
                 })}
@@ -117,8 +144,8 @@ export default function CompanyDetailRoot() {
               <div style={{ paddingRight: "14px" }}>
                 <img
                   style={{ width: "200px" }}
-                  src={companyData.image}
-                  alt={`Logo of ${companyData.name}`} 
+                  src={companyDataa.image}
+                  alt={`Logo of ${companyDataa.name}`}
                 />
               </div>
               <div className={classes.container4}>
@@ -132,7 +159,7 @@ export default function CompanyDetailRoot() {
                     color: "white",
                   }}
                 >
-                  {companyData.name}
+                  {companyDataa.name}
                 </Typography>
                 <div className={classes.locationjob}>
                   <div className={classes.location}>
@@ -145,7 +172,7 @@ export default function CompanyDetailRoot() {
                         color: "white",
                       }}
                     >
-                      {companyData.location}
+                      {companyDataa.location}
                     </Typography>
                   </div>
                   <div className={classes.job}>
@@ -160,12 +187,18 @@ export default function CompanyDetailRoot() {
                         color: "white",
                       }}
                     >
-                      {companyData.jobOpeningsCount} job openings
+                      {companyDataa.jobOpeningsCount} job openings
                     </Typography>
                   </div>
                 </div>
                 <div className={classes.button}>
-                  {renderButton("Write review", "#ed1b2f", "contained",{},handleNavigate)}
+                  {renderButton(
+                    "Write review",
+                    "#ed1b2f",
+                    "contained",
+                    {},
+                    handleNavigate
+                  )}
                   {renderButton("Follow", "white", "outlined", {
                     minWidth: "180px",
                   })}
@@ -184,8 +217,8 @@ export default function CompanyDetailRoot() {
                 <ul className={classes.title1}>
                   <li className={classes.menuItem}>
                     <NavLink
-                       to={`/company/detail/${companyData.id}`}
-                       state={companyData}
+                      to={`/company/detail/${companyDataa.id}`}
+                      state={companyDataa}
                       className={({ isActive }) =>
                         isActive ? classes.active : undefined
                       }
@@ -197,9 +230,9 @@ export default function CompanyDetailRoot() {
                   <li className={classes.menuItem}>
                     <NavLink
                       to="review"
-                      state={companyData}
+                      state={companyDataa}
                       className={({ isActive }) =>
-                        isActive ? classes.active : undefined 
+                        isActive ? classes.active : undefined
                       }
                       end
                     >
@@ -209,7 +242,7 @@ export default function CompanyDetailRoot() {
                 </ul>
               </div>
 
-              <Outlet  />
+              <Outlet />
             </div>
             <div className={classes.containerRight}>
               <div className={classes.scroll}>
@@ -223,19 +256,24 @@ export default function CompanyDetailRoot() {
                     paddingBottom: "16px",
                   }}
                 >
-                  {companyData.jobOpeningsCount} job openings
+                  {companyDataa.jobOpeningsCount} job openings
                 </Typography>
                 <div className={classes.content}>
                   <div style={{ width: "100%" }}>
-                    {companyData.jobs.map((job, index) => (
-                      <CardJob
-                        key={index}
-                        Maxwidth="400px"
-                        data={job}
-                        company={companyData}
-                        onclick={() => handleNavigateJob(job, companyData)}
-                      />
-                    ))}
+                    {jobincompanyData.map((job) => {
+                      const companys = companyData.find(
+                        (item) => item.id === job.companyId
+                      );
+                      return (
+                        <CardJob
+                          key={job.id}
+                          data={job}
+                          img={job.companyImage}
+                          company={companys}
+                          onclick={() => handleNavigateJob(job)} // Correct the event handler name
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               </div>

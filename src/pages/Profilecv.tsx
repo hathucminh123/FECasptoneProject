@@ -14,9 +14,13 @@ import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import CardProfile from "../components/CardProfile";
 import ModalChildren from "../components/ModalChildren";
+import AboutMe from "../components/AboutMe";
+import Education from "../components/Education";
 export default function Profilecv() {
   const [more, setMore] = useState<boolean>(false);
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] = useState<boolean>(false);
+  const [isCreatingNewChallenge1, setIsCreatingNewChallenge1] = useState<boolean>(false);
+  const [isCreatingNewChallenge2, setIsCreatingNewChallenge2] = useState<boolean>(false);
 console.log('why',isCreatingNewChallenge)
   function handleStartAddNewChallenge() {
     setIsCreatingNewChallenge(true);
@@ -24,6 +28,24 @@ console.log('why',isCreatingNewChallenge)
 
   function handleDone() {
     setIsCreatingNewChallenge(false);
+  }
+
+
+  function handleStartAddNewChallenge1() {
+    setIsCreatingNewChallenge1(true);
+  }
+
+  function handleDone1() {
+    setIsCreatingNewChallenge1(false);
+  }
+
+
+  function handleStartAddNewChallenge2() {
+    setIsCreatingNewChallenge2(true);
+  }
+
+  function handleDone2() {
+    setIsCreatingNewChallenge2(false);
   }
 
 
@@ -364,11 +386,15 @@ console.log('why',isCreatingNewChallenge)
           title="About Me"
           text="Highlight detailed information about your job history"
           icon={<EditNoteOutlinedIcon />}
+           img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
+           onClick={handleStartAddNewChallenge1}
         />
         <CardProfile
           title="Education"
           text="Highlight detailed information about your job history"
           icon={<EditNoteOutlinedIcon />}
+           img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
+           onClick={handleStartAddNewChallenge2}
         />
         <CardProfile
           title="Work Experience"
@@ -400,6 +426,15 @@ console.log('why',isCreatingNewChallenge)
     </div>
     <AnimatePresence>
         {isCreatingNewChallenge && <ModalChildren onDone={handleDone} />}
+      </AnimatePresence>
+
+
+      <AnimatePresence>
+        {isCreatingNewChallenge1 && <AboutMe onDone={handleDone1} />}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {isCreatingNewChallenge2 && <Education onDone={handleDone2} />}
       </AnimatePresence>
     </div>
   );

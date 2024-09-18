@@ -8,7 +8,11 @@
     padding-left: 30px;
     padding-top: 32px !important;
     padding-bottom: 32px !important;
-      background: linear-gradient(180deg, #FFE6E6 30%, #FFCCB3 70%);  
+    background: linear-gradient(
+      180deg,
+      #ff8243,
+      #ffd194
+    );
   
     display: block;
     box-sizing: border-box;
@@ -16,15 +20,19 @@
   .sticky_container {
     position: -webkit-sticky;
     position: sticky;
-    top: 10px;
-    z-index: 10;
+    top: 63px;
+    z-index: 10 ;
     width: 100%;
   
     padding-right: 30px;
     padding-left: 30px;
     padding-top: 10px !important;
-    padding-bottom: 20px !important;
-      background: linear-gradient(180deg, #FFE6E6 30%, #FFCCB3 70%);
+    padding-bottom: 10px !important;
+    background: linear-gradient(
+      180deg,
+      #ff8243,
+      #ffd194
+    );
   
     display: block;
     box-sizing: border-box;
@@ -140,8 +148,8 @@
     background-color: white;
     display: block;
     position: sticky;
-    top: 115px;
-    z-index: 1;
+    top: 159px;
+    z-index: 200;
   }
   .title1 {
     display: flex;

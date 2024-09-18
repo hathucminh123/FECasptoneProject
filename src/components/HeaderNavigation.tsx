@@ -18,6 +18,8 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import Imagee from "./../assets/image/logo.jpg.webp";
+
 // import { set } from "lodash";
 
 export default function HeaderNavigation() {
@@ -44,19 +46,20 @@ export default function HeaderNavigation() {
   );
   //Company
   const [anchorElCompany, setAnchorElCompany] =
-  React.useState<null | HTMLElement>(null);
-const [hoveredCompany, setHoveredCompany] = useState<null | string>(null);
-const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
-  null
-);
+    React.useState<null | HTMLElement>(null);
+  const [hoveredCompany, setHoveredCompany] = useState<null | string>(null);
+  const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
+    null
+  );
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLLIElement>) => {
+  const handleMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
     setAnchorEl(event.currentTarget);
     setHovered(event.currentTarget.textContent || null);
     setSelectedMenu(event.currentTarget.textContent || null);
   };
-
-  const handleMouseEnterCompany = (event: React.MouseEvent<HTMLLIElement>) => {
+  const handleMouseEnterCompany = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ) => {
     setAnchorElCompany(event.currentTarget);
     setHoveredCompany(event.currentTarget.textContent || null);
     setSelectedMenuCompany(event.currentTarget.textContent || null);
@@ -113,24 +116,75 @@ const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
       className={classes.header}
       style={{ height: `${headerHeight}px`, transition: "height 0.3s ease" }}
     >
-      <nav className={`${classes.nav} ${classes.fixedTop}`}>
+      <nav
+        className={`${classes.nav} ${classes.fixedTop}`}
+        style={{ height: `${headerHeight}px`, transition: "height 0.3s ease" }}
+      >
         <div className={classes.container}>
           <div className={classes.containerleft}>
-            <Link to="/"> Home </Link>
+            <Link to="/">
+              {" "}
+              <img
+                src={Imagee}
+                alt="logo"
+                style={{
+                  width: "108px",
+                  height: "70px",
+                  aspectRatio: "auto 108/40",
+                  overflowClipMargin: "content-box",
+                  overflow: "clip",
+                  cursor: "pointer",
+                  verticalAlign: "middle",
+                  borderRadius:'50%'
+                }}
+              />
+            </Link>
           </div>
           <div className={classes.containerright}>
             <ul className={classes.list}>
-              <li onMouseEnter={handleMouseEnter}>
-                <NavLink className={classes.link} to="/">
+              <li className={classes.li}>
+                <NavLink
+                  onMouseEnter={handleMouseEnter}
+                  className={classes.link}
+                  to="/"
+                >
                   All Jobs
+                  <ArrowDropDownIcon
+                    sx={{
+                      width: "20px",
+                      height: "20px",
+                      stroke: "currentcolor",
+                      strokeWidth: "2",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      verticalAlign: "baseline",
+                      fill: "none",
+                    }}
+                  />
                 </NavLink>
               </li>
-              <li onMouseEnter={handleMouseEnterCompany}>
-                <NavLink className={classes.link} to="/about">
+              <li className={classes.li}>
+                <NavLink
+                  onMouseEnter={handleMouseEnterCompany}
+                  className={classes.link}
+                  to="/about"
+                >
                   IT Companies
+                  <ArrowDropDownIcon
+                    sx={{
+                      width: "20px",
+                      height: "20px",
+                      stroke: "currentcolor",
+                      strokeWidth: "2",
+                      strokeLinecap: "round",
+                      strokeLinejoin: "round",
+                      verticalAlign: "baseline",
+                      fill: "none",
+                    }}
+                  />
                 </NavLink>
               </li>
-              <li>
+              <li className={classes.li}>
                 <NavLink className={classes.link} to="/contact">
                   Blog
                 </NavLink>
@@ -138,12 +192,12 @@ const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
             </ul>
 
             <ul className={classes.listright}>
-              <li>
+              <li className={classes.link1}>
                 <NavLink className={classes.linkk} to="/employers">
                   For Employers
                 </NavLink>
               </li>
-              <li>
+              <li className={classes.liprofile}>
                 {auth ? (
                   <div
                     className={classes.profile}
@@ -171,13 +225,24 @@ const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
                         variant="body1"
                         sx={{
                           marginLeft: "12px",
-                          color: "#333",
+                          color: "#000000",
                           cursor: "pointer",
                         }}
                       >
                         Hà Thúc Minh
                       </Typography>
-                      <ArrowDropDownIcon />
+                      <ArrowDropDownIcon
+                        sx={{
+                          width: "20px",
+                          height: "20px",
+                          stroke: "currentcolor",
+                          strokeWidth: "2",
+                          strokeLinecap: "round",
+                          strokeLinejoin: "round",
+                          verticalAlign: "baseline",
+                          fill: "none",
+                        }}
+                      />
                     </div>
                   </div>
                 ) : (
@@ -197,16 +262,14 @@ const [selectedMenuCompany, setSelectedMenuCompany] = useState<null | string>(
           </div>
         </div>
       </nav>
-     <CompanyMenu
-     
-     anchorEl={anchorElCompany}
-     handleClose={handleMouseLeaveCompany}
-     setHovered={setHoveredCompany}
-     hovered={hoveredCompany}
-     selectedMenu={selectedMenuCompany}
-     setSelectedMenu={setSelectedMenuCompany}
-     />
-
+      <CompanyMenu
+        anchorEl={anchorElCompany}
+        handleClose={handleMouseLeaveCompany}
+        setHovered={setHoveredCompany}
+        hovered={hoveredCompany}
+        selectedMenu={selectedMenuCompany}
+        setSelectedMenu={setSelectedMenuCompany}
+      />
 
       <ProfileMenu
         anchorEl={anchorElProflie}
@@ -301,6 +364,7 @@ const SkillsMenu = ({
   const handleOnclick = (column: string) => {
     console.log(column);
     navigate("/it-jobs", { state: column });
+    window.location.href = "/it-jobs";
   };
   return (
     <Menu
@@ -497,8 +561,8 @@ const ProfileMenu = ({
       localStorage.removeItem("auth");
     } else if (item === "Item 1") {
       navigate("/profile-cv");
-    }else if( item ==="Item 2"){
-      navigate('/my-jobs')
+    } else if (item === "Item 2") {
+      navigate("/my-jobs");
     }
 
     setSelectedMenu(item);
@@ -549,7 +613,6 @@ const ProfileMenu = ({
   );
 };
 
-
 const CompanyMenu = ({
   anchorEl,
   handleClose,
@@ -565,11 +628,7 @@ const CompanyMenu = ({
   selectedMenu: string | null;
   setSelectedMenu: (item: string | null) => void;
 }) => {
-  const leftMenuItems = [
-    "VietNam best IT company",
-    "Company Reviews",
-
-  ];
+  const leftMenuItems = ["VietNam best IT company", "Company Reviews"];
 
   // const skillsColumns = [
   //   "Java",
@@ -605,16 +664,15 @@ const CompanyMenu = ({
   //   "Project Manager",
   // ];
 
-  const navigate =useNavigate();
+  const navigate = useNavigate();
 
-  const handleNavigate =(item:string)=>{
-  if(item ==="VietNam best IT company")
-    navigate('/vietnam-best-it-companies')
-  else{
-    navigate('/all/company')
-  }
-  
-  }
+  const handleNavigate = (item: string) => {
+    if (item === "VietNam best IT company")
+      navigate("/vietnam-best-it-companies");
+    else {
+      navigate("/all/company");
+    }
+  };
 
   return (
     <Menu
@@ -625,7 +683,7 @@ const CompanyMenu = ({
       onClose={handleClose}
       PaperProps={{
         style: {
-          marginTop:'10px',
+          marginTop: "10px",
           backgroundColor: "#2c2f33",
           color: "white",
           width: "fit-content",
@@ -643,7 +701,7 @@ const CompanyMenu = ({
           <List>
             {leftMenuItems.map((item) => (
               <MenuItem
-                onClick={ () => handleNavigate(item)}
+                onClick={() => handleNavigate(item)}
                 key={item}
                 style={{
                   color: hovered === item ? "white" : "#b0bec5",
@@ -661,13 +719,7 @@ const CompanyMenu = ({
             ))}
           </List>
         </div>
-
-    
       </div>
-
-
-
-
     </Menu>
   );
 };

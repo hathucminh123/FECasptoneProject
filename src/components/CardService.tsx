@@ -1,7 +1,8 @@
-
 import classes from "./CardService.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+
+import { ReactNode } from "react";
 
 type inputCard = {
   url: string;
@@ -10,6 +11,7 @@ type inputCard = {
   textButton: string;
   className?: string;
   onClick?: () => void;
+  children?: ReactNode;
 };
 
 export default function CardService({
@@ -17,44 +19,51 @@ export default function CardService({
   title,
   text,
   textButton,
-  className, 
-  onClick
-
+  children,
+  // className,
+  onClick,
 }: inputCard) {
   return (
-    <div className={`${classes.card_item} ${className}`}>
-      <img src={url} alt="image" className={classes.card_image} />
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          flexWrap: "wrap",
-        }}
-      >
-        <Typography
-          variant="body1"
-          gutterBottom
-          sx={{
-            textAlign: "start",
-            fontWeight: "bold",
-            color: "#121212",
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography
+    <div className={`${classes.card_item} `}>
+      <div className={classes.card}>
+        <div className={classes.divimg}>
+          <img src={url} alt="image" className={classes.card_image} />
+        </div>
+        <div className={classes.right}>
+          <div className={classes.right1}>
+            <Typography
+              variant="h3"
+              gutterBottom
+              sx={{
+                fontSize: "18px",
+                fontWeight: 700,
+                mt: 0,
+                mb: 0,
+                boxSizing: "border-box",
+                display: "block",
+              }}
+            >
+              {title}
+            </Typography>
+          </div>
+          <Typography
           variant="body2"
           gutterBottom
           sx={{
-            textAlign: "start",
-            color: "#121212",
+           lineHeight:1.8,
+           marginTop:"8px",
+           color:'#414042',
+           fontSize:'16px',
+           fontWeight:400,
+           mb:0,
+           boxSizing:'border-box',
+           display:'block'
           }}
         >
           {text}
         </Typography>
-        {/* Adding the button */}
         <Button
-        onClick={onClick}
+          onClick={onClick}
           variant="outlined"
           sx={{
             borderColor: "#f60d00",
@@ -70,7 +79,11 @@ export default function CardService({
         >
           {textButton}
         </Button>
+        </div>
       </div>
+   
+       {children}
+     
     </div>
   );
 }

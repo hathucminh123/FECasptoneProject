@@ -50,17 +50,26 @@ export default function FilterJobbySkill() {
   const [selectedJob, setSelectedJob] = useState<null | Job>(null);
 
   useEffect(() => {
-    // Set the first job as the selectedJob by default
-    if (filteredJobs.length > 0 && selectedJob === null) {
-      const firstJob = filteredJobs[0];
-      setJobDetails(firstJob);
-      setSelectedJob(firstJob);
-      const foundCompany = companyData.find(
-        (item) => item.id === firstJob.companyId
-      );
-      setDetailsCompany(foundCompany);
+    if (filteredJobs.length > 0) {
+
+      if (!selectedJob || !filteredJobs.some(job => job.id === selectedJob.id)) {
+        const firstJob = filteredJobs[0];
+        setJobDetails(firstJob);
+        setSelectedJob(firstJob);
+
+        const foundCompany = companyData.find(
+          (item) => item.id === firstJob.companyId
+        );
+        setDetailsCompany(foundCompany);
+      }
+    } else {
+    
+      setSelectedJob(null);
+      setJobDetails(null);
+      setDetailsCompany(undefined);
     }
-  }, [filteredJobs]);
+  }, [filteredJobs, selectedJob]);
+
 
   const handleApplyClick = () => {
     if (!auth) {
@@ -68,18 +77,18 @@ export default function FilterJobbySkill() {
         state: { from: window.location.pathname },
       });
     } else {
-       navigate('/job/Apply')
+      navigate("/job/Apply");
     }
   };
 
   const handleOnclickDetails = (job: Job) => {
     setJobDetails(job);
-    setSelectedJob(selectedJob === job ? null : job);
-
+    setSelectedJob(job);
 
     const foundCompany = companyData.find((item) => item.id === job.companyId);
     setDetailsCompany(foundCompany);
   };
+
 
   return (
     <div className={classes.main}>
@@ -105,7 +114,7 @@ export default function FilterJobbySkill() {
                       marginBottom: 0,
                     }}
                   >
-                    165 java jobs in Vietnam{" "}
+                  Jobs IT in Vietnam{" "}
                   </Typography>
                   <div className={classes.filter}>
                     <div className={classes.btn}>
@@ -157,237 +166,110 @@ export default function FilterJobbySkill() {
                       );
                     })}
                   </div>
-                  <div className={classes.detailRight}>
-                    <div className={classes.apply}>
-                      <div className={classes.apply1}>
-                        <div className={classes.apply2}>
-                          <img
-                            src={detailsCompany?.image}
-                            alt="Job"
-                            style={{ width: "100px", height: "100px" }}
-                          />
-                          <div className={classes.apply3}>
-                            <Typography
-                              variant="h2"
+                  {filteredJobs.length > 0 &&jobDetails   && detailsCompany?  (
+                    <div className={classes.detailRight}>
+                      <div className={classes.apply}>
+                        <div className={classes.apply1}>
+                          <div className={classes.apply2}>
+                            <img
+                              src={detailsCompany?.image}
+                              alt="Job"
+                              style={{ width: "100px", height: "100px" }}
+                            />
+                            <div className={classes.apply3}>
+                              <Typography
+                                variant="h2"
+                                sx={{
+                                  color: "#121212",
+                                  lineHeight: 1.5,
+                                  fontSize: "22px",
+                                  fontWeight: 700,
+                                  mt: 0,
+                                  mb: 0,
+                                }}
+                              >
+                                {jobDetails?.title}
+                              </Typography>
+                              <Typography
+                                variant="body1"
+                                sx={{
+                                  color: "#121212",
+                                  lineHeight: 1.5,
+                                  fontSize: "16px",
+                                  fontWeight: 400,
+                                  mt: 0,
+                                  mb: 0,
+                                }}
+                              >
+                                {detailsCompany?.name}
+                              </Typography>
+                              <div className={classes.money}>
+                                <MonetizationOnOutlinedIcon
+                                  sx={{ color: "#0ab305 !important" }}
+                                />
+                                <Typography
+                                  variant="h6"
+                                  gutterBottom
+                                  sx={{
+                                    alignItems: "start",
+                                    fontWeight: "bold",
+                                    mt: "7px",
+                                    color: "#0ab305 !important",
+                                  }}
+                                >
+                                  $4000
+                                </Typography>
+                              </div>
+                            </div>
+                          </div>
+                          <div className={classes.button_icon}>
+                            <Button
+                              onClick={handleApplyClick}
                               sx={{
-                                color: "#121212",
-                                lineHeight: 1.5,
-                                fontSize: "22px",
-                                fontWeight: 700,
-                                mt: 0,
-                                mb: 0,
-                              }}
-                            >
-                              {jobDetails?.title}
-                            </Typography>
-                            <Typography
-                              variant="body1"
-                              sx={{
-                                color: "#121212",
-                                lineHeight: 1.5,
+                                mt: 3,
+                                width: "90%",
+                                backgroundColor: "#ed1b2f",
+                                borderColor: "#ed1b2f",
+                                color: "#fff",
+                                borderRadius: "4px",
                                 fontSize: "16px",
-                                fontWeight: 400,
-                                mt: 0,
-                                mb: 0,
+                                fontWeight: "bold",
+                                padding: "11px 24px",
+
+                                "&:hover": {
+                                  backgroundColor: "#C82222",
+                                  color: "white",
+                                },
                               }}
                             >
-                              {detailsCompany?.name}
-                            </Typography>
-                            <div className={classes.money}>
-                              <MonetizationOnOutlinedIcon
-                                sx={{ color: "#0ab305 !important" }}
-                              />
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                sx={{
-                                  alignItems: "start",
-                                  fontWeight: "bold",
-                                  mt: "7px",
-                                  color: "#0ab305 !important",
-                                }}
-                              >
-                                $4000
-                              </Typography>
+                              Apply now
+                            </Button>
+                            <div
+                              style={{ cursor: "pointer" }}
+                              onClick={() => setFavorite((prev) => !prev)}
+                            >
+                              {favorite ? (
+                                <FavoriteIcon
+                                  fontSize="large"
+                                  sx={{
+                                    color: "#ed1b2f !important",
+                                    marginTop: "20px",
+                                    mr: 2,
+                                  }}
+                                />
+                              ) : (
+                                <FavoriteBorderOutlinedIcon
+                                  fontSize="large"
+                                  sx={{
+                                    color: "#ed1b2f !important",
+                                    marginTop: "20px",
+                                    mr: 2,
+                                  }}
+                                />
+                              )}
                             </div>
                           </div>
                         </div>
-                        <div className={classes.button_icon}>
-                          <Button
-                            onClick={handleApplyClick}
-                            sx={{
-                              mt: 3,
-                              width: "90%",
-                              backgroundColor: "#ed1b2f",
-                              borderColor: "#ed1b2f",
-                              color: "#fff",
-                              borderRadius: "4px",
-                              fontSize: "16px",
-                              fontWeight: "bold",
-                              padding: "11px 24px",
-
-                              "&:hover": {
-                                backgroundColor: "#C82222",
-                                color: "white",
-                              },
-                            }}
-                          >
-                            Apply now
-                          </Button>
-                          <div
-                            style={{ cursor: "pointer" }}
-                            onClick={() => setFavorite((prev) => !prev)}
-                          >
-                            {favorite ? (
-                              <FavoriteIcon
-                                fontSize="large"
-                                sx={{
-                                  color: "#ed1b2f !important",
-                                  marginTop: "20px",
-                                  mr: 2,
-                                }}
-                              />
-                            ) : (
-                              <FavoriteBorderOutlinedIcon
-                                fontSize="large"
-                                sx={{
-                                  color: "#ed1b2f !important",
-                                  marginTop: "20px",
-                                  mr: 2,
-                                }}
-                              />
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      <hr
-                        style={{
-                          height: "1px",
-                          marginLeft: "24px",
-                          marginRight: "24px",
-                          marginTop: "0px",
-                          marginBottom: "0px",
-                          color: "#dedede",
-                          backgroundColor: "currentcolor",
-                          border: 0,
-                          opacity: 1,
-                        }}
-                      />
-                      <div className={classes.morecontent}>
-                        <div className={classes.morecontent1}>
-                          <div className={classes.morecontent2}>
-                            <div className={classes.location}>
-                              <LocationOnOutlinedIcon
-                                fontSize="large"
-                                sx={{
-                                  width: "16px",
-                                  height: "16px",
-                                  color: "#a6a6a6",
-                                  mt: "10px",
-                                }}
-                              />
-                              <Typography
-                                variant="h5"
-                                gutterBottom
-                                sx={{
-                                  alignItems: "start",
-                                  fontWeight: 500,
-                                  mt: "7px",
-                                  color: " #414042 ",
-                                  fontSize: "16px",
-                                }}
-                              >
-                               {detailsCompany?.location}
-                              </Typography>
-                            </div>
-                            <div className={classes.time}>
-                              <AccessTimeOutlinedIcon
-                                fontSize="large"
-                                sx={{
-                                  width: "16px",
-                                  height: "16px",
-                                  color: "#a6a6a6",
-                                  mt: "10px",
-                                }}
-                              />
-                              <Typography
-                                variant="h5"
-                                gutterBottom
-                                sx={{
-                                  alignItems: "start",
-                                  fontWeight: 500,
-                                  mt: "7px",
-                                  color: " #414042 ",
-                                  fontSize: "16px",
-                                }}
-                              >
-                             {jobDetails?.postDate}
-                              </Typography>
-                            </div>
-                            <div className={classes.skill}>
-                              <Typography
-                                variant="h5"
-                                gutterBottom
-                                sx={{
-                                  alignItems: "start",
-                                  fontWeight: 500,
-                                  mt: "7px",
-                                  color: " #414042 ",
-                                  fontSize: "16px",
-                                }}
-                              >
-                                Skill :
-                              </Typography>
-                              {jobDetails?.tags.map((item,index) =>(
-                                     <button key={index} className={classes.button}>{item}</button>
-                              ))}
-                              {/* <button className={classes.button}>Java</button>
-                              <button className={classes.button}>PHP</button>
-                              <button className={classes.button}>GoLang</button> */}
-                            </div>
-                          </div>
-                        </div>
-                        <div className={classes.line}></div>
-
-                        <Content
-                          title="Top 3 reasons to join us"
-                          arraylist={[
-                            "Mức lương cạnh tranh, hấp dẫn",
-                            "Môi trường làm việc chuyên nghiệp, thân thiện",
-                            "Được làm việc với các hệ thống hiện đại, tiên tiến",
-                            "Lập trình, phát triển các ứng dụng của Ngân hàng",
-                          ]}
-                        />
-                        <div className={classes.line}></div>
-                        <Content
-                          title="Job description"
-                          arraylist={[
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Lập trình, phát triển các ứng dụng của Ngân hàng",
-                          ]}
-                        />
-                        <div className={classes.line}></div>
-                        <Content
-                          title="Your skills and experience"
-                          arraylist={[
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Lập trình, phát triển các ứng dụng của Ngân hàng",
-                          ]}
-                        />
-                        <div className={classes.line}></div>
-                        <Content
-                          title="Why you'll love working here"
-                          arraylist={[
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Thiết kế cấu trúc ứng dụng",
-                            "Lập trình, phát triển các ứng dụng của Ngân hàng",
-                          ]}
-                        />
                         <hr
                           style={{
                             height: "1px",
@@ -401,9 +283,145 @@ export default function FilterJobbySkill() {
                             opacity: 1,
                           }}
                         />
+                        <div className={classes.morecontent}>
+                          <div className={classes.morecontent1}>
+                            <div className={classes.morecontent2}>
+                              <div className={classes.location}>
+                                <LocationOnOutlinedIcon
+                                  fontSize="large"
+                                  sx={{
+                                    width: "16px",
+                                    height: "16px",
+                                    color: "#a6a6a6",
+                                    mt: "10px",
+                                  }}
+                                />
+                                <Typography
+                                  variant="h5"
+                                  gutterBottom
+                                  sx={{
+                                    alignItems: "start",
+                                    fontWeight: 500,
+                                    mt: "7px",
+                                    color: " #414042 ",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  {detailsCompany?.location}
+                                </Typography>
+                              </div>
+                              <div className={classes.time}>
+                                <AccessTimeOutlinedIcon
+                                  fontSize="large"
+                                  sx={{
+                                    width: "16px",
+                                    height: "16px",
+                                    color: "#a6a6a6",
+                                    mt: "10px",
+                                  }}
+                                />
+                                <Typography
+                                  variant="h5"
+                                  gutterBottom
+                                  sx={{
+                                    alignItems: "start",
+                                    fontWeight: 500,
+                                    mt: "7px",
+                                    color: " #414042 ",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  {jobDetails?.postDate}
+                                </Typography>
+                              </div>
+                              <div className={classes.skill}>
+                                <Typography
+                                  variant="h5"
+                                  gutterBottom
+                                  sx={{
+                                    alignItems: "start",
+                                    fontWeight: 500,
+                                    mt: "7px",
+                                    color: " #414042 ",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  Skill :
+                                </Typography>
+                                {jobDetails?.tags.map((item, index) => (
+                                  <button
+                                    key={index}
+                                    className={classes.button}
+                                  >
+                                    {item}
+                                  </button>
+                                ))}
+                                {/* <button className={classes.button}>Java</button>
+                              <button className={classes.button}>PHP</button>
+                              <button className={classes.button}>GoLang</button> */}
+                              </div>
+                            </div>
+                          </div>
+                          <div className={classes.line}></div>
+
+                          <Content
+                            title="Top 3 reasons to join us"
+                            arraylist={[
+                              "Mức lương cạnh tranh, hấp dẫn",
+                              "Môi trường làm việc chuyên nghiệp, thân thiện",
+                              "Được làm việc với các hệ thống hiện đại, tiên tiến",
+                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
+                            ]}
+                          />
+                          <div className={classes.line}></div>
+                          <Content
+                            title="Job description"
+                            arraylist={[
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
+                            ]}
+                          />
+                          <div className={classes.line}></div>
+                          <Content
+                            title="Your skills and experience"
+                            arraylist={[
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
+                            ]}
+                          />
+                          <div className={classes.line}></div>
+                          <Content
+                            title="Why you'll love working here"
+                            arraylist={[
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Thiết kế cấu trúc ứng dụng",
+                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
+                            ]}
+                          />
+                          <hr
+                            style={{
+                              height: "1px",
+                              marginLeft: "24px",
+                              marginRight: "24px",
+                              marginTop: "0px",
+                              marginBottom: "0px",
+                              color: "#dedede",
+                              backgroundColor: "currentcolor",
+                              border: 0,
+                              opacity: 1,
+                            }}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
             </div>

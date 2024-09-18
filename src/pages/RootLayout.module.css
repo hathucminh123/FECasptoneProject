@@ -1,0 +1,20 @@
+.main {
+    min-height: calc(100vh - 495px);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main1 {
+    flex-grow: 1;
+    display: block;
+  }
+  
+  .footer {
+    color: var(--i-silver-grey);
+    background: linear-gradient(180deg, #ff8243, #ffd194);
+    padding-top: 48px;
+    box-sizing: border-box;
+    display: block;
+  height: 320px;
+  }
+  

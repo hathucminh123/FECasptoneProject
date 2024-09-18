@@ -4,7 +4,9 @@ import { companyData, jobData } from "../../assets/data/CompanyData";
 
 // Helper function to remove accents and normalize strings
 const removeAccents = (str: string | null) => {
-  if (!str) return "";
+  if (typeof str !== 'string') {
+    return '';
+  }
   return str
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")

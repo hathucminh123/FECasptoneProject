@@ -12,10 +12,15 @@ import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 // import Image from "./../assets/image/minh.jpg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import CardJob from "../components/CardJob";
+// import CardJob from "../components/CardJob";
 import { companyData, jobData } from "../assets/data/CompanyData";
 // import { compose } from "@reduxjs/toolkit";
 import useScrollToTop from "../hook/useScrollToTop";
+
+import Image1 from "./../assets/image/abbank-0621-min.webp";
+import Image2 from "./../assets/image/rsz-2jun-0497copy.webp";
+import { Image } from "antd";
+import CardJobDetails from "../components/CardJobDetails";
 
 interface Job {
   id: number;
@@ -26,9 +31,20 @@ interface Job {
   postDate: string;
   hotTag: boolean;
   companyId?: number;
-  companyImage?: string; 
+  companyImage?: string;
 }
-
+interface Company {
+  id: number;
+  name: string;
+  overview: {
+    title: string;
+    description: string;
+  };
+  jobs: Job[];
+  location: string;
+  jobOpeningsCount: number;
+  image: string;
+}
 
 // interface Company {
 //   id: number;
@@ -76,15 +92,14 @@ const StyledLink = styled(Link)`
 // }
 
 export default function JobDetails() {
-  useScrollToTop(); 
+  useScrollToTop();
   const [favorite, setFavorite] = useState<boolean>(false);
   const containerLeftRef = useRef<HTMLDivElement | null>(null);
   const applyRef = useRef<HTMLDivElement | null>(null);
-const navigate =useNavigate()
+  const navigate = useNavigate();
   const location = useLocation();
   const { company } = location.state || {};
-  const auth=localStorage.getItem('auth')
-  
+  const auth = localStorage.getItem("auth");
 
   const job: Job | null = location.state ?? null;
 
@@ -94,23 +109,25 @@ const navigate =useNavigate()
   if (job) {
     // const state = { bv: companyData };
 
-    localStorage.setItem('redirectStateJob', JSON.stringify(job));
+    localStorage.setItem("redirectStateJob", JSON.stringify(job));
   }
-  const [detailsCompany, setDetailsCompany] = useState(company);
+  const [detailsCompany, setDetailsCompany] = useState<Company | null>(company);
 
-  const handleNavigateApply =()=>{
+  const handleNavigateApply = () => {
     if (!auth) {
       navigate("/auth?mode=login", {
         state: { from: window.location.pathname },
       });
     } else {
-       navigate('/job/Apply')
+      navigate("/job/Apply");
     }
-  }
+  };
   useEffect(() => {
     if (!company && job) {
-      const foundCompany = companyData.find((item) => item.id === job.companyId);
-      setDetailsCompany(foundCompany);
+      const foundCompany = companyData.find(
+        (item) => item.id === job.companyId
+      );
+      setDetailsCompany(foundCompany ?? null);
     }
   }, [company, job]);
   // const foundCompany = companyData.find((item) => item.id === job.companyId);
@@ -120,10 +137,10 @@ const navigate =useNavigate()
     console.log("company", detailsCompany);
   }, [job, detailsCompany]);
 
-  console.log('quao ',detailsCompany)
+  console.log("quao ", detailsCompany);
   const handleNavigateJob = (job: Job) => {
     navigate(`/jobs/detail/${job.id}`, {
-      state: { job },
+      state:job
     });
   };
   // // Hàm để theo dõi khi người dùng cuộn
@@ -156,7 +173,6 @@ const navigate =useNavigate()
   //     window.removeEventListener("scroll", handleScroll);
   //   };
   // }, []);
-
 
   if (!job) {
     return <div>No job details available</div>;
@@ -220,7 +236,7 @@ const navigate =useNavigate()
                 </div>
                 <div className={classes.button_icon}>
                   <Button
-                  onClick={handleNavigateApply}
+                    onClick={handleNavigateApply}
                     sx={{
                       mt: 3,
                       width: "90%",
@@ -269,7 +285,36 @@ const navigate =useNavigate()
                 </div>
               </div>
             </div>
+
             <div className={classes.detail}>
+              <section className={classes.section}>
+                <div className={classes.section1}>
+                  <div className={classes.section2}>
+                    <div className={classes.section3}>
+                      <Image
+                        src={Image1}
+                        preview={true}
+                        style={{ cursor: "pointer", color: "#414042" }}
+                      />
+                    </div>
+                    <div className={classes.section3}>
+                      <Image
+                        src={Image2}
+                        preview={true}
+                        style={{ cursor: "pointer", color: "#414042" }}
+                      />
+                    </div>
+                    <div className={classes.section3}>
+                      <Image
+                        src={Image2}
+                        preview={true}
+                        style={{ cursor: "pointer", color: "#414042" }}
+                      />
+                    </div>
+             
+                  </div>
+                </div>
+              </section>
               <div className={classes.detail1}>
                 <div className={classes.detail2}>
                   <div className={classes.location}>
@@ -654,9 +699,14 @@ const navigate =useNavigate()
                       textAlign: "left",
                     }}
                   >
-                  {detailsCompany.name}
+                    {detailsCompany.name}
                   </Typography>
-                  <StyledLink to={`/company/detail/${detailsCompany.id}`} state={detailsCompany}>View Company</StyledLink>
+                  <StyledLink
+                    to={`/company/detail/${detailsCompany.id}`}
+                    state={detailsCompany}
+                  >
+                    View Company
+                  </StyledLink>
                 </div>
               </div>
               <div style={{ marginTop: "20px", display: "block" }}>
@@ -674,7 +724,7 @@ const navigate =useNavigate()
       </div>
       <div className={classes.containercpn}>
         <div className={classes.containercpn1}>
-          <div className={classes.containerLeftcpn}>
+         
             <Typography
               variant="h4"
               gutterBottom
@@ -689,28 +739,27 @@ const navigate =useNavigate()
               More jobs for you
             </Typography>
             <div className={classes.cardJob}>
-
-            {jobData.map((job) => {
-              const companys = companyData.find(
-                (item) => item.id === job.companyId
-              );
-              return (
-                <CardJob
-                  key={job.id}
-                  data={job}
-                  img={job.companyImage}
-                  company={companys}
-                  onclick={() => handleNavigateJob(job)} // Correct the event handler name
-                />
-              );
-            })}
+              {jobData.map((job) => {
+                const companys = companyData.find(
+                  (item) => item.id === job.companyId
+                );
+                return (
+                  <CardJobDetails
+                    key={job.id}
+                    data={job}
+                    img={job.companyImage}
+                    company={companys}
+                    onclick={() => handleNavigateJob(job)} // Correct the event handler name
+                  />
+                );
+              })}
               {/* <CardJob />
               <CardJob />
               <CardJob />
               <CardJob />
               <CardJob />
               <CardJob /> */}
-            </div>
+        
           </div>
         </div>
       </div>

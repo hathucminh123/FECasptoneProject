@@ -1,119 +1,60 @@
-.children{
-    overflow-y: auto;
-    padding-bottom: 32px !important;
-    padding-top: 24px !important;
-    padding-left: 20px !important;
-    padding-right: 20px !important;
-    position: relative;
-    flex: 1 1 auto;
-    display: block;
-
-}
-
-.image{
-    margin-bottom: 24px !important;
-    text-align: center;
-    display: block;
-
-
-}
-.formbutton {
-    display: flex;
-    justify-content: center;
-    margin-top: 16px !important;
-    align-items: center;
-}
-
-.forminput{
-    margin: 0;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-
-}
-
-.forminput1{
-    position: relative;
-    font-size: 16px;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    flex: 0 0 auto;
-    width: 100%;
-}
-.forminput2{
-    position: relative;
-    font-size: 16px;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    flex: 0 0 auto;
-    width: 100%;
-    margin-top: 24px !important;
-}
-.forminput3{
-    position: relative;
-    font-size: 16px;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    flex: 0 0 auto;
-    width: 45%;
-    margin-top: 24px !important;
-    padding-right: 24px !important;
-}
-.forminput4{
-    position: relative;
-    font-size: 16px;
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    flex: 0 0 auto;
-    width: 45%;
-    margin-top: 24px !important;
-   
-}
-/* .children {
+.modalContent {
     overflow-y: auto;
     padding: 24px 20px 32px;
+    position: relative;
     flex: 1 1 auto;
-    display: block;
-}
-
-.image {
+  }
+  
+  .image {
     margin-bottom: 24px;
     text-align: center;
-}
-
-.profileImage {
+  }
+  
+  .profileImage {
     border-radius: 50%;
     object-fit: cover;
     width: 120px;
     height: 120px;
-    aspect-ratio: 1;
-}
-
-.formbutton {
+  }
+  
+  .formButton {
     display: flex;
     justify-content: center;
     margin-top: 16px;
     align-items: center;
-}
-
-.buttonGroup {
-    display: flex;
-    cursor: pointer;
-    align-items: center;
-}
-
-.forminput {
-    margin: 0;
+  }
+  
+  .formInput {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-}
-
-.forminput > div {
-    position: relative;
-    font-size: 16px;
-    padding: 0;
+    gap: 24px;
+  }
+  
+  .inputGroup {
     width: 100%;
-} */
+  }
+  
+  .halfInputGroup {
+    width: 50%;
+  }
+  
+  .buttonGroup {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+  }
+  
+  .buttonGroup + .buttonGroup {
+    padding-left: 24px;
+  }
+  
+
+  .form{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    gap: 20px;
+}
