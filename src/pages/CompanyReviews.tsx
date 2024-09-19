@@ -6,6 +6,7 @@ import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import classes from "./CompanyReviews.module.css";
 import { Rate } from "antd";
 import { companyData } from "../assets/data/CompanyData";
+import { Link } from "react-router-dom";
 
 export default function CompanyReviews() {
   // Dữ liệu review để tránh trùng lặp mã
@@ -112,7 +113,9 @@ export default function CompanyReviews() {
                     <div className={classes.content2}>
                       <div style={{ display: "block" }}>
                         <div className={classes.content3}>
-                          <span style={{ marginRight: "5px", color: "#121212" }}>
+                          <span
+                            style={{ marginRight: "5px", color: "#121212" }}
+                          >
                             Sort By :{" "}
                           </span>
                           <div style={{ display: "block", marginLeft: "10px" }}>
@@ -181,7 +184,12 @@ export default function CompanyReviews() {
                     </div>
                     <div className={classes.card}>
                       {companyData.map((review, index) => (
-                        <a key={index} className={classes.card_item} href="">
+                        <Link
+                          key={index}
+                          className={classes.card_item}
+                          to={`/company/detail/${review.id}/review`}
+                          state={review}
+                        >
                           <div className={classes.smallimg}>
                             <img
                               src={review.image}
@@ -264,7 +272,7 @@ export default function CompanyReviews() {
                                 </div>
                               </div>
                             </header>
-                           {review.overview.title}
+                            {review.overview.title}
                             <footer className={classes.footer}>
                               <span
                                 style={{
@@ -325,7 +333,7 @@ export default function CompanyReviews() {
                               </span>
                             </footer>
                           </div>
-                        </a>
+                        </Link>
                       ))}
                     </div>
                   </div>
@@ -348,7 +356,11 @@ export default function CompanyReviews() {
                   </Typography>
                   {companyData.map((review, index) => (
                     <div key={index} className={classes.quao}>
-                      <a href="" style={{ textDecoration: "none" }}>
+                      <Link
+                        to={`/company/detail/${review.id}/review`}
+                        state={review}
+                        style={{ textDecoration: "none" }}
+                      >
                         <div className={classes.quao1}>
                           <div className={classes.quao2}>
                             <div>
@@ -419,7 +431,7 @@ export default function CompanyReviews() {
                             post 2 day ago
                           </p>
                         </div>
-                      </a>
+                      </Link>
                     </div>
                   ))}
                 </div>

@@ -5,7 +5,7 @@ import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import Typography from "@mui/material/Typography";
-import "react-quill/dist/quill.snow.css"; // Import Quill CSS
+import "react-quill/dist/quill.snow.css"; 
 
 interface Props {
   onDone?: () => void;

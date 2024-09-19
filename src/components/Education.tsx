@@ -3,7 +3,7 @@ import Modal from "./Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import classes from './Education.module.css';
-import MenuItem from "@mui/material/MenuItem"; // For dropdowns
+import MenuItem from "@mui/material/MenuItem"; 
 
 interface Props {
   onDone?: () => void;

@@ -10,7 +10,11 @@
 .main2 {
   padding-top: 48px !important;
   padding-bottom: 48px !important;
-  background: linear-gradient(180deg, #ffe6e6 30%, #ffccb3 70%);
+  background: linear-gradient(
+    180deg,
+    #ff8243,
+    #ffd194
+  );
   display: block;
 }
 

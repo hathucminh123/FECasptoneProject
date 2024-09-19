@@ -1,43 +1,28 @@
 import React, { useEffect, useState } from "react";
-import classes from "./SaveJobs.module.css";
+import classes from "./RecentViewJob.module.css";
 import {
-  Button,
   FormControl,
+  //   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
 import CardJob from "../components/CardJob";
-import { useAppSelector, useAppDispatch } from "../redux/hooks/hooks";
+import { useAppSelector } from "../redux/hooks/hooks";
 import { companyData } from "../assets/data/CompanyData";
-import { add } from "../redux/slices/favoriteJob";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
-
-
-
-interface Job {
-  id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
-  companyId?: number;
-  companyImage?: string; 
-}
-
-export default function SaveJobs() {
-  const data = useAppSelector((state) => state.favorite.item);
-  const dispatch = useAppDispatch();
+import { Link } from "react-router-dom";
+export default function RecentViewJob() {
+  const [age, setAge] = React.useState("");
+  const data = useAppSelector((state) => state.view.item);
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [undoData, setUndoData] = useState<Job | null>(null); 
-  const [age, setAge] = useState<string>("");
+  const handleChange = (event: SelectChangeEvent) => {
+    setAge(event.target.value as string);
+  };
 
-  // Tự động tắt thông báo sau 3 giây
   useEffect(() => {
     if (showAlert) {
       const timer = setTimeout(() => {
@@ -46,57 +31,69 @@ export default function SaveJobs() {
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
-
-  // Xử lý khi người dùng nhấn "Undo"
-  const handleUndo = () => {
-    if (undoData) {
-      dispatch(add(undoData)); 
-      setUndoData(null); 
-    }
-  };
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
-
   return (
     <div className={classes.tab}>
       {showAlert && (
         <Stack
           sx={{
-            left: 'inherit',
+            left: "inherit",
             right: 0,
-            top: '120px',
-            bottom: 'inherit',
-            marginRight: '48px',
-            width: '400px',
-            opacity: showAlert ? 1 : 0, 
+            top: "120px",
+            bottom: "inherit",
+            marginRight: "48px",
+            width: "400px",
+            opacity: showAlert ? 1 : 0,
             zIndex: 11,
-            backgroundColor: '#eaf0fa',
-            padding: '16px 16px 16px 24px',
-            border: 'none',
-            borderRadius: '8px',
-            maxWidth: '400px',
-            position: 'fixed',
-            boxShadow: '0px 6px 32px rgba(0, 0, 0, 0.08)',
-            display: showAlert ? 'block' : 'none',
-            fontSize: '0.875rem',
-            pointerEvents: 'auto',
-            transition: 'opacity 0.15s linear',
-            boxSizing: 'border-box',
+            backgroundColor: "#eaf9e9",
+            padding: "16px 16px 16px 24px",
+            border: "none",
+            borderRadius: "8px",
+            maxWidth: "400px",
+            position: "fixed",
+            boxShadow: "0px 6px 32px rgba(0, 0, 0, 0.08)",
+            display: showAlert ? "block" : "none",
+            fontSize: "0.875rem",
+            pointerEvents: "auto",
+            transition: "opacity 0.15s linear",
+            boxSizing: "border-box",
           }}
         >
-          <Alert variant="outlined" severity="info">
-            <AlertTitle>You unsaved a job.</AlertTitle>
-            <div style={{ display: 'flex', gap: '20px', color: '#0e2eed', marginTop: '12px' }}>
-              <Button color="inherit" size="small" onClick={handleUndo}>
-                Undo
-              </Button>
+          <Alert severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <div style={{ display: "block" }}>
+              <div
+                style={{
+                  color: "#121212",
+                  marginRight: "18px",
+                  display: "block",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
+                >
+                  This job has been added to your <strong> Saved jobs</strong>
+                </Typography>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "20px",
+                  color: "#0e2eed",
+                  marginTop: "12px",
+                }}
+              >
+                <Link
+                  style={{ color: "#0e2eed", textDecoration: "none" }}
+                  to={"/my-jobs"}
+                >
+                  View list
+                </Link>
+              </div>
             </div>
           </Alert>
         </Stack>
       )}
-
       <div className={classes.icontainer}>
         <div className={classes.container}>
           <div className={classes.container1}>
@@ -113,7 +110,7 @@ export default function SaveJobs() {
                     mb: 0,
                   }}
                 >
-                  Saved Jobs ({data.length})
+                  Recent Viewed Jobs
                 </Typography>
                 <div className={classes.sort}>
                   <Typography
@@ -127,9 +124,12 @@ export default function SaveJobs() {
                     Sort by:
                   </Typography>
                   <FormControl fullWidth sx={{ width: "100%" }}>
+                    {/* <InputLabel id="demo-simple-select-label">Location</InputLabel> */}
                     <Select
+                      labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={age}
+                      // label="Location"
                       onChange={handleChange}
                       sx={{
                         background: "white",
@@ -140,6 +140,7 @@ export default function SaveJobs() {
                         Nearest expiration time
                       </MenuItem>
                       <MenuItem value="Newest jobs">Newest jobs</MenuItem>
+                      {/* <MenuItem value={30}>Đà Nẵng</MenuItem> */}
                     </Select>
                   </FormControl>
                 </div>
@@ -153,8 +154,7 @@ export default function SaveJobs() {
                   );
                   return (
                     <CardJob
-                      setShowAlert={setShowAlert}
-                      setUndoData={setUndoData} 
+                      setShowAlertt={setShowAlert}
                       className={classes.carditem}
                       data={job}
                       key={job.id}

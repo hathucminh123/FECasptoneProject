@@ -23,6 +23,8 @@ import CompanyComment from "./pages/CompanyComment";
 import CompanyReviews from "./pages/CompanyReviews";
 import Recommend from "./pages/Recommend";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
+import RecentViewJob from "./pages/RecentViewJob";
+import AppliedJob from "./pages/AppliedJob";
 
 export const queryClient = new QueryClient();
 
@@ -95,6 +97,16 @@ const router = createBrowserRouter([
             index: true,
             element: <SaveJobs />,
           },
+
+          {
+            path:'recent-viewed',
+            element:<RecentViewJob/>
+          },
+          
+          {
+            path:'applied',
+            element:<AppliedJob/>
+          }
         ],
       },
       {

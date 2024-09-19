@@ -9,6 +9,7 @@ import { renderButton } from "../components/RenderButton";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { jobData ,} from "../assets/data/CompanyData";
 import { companyData } from "../assets/data/CompanyData";
+import useScrollToTop from "../hook/useScrollToTop";
 
 interface Job {
   id: number;
@@ -37,6 +38,8 @@ export default function CompanyDetailRoot() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const location = useLocation();
   const navigate = useNavigate();
+
+  useScrollToTop();
 
   // Get company data from location.state or fallback to localStorage
   const companyDataa: Company | null =

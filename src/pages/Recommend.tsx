@@ -6,6 +6,7 @@ import { Rate } from "antd";
 import CircularProgress from "./../components/CircularProgress ";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import { companyData } from "../assets/data/CompanyData";
+import { Link } from "react-router-dom";
 
 // Define a type for the company data
 // interface Company {
@@ -67,7 +68,10 @@ export default function Recommend() {
     jobOpeningsCount: number;
     image: string;
   }
-  const renderCompany = (company: Company, index: number) => (
+  const renderCompany = (company: Company, index: number) =>{
+    console.log('quao',company)
+ return(
+ 
     <div
       key={company.id}
       className={classes.content}
@@ -75,6 +79,8 @@ export default function Recommend() {
         backgroundColor: index % 2 === 0 ? "#ffffff" : "#f0f0f0",
       }}
     >
+
+
       <div className={classes.company}>
         <Typography
           variant="h2"
@@ -145,7 +151,7 @@ export default function Recommend() {
                       marginBottom: "0px",
                     }}
                   >
-                  4
+                    4
                   </p>
                 </div>
               </div>
@@ -210,8 +216,9 @@ export default function Recommend() {
                     textAlign: "right",
                   }}
                 >
-                  <a
-                    href=""
+                  <Link
+                    to={`/company/detail/${company.id}/review`}
+                    state={company}
                     style={{
                       color: "#0e2eed",
                       fontSize: "16px",
@@ -222,7 +229,7 @@ export default function Recommend() {
                     }}
                   >
                     See reviews
-                  </a>
+                  </Link>
                   |
                 </span>
                 <span
@@ -232,8 +239,9 @@ export default function Recommend() {
                     textAlign: "right",
                   }}
                 >
-                  <a
-                    href=""
+                  <Link
+                    to={`/company/detail/${company.id}`}
+                    state={company}
                     style={{
                       color: "#0e2eed",
                       fontSize: "16px",
@@ -244,7 +252,7 @@ export default function Recommend() {
                     }}
                   >
                     See jobs
-                  </a>
+                  </Link>
                 </span>
               </p>
             </div>
@@ -252,7 +260,7 @@ export default function Recommend() {
         </div>
       </div>
     </div>
-  );
+)};
 
   return (
     <main className={classes.main}>

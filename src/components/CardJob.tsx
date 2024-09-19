@@ -1,3 +1,6 @@
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
+import { add, remove } from "../redux/slices/favoriteJob";
 import Typography from "@mui/material/Typography";
 import classes from "./CardJob.module.css";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
@@ -5,7 +8,6 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { useState } from "react";
 
 interface Job {
   id: number;
@@ -37,8 +39,10 @@ interface MyComponentProps {
   data?: Job;
   img?: string;
   company?: Company;
-  onclick?:()=>void
-
+  onclick?: () => void;
+  setShowAlert?: Dispatch<SetStateAction<boolean>>;
+  setShowAlertt?: Dispatch<SetStateAction<boolean>>;
+  setUndoData?: Dispatch<SetStateAction<Job | null>>; // Hàm để lưu lại công việc khi undo
 }
 
 export default function CardJob({
@@ -46,15 +50,42 @@ export default function CardJob({
   className,
   formButton,
   data,
-  
   img,
+  setShowAlert,
+  setShowAlertt,
+  setUndoData, // Nhận thêm prop để lưu công việc khi xóa
   company,
   onclick,
 }: MyComponentProps) {
   const [favorite, setFavorite] = useState<boolean>(false);
-// console.log(company)
+  const dataa = useAppSelector((state) => state.favorite.item);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (data && dataa.find((item) => item.id === data.id)) {
+      setFavorite(true);
+    } else {
+      setFavorite(false);
+    }
+  }, [dataa, data]);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (data) {
+      if (favorite) {
+        dispatch(remove(data.id)); 
+        setShowAlert?.(true); 
+        setUndoData?.(data); 
+      } else {
+        dispatch(add(data)); 
+        setShowAlertt?.(true); 
+      }
+      setFavorite((prev) => !prev);
+    }
+  };
+
   return (
-    <div className={classes.card_main} onClick={onclick} style={{cursor:'pointer'}}>
+    <div className={classes.card_main} onClick={onclick} style={{ cursor: 'pointer' }}>
       <div
         className={`${className ? className : classes.card_item}`}
         style={Maxwidth ? { maxWidth: Maxwidth } : {}}
@@ -63,7 +94,7 @@ export default function CardJob({
           <div style={{ display: "block" }}>
             <div className={classes.time}>
               <Typography
-                variant="body1" 
+                variant="body1"
                 gutterBottom
                 sx={{
                   fontSize: "14px",
@@ -71,7 +102,7 @@ export default function CardJob({
                   color: "#a6a6a6 !important",
                 }}
               >
-               {data?.postDate}
+                {data?.postDate}
               </Typography>
             </div>
             <Typography
@@ -87,7 +118,11 @@ export default function CardJob({
               {data?.title}
             </Typography>
             <div className={classes.logo}>
-              <img className={classes.image} src={company ? company?.image:img} alt="image-job" />
+              <img
+                className={classes.image}
+                src={company ? company?.image : img}
+                alt="image-job"
+              />
               <Typography
                 variant="h6"
                 gutterBottom
@@ -112,7 +147,7 @@ export default function CardJob({
                   color: "#0ab305 !important",
                 }}
               >
-              {data?.salary}
+                {data?.salary}
               </Typography>
             </div>
             <div className={classes.separator}></div>
@@ -130,7 +165,7 @@ export default function CardJob({
                   fontSize: "14px",
                 }}
               >
-                {data?.location} {/* Hiển thị địa điểm công việc */}
+                {data?.location}
               </Typography>
             </div>
 
@@ -162,7 +197,6 @@ export default function CardJob({
                     gap: "8px",
                     border: "1px solid transparent",
                     whiteSpace: "nowrap",
-
                     "&:hover": {
                       backgroundColor: "#C82222",
                       color: "white",
@@ -173,7 +207,7 @@ export default function CardJob({
                 </Button>
                 <div
                   style={{ cursor: "pointer" }}
-                  onClick={() => setFavorite((prev) => !prev)}
+                  onClick={handleFavoriteClick} // Gọi hàm xử lý khi click yêu thích
                 >
                   {favorite ? (
                     <FavoriteIcon

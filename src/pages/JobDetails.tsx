@@ -21,7 +21,12 @@ import Image1 from "./../assets/image/abbank-0621-min.webp";
 import Image2 from "./../assets/image/rsz-2jun-0497copy.webp";
 import { Image } from "antd";
 import CardJobDetails from "../components/CardJobDetails";
-
+import { add, remove } from "../redux/slices/favoriteJob";
+import { useAppDispatch } from "../redux/hooks/hooks";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
+import { view } from "../redux/slices/ViewJob";
 interface Job {
   id: number;
   title: string;
@@ -95,11 +100,14 @@ export default function JobDetails() {
   useScrollToTop();
   const [favorite, setFavorite] = useState<boolean>(false);
   const containerLeftRef = useRef<HTMLDivElement | null>(null);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
   const applyRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
   const { company } = location.state || {};
   const auth = localStorage.getItem("auth");
+  const dispatch = useAppDispatch();
 
   const job: Job | null = location.state ?? null;
 
@@ -111,6 +119,28 @@ export default function JobDetails() {
 
     localStorage.setItem("redirectStateJob", JSON.stringify(job));
   }
+   
+  
+  useEffect(()=>{
+    if(job){
+      dispatch(view(job));
+    }
+  },[dispatch,job])
+
+
+  useEffect(() => {
+    if (favorite && job) {
+      dispatch(add(job));
+      setShowAlert(true);
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    } else if (!favorite && job) {
+      dispatch(remove(job.id));
+    }
+  }, [favorite, job, dispatch]);
   const [detailsCompany, setDetailsCompany] = useState<Company | null>(company);
 
   const handleNavigateApply = () => {
@@ -140,7 +170,7 @@ export default function JobDetails() {
   console.log("quao ", detailsCompany);
   const handleNavigateJob = (job: Job) => {
     navigate(`/jobs/detail/${job.id}`, {
-      state:job
+      state: job,
     });
   };
   // // Hàm để theo dõi khi người dùng cuộn
@@ -183,7 +213,51 @@ export default function JobDetails() {
   }
   return (
     <div className={classes.main}>
+      <div className={classes.alert}></div>
       <div className={classes.container}></div>
+      {showAlert && (
+   <Stack
+   sx={{
+     left: 'inherit',
+     right: 0,
+     top: '120px',
+     bottom: 'inherit',
+     marginRight: '48px',
+     width: '400px',
+     opacity: showAlert ? 1 : 0, 
+     zIndex: 11,
+     backgroundColor: '#eaf9e9',
+     padding: '16px 16px 16px 24px',
+     border: 'none',
+     borderRadius: '8px',
+     maxWidth: '400px',
+     position: 'fixed',
+     boxShadow: '0px 6px 32px rgba(0, 0, 0, 0.08)',
+     display: showAlert ? 'block' : 'none',
+     fontSize: '0.875rem',
+     pointerEvents: 'auto',
+     transition: 'opacity 0.15s linear',
+     boxSizing: 'border-box',
+   }}
+ >
+          <Alert severity="success">
+            <AlertTitle>Success</AlertTitle>
+            <div style={{display:'block'}}>
+            <div style={{color:'#121212',marginRight:'18px',display:'block'}}>
+              <Typography variant="h6" sx={{fontWeight:400,lineHeight:1.5,fontSize:'16px'}}>
+              This job has been added to your <strong> Saved jobs</strong> 
+              </Typography>
+            </div>
+            <div style={{display:'flex',gap:'20px',color:'#0e2eed',marginTop:'12px'}}>
+              <Link style={{color:'#0e2eed',textDecoration:'none'}} to={'/my-jobs'}>View list</Link>
+            </div>
+
+            </div>
+     
+          
+          </Alert>
+        </Stack>
+      )}
       <div className={classes.container1}>
         <div className={classes.container2}>
           <div className={classes.containerLeft} ref={containerLeftRef}>
@@ -311,7 +385,6 @@ export default function JobDetails() {
                         style={{ cursor: "pointer", color: "#414042" }}
                       />
                     </div>
-             
                   </div>
                 </div>
               </section>
@@ -724,42 +797,40 @@ export default function JobDetails() {
       </div>
       <div className={classes.containercpn}>
         <div className={classes.containercpn1}>
-         
-            <Typography
-              variant="h4"
-              gutterBottom
-              sx={{
-                paddingTop: "20px !important",
-                textAlign: "start",
-                fontWeight: "bold",
-                mb: 3,
-                color: "#333",
-              }}
-            >
-              More jobs for you
-            </Typography>
-            <div className={classes.cardJob}>
-              {jobData.map((job) => {
-                const companys = companyData.find(
-                  (item) => item.id === job.companyId
-                );
-                return (
-                  <CardJobDetails
-                    key={job.id}
-                    data={job}
-                    img={job.companyImage}
-                    company={companys}
-                    onclick={() => handleNavigateJob(job)} // Correct the event handler name
-                  />
-                );
-              })}
-              {/* <CardJob />
+          <Typography
+            variant="h4"
+            gutterBottom
+            sx={{
+              paddingTop: "20px !important",
+              textAlign: "start",
+              fontWeight: "bold",
+              mb: 3,
+              color: "#333",
+            }}
+          >
+            More jobs for you
+          </Typography>
+          <div className={classes.cardJob}>
+            {jobData.map((job) => {
+              const companys = companyData.find(
+                (item) => item.id === job.companyId
+              );
+              return (
+                <CardJobDetails
+                  key={job.id}
+                  data={job}
+                  img={job.companyImage}
+                  company={companys}
+                  onclick={() => handleNavigateJob(job)} // Correct the event handler name
+                />
+              );
+            })}
+            {/* <CardJob />
               <CardJob />
               <CardJob />
               <CardJob />
               <CardJob />
               <CardJob /> */}
-        
           </div>
         </div>
       </div>
