@@ -14,7 +14,6 @@ import {
 } from "react-router-dom";
 
 export default function AuthForm() {
-
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -33,29 +32,33 @@ export default function AuthForm() {
     }
   }, [auth, location.state, navigate]);
   const handleSignin = () => {
-
     localStorage.setItem("auth", "isAuth");
-  
+
     const from = location.state?.from || "/";
 
     const redirectPath = localStorage.getItem("redirectPath") || "/";
-  
+
     const redirectStateString = localStorage.getItem("redirectState");
-    const redirectState = redirectStateString ? JSON.parse(redirectStateString) : {};
-  
+    const redirectState = redirectStateString
+      ? JSON.parse(redirectStateString)
+      : {};
 
     const redirectStateString1 = localStorage.getItem("redirectStateJob");
-    const redirectState1 = redirectStateString1 ? JSON.parse(redirectStateString1) : {};
-  
+    const redirectState1 = redirectStateString1
+      ? JSON.parse(redirectStateString1)
+      : {};
+
     // Combine both redirect states into one object
     const combinedState = { ...redirectState, ...redirectState1 };
-  
 
     navigate(from !== "/" ? from : redirectPath, { state: combinedState });
   };
-  
+
   return (
     <Box
+      component="form"
+      noValidate
+      autoComplete="off"
       sx={{
         width: "100%",
         maxWidth: "500px",

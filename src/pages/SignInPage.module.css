@@ -2,7 +2,7 @@
   display: flex;
   align-items: start;
   justify-content: start;
-  height: 100vh;
+  margin-bottom: 120px;
   background: #fff;
   padding: 10px;
   gap: 2rem;

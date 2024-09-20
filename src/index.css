@@ -40,3 +40,13 @@ body, main {
 li a{
   text-decoration: none;
 }
+
+p{
+  font-family: Roboto, Helvetica, Verdana, Arial, sans-serif;
+  color: #222831;
+  letter-spacing: 0;
+}
+
+a{
+  font-family: Roboto, Helvetica, Verdana, Arial, sans-serif;
+}

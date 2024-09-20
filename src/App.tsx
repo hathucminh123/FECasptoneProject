@@ -25,6 +25,10 @@ import Recommend from "./pages/Recommend";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 import RecentViewJob from "./pages/RecentViewJob";
 import AppliedJob from "./pages/AppliedJob";
+import EmployerPage from "./pages/Employer/EmployerPage";
+import RootHeaderEmployer from "./pages/Employer/RootHeaderEmployer";
+import SignInPageEmployer from "./pages/Employer/SignInPageEmployer";
+import RootSystem from "./pages/Employer/RootSystem";
 
 export const queryClient = new QueryClient();
 
@@ -139,6 +143,31 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+
+  {
+    path:'/employers',
+    element:<RootHeaderEmployer/>,
+    errorElement:<ErrorPage/>,
+    children:[
+         {
+          index:true,
+          element:<EmployerPage/>
+         }
+
+    ]
+  },
+  {
+    path:'/employers/login',
+    element:<SignInPageEmployer/>
+  },
+
+  {
+    path:'/employer-verify',
+    element:<RootSystem/>,
+    errorElement: <ErrorPage />,
+    id: "root1",
+    children:[]
+  }
 ]);
 
 function App() {

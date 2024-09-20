@@ -1,0 +1,143 @@
+.header {
+    display: block;
+    box-sizing: border-box;
+  }
+  
+  .nav {
+    min-width: 1133px;
+    height: 64px;
+    background-color: #212f3f;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .logo {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 15px;
+    border-radius: 5px;
+    transition: background-color 0.15s ease-in-out;
+  }
+  
+  .logo:hover {
+    background-color: #3b546f;
+  }
+  
+  .iconMenu {
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .link {
+    padding: 1rem;
+    margin-right: 1rem;
+  }
+  
+  .img {
+    height: 24px;
+    cursor: pointer;
+  }
+  
+  .div {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .ul {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  
+  .li {
+    margin-right: 1.14rem;
+    position: relative;
+  }
+  
+  .navlink {
+    display: flex;
+    align-items: center;
+    padding: 5px 20px;
+    background-color: #3b546f;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    border-radius: 30px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+  }
+  
+  .navlink:hover {
+    background-color: #2d4157;
+  }
+  
+  .icon {
+    margin-right: 5px;
+    font-size: 20px;
+    color: #fff;
+  }
+  
+  .navlink1 {
+    width: 32px;
+    height: 32px;
+    background-color: #3b546f;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .navlink1:hover {
+    background-color: #2d4157;
+  }
+  
+  .iconNotification {
+    font-size: 18px;
+    color: #fff;
+  }
+  
+
+
+  .navlink2{
+    border-radius: 30px;
+    padding: 5px 15px;
+    background-color: #3b546f;
+    color: #fff;
+    font-size: 14px;
+    padding-left: .57rem !important;
+    padding-right: .57rem !important;
+    align-items: center !important;
+    display: flex !important;
+    cursor: pointer;
+  }
+
+
+  .div1{
+    width: 24px;
+    height: 24px;
+    flex: 0 0 24px;
+    background-image: url("https://tuyendung.topcv.vn/app/_nuxt/img/noavatar-2.18f0212.svg");
+    background-size: cover;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 125%;
+    box-sizing: border-box;
+    display: block;
+  }

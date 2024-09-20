@@ -1,0 +1,13 @@
+.section{
+    padding-bottom: 32px !important;
+    box-sizing: border-box;
+}
+
+.footer {
+    color: var(--i-silver-grey);
+    background: linear-gradient(180deg, #ffd194, #ff8243);
+    padding-top: 48px;
+    box-sizing: border-box;
+    display: block;
+  height: 320px;
+  }
