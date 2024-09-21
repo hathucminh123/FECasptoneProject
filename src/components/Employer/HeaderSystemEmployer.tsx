@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import classes from "./HeaderSystemEmployer.module.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, NavLink } from "react-router-dom";
@@ -7,12 +7,23 @@ import CreateIcon from "@mui/icons-material/Create";
 import CircleNotificationsIcon from '@mui/icons-material/CircleNotifications';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
-export default function HeaderSystemEmployer() {
+interface props{
+  setOpen?: Dispatch<SetStateAction<boolean>>;
+  open?:boolean
+}
+
+export default function HeaderSystemEmployer({setOpen,open}:props) {
+ 
+  const handleOpen =()=>{
+    if (setOpen) {
+      setOpen(!open);
+    }
+}
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
-        <button className={classes.logo}>
-          <MenuIcon className={classes.iconMenu} />
+        <button className={classes.logo}  onClick={handleOpen}>
+          <MenuIcon  className={classes.iconMenu} />
         </button>
         <Link to={"/"} className={classes.link}>
           <img src={Image} alt="logo" className={classes.img} />

@@ -1,0 +1,409 @@
+.nav {
+    transition: all 0.3s ease-in-out;
+    width: 260px;
+    height: calc(100% - 64px);
+    max-height: 100%;
+    position: fixed;
+    z-index: 1000;
+    top: 64px;
+    background: #fff;
+    border-right: 1px solid #e8edf2;
+    display: block;
+    box-sizing: border-box;
+    padding-top: 20px; 
+  }
+  
+  .div {
+    max-height: 100%;
+    height: 100%;
+    position: relative;
+    padding-bottom: 20px;
+    flex-direction: column !important;
+    display: flex !important;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+  
+  .div1, .div2, .div3 {
+    display: block;
+    box-sizing: border-box;
+  }
+
+  .div2{
+
+    border-bottom: 1px solid #e8edf2 !important;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .div3 {
+    padding: 0 16px;
+    overflow: hidden;
+    min-height: 64px;
+    align-items: center !important;
+    display: flex !important;
+    box-sizing: border-box;
+  }
+  
+  .div4 {
+    float: left;
+    border-radius: 12px;
+  
+    margin-right: 15px;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .link, .link1 {
+    text-decoration: none;
+    color: #2c3e50 !important;
+    transition: color 0.3s ease;
+  }
+  
+  .link:hover, .link1:hover {
+    color: #FF6F61; /* Adding hover effect */
+  }
+  
+  .img {
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 125%;
+    display: block;
+    box-sizing: border-box;
+    background-image: url("https://tuyendung.topcv.vn/app/_nuxt/img/noavatar-2.18f0212.svg");
+  }
+
+  
+  .div5 {
+    visibility: hidden;
+    overflow-x: hidden;
+    color: #2c3e50;
+    white-space: nowrap;
+    display: block;
+  }
+  .div5Open {
+
+    color: #2c3e50;
+    white-space: nowrap;
+    display: block;
+  }
+  
+  .span, .span1, .span5 {
+    color: #2c3e50;
+  }
+  
+  .span {
+    font-weight: 600; /* Stronger emphasis on the name */
+    font-size: 18px; /* Larger font size */
+    display: block;
+  }
+  
+  .span1 {
+    font-size: 14px;
+    color: #7f8c8d; /* Muted color for the 'Employer' text */
+  }
+  
+  .div7 {
+    color: #7f8c8d;
+    font-size: 14px;
+  }
+  
+  .updateButtonContainer {
+    /* padding: 10px 20px;
+    display: flex;
+    justify-content: center; */
+    padding-top: 10px !important;
+
+    padding: 1.14rem ;
+    display: flex !important;
+  }
+  
+  .updateButton {
+    /* display: flex;
+    align-items: center;
+    background-color: #FF6F61;
+    color: white;
+    border-radius: 100px;
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    width: 230px;
+    font-size: 14px;
+    transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out; */
+    /* cursor: pointer;
+    background-color: #FF6F61;
+    color: white;
+    border-radius: 100px;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+border: none;
+    padding: 3px 10px;
+    line-height: 1.5;
+    width: 230px;
+    white-space: nowrap;
+    display: flex !important;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out; */
+
+
+    width: 31px !important;
+    padding: 3px 1px; 
+    cursor: pointer;
+    background: #FF6F61;
+    color: white;
+    border-radius: 100px;
+    white-space: nowrap;
+    display: flex !important;
+    font-weight: 400;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: button;
+    user-select: none;
+    text-align: center;
+    vertical-align: middle;
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+  box-sizing: border-box;
+
+  }
+
+.updateButtonOpen{
+  cursor: pointer;
+  background: #FF6F61;
+    color: white;
+    border-radius: 100px;
+    padding: 3px 10px;
+    width: 230px;
+    white-space: nowrap;
+    font-weight: 400;
+    display: flex !important;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    font-size: 1rem;
+    line-height: 1.5;
+    border: 1px solid transparent;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+  .i{
+    margin-right: 4px;
+    margin-left: 4px;
+    transform: translateY(2px);
+    position: relative;
+    display: flex;
+    font-family: "Font Awesome 6 Pro";
+    font-weight: 900;
+    font-style: normal;
+    font-feature-settings: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+  }
+  
+  .updateButton:hover {
+    background-color: #e64c3c; /* Darker shade on hover */
+  }
+  
+  .menu {
+    /* padding: 20px 0; */
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  
+  .li {
+    padding: 8px 0;
+  
+    flex-direction: column !important;
+    display: flex !important;
+    box-sizing: border-box;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .li:hover {
+    background-color: #f2f2f2; 
+  }
+  
+  .navlink {
+    width: 100%;
+    text-decoration: none;
+    color: #212f3f;
+    padding: 5.5px 0;
+    max-height: 32px;
+  
+    position: relative !important;  
+    align-items: center !important;
+    display: flex !important;
+    box-sizing: border-box;
+  }
+  
+  .navlink.active {
+    color: #FF6F61;
+    background-color: #f9f9f9;
+  }
+  
+  .div9 {
+    width: 62px;
+    text-align: center;
+    margin-top: -2px;
+    position: relative;
+    display: flex;
+    padding-left: 1.14rem !important;
+    box-sizing: border-box;
+    color: #212f3f;
+  }
+  
+  .span4 {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #212f3f;
+  }
+  
+   .div10Open{
+    display: block;
+   }
+
+  .div10 {
+    visibility: hidden;
+    overflow-x: hidden;
+    display: block;
+  }
+  
+  .span5 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #2c3e50;
+  }
+  
+  .icon {
+    animation: slide-right 0.8s ease-in-out infinite;
+    margin-right: 1.14rem !important;
+    /* margin-left: 5px; */
+  }
+  .icon1 {
+    animation: 0.8s ease-in-out infinite;
+    margin-right: 1.14rem !important;
+    /* margin-left: 5px; */
+  }
+  
+  @media (max-width: 768px) {
+    .nav {
+      width: 100%;
+      height: auto;
+      top: 0;
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+      position: static;
+    }
+  }
+
+  @keyframes slide-right {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(5px);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
+  
+  .div8{
+    align-items: center !important;
+    justify-content: space-between !important;
+    display: flex !important;
+    box-sizing: border-box;
+  }
+   .updateTextOpen{
+    display: flex !important;
+    align-items: center;
+    box-sizing: border-box;
+    white-space: nowrap;
+    cursor: pointer;
+    color: white;
+    font-weight: 400;
+    text-align: center;
+    user-select: none;
+    font-size: 13px;
+    line-height: 1.5;
+    text-transform: none;
+    font-family: inherit;
+   }
+
+
+  .updateText{
+    visibility: hidden;
+    overflow-x: hidden;
+    display: flex !important;
+    box-sizing: border-box;
+    white-space: nowrap;
+    cursor: pointer;
+    color: white;
+    font-weight: 400;
+    text-align: center;
+    user-select: none;
+    font-size: 1rem;
+    line-height: 1.5;
+    text-transform: none;
+    font-family: inherit;
+  }
+
+  .ul1{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    margin-left: 3.42rem !important;
+    margin-top: .285rem !important;
+    box-sizing: border-box;
+    margin-block-start: 0px;
+    margin-block-end: 0px;
+    display: block;
+ 
+  }
+
+  .li1{
+    padding: 8px 0;
+    /* padding-left: 1.14rem !important; */
+    padding-left: 0.5rem !important;
+    box-sizing: border-box;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+  }
+
+.span5:hover{
+  color: #FF6F61;
+}

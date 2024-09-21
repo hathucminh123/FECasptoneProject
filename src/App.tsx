@@ -29,6 +29,8 @@ import EmployerPage from "./pages/Employer/EmployerPage";
 import RootHeaderEmployer from "./pages/Employer/RootHeaderEmployer";
 import SignInPageEmployer from "./pages/Employer/SignInPageEmployer";
 import RootSystem from "./pages/Employer/RootSystem";
+import JobPage from "./pages/Employer/JobPage";
+import CreateJobs from "./pages/Employer/CreateJobs";
 
 export const queryClient = new QueryClient();
 
@@ -166,7 +168,16 @@ const router = createBrowserRouter([
     element:<RootSystem/>,
     errorElement: <ErrorPage />,
     id: "root1",
-    children:[]
+    children:[
+      {
+        path:'jobs',
+        element:<JobPage/>
+      },
+      {
+        path:'create-jobs',
+        element:<CreateJobs/>
+      }
+    ]
   }
 ]);
 

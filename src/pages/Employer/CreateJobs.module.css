@@ -1,0 +1,281 @@
+.main{
+    min-height: calc(100vh - 64px);
+    background-color: #e8edf2;
+    display: block;
+    box-sizing: border-box;
+}
+
+.div{
+    display: block;
+    box-sizing: border-box;
+}
+
+.main1{
+    max-width: 1296px;
+    padding: 20px 20px 80px;
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main2{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+}
+
+
+.mainLeft{
+    flex: 0 0 66.6666666667%;
+    max-width: 66.6666666667%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+
+    display: block;
+}
+
+
+.div1{
+    padding: 1.6188rem !important;
+    margin-bottom: 1.6188rem !important;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    border-radius: .214rem !important;
+    background-color: #fff !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div2{
+    margin-bottom: 1.14rem !important;
+    display: flex !important;
+    box-sizing: border-box;
+
+}
+
+.div3{
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.label{
+
+    font-weight: 600;
+    color: #5e6368;
+    margin-bottom: .57rem !important;
+    display: inline-block;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+.span{
+    color: #c52e20;
+    box-sizing: border-box;
+    font-weight: 600;
+}
+
+.form{
+    margin-left: auto !important;
+    position: relative !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.span1{
+    position: absolute;
+    top: 15px;
+    right: 7px;
+    color: #868d94 !important;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+}
+
+.span2{
+
+    cursor: pointer;
+    right: 100%;
+    position: absolute;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    font-size: 16px !important;
+    color: #868d94;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.input{
+    padding-right: 105px;
+    text-overflow: ellipsis !important;
+    color: #000;
+    height: calc(1.5em + 1.2rem + 2px);
+    padding: .6rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e8edf2;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+    overflow-clip-margin: 0px !important;
+    overflow: clip !important;
+    padding-block: 1px;
+    padding-inline: 2px
+}
+
+.div4{
+    justify-content: space-between !important;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+
+.div5{
+    width: calc(50% - 10px);
+    margin-bottom: 1rem;
+}
+
+
+.div6{
+
+    position: relative;
+    margin-left: auto !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.i1{
+    position: absolute;
+    left: 12px;
+    top: calc(.75em + .375rem - 1px);
+    margin-top: -7px;
+    pointer-events: none;
+    color: #a8afb6;
+    font-weight: 400;
+    font-size: 16px;
+    cursor: pointer;
+
+}
+
+.inputdate{
+    padding-left: 36px !important;
+    color: #000;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e8edf2;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+    overflow-clip-margin: 0px !important;
+    overflow: clip !important;
+    padding-block: 1px;
+    padding-inline: 2px;
+}
+
+.date-picker-wrapper {
+    position: relative;
+  }
+  
+  .date-picker-wrapper .react-datepicker {
+    position: absolute;
+    z-index: 1000; /* Đảm bảo DatePicker hiển thị phía trên các phần tử khác */
+  }
+  
+
+  .div7{
+    width: calc(50% - 10px);
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div8{
+    width: 180px;
+    border: 1px solid #d7dee4;
+    border-radius: 4px;
+    height: calc(1.5em + .75rem + 2px);
+    padding: 0;
+    color: #000;
+    align-items: center !important;
+    display: flex !important;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    background-clip: padding-box;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+  }
+
+.div9{
+    border-right: 1px solid #d7dee4;
+    border-radius: 4px 0 0 4px;
+    width: 40px;
+    line-height: calc(1.5em + .75rem + 2px);
+    height: 100%;
+    text-align: center;
+    color: #868d94;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.inputcount{
+    width: 100px;
+    font-size: 13px;
+    height: 100%;
+    text-align: center;
+    background: transparent;
+    border: none;
+    margin: 0;
+    font-family: inherit;
+    line-height: inherit;
+    box-sizing: border-box;
+    overflow-clip-margin: 0px !important;
+    overflow: clip !important;
+}
+
+.div10{
+    border-left: 1px solid #d7dee4;
+    border-radius: 0 4px 4px 0;
+    width: 40px;
+    line-height: calc(1.5em + .75rem + 2px);
+    height: 100%;
+    text-align: center;
+    color: #868d94;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-sizing: border-box;
+}
