@@ -31,6 +31,9 @@ import SignInPageEmployer from "./pages/Employer/SignInPageEmployer";
 import RootSystem from "./pages/Employer/RootSystem";
 import JobPage from "./pages/Employer/JobPage";
 import CreateJobs from "./pages/Employer/CreateJobs";
+import DetailsCV from "./pages/Employer/DetailsCV";
+import AppliedCV from "./pages/Employer/AppliedCV";
+import ManageCVs from "./pages/Employer/ManageCVs";
 
 export const queryClient = new QueryClient();
 
@@ -76,7 +79,7 @@ const router = createBrowserRouter([
         path: "profile-cv",
         element: (
           // <ProtectedRoute>
-            <RootProfile />
+          <RootProfile />
           // </ProtectedRoute>
         ),
         children: [
@@ -95,7 +98,7 @@ const router = createBrowserRouter([
         path: "my-jobs",
         element: (
           // <ProtectedRoute>
-            <RootJobs />
+          <RootJobs />
           // </ProtectedRoute>
         ),
         children: [
@@ -105,14 +108,14 @@ const router = createBrowserRouter([
           },
 
           {
-            path:'recent-viewed',
-            element:<RecentViewJob/>
+            path: "recent-viewed",
+            element: <RecentViewJob />,
           },
-          
+
           {
-            path:'applied',
-            element:<AppliedJob/>
-          }
+            path: "applied",
+            element: <AppliedJob />,
+          },
         ],
       },
       {
@@ -133,7 +136,7 @@ const router = createBrowserRouter([
     path: "job/Apply",
     element: (
       // <ProtectedRoute>
-        <Apply />
+      <Apply />
       // </ProtectedRoute>
     ),
   },
@@ -147,38 +150,55 @@ const router = createBrowserRouter([
   },
 
   {
-    path:'/employers',
-    element:<RootHeaderEmployer/>,
-    errorElement:<ErrorPage/>,
-    children:[
-         {
-          index:true,
-          element:<EmployerPage/>
-         }
-
-    ]
+    path: "/employers",
+    element: <RootHeaderEmployer />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <EmployerPage />,
+      },
+    ],
   },
   {
-    path:'/employers/login',
-    element:<SignInPageEmployer/>
+    path: "/employers/login",
+    element: <SignInPageEmployer />,
   },
 
   {
-    path:'/employer-verify',
-    element:<RootSystem/>,
+    path: "/employer-verify/jobs",
+    element: <RootSystem />,
     errorElement: <ErrorPage />,
     id: "root1",
-    children:[
+    children: [
       {
-        path:'jobs',
-        element:<JobPage/>
+        path: "Detail/CV/AppliedCV",
+        element: <DetailsCV />,
+        children: [
+          {
+            index:true,
+            element: <AppliedCV />,
+          },
+          {
+            path: "CV/Recommend",
+            element: <AppliedCV />,
+          },
+        ],
       },
       {
-        path:'create-jobs',
-        element:<CreateJobs/>
+        index: true,
+        element: <JobPage />,
+      },
+      {
+        path: "create-jobs",
+        element: <CreateJobs />,
+      },
+      {
+        path:"manageCVs",
+        element:<ManageCVs/>
       }
-    ]
-  }
+    ],
+  },
 ]);
 
 function App() {

@@ -9,9 +9,10 @@ interface props{
     title:string
     icon?:ReactNode
     buttonstring?:string
+    url?:string
 }
 
-export default function HeaderSystem({title,icon,buttonstring} :props) {
+export default function HeaderSystem({title,icon,buttonstring,url} :props) {
   return (
     <div className={classes.div1}>
     <Typography
@@ -28,7 +29,7 @@ export default function HeaderSystem({title,icon,buttonstring} :props) {
       <span> {title}</span>
     </Typography>
     <div className={classes.div2}>
-      <Link to="/" className={classes.link}>
+      <Link to={url ?? "" } className={classes.link}>
         <i className={classes.i}>
          {icon}
         </i>

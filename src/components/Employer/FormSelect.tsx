@@ -1,20 +1,32 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import classes from "./FormSelect.module.css";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 
 interface Props {
-  selectedValue: string;  // Remove optional for controlled component
-  setSelectedValue: Dispatch<SetStateAction<string>>;  // Also required
+  selectedValue: string; // Remove optional for controlled component
+  setSelectedValue: Dispatch<SetStateAction<string>>; // Also required
   data?: string[];
   placeholder?: string;
+  padding?: boolean;
+  height?: number;
+  width?: number;
 }
 
 export default function FormSelect({
-  selectedValue = "",  // Ensure a default value
+  selectedValue = "", // Ensure a default value
   setSelectedValue,
   data = [],
-  placeholder = "Select Region/ Province/ City",  // Set default for clarity
+  placeholder = "Select Region/ Province/ City",
+  padding,
+  height,
+  width, // Set default for clarity
 }: Props) {
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [filteredData, setFilteredData] = useState<string[]>(data);
@@ -23,7 +35,10 @@ export default function FormSelect({
   // Handle dropdown close on outside click
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+      if (
+        selectRef.current &&
+        !selectRef.current.contains(event.target as Node)
+      ) {
         setIsSelectOpen(false);
       }
     };
@@ -46,7 +61,9 @@ export default function FormSelect({
     const value = e.target.value;
     setSelectedValue(value);
     // Filter the data based on the input value
-    const filtered = data.filter(item => item.toLowerCase().includes(value.toLowerCase()));
+    const filtered = data.filter((item) =>
+      item.toLowerCase().includes(value.toLowerCase())
+    );
     setFilteredData(filtered);
     setIsSelectOpen(true); // Keep the dropdown open while typing
   };
@@ -68,12 +85,27 @@ export default function FormSelect({
         <div className={classes.div20} onClick={handleOpenSelect}>
           <ArrowDropDownIcon />
         </div>
-        <div className={classes.div21}>
+        <div
+          className={classes.div21}
+          style={
+            height
+              ? { minHeight: `${height}px` }
+              : width
+              ? { width: `${width}px` }
+              : height && width
+              ? { minHeight: `${height}px`, width: `${width}px` }
+              : undefined
+          }
+        >
           <div className={classes.div22}></div>
           <div className={classes.div23}></div>
           <input
             className={`${
-              isSelectOpen ? classes.inputlocationOpen : classes.inputlocation
+              isSelectOpen && padding
+                ? classes.inputlocationOpenPadding
+                : isSelectOpen
+                ? classes.inputlocationOpen
+                : classes.inputlocation
             }`}
             style={isSelectOpen ? { width: "100%" } : undefined}
             type="text"
@@ -86,7 +118,13 @@ export default function FormSelect({
           {!selectedValue && !isSelectOpen ? (
             <span className={classes.spanlocation}>{placeholder}</span>
           ) : (
-            <span className={classes.spanlocation}>{selectedValue}</span>
+            <span
+              className={`${
+                padding ? classes.spanlocation1 : classes.spanlocation
+              }`}
+            >
+              {selectedValue}
+            </span>
           )}
           {/* {selectedValue ? (
             <span className={classes.spanlocation}>{selectedValue}</span>

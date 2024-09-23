@@ -69,31 +69,45 @@ export default function SideBarEmployer({ open }: props) {
           <ul className={classes.ul}>
             <li className={classes.li}>
               <div className={classes.div8}>
-                <NavLink to="/employer-verify/jobs" className={classes.navlink}>
-                  <div className={classes.div9}>
-                    <span className={classes.span4}>
-                      <PostAddOutlinedIcon
-                        fontSize="large"
-                        sx={{
-                          fontSize: "14px",
-                          display: "block",
-                          fontWeight: 400,
-                        }}
-                      />
-                    </span>
-                  </div>
-                  <div
-                    className={`${open ? classes.div10 : classes.div10Open} `}
-                  >
-                    <span className={classes.span5}>Recruitment news</span>
-                  </div>
-                  <div className={classes.div11}></div>
+                <NavLink
+                  to="/employer-verify/jobs"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <PostAddOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>Recruitment news</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
                 </NavLink>
               </div>
             </li>
             <li className={classes.li}>
               <div className={classes.div8}>
-                <NavLink to={"/"} className={classes.navlink}>
+                <NavLink
+                  to="manageCVs"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
                   <div className={classes.div9}>
                     <span className={classes.span4}>
                       <AccountCircleOutlinedIcon

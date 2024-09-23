@@ -61,7 +61,7 @@
   }
   
   .link:hover, .link1:hover {
-    color: #FF6F61; /* Adding hover effect */
+    color: #FF6F61; 
   }
   
   .img {
@@ -249,7 +249,7 @@ border: none;
     background-color: #f2f2f2; 
   }
   
-  .navlink {
+  .ul a{
     width: 100%;
     text-decoration: none;
     color: #212f3f;
@@ -261,12 +261,16 @@ border: none;
     display: flex !important;
     box-sizing: border-box;
   }
-  
-  .navlink.active {
+
+  .ul a:hover{
     color: #FF6F61;
-    background-color: #f9f9f9;
   }
   
+  ul a.active {
+    background-color: #FF6F61;
+    border-radius: 100px;
+    color: white;
+  }
   .div9 {
     width: 62px;
     text-align: center;
@@ -404,6 +408,14 @@ border: none;
     unicode-bidi: isolate;
   }
 
-.span5:hover{
+/* .span5:hover{
+  color: #FF6F61;
+}
+
+.span5.active{
+  color: #FF6F61;
+}  */
+
+.activeSpan {
   color: #FF6F61;
 }
