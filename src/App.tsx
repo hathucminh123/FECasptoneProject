@@ -34,6 +34,8 @@ import CreateJobs from "./pages/Employer/CreateJobs";
 import DetailsCV from "./pages/Employer/DetailsCV";
 import AppliedCV from "./pages/Employer/AppliedCV";
 import ManageCVs from "./pages/Employer/ManageCVs";
+import ProfileEmployer from "./pages/Employer/ProfileEmployer";
+import Profile from "./pages/Employer/Profile";
 
 export const queryClient = new QueryClient();
 
@@ -148,7 +150,7 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
-
+  // employer
   {
     path: "/employers",
     element: <RootHeaderEmployer />,
@@ -176,7 +178,7 @@ const router = createBrowserRouter([
         element: <DetailsCV />,
         children: [
           {
-            index:true,
+            index: true,
             element: <AppliedCV />,
           },
           {
@@ -185,18 +187,29 @@ const router = createBrowserRouter([
           },
         ],
       },
+
       {
         index: true,
         element: <JobPage />,
+      },
+      {
+        path: "account",
+        element: <ProfileEmployer />,
+        children: [
+          {
+            index: true,
+            element: <Profile />,
+          },
+        ],
       },
       {
         path: "create-jobs",
         element: <CreateJobs />,
       },
       {
-        path:"manageCVs",
-        element:<ManageCVs/>
-      }
+        path: "manageCVs",
+        element: <ManageCVs />,
+      },
     ],
   },
 ]);

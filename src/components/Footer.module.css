@@ -135,3 +135,42 @@
   display: block;
 
 }
+.button {
+  right: 2.5rem;
+  bottom: 8rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 0.3s;
+  opacity: 1;
+  --tw-text-opacity: 1;
+  color: #fff; /* Sửa lỗi cú pháp */
+
+  font-size: 24px;
+  line-height: 1.875rem;
+  letter-spacing: 0;
+  background-color: rgba(221, 63, 36, 0.8);
+  --tw-border-opacity: 1;
+  border-color: rgb(255 188 176 / var(--tw-border-opacity));
+  border-style: solid;
+  border-radius: 0.25rem;
+
+  justify-content: center;
+  align-items: center;
+  width: 3rem;
+  height: 3rem;
+  display: inline-flex;
+  z-index: 30;
+  position: fixed;
+  visibility: visible;
+  -webkit-appearance: button;
+  background-image: none;
+  cursor: pointer;
+  text-transform: none;
+
+  font-family: inherit;
+  font-feature-settings: inherit;
+  font-variation-settings: inherit;
+  font-weight: inherit;
+  margin: 0;
+  padding: 0;
+}

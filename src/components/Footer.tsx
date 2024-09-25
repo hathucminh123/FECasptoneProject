@@ -5,10 +5,14 @@ import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import Image from "./../assets/image/logo.jpg.webp";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+interface props {
+  onClick?: () => void;
+  scroll: boolean;
+}
 
-export default function Footer() {
+export default function Footer({ onClick, scroll }: props) {
   return (
-
     <div className={classes.container}>
       <div className={classes.content}>
         <div className={classes.leftSection}>
@@ -153,7 +157,14 @@ export default function Footer() {
         <p className={classes.line}></p>
         <p className={classes.p1}>All rights reserved</p>
       </div>
-    </div>
 
+      {scroll ? (
+        <button className={classes.button} onClick={onClick}>
+          <FileUploadIcon />
+        </button>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 }
