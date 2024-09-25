@@ -10,6 +10,7 @@ interface props {
   buttonstring?: string;
   url?: string;
   appear?: boolean;
+  onclick?:()=> void;
 }
 
 export default function HeaderSystem({
@@ -18,6 +19,7 @@ export default function HeaderSystem({
   buttonstring,
   url,
   appear,
+  onclick,
 }: props) {
   return (
     <div className={classes.div1}>
@@ -37,8 +39,8 @@ export default function HeaderSystem({
       {appear ? (
         <></>
       ) : (
-        <div className={classes.div2}>
-          <Link to={url ?? ""} className={classes.link}>
+        <div className={classes.div2} >
+          <Link to={url ?? ""} className={classes.link} onClick={onclick}>
             <i className={classes.i}>{icon}</i>
             {buttonstring}
           </Link>

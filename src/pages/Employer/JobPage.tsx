@@ -10,6 +10,8 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { Link } from "react-router-dom";
 import Tooltip from '@mui/material/Tooltip';
+import PauseIcon from '@mui/icons-material/Pause';
+import { useAppSelector } from "../../redux/hooks/hooks";
 // import Popover from "@mui/material/Popover";
 
 export default function JobPage() {
@@ -17,7 +19,8 @@ export default function JobPage() {
   const [state, setState] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
   // const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-
+  const data = useAppSelector((state) => state.create.item);
+  console.log('quao',data)
   const handleMouseEnter = (index: number) => {
     setHovered(index);
   };
@@ -33,20 +36,20 @@ export default function JobPage() {
   // const open = Boolean(anchorEl);
   // const id = open ? "simple-popover" : undefined;
 
-  const jobs = [
-    {
-      id: "#12123123123",
-      title: "FullStack",
-      status: "No CV yet",
-      status1: "Failed",
-    },
-    {
-      id: "#45645645678",
-      title: "Backend Developer",
-      status: "No CV yet",
-      status1: "Approved",
-    },
-  ];
+  // const jobs = [
+  //   {
+  //     id: "#12123123123",
+  //     title: "FullStack",
+  //     status: "No CV yet",
+  //     status1: "Failed",
+  //   },
+  //   {
+  //     id: "#45645645678",
+  //     title: "Backend Developer",
+  //     status: "No CV yet",
+  //     status1: "Approved",
+  //   },
+  // ];
 
   return (
     <div className={classes.main}>
@@ -103,7 +106,7 @@ export default function JobPage() {
                     Jobs title
                   </Typography>
                 </div>
-                <div className={classes.left}>
+                <div className={classes.left1}>
                   <Typography
                     variant="h1"
                     sx={{ fontSize: "16px", fontWeight: 500, color: "#303235" }}
@@ -111,24 +114,39 @@ export default function JobPage() {
                     Status
                   </Typography>
                 </div>
-                <div className={classes.left}>
+                <div className={classes.right}>
                   <Typography
                     variant="h1"
                     sx={{ fontSize: "16px", fontWeight: 500, color: "#303235" }}
                   >
-                    System-generated CV
+                    System-generated CVs
                   </Typography>
                 </div>
                 <div className={classes.right}>
+                  <Typography
+                    variant="h1"
+                    sx={{ fontSize: "16px", fontWeight: 500, color: "#303235" }}
+                  >
+                  Filter CVs
+                  </Typography>
+                </div>
+
+                <div className={classes.right1} >
                   <div className={classes.icon1}>
                     <SettingsOutlinedIcon />
                   </div>
                 </div>
+              
+                {/* <div className={classes.right} >
+                  <div className={classes.icon1}>
+                    <SettingsOutlinedIcon />
+                  </div>
+                </div> */}
               </div>
             </div>
           </div>
 
-          {jobs.map((job, index) => (
+          {data.map((job, index) => (
             <div
               className={classes.divtable}
               onMouseEnter={() => handleMouseEnter(index)}
@@ -165,7 +183,7 @@ export default function JobPage() {
                         >
                           {job.title}
                         </Link>
-                        <div className={classes.div4}>{job.status}</div>
+                        <div className={classes.div4}>No CV yet</div>
                         {hovered === index && (
                           <>
                             <div className={classes.div6}>
@@ -174,7 +192,7 @@ export default function JobPage() {
                               </Link>
                             </div>
                             <div className={classes.div5}>
-                              <Link to="" className={classes.link1}>
+                              <Link to="Detail/CV/AppliedCV" className={classes.link1}>
                                 View Candidate's CV
                               </Link>
                             </div>
@@ -184,7 +202,7 @@ export default function JobPage() {
                     </div>
                   </div>
 
-                  <div className={classes.left}>
+                  <div className={classes.left1}>
                     <Typography
                       variant="h1"
                       sx={{
@@ -199,25 +217,27 @@ export default function JobPage() {
                         textAlign: "center",
                         whiteSpace: "nowrap",
                         verticalAlign: "baseline",
-                        background:
-                          job.status1 === "Failed"
-                            ? "#fff3f2"
-                            : job.status1 === "Approved"
-                            ? "#00B14F"
-                            : undefined,
-                        color:
-                          job.status1 === "Failed"
-                            ? "#da4538"
-                            : job.status1 === "Approved"
-                            ? "white"
-                            : undefined,
+                        // background:
+                        //   job.status1 === "Failed"
+                        //     ? "#fff3f2"
+                        //     : job.status1 === "Approved"
+                        //     ? "#00B14F"
+                        //     : undefined,
+                        // color:
+                        //   job.status1 === "Failed"
+                        //     ? "#da4538"
+                        //     : job.status1 === "Approved"
+                        //     ? "white"
+                        //     : undefined,
+                        color:"white",
+                        background:"#00B14F"
                       }}
                     >
-                      {job.status1}
+                      Approved
                     </Typography>
                   </div>
 
-                  <div className={classes.left}>
+                  <div className={classes.right}>
                     <div className={classes.div7}>
                       <div
                         className={classes.div8}
@@ -228,7 +248,7 @@ export default function JobPage() {
                         Recommended CV/Profile
                       </div>
                       <div className={classes.div9}>
-                        <Link to="Detail/CV/AppliedCV/CV/Recommend" className={classes.link3}>
+                        <Link to="Detail/CV/AppliedCV/CV/Recommend" className={classes.link4}>
                           <RemoveRedEyeIcon
                             fontSize="small"
                             sx={{ color: "#a8afb6" }}
@@ -238,8 +258,25 @@ export default function JobPage() {
                       </div>
                     </div>
                   </div>
-
                   <div className={classes.right}>
+                    <div className={classes.div7}>
+                      {/* <div
+                        className={classes.div8}
+                        style={{
+                          color: hovered === index ? "transparent" : "#5e6368",
+                        }}
+                      >
+                        Recommended CV/Profile
+                      </div> */}
+                      <div className={classes.div9}>
+                        <Link to="Detail/CV/AppliedCV/CV/Recommend" className={classes.link3}>
+                                Find CVs
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className={classes.right1}>
                     {/* <Popover
                       id={id}
                       open={open}
@@ -256,12 +293,13 @@ export default function JobPage() {
                       className={classes.icon2}
                       // onMouseEnter={handleClick}
                       // onMouseLeave={handleClose}
+                      
                     >
                       <Tooltip title="Edit">
                       <ModeEditIcon
                         fontSize="small"
                         sx={{
-                          backgroundColor: "#e8edf2",
+                          backgroundColor: hovered ===index ?"#FF6F61": "#e8edf2",
                           borderRadius: "50%",
                           padding: "10px",
                           color: hovered === index ? "#fff" : undefined,
@@ -269,12 +307,24 @@ export default function JobPage() {
                       />
                       </Tooltip>
                     </div>
-                    <div className={classes.icon2}>
-                      <SettingsOutlinedIcon />
+                    <div
+                      className={classes.icon2}
+                      // onMouseEnter={handleClick}
+                      // onMouseLeave={handleClose}
+                    >
+                      <Tooltip title="Delete">
+                      <PauseIcon
+                        fontSize="small"
+                        sx={{
+                          backgroundColor: hovered ===index ?"#FF6F61": "#e8edf2",
+                          borderRadius: "50%",
+                          padding: "10px",
+                          color: hovered === index ? "#fff" : undefined,
+                        }}
+                      />
+                      </Tooltip>
                     </div>
-                    <div className={classes.icon2}>
-                      <SettingsOutlinedIcon />
-                    </div>
+                   
                   </div>
                 </div>
               </div>

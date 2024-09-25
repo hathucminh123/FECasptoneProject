@@ -19,8 +19,13 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import ImageIcon from "@mui/icons-material/Image";
-import { useRef } from 'react';
+import { useRef } from "react";
 import ImagePreview from "../../components/Employer/ImagePreview ";
+import { useAppDispatch } from "../../redux/hooks/hooks";
+import { v4 as uuidv4 } from "uuid";
+import { add } from "../../redux/slices/createJobs";
+import NotificationAlert from "../../components/NotificationAlert";
+
 export default function CreateJobs() {
   const [title, setTitle] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -30,10 +35,36 @@ export default function CreateJobs() {
   const [count, setCount] = useState<number>(1);
   const [city, setCity] = useState<string>("");
   const [district, setDistrict] = useState<string>("");
+  const [specificLocation, setSpecificLocation] = useState<string>("");
   const [skills, setSkills] = useState<string[]>([]); // Array for multiple skills
   const [inputSkill, setInputSkill] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [requirements, setRequirement] = useState<string>("");
+  const [benefits, setBenefits] = useState<string>("");
+  const [showAlert,setShowAlert]=useState<boolean>(false)
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const dispatch = useAppDispatch();
+  const handleOncreate = () => {
+    const data = {
+      id: uuidv4(),
+      title: title,
+      selectedDate: selectedDate,
+      count: count,
+      city: city,
+      district: district,
+      specificLocation: specificLocation,
+      description: description,
+      requirements: requirements,
+      benefits: benefits,
+      skills: skills,
+      selectedFile: selectedFile,
+    };
+
+    dispatch(add(data))
+    setShowAlert(true)
+  };
 
   console.log("city", city);
   const locationData: string[] = [
@@ -165,8 +196,13 @@ export default function CreateJobs() {
   return (
     <div className={classes.main}>
       <div className={classes.div}>
-        <HeaderSystem title="Recruitment Post" buttonstring="Save and Post " />
+        <HeaderSystem
+          title="Recruitment Post"
+          buttonstring="Save and Post "
+          onclick={handleOncreate}
+        />
       </div>
+      <NotificationAlert showAlert={showAlert} severity="success" location="List jobs" notification="created successfully" link="/employer-verify/jobs" />
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.mainLeft}>
@@ -394,6 +430,9 @@ export default function CreateJobs() {
                                   className={classes.inputdetaillocation}
                                   autoComplete="on"
                                   placeholder="Enter specific workplace location."
+                                  onChange={(e) =>
+                                    setSpecificLocation(e.target.value)
+                                  }
                                 />
                               </div>
                             </div>
@@ -437,8 +476,8 @@ export default function CreateJobs() {
                   </div>
                   <div className={classes.div32}>
                     <ReactQuill
-                      // value={value}
-                      // onChange={setValue}
+                      value={description}
+                      onChange={(content: string) => setDescription(content)}
                       placeholder="Enter your Description"
                     />
                   </div>
@@ -458,9 +497,9 @@ export default function CreateJobs() {
                   </div>
                   <div className={classes.div32}>
                     <ReactQuill
-                      // value={value}
-                      // onChange={setValue}
-                      placeholder="Enter your Requirement"
+                      value={requirements}
+                      onChange={(content: string) => setRequirement(content)}
+                      placeholder="Enter your Requirments"
                     />
                   </div>
                 </div>
@@ -478,10 +517,10 @@ export default function CreateJobs() {
                     </button>
                   </div>
                   <div className={classes.div32}>
-                    <ReactQuill
-                      // value={value}
-                      // onChange={setValue}
-                      placeholder="Enter your Benefitsd"
+                  <ReactQuill
+                      value={benefits}
+                      onChange={(content: string) => setBenefits(content)}
+                      placeholder="Enter your Benefits"
                     />
                   </div>
                 </div>
@@ -596,7 +635,7 @@ export default function CreateJobs() {
                           alt={`preview-${index}`}
                           className={classes.divimg}
                         /> */}
-                        <ImagePreview file={file} index={index} key={index}/>
+                        <ImagePreview file={file} index={index} key={index} />
                       </div>
                       <div
                         className={classes.divdelete}

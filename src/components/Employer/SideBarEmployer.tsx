@@ -25,7 +25,7 @@ export default function SideBarEmployer({ open }: props) {
           <div className={classes.div2}>
             <div className={classes.div3}>
               <div className={classes.div4}>
-                <Link to={"/"} className={classes.link}>
+                <Link to="account" className={classes.link}>
                   <div className={classes.img}></div>
                 </Link>
               </div>

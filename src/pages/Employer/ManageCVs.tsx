@@ -3,6 +3,7 @@ import classes from "./ManageCVs.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FormSelect from "../../components/Employer/FormSelect";
+import Table from "../../components/Employer/Table";
 const selectData = ["fullstack", "mobile engineer"];
 
 const stateData = [
@@ -14,16 +15,62 @@ const stateData = [
 ];
 
 const CV = ["Show All Cv", "Show only unseen CVs"];
+const headers = ["fullName", "Email", "Phone Number", "CV file", "Status"]; // Add extra column "Status"
 
+// Define the data for the table rows
+const data = [
+  {
+    fullName: "John Doe",
+    Email: "johndoe@example.com",
+    "Phone Number": "123-456-7890",
+    "CV file": "https://example.com/johndoe_cv.pdf",
+    Status: "Approved", // New column data
+  },
+  {
+    fullName: "Jane Smith",
+    Email: "janesmith@example.com",
+    "Phone Number": "987-654-3210",
+    "CV file": "https://example.com/janesmith_cv.pdf",
+    Status: "Pending", // New column data
+  },
+];
+ 
 export default function ManageCVs() {
   const [seclectJob, setSelectJob] = useState<string>("");
   const [selectState, setSelectState] = useState<string>("");
   const [selectCV, setSelectCV] = useState<string>("");
   const width = 230;
+  const handleViewDetail = (row: { [key: string]: string }) => {
+    console.log("View Detail clicked for:", row);
+    alert(`Viewing details for ${row.fullName}`);
+  };
+
+  // Custom renderers for specific columns
+  const customRenderers = {
+    "CV file": (row: { [key: string]: string }) => (
+      <a
+        href={row["CV file"]}
+        download
+        className={classes.cvLink}
+      >
+        Download CV
+      </a>
+    ),
+    Status: (row: { [key: string]: string }) => (
+      <span
+        style={{
+          color: row.Status === "Approved" ? "green" : "orange",
+          fontWeight: "bold",
+        }}
+      >
+        {row.Status}
+      </span>
+    ),
+  };
   return (
     <div className={classes.main}>
       <div className={classes.div}>
-        <HeaderSystem title="Candidate CV Management" />
+        <HeaderSystem title="Candidate CV Management" appear={true} />
       </div>
       <div className={classes.main1}>
         <div className={classes.main2}>
@@ -82,7 +129,12 @@ export default function ManageCVs() {
             </div>
           </div>
           <div className={classes.main12}>
-            
+          <Table
+        headers={headers}
+        data={data}
+        onViewDetail={handleViewDetail}
+        customRenderers={customRenderers} 
+      />
           </div>
         </div>
       </div>

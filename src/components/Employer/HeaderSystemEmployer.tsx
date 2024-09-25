@@ -31,7 +31,7 @@ export default function HeaderSystemEmployer({setOpen,open}:props) {
         <div className={classes.div}>
           <ul className={classes.ul}>
             <li className={classes.li}>
-              <NavLink className={classes.navlink} to={"/"}>
+              <NavLink className={classes.navlink} to='create-jobs'>
                 <CreateIcon className={classes.icon} />
                 Job Posts
               </NavLink>

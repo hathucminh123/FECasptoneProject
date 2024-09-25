@@ -171,37 +171,49 @@
 }
 
 .left {
-  flex: 0 0 30.3333333333%;
-  max-width: 30.3333333333%;
+  flex: 0 0 30%; /* Jobs Title */
+  max-width: 30%;
   position: relative;
   width: 100%;
   padding: 16px;
-
   box-sizing: border-box;
   display: block;
-  border-color: #a8a8a8;
   border-right: 1px solid #e8edf2;
-  border-bottom: 0 !important;
-  border-top: 0;
-  white-space: nowrap !important;
+  vertical-align: bottom;
+}
+
+.left1 {
+  flex: 0 0 15%; /* Status */
+  max-width: 15%;
+  position: relative;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  display: block;
+  border-right: 1px solid #e8edf2;
   vertical-align: bottom;
 }
 
 .right {
-  flex: 0 0 9%;
-  max-width: 9%;
+  flex: 0 0 22%; /* System-generated CV */
+  max-width: 22%;
   position: relative;
   width: 100%;
   padding: 16px;
-
   box-sizing: border-box;
   display: block;
-  border-color: #a8a8a8;
   border-right: 1px solid #e8edf2;
-  border-bottom: 0 !important;
-  border-top: 0;
-  white-space: nowrap !important;
   vertical-align: bottom;
+}
+
+.right1 {
+  flex:1; 
+
+  position: relative;
+  width: 100%;
+  padding: 16px;
+  box-sizing: border-box;
+  display: block;
 }
 
 .icon1 {
@@ -210,6 +222,7 @@
 
 .icon2 {
   text-align: center;
+  cursor: pointer;
   margin-bottom: 10px;
 }
 
@@ -306,14 +319,50 @@
 
 .div9{
     color: #343a40 !important;
-    margin-top: .57rem !important;
+    /* margin-top: .57rem !important; */
     box-sizing: border-box;
     display: block;
 }
 
 .link3{
     text-decoration: none !important;
-    color: #343a40 !important;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 5px; 
+    font-size: 1rem;
+
+    padding-left: 1.14rem !important;
+    padding-right: 1.14rem !important;
+    padding: .285rem !important;
+    color: #FF6F61;
+    border-color: #FF6F61;
+
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid #FF6F61;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+    /* color: #343a40 !important;
+    margin-top: .57rem !important;
+    background-color: transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    justify-content: start;
+    display: flex;
+    gap:5px */
+}
+
+.link4{
+  text-decoration: none !important;
+  cursor: pointer;
+      color: #343a40 !important;
     margin-top: .57rem !important;
     background-color: transparent;
     box-sizing: border-box;
@@ -323,4 +372,9 @@
     justify-content: start;
     display: flex;
     gap:5px
+}
+
+.link3:hover{
+  color: white;
+  background-color: #FF6F61;
 }

@@ -23,10 +23,10 @@ import { Image } from "antd";
 import CardJobDetails from "../components/CardJobDetails";
 import { add, remove } from "../redux/slices/favoriteJob";
 import { useAppDispatch } from "../redux/hooks/hooks";
-import Alert from "@mui/material/Alert";
+import  Alert  from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
-import { view } from "../redux/slices/ViewJob";
+import { view } from "../redux/slices/viewJob";
 interface Job {
   id: number;
   title: string;
