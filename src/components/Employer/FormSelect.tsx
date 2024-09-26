@@ -17,6 +17,7 @@ interface Props {
   padding?: boolean;
   height?: number;
   width?: number;
+  text?:string
 }
 
 export default function FormSelect({
@@ -26,6 +27,7 @@ export default function FormSelect({
   placeholder = "Select Region/ Province/ City",
   padding,
   height,
+  text,
   width, // Set default for clarity
 }: Props) {
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
@@ -123,7 +125,7 @@ export default function FormSelect({
                 padding ? classes.spanlocation1 : classes.spanlocation
               }`}
             >
-              {selectedValue}
+              {selectedValue}  {text}
             </span>
           )}
           {/* {selectedValue ? (
@@ -147,7 +149,7 @@ export default function FormSelect({
                     className={classes.li}
                   >
                     <span className={classes.spanselect}>
-                      <span>{item}</span>
+                      <span>{item} {text}</span>
                     </span>
                   </li>
                 ))

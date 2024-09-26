@@ -153,8 +153,8 @@ border: none;
     width: 31px !important;
     padding: 3px 1px; 
     cursor: pointer;
-    background: #FF6F61;
-    color: white;
+    background-color: rgb(255, 212, 195);
+    color: #2c3e50;
     border-radius: 100px;
     white-space: nowrap;
     display: flex !important;
@@ -177,8 +177,8 @@ border: none;
 
 .updateButtonOpen{
   cursor: pointer;
-  background: #FF6F61;
-    color: white;
+  background-color: rgb(255, 212, 195);
+  color: #2c3e50;
     border-radius: 100px;
     padding: 3px 10px;
     width: 230px;
@@ -267,7 +267,7 @@ border: none;
   }
   
   ul a.active {
-    background-color: #FF6F61;
+    background-color: rgb(255, 212, 195);
     border-radius: 100px;
     color: white;
   }
@@ -357,7 +357,7 @@ border: none;
     box-sizing: border-box;
     white-space: nowrap;
     cursor: pointer;
-    color: white;
+    color: #2c3e50;
     font-weight: 400;
     text-align: center;
     user-select: none;
@@ -418,4 +418,41 @@ border: none;
 
 .activeSpan {
   color: #FF6F61;
+}
+
+.div11{
+  position: absolute;
+    right: 15px;
+    display: flex !important;
+    color: #FF6F61;
+    box-sizing: border-box;
+}
+.span6{
+  display: inline-block;
+  min-width: 8px;
+  min-height: 8px;
+  color: #FF6F61;
+  font-weight: 500;
+
+  border-radius: 50%;
+  margin-left: 0;
+  padding: 0;
+  font-size: 0 !important;
+  background-color: #FF6F61;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.span6Open{
+  font-weight: 500;
+  font-size: 12px !important;
+  color: #fff;
+  background-color:#FF6F61;
+  padding: 0 5px;
+  text-align: center;
+  margin-left: 5px;
+  min-width: 18px;
+  /* min-height: 18px; */
+  border-radius: 10px;
+  box-sizing: border-box;
 }

@@ -6,6 +6,7 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import NotificationImportantOutlinedIcon from '@mui/icons-material/NotificationImportantOutlined';
 interface props {
   open: boolean;
 }
@@ -151,6 +152,43 @@ export default function SideBarEmployer({ open }: props) {
                   </li>
                 </ul>
               )}
+            </li>
+            <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to="/employer-verify/jobs/system-notification"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <NotificationImportantOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>System notification</span>
+                    </div>
+                    <div className={classes.div11}>
+                      <span       className={`${
+                        open ? classes.span6 : classes.span6Open
+                      } `}>47</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
+                </NavLink>
+              </div>
             </li>
           </ul>
         </div>

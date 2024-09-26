@@ -1,0 +1,15 @@
+.label{
+    color: #5e6368;
+    display: inline-block;
+    margin-bottom: .5rem;
+    box-sizing: border-box;
+    cursor: default;
+ }
+
+ .span{
+    margin-left: 3px;
+    color: #da4538;
+    font-weight: 400 !important;
+    box-sizing: border-box;
+    cursor: default;
+ }

@@ -157,3 +157,44 @@
     box-sizing: border-box;
     display: block;
   }
+
+
+  .link3{
+    text-decoration: none !important;
+    cursor: pointer;
+    white-space: nowrap;
+    border-radius: 5px; 
+    font-size: 1rem;
+
+    padding-left: 1.14rem !important;
+    padding-right: 1.14rem !important;
+    padding: .285rem !important;
+    color: #FF6F61;
+    border-color: #FF6F61;
+
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid #FF6F61;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    box-sizing: border-box;
+    /* color: #343a40 !important;
+    margin-top: .57rem !important;
+    background-color: transparent;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    justify-content: start;
+    display: flex;
+    gap:5px */
+}
+
+.link3:hover{
+  color: white;
+  background-color: #FF6F61;
+}

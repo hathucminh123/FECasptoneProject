@@ -9,7 +9,7 @@ interface TableProps {
   customRenderers?: { [key: string]: (row: { [key: string]: string }) => React.ReactNode }; // Optional custom renderers for specific columns
 }
 
-const Table: React.FC<TableProps> = ({ headers, data, onViewDetail, customRenderers }) => {
+const Table: React.FC<TableProps> = ({ headers, data,  customRenderers }) => {
   return (
     <table className={classes.table}>
       <thead className={classes.thead}>
@@ -18,7 +18,9 @@ const Table: React.FC<TableProps> = ({ headers, data, onViewDetail, customRender
             <th key={index} className={classes.th}>
               {header}
             </th>
+           
           ))}
+          <th> </th>
         </tr>
       </thead>
       <tbody>
@@ -31,7 +33,7 @@ const Table: React.FC<TableProps> = ({ headers, data, onViewDetail, customRender
                   : row[header]} 
               </td>
             ))}
-            {onViewDetail && (
+            {/* {onViewDetail && (
               <td className={classes.td}>
                 <button
                   className={classes.viewDetailButton}
@@ -40,7 +42,7 @@ const Table: React.FC<TableProps> = ({ headers, data, onViewDetail, customRender
                   View Detail
                 </button>
               </td>
-            )}
+            )} */}
           </tr>
         ))}
       </tbody>

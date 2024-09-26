@@ -36,7 +36,8 @@ import AppliedCV from "./pages/Employer/AppliedCV";
 import ManageCVs from "./pages/Employer/ManageCVs";
 import ProfileEmployer from "./pages/Employer/ProfileEmployer";
 import Profile from "./pages/Employer/Profile";
-
+import NotificationSystem from "./components/Employer/NotificationSystem";
+import CompanyInfo from "./pages/Employer/CompanyInfo";
 export const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -200,6 +201,10 @@ const router = createBrowserRouter([
             index: true,
             element: <Profile />,
           },
+          {
+            path:'company',
+            element:<CompanyInfo/>
+          }
         ],
       },
       {
@@ -210,6 +215,10 @@ const router = createBrowserRouter([
         path: "manageCVs",
         element: <ManageCVs />,
       },
+      {
+        path:"system-notification",
+        element:<NotificationSystem/>
+      }
     ],
   },
 ]);

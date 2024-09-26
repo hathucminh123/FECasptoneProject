@@ -4,6 +4,7 @@ import HeaderSystem from "../../components/Employer/HeaderSystem";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FormSelect from "../../components/Employer/FormSelect";
 import Table from "../../components/Employer/Table";
+import { Link } from "react-router-dom";
 const selectData = ["fullstack", "mobile engineer"];
 
 const stateData = [
@@ -15,7 +16,7 @@ const stateData = [
 ];
 
 const CV = ["Show All Cv", "Show only unseen CVs"];
-const headers = ["fullName", "Email", "Phone Number", "CV file", "Status"]; // Add extra column "Status"
+const headers = ["fullName", "Email", "Phone Number", "CV file", "Status","Action"]; // Add extra column "Status"
 
 // Define the data for the table rows
 const data = [
@@ -24,14 +25,16 @@ const data = [
     Email: "johndoe@example.com",
     "Phone Number": "123-456-7890",
     "CV file": "https://example.com/johndoe_cv.pdf",
-    Status: "Approved", // New column data
+    Status: "Approved",
+    Action:'View Detail'
   },
   {
     fullName: "Jane Smith",
     Email: "janesmith@example.com",
     "Phone Number": "987-654-3210",
     "CV file": "https://example.com/janesmith_cv.pdf",
-    Status: "Pending", // New column data
+    Status: "Pending", 
+    Action:'View Detail'
   },
 ];
  
@@ -65,6 +68,13 @@ export default function ManageCVs() {
       >
         {row.Status}
       </span>
+    ),
+    "Action":(row: { [key: string]: string }) => (
+      <Link to="" className={classes.link3}
+       
+      >
+        {row.Action}
+      </Link>
     ),
   };
   return (
