@@ -9,12 +9,15 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TodoListSelector } from "../redux/selectorLogic/logicseacrh";
-import { useAppSelector } from "../redux/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { companyData } from "../assets/data/CompanyData";
 import CardJobSearch from "../components/CardJobSearch";
-
+import { add, remove } from "../redux/slices/favoriteJob";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
+import Stack from "@mui/material/Stack";
 interface Job {
   id: number;
   title: string;
@@ -43,16 +46,19 @@ export default function FilterJobbySkill() {
   const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<Job | null>(null);
   const navigate = useNavigate();
-  const auth = localStorage.getItem("auth");
+  const auth = localStorage.getItem("Auth");
 
+  console.log("co len ", auth);
   const filteredJobs = useAppSelector(TodoListSelector);
   const [detailsCompany, setDetailsCompany] = useState<Company | undefined>();
   const [selectedJob, setSelectedJob] = useState<null | Job>(null);
 
   useEffect(() => {
     if (filteredJobs.length > 0) {
-
-      if (!selectedJob || !filteredJobs.some(job => job.id === selectedJob.id)) {
+      if (
+        !selectedJob ||
+        !filteredJobs.some((job) => job.id === selectedJob.id)
+      ) {
         const firstJob = filteredJobs[0];
         setJobDetails(firstJob);
         setSelectedJob(firstJob);
@@ -63,17 +69,15 @@ export default function FilterJobbySkill() {
         setDetailsCompany(foundCompany);
       }
     } else {
-    
       setSelectedJob(null);
       setJobDetails(null);
       setDetailsCompany(undefined);
     }
   }, [filteredJobs, selectedJob]);
 
-
   const handleApplyClick = () => {
     if (!auth) {
-      navigate("/auth?mode=login", {
+      navigate("/JobSeekers/login", {
         state: { from: window.location.pathname },
       });
     } else {
@@ -88,11 +92,95 @@ export default function FilterJobbySkill() {
     const foundCompany = companyData.find((item) => item.id === job.companyId);
     setDetailsCompany(foundCompany);
   };
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const handleSaveJob = () => {
+    if (!auth) {
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    } else {
+      setFavorite((prev) => !prev);
+    }
+  };
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (favorite && jobDetails) {
+      dispatch(add(jobDetails));
+      setShowAlert(true);
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
 
+      return () => clearTimeout(timer);
+    } else if (!favorite && jobDetails) {
+      dispatch(remove(jobDetails.id));
+    }
+  }, [favorite, jobDetails, dispatch]);
 
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
+        {showAlert && (
+          <Stack
+            sx={{
+              left: "inherit",
+              right: 0,
+              top: "120px",
+              bottom: "inherit",
+              marginRight: "48px",
+              width: "400px",
+              opacity: showAlert ? 1 : 0,
+              zIndex: 11,
+              backgroundColor: "#eaf9e9",
+              padding: "16px 16px 16px 24px",
+              border: "none",
+              borderRadius: "8px",
+              maxWidth: "400px",
+              position: "fixed",
+              boxShadow: "0px 6px 32px rgba(0, 0, 0, 0.08)",
+              display: showAlert ? "block" : "none",
+              fontSize: "0.875rem",
+              pointerEvents: "auto",
+              transition: "opacity 0.15s linear",
+              boxSizing: "border-box",
+            }}
+          >
+            <Alert severity="success">
+              <AlertTitle>Success</AlertTitle>
+              <div style={{ display: "block" }}>
+                <div
+                  style={{
+                    color: "#121212",
+                    marginRight: "18px",
+                    display: "block",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
+                  >
+                    This job has been added to your <strong> Saved jobs</strong>
+                  </Typography>
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "20px",
+                    color: "#0e2eed",
+                    marginTop: "12px",
+                  }}
+                >
+                  <Link
+                    style={{ color: "#0e2eed", textDecoration: "none" }}
+                    to={"/my-jobs"}
+                  >
+                    View list
+                  </Link>
+                </div>
+              </div>
+            </Alert>
+          </Stack>
+        )}
         <div className={classes.container}>
           <div className={classes.container1}>
             <FormSearch />
@@ -114,7 +202,7 @@ export default function FilterJobbySkill() {
                       marginBottom: 0,
                     }}
                   >
-                  Jobs IT in Vietnam{" "}
+                    Jobs IT in Vietnam{" "}
                   </Typography>
                   <div className={classes.filter}>
                     <div className={classes.btn}>
@@ -166,7 +254,7 @@ export default function FilterJobbySkill() {
                       );
                     })}
                   </div>
-                  {filteredJobs.length > 0 &&jobDetails   && detailsCompany?  (
+                  {filteredJobs.length > 0 && jobDetails && detailsCompany ? (
                     <div className={classes.detailRight}>
                       <div className={classes.apply}>
                         <div className={classes.apply1}>
@@ -246,7 +334,7 @@ export default function FilterJobbySkill() {
                             </Button>
                             <div
                               style={{ cursor: "pointer" }}
-                              onClick={() => setFavorite((prev) => !prev)}
+                              onClick={handleSaveJob}
                             >
                               {favorite ? (
                                 <FavoriteIcon

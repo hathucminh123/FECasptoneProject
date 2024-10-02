@@ -1,6 +1,7 @@
 import {
   Link,
   NavLink,
+  // redirect,
   useLocation,
   useNavigate,
   useSearchParams,
@@ -22,7 +23,11 @@ import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
 
-export default function HeaderNavigation() {
+interface props {
+  token:unknown
+}
+
+export default function HeaderNavigation({token}:props) {
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
   const isSignup = searchParams.get("mode") === "signup";
@@ -30,13 +35,14 @@ export default function HeaderNavigation() {
   const [headerHeight, setHeaderHeight] = useState<number>(88);
   const [hovered, setHovered] = useState<null | string>(null);
   const [selectedMenu, setSelectedMenu] = useState<null | string>(null);
-
+  const name = localStorage.getItem('name');
   const location = useLocation();
 
   const handleSavePath = () => {
     localStorage.setItem("redirectPath", location.pathname);
   };
 
+  console.log('name',name)
   //profile
   const [anchorElProflie, setAnchorElProfile] =
     React.useState<null | HTMLElement>(null);
@@ -109,7 +115,7 @@ export default function HeaderNavigation() {
     };
   }, []);
 
-  const auth = localStorage.getItem("auth");
+  // const auth = localStorage.getItem("auth");
 
   return (
     <header
@@ -146,7 +152,7 @@ export default function HeaderNavigation() {
                 <NavLink
                   onMouseEnter={handleMouseEnter}
                   className={classes.link}
-                  to="/"
+                  to="#"
                 >
                   All Jobs
                   <ArrowDropDownIcon
@@ -193,12 +199,12 @@ export default function HeaderNavigation() {
 
             <ul className={classes.listright}>
               <li className={classes.link1}>
-                <NavLink className={classes.linkk} to="/employers">
+                <NavLink className={classes.linkk} to="/employers/login">
                   For Employers
                 </NavLink>
               </li>
               <li className={classes.liprofile}>
-                {auth ? (
+                {token ? (
                   <div
                     className={classes.profile}
                     onMouseEnter={handleMouseEnterProfile}
@@ -229,7 +235,7 @@ export default function HeaderNavigation() {
                           cursor: "pointer",
                         }}
                       >
-                        Hà Thúc Minh
+                      {name}
                       </Typography>
                       <ArrowDropDownIcon
                         sx={{
@@ -246,11 +252,21 @@ export default function HeaderNavigation() {
                     </div>
                   </div>
                 ) : (
+                  // !isLogin &&
+                  // !isSignup && (
+                  //   <NavLink
+                  //     className={classes.linkk}
+                  //     to="/auth?mode=login"
+                  //     onClick={handleSavePath}
+                  //   >
+                  //     Sign in/Sign up
+                  //   </NavLink>
+                  // )
                   !isLogin &&
                   !isSignup && (
                     <NavLink
                       className={classes.linkk}
-                      to="/auth?mode=login"
+                      to="/JobSeekers/login"
                       onClick={handleSavePath}
                     >
                       Sign in/Sign up
@@ -364,7 +380,7 @@ const SkillsMenu = ({
   const handleOnclick = (column: string) => {
     console.log(column);
     navigate("/it-jobs", { state: column });
-    window.location.href = "/it-jobs";
+    // window.location.href = "/it-jobs";
   };
   return (
     <Menu
@@ -557,8 +573,10 @@ const ProfileMenu = ({
 
   const handleSignout = (item: string) => {
     if (item === "Item 3") {
-      // localStorage.clear();
-      localStorage.removeItem("auth");
+      localStorage.clear();
+    //   localStorage.removeItem('token');
+    // localStorage.removeItem('expiration');
+      navigate('/'); 
     } else if (item === "Item 1") {
       navigate("/profile-cv");
     } else if (item === "Item 2") {

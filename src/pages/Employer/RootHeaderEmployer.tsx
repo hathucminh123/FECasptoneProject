@@ -11,7 +11,7 @@ export default function RootHeaderEmployer() {
         <Outlet/>
       </section>
       <footer className={classes.footer}>
-        <Footer/>
+        <Footer />
       </footer>
     </>
   );

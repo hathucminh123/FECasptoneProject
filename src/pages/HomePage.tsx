@@ -37,9 +37,9 @@ export default function HomePage() {
 
   // Handling profile navigation
   const handleProfileClick = () => {
-    const auth = localStorage.getItem("auth");
+    const auth = localStorage.getItem("Auth");
     if (!auth) {
-      navigate("/auth?mode=login", { state: { from: "/profile-cv" } });
+      navigate("/JobSeekers/login", { state: { from: "/profile-cv" } });
     } else {
       navigate("/profile-cv");
     }

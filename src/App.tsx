@@ -1,4 +1,5 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./Services/mainService";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import store from "./redux/store";
@@ -6,7 +7,7 @@ import { Provider } from "react-redux";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ErrorPage from "./pages/ErrorPage";
 import RootLayout from "./pages/RootLayout";
-import SignInPage from "./pages/SignInPage";
+// import SignInPage from "./pages/SignInPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import JobDetails from "./pages/JobDetails";
 import CompanyDetail from "./pages/CompanyDetail";
@@ -25,8 +26,8 @@ import Recommend from "./pages/Recommend";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 import RecentViewJob from "./pages/RecentViewJob";
 import AppliedJob from "./pages/AppliedJob";
-import EmployerPage from "./pages/Employer/EmployerPage";
-import RootHeaderEmployer from "./pages/Employer/RootHeaderEmployer";
+// import EmployerPage from "./pages/Employer/EmployerPage";
+// import RootHeaderEmployer from "./pages/Employer/RootHeaderEmployer";
 import SignInPageEmployer from "./pages/Employer/SignInPageEmployer";
 import RootSystem from "./pages/Employer/RootSystem";
 import JobPage from "./pages/Employer/JobPage";
@@ -38,23 +39,35 @@ import ProfileEmployer from "./pages/Employer/ProfileEmployer";
 import Profile from "./pages/Employer/Profile";
 import NotificationSystem from "./components/Employer/NotificationSystem";
 import CompanyInfo from "./pages/Employer/CompanyInfo";
-export const queryClient = new QueryClient();
+import SignInPageJobSeekers from "./pages/Employer/SignInPageJobSeekers";
+
+import { tokenLoader } from "./utils/Auth";
+import { action as LogoutAction } from "./utils/logout";
+import EmployerProtectedRoute from "./components/Employer/EmployerProtectedRoute";
+import JobSeekerProtectedRoute from "./components/JobSeekerProtectedRoute";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <JobSeekerProtectedRoute>
+        <RootLayout />,
+      </JobSeekerProtectedRoute>
+    ),
+
     errorElement: <ErrorPage />,
     id: "root",
+
+    loader: tokenLoader,
     children: [
       {
         index: true,
         element: <HomePage />,
       },
-      {
-        path: "auth",
-        element: <SignInPage />,
-      },
+      // {
+      //   path: "auth",
+      //   element: <SignInPage />,
+      // },
       {
         path: "new",
         element: <ForgotPassword />,
@@ -100,9 +113,9 @@ const router = createBrowserRouter([
         // Protect my-jobs routes
         path: "my-jobs",
         element: (
-          // <ProtectedRoute>
+          <ProtectedRoute>
           <RootJobs />
-          // </ProtectedRoute>
+          </ProtectedRoute>
         ),
         children: [
           {
@@ -133,14 +146,18 @@ const router = createBrowserRouter([
         path: "vietnam-best-it-companies",
         element: <Recommend />,
       },
+      {
+        path: "logout",
+        action: LogoutAction,
+      },
     ],
   },
   {
     path: "job/Apply",
     element: (
-      // <ProtectedRoute>
-      <Apply />
-      // </ProtectedRoute>
+      <ProtectedRoute>
+        <Apply />
+      </ProtectedRoute>
     ),
   },
   {
@@ -152,26 +169,35 @@ const router = createBrowserRouter([
     ),
   },
   // employer
-  {
-    path: "/employers",
-    element: <RootHeaderEmployer />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        index: true,
-        element: <EmployerPage />,
-      },
-    ],
-  },
+  // {
+  //   path: "/employers",
+  //   element: <RootHeaderEmployer />,
+  //   errorElement: <ErrorPage />,
+  //   children: [
+  //     {
+  //       index: true,
+  //       element: <EmployerPage />,
+  //     },
+  //   ],
+  // },
   {
     path: "/employers/login",
     element: <SignInPageEmployer />,
   },
+  {
+    path: "/JobSeekers/login",
+    element: <SignInPageJobSeekers />,
+  },
 
   {
     path: "/employer-verify/jobs",
-    element: <RootSystem />,
+    element: (
+      <EmployerProtectedRoute>
+        <RootSystem />
+      </EmployerProtectedRoute>
+    ),
     errorElement: <ErrorPage />,
+    loader: tokenLoader,
     id: "root1",
     children: [
       {
@@ -202,9 +228,9 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
-            path:'company',
-            element:<CompanyInfo/>
-          }
+            path: "company",
+            element: <CompanyInfo />,
+          },
         ],
       },
       {
@@ -216,9 +242,9 @@ const router = createBrowserRouter([
         element: <ManageCVs />,
       },
       {
-        path:"system-notification",
-        element:<NotificationSystem/>
-      }
+        path: "system-notification",
+        element: <NotificationSystem />,
+      },
     ],
   },
 ]);

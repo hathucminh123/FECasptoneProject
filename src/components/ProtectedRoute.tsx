@@ -7,13 +7,13 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
-  const auth = localStorage.getItem('auth');
+  const auth = localStorage.getItem('Auth');
   const location = useLocation(); 
 
   // Check if the user is not authenticated (e.g., no token in localStorage)
   if (!auth || auth === 'null' || auth === 'undefined') {
   
-    return <Navigate to="/auth?mode=login" state={{ from: location }} replace />;
+    return <Navigate to="/JobSeekers/login" state={{ from: location }} replace />;
   }
 
 

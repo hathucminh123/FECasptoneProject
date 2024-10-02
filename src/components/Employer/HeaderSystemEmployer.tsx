@@ -1,17 +1,19 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import classes from "./HeaderSystemEmployer.module.css";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Image from "./../../assets/image/logo.jpg.webp";
 import CreateIcon from "@mui/icons-material/Create";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
+  token: unknown;
 }
 
 const notifications = [
@@ -38,16 +40,17 @@ const notifications = [
   },
 ];
 
-export default function HeaderSystemEmployer({ setOpen, open }: props) {
+export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
   const handleOpen = () => {
     if (setOpen) {
       setOpen(!open);
     }
   };
-
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
   const [readOpen, setReadOpen] = useState<{ [key: number]: boolean }>({});
-  const [openModalNotification, setOpenModalNotification] = useState<boolean>(false);
-  console.log('quao',readOpen)
+  const [openModalNotification, setOpenModalNotification] =
+    useState<boolean>(false);
+  console.log("quao", readOpen);
 
   // Handle clicking "More" to toggle the "Mark as read" option
   const handleOpenReadMark = (event: React.MouseEvent, id: number) => {
@@ -66,6 +69,16 @@ export default function HeaderSystemEmployer({ setOpen, open }: props) {
     setOpenModalNotification(false);
   };
 
+  const handleOpenProfile = () => {
+    setOpenProfile(!openProfile);
+  };
+const navigate =useNavigate()
+  const handleLogout =()=>{
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('expiration');
+    localStorage.clear();
+    navigate('/employers/login')
+  }
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
@@ -95,7 +108,10 @@ export default function HeaderSystemEmployer({ setOpen, open }: props) {
                 <span className={classes.span5}>{notifications.length}</span>
               </NavLink>
               {openModalNotification && (
-                <div className={classes.div2} onClick={(e) => e.stopPropagation()}>
+                <div
+                  className={classes.div2}
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <li className={classes.li1}>
                     <span className={classes.span}>Notification</span>
                     <div className={classes.div3}>
@@ -130,7 +146,9 @@ export default function HeaderSystemEmployer({ setOpen, open }: props) {
                               <div className={classes.div10}>
                                 <span
                                   className={classes.span3}
-                                  onClick={(e) => handleOpenReadMark(e, notification.id)}
+                                  onClick={(e) =>
+                                    handleOpenReadMark(e, notification.id)
+                                  }
                                 >
                                   <MoreHorizOutlinedIcon fontSize="small" />
                                 </span>
@@ -158,18 +176,39 @@ export default function HeaderSystemEmployer({ setOpen, open }: props) {
                 </div>
               )}
             </li>
-            <li className={classes.li}>
+
+            {Boolean(token) && (
+              <li className={classes.li} onClick={handleOpenProfile}>
+                <NavLink className={classes.navlink2} to="#">
+                  <div className={classes.div1}></div>
+                  <ArrowDropDownIcon
+                    sx={{ color: "white", marginLeft: ".57rem" }}
+                  />
+                </NavLink>
+                {openProfile && (
+                  <div className={classes.account}>
+                    <div className={classes.acc1} onClick={handleLogout}>
+                      <LogoutIcon sx={{ color: "black" }} />
+                      <span style={{ boxSizing: "border-box" }}> logout</span>
+                    </div>
+                  </div>
+                )}
+              </li>
+            )}
+            {/* <li className={classes.li}>
               <NavLink className={classes.navlink2} to={"/"}>
                 <div className={classes.div1}></div>
                 <ArrowDropDownIcon sx={{ color: "white", marginLeft: ".57rem" }} />
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>
 
       {/* Click outside of the modal to close it */}
-      {openModalNotification && <div className={classes.overlay} onClick={handleClickOutside}></div>}
+      {openModalNotification && (
+        <div className={classes.overlay} onClick={handleClickOutside}></div>
+      )}
     </header>
   );
 }

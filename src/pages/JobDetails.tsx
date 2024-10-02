@@ -23,7 +23,7 @@ import { Image } from "antd";
 import CardJobDetails from "../components/CardJobDetails";
 import { add, remove } from "../redux/slices/favoriteJob";
 import { useAppDispatch } from "../redux/hooks/hooks";
-import  Alert  from "@mui/material/Alert";
+import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import { view } from "../redux/slices/viewJob";
@@ -106,7 +106,7 @@ export default function JobDetails() {
   const location = useLocation();
 
   const { company } = location.state || {};
-  const auth = localStorage.getItem("auth");
+  const auth = localStorage.getItem("Auth");
   const dispatch = useAppDispatch();
 
   const job: Job | null = location.state ?? null;
@@ -119,14 +119,12 @@ export default function JobDetails() {
 
     localStorage.setItem("redirectStateJob", JSON.stringify(job));
   }
-   
-  
-  useEffect(()=>{
-    if(job){
+
+  useEffect(() => {
+    if (job) {
       dispatch(view(job));
     }
-  },[dispatch,job])
-
+  }, [dispatch, job]);
 
   useEffect(() => {
     if (favorite && job) {
@@ -145,11 +143,21 @@ export default function JobDetails() {
 
   const handleNavigateApply = () => {
     if (!auth) {
-      navigate("/auth?mode=login", {
+      navigate("/JobSeekers/login", {
         state: { from: window.location.pathname },
       });
     } else {
       navigate("/job/Apply");
+    }
+  };
+
+  const handleSaveJob = () => {
+    if (!auth) {
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    } else {
+      setFavorite((prev) => !prev);
     }
   };
   useEffect(() => {
@@ -216,45 +224,63 @@ export default function JobDetails() {
       <div className={classes.alert}></div>
       <div className={classes.container}></div>
       {showAlert && (
-   <Stack
-   sx={{
-     left: 'inherit',
-     right: 0,
-     top: '120px',
-     bottom: 'inherit',
-     marginRight: '48px',
-     width: '400px',
-     opacity: showAlert ? 1 : 0, 
-     zIndex: 11,
-     backgroundColor: '#eaf9e9',
-     padding: '16px 16px 16px 24px',
-     border: 'none',
-     borderRadius: '8px',
-     maxWidth: '400px',
-     position: 'fixed',
-     boxShadow: '0px 6px 32px rgba(0, 0, 0, 0.08)',
-     display: showAlert ? 'block' : 'none',
-     fontSize: '0.875rem',
-     pointerEvents: 'auto',
-     transition: 'opacity 0.15s linear',
-     boxSizing: 'border-box',
-   }}
- >
+        <Stack
+          sx={{
+            left: "inherit",
+            right: 0,
+            top: "120px",
+            bottom: "inherit",
+            marginRight: "48px",
+            width: "400px",
+            opacity: showAlert ? 1 : 0,
+            zIndex: 11,
+            backgroundColor: "#eaf9e9",
+            padding: "16px 16px 16px 24px",
+            border: "none",
+            borderRadius: "8px",
+            maxWidth: "400px",
+            position: "fixed",
+            boxShadow: "0px 6px 32px rgba(0, 0, 0, 0.08)",
+            display: showAlert ? "block" : "none",
+            fontSize: "0.875rem",
+            pointerEvents: "auto",
+            transition: "opacity 0.15s linear",
+            boxSizing: "border-box",
+          }}
+        >
           <Alert severity="success">
             <AlertTitle>Success</AlertTitle>
-            <div style={{display:'block'}}>
-            <div style={{color:'#121212',marginRight:'18px',display:'block'}}>
-              <Typography variant="h6" sx={{fontWeight:400,lineHeight:1.5,fontSize:'16px'}}>
-              This job has been added to your <strong> Saved jobs</strong> 
-              </Typography>
+            <div style={{ display: "block" }}>
+              <div
+                style={{
+                  color: "#121212",
+                  marginRight: "18px",
+                  display: "block",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
+                >
+                  This job has been added to your <strong> Saved jobs</strong>
+                </Typography>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "20px",
+                  color: "#0e2eed",
+                  marginTop: "12px",
+                }}
+              >
+                <Link
+                  style={{ color: "#0e2eed", textDecoration: "none" }}
+                  to={"/my-jobs"}
+                >
+                  View list
+                </Link>
+              </div>
             </div>
-            <div style={{display:'flex',gap:'20px',color:'#0e2eed',marginTop:'12px'}}>
-              <Link style={{color:'#0e2eed',textDecoration:'none'}} to={'/my-jobs'}>View list</Link>
-            </div>
-
-            </div>
-     
-          
           </Alert>
         </Stack>
       )}
@@ -331,10 +357,7 @@ export default function JobDetails() {
                   >
                     Apply now
                   </Button>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    onClick={() => setFavorite((prev) => !prev)}
-                  >
+                  <div style={{ cursor: "pointer" }} onClick={handleSaveJob}>
                     {favorite ? (
                       <FavoriteIcon
                         fontSize="large"

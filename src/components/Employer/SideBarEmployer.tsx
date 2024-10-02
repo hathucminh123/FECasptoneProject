@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import classes from "./SideBarEmployer.module.css";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import SecurityIcon from "@mui/icons-material/Security";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
@@ -13,9 +13,16 @@ interface props {
 
 export default function SideBarEmployer({ open }: props) {
   const [drop, setDrop] = useState<boolean>(false);
+  const username = localStorage.getItem('name')
   const handleOpen = () => {
     setDrop(!drop);
   };
+  const navigate =useNavigate()
+
+
+  const handleNavigate=()=>{
+    navigate('/employer-verify/jobs/account')
+  }
   return (
     <nav
       className={` ${classes.nav}  `}
@@ -32,8 +39,8 @@ export default function SideBarEmployer({ open }: props) {
               </div>
               <div className={`${open ? classes.div5 : classes.div5Open} `}>
                 <span className={classes.span}>
-                  <Link to={"/"} className={classes.link1}>
-                    Ha Thuc Minh
+                  <Link to={"#"} className={classes.link1}>
+               {   username}
                   </Link>
                 </span>
                 <span className={classes.span1}>Employer</span>
@@ -45,6 +52,7 @@ export default function SideBarEmployer({ open }: props) {
                 className={`${
                   open ? classes.updateButton : classes.updateButtonOpen
                 } `}
+                onClick={handleNavigate}
               >
                 <i className={classes.i}>
                   {" "}

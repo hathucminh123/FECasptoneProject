@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./SignInPageEmployer.module.css";
 import Typography from "@mui/material/Typography";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import TextField from "@mui/material/TextField";
@@ -22,7 +22,7 @@ interface CustomJwtPayload extends JwtPayload {
   name: string;
 }
 
-export default function SignInPageEmployer() {
+export default function SignInPageJobSeekers() {
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
   const [isPasswordShowRegister, setIsPasswordShowRegister] =
     useState<boolean>(false);
@@ -34,6 +34,17 @@ export default function SignInPageEmployer() {
   // const navigate = useNavigate();
   // Error state management for registration form
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const auth = localStorage.getItem("Auth");
+  useEffect(() => {
+    if (auth) {
+      const from = location.state?.from || "/";
+
+      navigate(from);
+    }
+  }, [auth, location.state, navigate]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -50,7 +61,7 @@ export default function SignInPageEmployer() {
     lastName: "",
     password: "",
     confirmPassword: "",
-    role: 1,
+    role: 0,
   });
   const [islogin, setIsLogin] = useState({
     userName: "",
@@ -81,7 +92,6 @@ export default function SignInPageEmployer() {
     },
   });
 
-  const navigate = useNavigate();
   const {
     mutate: mutateLogin,
     isError: isLoginError,
@@ -96,18 +106,35 @@ export default function SignInPageEmployer() {
       console.log(userInfo);
       const userRole = userInfo.Role.toLowerCase();
       const userId = userInfo.UserId.toLowerCase();
-      const expiration = new Date();
       const userName = userInfo.name;
+      const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);
       const token = data.result;
-      if (userRole === "employer") {
+      const from = location.state?.from || "/";
+      const redirectStateString = localStorage.getItem("redirectState");
+      const redirectState = redirectStateString
+        ? JSON.parse(redirectStateString)
+        : {};
+
+      const redirectStateString1 = localStorage.getItem("redirectStateJob");
+      const redirectState1 = redirectStateString1
+        ? JSON.parse(redirectStateString1)
+        : {};
+      const combinedState = { ...redirectState, ...redirectState1 };
+       console.log('minhquala',combinedState)
+      const redirectPath = localStorage.getItem("redirectPath") || "/";
+      if (userRole === "jobseeker") {
         localStorage.setItem("Auth", "true");
         localStorage.setItem("name", userName);
         localStorage.setItem("role", userRole);
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+
+        // Combine both redirect states into one object
+
         localStorage.setItem("expiration", expiration.toISOString());
-        navigate("/employer-verify/jobs");
+
+        navigate(from !== "/" ? from : redirectPath, { state: combinedState });
       } else {
         setAlertMessage(true);
       }
@@ -184,7 +211,7 @@ export default function SignInPageEmployer() {
 
     if (Object.keys(newErrors).length === 0) {
       console.log("Form Submitted", formData);
-      mutate({ user: { ...formData, role: 1 } });
+      mutate({ user: { ...formData, role: 0 } });
     }
   };
 
@@ -230,7 +257,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    "Access denied. This page is for Employer account only."
+                    "Access denied. This page is for job seekers account only."
                   </Typography>
                 </div>
               </div>
@@ -276,7 +303,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    {error?.name || "failed to create an Employer Account"}
+                    {error?.name || "failed to create an Job Seeker Account"}
                   </Typography>
                 </div>
               </div>
@@ -322,7 +349,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    failed to Login Employer Account
+                    failed to Login Job Seeker Account
                   </Typography>
                 </div>
               </div>
@@ -618,7 +645,7 @@ export default function SignInPageEmployer() {
                       marginBottom: ".5rem",
                     }}
                   >
-                    Register for an Employer Account
+                    Register for an Job Seeker Account
                   </Typography>
                   <p style={{ marginTop: "0px", marginBottom: "1rem" }}>
                     Create an account now to recruit Top Programmers
