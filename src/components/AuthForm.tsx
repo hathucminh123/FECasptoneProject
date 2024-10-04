@@ -10,15 +10,15 @@ import {
   Link,
   useLocation,
   useNavigate,
-  useSearchParams,
+  // useSearchParams,
 } from "react-router-dom";
 
 export default function AuthForm() {
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const isLogin = searchParams.get("mode") === "login";
+  // const [searchParams] = useSearchParams();
+  // const isLogin = searchParams.get("mode") === "login";
   const auth = localStorage.getItem("auth");
   const redirectPath = localStorage.getItem("redirectPath");
   console.log("mememe", redirectPath);
@@ -77,11 +77,11 @@ export default function AuthForm() {
         gutterBottom
         sx={{ textAlign: "start", fontWeight: "bold", mb: 3 }}
       >
-        Welcome Back
+        Admin Portal Login
       </Typography>
       <Typography variant="body1" sx={{ textAlign: "start", mb: 3 }}>
-        By signing in, you agree to ITviec’s Terms & Conditions and Privacy
-        Policy in relation to your privacy information.
+        By signing in, you agree to the Admin Portal’s Terms & Conditions and
+        Privacy Policy regarding data management and user confidentiality.
       </Typography>
       <div className={classes.separator}>
         <span>or</span>
@@ -98,7 +98,7 @@ export default function AuthForm() {
         noValidate
         autoComplete="off"
       >
-        {!isLogin && (
+        {/* {!isLogin && (
           <TextField
             id="outlined-email-input"
             label="Your Name"
@@ -108,36 +108,31 @@ export default function AuthForm() {
             variant="outlined"
             sx={{ width: "100%" }}
           />
-        )}
+        )} */}
 
         <TextField
           id="outlined-email-input"
-          label="Email"
-          type="email"
+          label="Username"
+          type="text"
           required
-          autoComplete="email"
+          // autoComplete="email"
           variant="outlined"
           sx={{ width: "100%" }}
         />
 
-        {isLogin && (
-          <Typography
-            variant="body1"
-            sx={{
-              textAlign: "end",
-              color: "#0000FF",
-              fontWeight: 400,
-              "&:hover": { color: "#0e2eed" },
-            }}
-          >
-            <Link
-              to="/new"
-              style={{ textDecoration: "none", color: "inherit" }}
-            >
-              Forgot password?
-            </Link>
-          </Typography>
-        )}
+        <Typography
+          variant="body1"
+          sx={{
+            textAlign: "end",
+            color: "#0000FF",
+            fontWeight: 400,
+            "&:hover": { color: "#0e2eed" },
+          }}
+        >
+          <Link to="/new" style={{ textDecoration: "none", color: "inherit" }}>
+            Reset admin password?
+          </Link>
+        </Typography>
 
         <div style={{ position: "relative", width: "100%" }}>
           <span
@@ -162,7 +157,7 @@ export default function AuthForm() {
             sx={{ width: "100%" }}
           />
         </div>
-
+        {/* 
         {!isLogin && (
           <div style={{ position: "relative", width: "100%" }}>
             <span
@@ -187,7 +182,7 @@ export default function AuthForm() {
               sx={{ width: "100%" }}
             />
           </div>
-        )}
+        )} */}
         <Button
           variant="contained"
           color="primary"
@@ -195,9 +190,10 @@ export default function AuthForm() {
           sx={{ width: "100%", mt: 2, padding: 1.5 }}
           onClick={handleSignin}
         >
-          {isLogin ? "Sign In with Email" : "Sign Up with Email"}
+          {/* {isLogin ? "ADMIN LOGIN" : "Sign Up with Email"} */}
+          Admin Login
         </Button>
-        <div>
+        {/* <div>
           <Typography variant="body1" sx={{ textAlign: "center", mb: 3 }}>
             {isLogin ? " Do not have an account?" : "Already have an account?"}
 
@@ -209,7 +205,7 @@ export default function AuthForm() {
               {isLogin ? "Sign up now!" : "Sign In Now!"}
             </Link>
           </Typography>
-        </div>
+        </div> */}
       </Box>
     </Box>
   );

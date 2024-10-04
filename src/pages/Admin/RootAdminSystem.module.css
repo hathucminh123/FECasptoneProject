@@ -1,0 +1,27 @@
+.main{
+    margin-left: 64px;
+    min-width: 1076px;
+    min-height: calc(100vh + 1px);
+    padding-left: 0;
+    padding-top: 64px;
+    transition: all .3s ease-in-out;
+    height: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+.main1{
+    min-width: 1076px;
+    min-height: calc(100vh + 1px);
+    padding-left: 0;
+    padding-top: 64px;
+    margin-left: 260px;
+    transition: all .3s ease-in-out;
+    height: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div{
+    display: block;
+    box-sizing: border-box;
+}

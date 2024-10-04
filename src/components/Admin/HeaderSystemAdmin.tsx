@@ -1,14 +1,15 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import classes from "./HeaderSystemEmployer.module.css";
+import classes from "./HeaderSystemAdmin.module.css";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+// import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import Image from "./../../assets/image/logo.jpg.webp";
 import CreateIcon from "@mui/icons-material/Create";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
-import LogoutIcon from "@mui/icons-material/Logout";
+// import LogoutIcon from "@mui/icons-material/Logout";
 
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -40,13 +41,14 @@ const notifications = [
   },
 ];
 
-export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
+// export default function HeaderSystemAdmin({ setOpen, open, token }: props) {
+export default function HeaderSystemAdmin({ setOpen, open }: props) {
   const handleOpen = () => {
     if (setOpen) {
       setOpen(!open);
     }
   };
-  const [openProfile, setOpenProfile] = useState<boolean>(false);
+  //   const [openProfile, setOpenProfile] = useState<boolean>(false);
   const [readOpen, setReadOpen] = useState<{ [key: number]: boolean }>({});
   const [openModalNotification, setOpenModalNotification] =
     useState<boolean>(false);
@@ -69,16 +71,16 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
     setOpenModalNotification(false);
   };
 
-  const handleOpenProfile = () => {
-    setOpenProfile(!openProfile);
-  };
-const navigate =useNavigate()
-  const handleLogout =()=>{
-    // localStorage.removeItem('token');
-    // localStorage.removeItem('expiration');
-    localStorage.clear();
-    navigate('/employers/login')
-  }
+  //   const handleOpenProfile = () => {
+  //     setOpenProfile(!openProfile);
+  //   };
+  // const navigate =useNavigate()
+  //   const handleLogout =()=>{
+  //     localStorage.removeItem('token');
+  //     localStorage.removeItem('expiration');
+  //     localStorage.clear();
+  //     navigate('/employers/login')
+  //   }
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
@@ -91,15 +93,21 @@ const navigate =useNavigate()
         <div className={classes.div}>
           <ul className={classes.ul}>
             <li className={classes.li}>
-              <NavLink className={classes.navlink} to="create-jobs">
+              <NavLink className={classes.navlink} to="Account">
                 <CreateIcon className={classes.icon} />
-                Job Posts
+                User Manage
               </NavLink>
             </li>
             <li className={classes.li}>
-              <NavLink className={classes.navlink} to={"#"}>
+              <NavLink className={classes.navlink} to="JobPosting">
                 <CreateIcon className={classes.icon} />
-                Find CV
+                Manage job postings
+              </NavLink>
+            </li>
+            <li className={classes.li}>
+              <NavLink className={classes.navlink} to="Comment">
+                <CreateIcon className={classes.icon} />
+                Manage Reviews
               </NavLink>
             </li>
             <li className={classes.li} onClick={handleOpenNotification}>
@@ -177,7 +185,7 @@ const navigate =useNavigate()
               )}
             </li>
 
-            {Boolean(token) && (
+            {/* {Boolean(token) && (
               <li className={classes.li} onClick={handleOpenProfile}>
                 <NavLink className={classes.navlink2} to="#">
                   <div className={classes.div1}></div>
@@ -194,13 +202,15 @@ const navigate =useNavigate()
                   </div>
                 )}
               </li>
-            )}
-            {/* <li className={classes.li}>
-              <NavLink className={classes.navlink2} to={"/"}>
+            )} */}
+            <li className={classes.li}>
+              <NavLink className={classes.navlink2} to={"#"}>
                 <div className={classes.div1}></div>
-                <ArrowDropDownIcon sx={{ color: "white", marginLeft: ".57rem" }} />
+                <ArrowDropDownIcon
+                  sx={{ color: "white", marginLeft: ".57rem" }}
+                />
               </NavLink>
-            </li> */}
+            </li>
           </ul>
         </div>
       </nav>

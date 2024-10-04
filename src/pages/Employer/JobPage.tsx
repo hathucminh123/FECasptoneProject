@@ -8,11 +8,25 @@ import Typography from "@mui/material/Typography";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Tooltip from '@mui/material/Tooltip';
 import PauseIcon from '@mui/icons-material/Pause';
 import { useAppSelector } from "../../redux/hooks/hooks";
 // import Popover from "@mui/material/Popover";
+interface JobFormData {
+  id:string,
+  title: string,
+  selectedDate: Date|null,
+  count: number,
+  city: string,
+  district: string,
+  specificLocation:string,
+  skills: string[],
+  description: string,
+  requirements: string,
+  benefits: string,
+  selectedFile: File[],
+};
 
 export default function JobPage() {
   const dataa = ["All", "Approved", "Pending", "Failed"];
@@ -51,6 +65,14 @@ export default function JobPage() {
   //   },
   // ];
 
+
+const navigate = useNavigate();
+
+const handleNavigateDetail = (job: JobFormData) => {
+  navigate(`/employer-verify/jobs/jobDetail/${job.id}`, {
+    state: { job, id: job.id }, 
+  });
+};
   return (
     <div className={classes.main}>
       <div className={classes.div}>
@@ -293,7 +315,7 @@ export default function JobPage() {
                       className={classes.icon2}
                       // onMouseEnter={handleClick}
                       // onMouseLeave={handleClose}
-                      
+                      onClick={()=>handleNavigateDetail(job)}
                     >
                       <Tooltip title="Edit">
                       <ModeEditIcon

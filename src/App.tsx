@@ -45,6 +45,13 @@ import { tokenLoader } from "./utils/Auth";
 import { action as LogoutAction } from "./utils/logout";
 import EmployerProtectedRoute from "./components/Employer/EmployerProtectedRoute";
 import JobSeekerProtectedRoute from "./components/JobSeekerProtectedRoute";
+import SignInPage from "./pages/SignInPage";
+import RootAdminSystem from "./pages/Admin/RootAdminSystem";
+import ManageAccount from "./pages/Admin/ManageAccount";
+import ManageJobPosting from "./pages/Admin/ManageJobPosting";
+import EditableJobDetailPage from "./pages/Employer/JobDetails";
+import ManageComments from "./pages/Admin/ManageComments";
+import NotificationSystemAdmin from "./pages/Admin/NotificationSystemAdmin";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +62,7 @@ const router = createBrowserRouter([
       </JobSeekerProtectedRoute>
     ),
 
+    // element:<RootLayout/>,
     errorElement: <ErrorPage />,
     id: "root",
 
@@ -64,10 +72,7 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-      // {
-      //   path: "auth",
-      //   element: <SignInPage />,
-      // },
+
       {
         path: "new",
         element: <ForgotPassword />,
@@ -114,7 +119,7 @@ const router = createBrowserRouter([
         path: "my-jobs",
         element: (
           <ProtectedRoute>
-          <RootJobs />
+            <RootJobs />
           </ProtectedRoute>
         ),
         children: [
@@ -188,13 +193,17 @@ const router = createBrowserRouter([
     path: "/JobSeekers/login",
     element: <SignInPageJobSeekers />,
   },
+  {
+    path: "auth/Admin",
+    element: <SignInPage />,
+  },
 
   {
     path: "/employer-verify/jobs",
     element: (
       <EmployerProtectedRoute>
         <RootSystem />
-      </EmployerProtectedRoute>
+     </EmployerProtectedRoute>
     ),
     errorElement: <ErrorPage />,
     loader: tokenLoader,
@@ -245,6 +254,37 @@ const router = createBrowserRouter([
         path: "system-notification",
         element: <NotificationSystem />,
       },
+      {
+        path:"jobDetail/:id",
+        element:<EditableJobDetailPage/>
+      }
+    ],
+  },
+  {
+    path: "Admin",
+    element: <RootAdminSystem />,
+    errorElement: <ErrorPage />,
+    id: "root2",
+    children: [
+      {
+        path:'Account',
+        index:true,
+        element:<ManageAccount/>
+      },
+      {
+        path:'JobPosting',
+        // index:true,
+        element:<ManageJobPosting/>
+      },
+      {
+        path:'Comment',
+        // index:true,
+        element:<ManageComments/>
+      },
+      {
+         path:'Notification',
+          element:<NotificationSystemAdmin/>
+      }
     ],
   },
 ]);

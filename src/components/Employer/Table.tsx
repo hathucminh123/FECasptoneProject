@@ -6,7 +6,7 @@ interface TableProps {
   headers: string[]; // Array of headers for the table
   data: { [key: string]: string }[]; // Array of objects for each row
   onViewDetail?: (row: { [key: string]: string }) => void; // Optional function to handle "View Detail" click
-  customRenderers?: { [key: string]: (row: { [key: string]: string }) => React.ReactNode }; // Optional custom renderers for specific columns
+  customRenderers?: { [key: string]: (row: { [key: string]: string }) => React.ReactNode };
 }
 
 const Table: React.FC<TableProps> = ({ headers, data,  customRenderers }) => {

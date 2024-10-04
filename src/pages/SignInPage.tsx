@@ -15,7 +15,6 @@ const containerVariants = {
 };
 
 export default function SignInPage() {
-
   return (
     <div className={classes.container}>
       <AnimatePresence>
@@ -66,10 +65,10 @@ export default function SignInPage() {
               animate="visible"
               style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
             >
-              <TextFieldForm text="View salary to help you negotiate your offer or pay rise" />
-              <TextFieldForm text="Find out about benefits, interview, company culture via reviews" />
-              <TextFieldForm text="Easy apply with only 1 click" />
-              <TextFieldForm text="Manage your own profile & privacy" />
+              <TextFieldForm text="Manage job postings, user reviews, and salary data" />
+              <TextFieldForm text="Monitor user activity and handle complaints" />
+              <TextFieldForm text="Access advanced analytics and reports" />
+              <TextFieldForm text="Control platform settings and security configurations" />
             </motion.div>
           </Box>
         </motion.div>

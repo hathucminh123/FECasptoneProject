@@ -37,14 +37,14 @@ export default function SignInPageJobSeekers() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const auth = localStorage.getItem("Auth");
-  useEffect(() => {
-    if (auth) {
-      const from = location.state?.from || "/";
+  // const auth = localStorage.getItem("Auth");
+  // useEffect(() => {
+  //   if (auth) {
+  //     const from = location.state?.from || "/";
 
-      navigate(from);
-    }
-  }, [auth, location.state, navigate]);
+  //     navigate(from);
+  //   }
+  // }, [auth, location.state, navigate]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -121,7 +121,7 @@ export default function SignInPageJobSeekers() {
         ? JSON.parse(redirectStateString1)
         : {};
       const combinedState = { ...redirectState, ...redirectState1 };
-       console.log('minhquala',combinedState)
+      console.log("minhquala", combinedState);
       const redirectPath = localStorage.getItem("redirectPath") || "/";
       if (userRole === "jobseeker") {
         localStorage.setItem("Auth", "true");
@@ -531,7 +531,7 @@ export default function SignInPageJobSeekers() {
                           </div>
 
                           <TextField
-                            id="outlined-username-input"
+                            id="outlined-username-input-login" // Updated the id for login username input
                             label="Email | Username"
                             name="userName"
                             type="text"
@@ -671,7 +671,7 @@ export default function SignInPageJobSeekers() {
                         Username
                       </label>
                       <TextField
-                        id="outlined-username-input"
+                        id="outlined-username-input-register" // Updated the id for register username input
                         name="userName"
                         label="Username"
                         type="text"

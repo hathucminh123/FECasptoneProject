@@ -1,0 +1,71 @@
+.table {
+    margin-top: 1.6188rem !important;
+    margin-bottom: 1.14rem !important;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    border-radius: .214rem !important;
+    border: 0 !important;
+    background-color: #fff !important;
+    width: 100%;
+    color: #303235;
+    border-collapse: collapse;
+    box-sizing: border-box;
+    display: table;
+}
+
+.thead {
+    box-sizing: border-box;
+    display: table-header-group;
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.tr {
+    box-sizing: border-box;
+    display: table-row; /* Adjusted to work for both headers and body rows */
+    vertical-align: middle;
+    border-color: inherit;
+}
+
+.th {
+    border-right: 1px solid #e8edf2;
+    vertical-align: bottom;
+    padding: 16px;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    text-align: left; /* Adjusted alignment */
+    box-sizing: border-box;
+    color: #303235;
+    background-color: #f7f7f7; /* Add background for header cells */
+}
+.thsetting{
+    border-right: 1px solid #e8edf2;
+    vertical-align: bottom;
+    padding: 16px;
+    font-weight: 500 !important;
+    white-space: nowrap !important;
+    text-align: center; /* Adjusted alignment */
+    box-sizing: border-box;
+    color: #303235;
+    background-color: #f7f7f7;
+}
+.centered {
+    text-align: center !important; 
+    vertical-align: middle !important; 
+  }
+
+.td {
+    padding: 16px;
+    vertical-align: top;
+    border-top: 1px solid #e8edf2;
+    border-right: 1px solid #e8edf2;
+    box-sizing: border-box;
+    color: #303235;
+    text-align: left; 
+}
+
+.td:last-child,
+.th:last-child {
+    border-right: none; /* Remove the border for the last column */
+}
+
+
