@@ -151,3 +151,12 @@
    align-self: flex-end;
    gap:10px;
  }
+
+ .link {  
+  text-decoration: none;
+  color: black; 
+}
+
+.link:hover {
+  text-decoration: underline;
+}

@@ -7,52 +7,69 @@ import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
-import Button from "@mui/material/Button";
 import { renderButton } from "./RenderButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetJobPostById } from "../Services/JobsPost/GetJobPostById";
+import { fetchCVs } from "../Services/CVService/GetCV";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { message } from "antd";
+import { PostJobPostActivity } from "../Services/JobsPostActivity/PostJobPostActivity";
+
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState("");
+  const { JobId } = useParams();
 
-  const handleCoverLetterChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setCoverLetter(event.target.value);
-  };
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [state, setState] = React.useState({
-    form: false,
-    jason: false,
-    antoine: false,
+  const { data: jobData } = useQuery({
+    queryKey: ["Job-details", JobId],
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }),
+    enabled: !!JobId,
   });
-  // console.log("quao", state);
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
-  };
-  const handleUploadClick = () => {
-    if (selectedFile) {
-      // Thực hiện logic upload file, ví dụ gửi file lên server qua API
-      console.log("File to upload:", selectedFile);
-    } else {
-      console.log("No file selected");
-    }
-  };
+  const job = jobData?.JobPosts;
+  const [selectedCvId, setSelectedCvId] = useState<number | null>(null); // State để lưu ID CV được chọn
+
+  const { data: CVdata } = useQuery({
+    queryKey: ["CVs"],
+    queryFn: ({ signal }) => fetchCVs({ signal }),
+    staleTime: 5000,
+  });
+
+  const dataCVS = CVdata?.CVs || [];
+
   const navigate = useNavigate();
 
   const handleGoBack = () => {
     navigate(-1); // Quay lại trang trước đó
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+  const handleCVSelect = (cvId: number) => {
+    setSelectedCvId(cvId); // Lưu ID của CV được chọn
   };
-  const { form } = state;
-  //   const error = [gilad, jason, antoine].filter((v) => v).length !== 2;
+
+  const { mutate } = useMutation({
+    mutationFn: PostJobPostActivity,
+    onSuccess: () => {
+      message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+    },
+    onError: () => {
+      message.error("Failed to Apply CV.");
+    },
+  });
+
+  const handleSendCvApply = () => {
+    if (selectedCvId) {
+      mutate({
+        data: {
+          jobPostId: job?.id,
+          cvId: selectedCvId,
+        },
+      });
+    } else {
+      message.warning("Please select a CV to apply.");
+    }
+  };
+
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -70,13 +87,13 @@ export default function Apply() {
                       display: "flex",
                       color: "#fff",
                       textAlign: "center",
-                      cursor: "pointer", 
+                      cursor: "pointer",
                       padding: "10px",
                       borderRadius: "5px",
                       width: "100px",
-                      justifyContent: "center", 
+                      justifyContent: "center",
                     }}
-                    onClick={handleGoBack} 
+                    onClick={handleGoBack}
                   >
                     Back
                   </Typography>
@@ -106,7 +123,7 @@ export default function Apply() {
                   marginTop: "0px",
                 }}
               >
-                Fullstack Developer(REACTJS,.NET,NODEJS)
+                {job?.jobTitle}
               </Typography>
               <Box
                 component="form"
@@ -153,10 +170,14 @@ export default function Apply() {
                     </span>
                   </Typography>
                 </div>
-                <div style={{ display: "flex", flexDirection: "column" }}>
+
+                {dataCVS.map((cv) => (
                   <div
+                    key={cv.id}
                     className={`${
-                      form ? classes.formupload1 : classes.formupload
+                      selectedCvId === cv.id
+                        ? classes.formupload1
+                        : classes.formupload
                     }`}
                   >
                     <div className={classes.check}>
@@ -164,67 +185,44 @@ export default function Apply() {
                         <FormControlLabel
                           control={
                             <Checkbox
-                              checked={form}
-                              onChange={handleChange}
+                              checked={selectedCvId === cv.id}
+                              onChange={() => handleCVSelect(cv.id)}
                               name="form"
                             />
                           }
-                          label="Upload new CV"
+                          label="Use This CV"
                         />
                       </FormGroup>
                     </div>
                     <div className={classes.file}>
-                      <div className={classes.upload4}>
-                        <div className={classes.upload5}>
-                          <Box sx={{ textAlign: "start" }}>
-                            <Button
-                              variant="text"
-                              component="label"
-                              startIcon={<CloudUploadOutlinedIcon />}
-                              sx={{
-                                color: "blue",
-                                textTransform: "none",
-                                fontSize: "16px",
-                              }}
-                              onClick={handleUploadClick}
-                            >
-                              Upload
-                              <input
-                                type="file"
-                                hidden
-                                onChange={handleFileChange}
-                              />
-                            </Button>
-
-                            {selectedFile && (
-                              <Typography
-                                variant="body1"
-                                sx={{ marginTop: "10px" }}
-                              >
-                                Selected file: {selectedFile.name}
-                              </Typography>
-                            )}
-                          </Box>
+                      <div className={classes.upload5}>
+                        <div className={classes.filename}>
+                          <a
+                            href={cv.url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: "none", color: "blue" }}
+                            className={classes.a}
+                          >
+                            {cv.url}
+                          </a>
+                          <a
+                            href={cv.url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{ textDecoration: "none", color: "blue" }}
+                            className={classes.a}
+                          >
+                            <VisibilityIcon style={{ color: "blue" }} />
+                          </a>
                         </div>
                       </div>
-
-                      {!selectedFile && (
-                        <Typography
-                          variant="body1"
-                          sx={{
-                            marginTop: "4px",
-                            color: "#a6a6a6",
-                            fontSize: "14px",
-                            fontWeight: 400,
-                          }}
-                        >
-                          We accept .doc .docx, .pdf files, no password
-                          protected, up to 3MB
-                        </Typography>
-                      )}
                     </div>
                   </div>
-                </div>
+                ))}
+
                 <div className={classes.input}>
                   <Typography
                     variant="h3"
@@ -264,18 +262,16 @@ export default function Apply() {
                     What skills, work projects or achievements make you a strong
                     candidate?
                   </Typography>
-                  <Box component="form">
-                    <TextField
-                      id="description"
-                      variant="outlined"
-                      placeholder="Detail and specific examples will make your application stronger"
-                      multiline
-                      rows={6}
-                      value={coverLetter}
-                      onChange={handleCoverLetterChange}
-                      sx={{ width: "100%", height: "100%" }}
-                    />
-                  </Box>
+                  <TextField
+                    id="description"
+                    variant="outlined"
+                    placeholder="Detail and specific examples will make your application stronger"
+                    multiline
+                    rows={6}
+                    value={coverLetter}
+                    onChange={(e) => setCoverLetter(e.target.value)}
+                    sx={{ width: "100%", height: "100%" }}
+                  />
                   <Typography
                     variant="h4"
                     sx={{
@@ -292,9 +288,13 @@ export default function Apply() {
                   </Typography>
                 </div>
                 <div>
-                  {renderButton("Send my cv", "#ed1b2f", "contained", {
-                    width: "100%",
-                  })}
+                  {renderButton(
+                    "Send my cv",
+                    "#ed1b2f",
+                    "contained",
+                    { width: "100%" },
+                    handleSendCvApply // Gắn sự kiện onClick cho nút gửi CV
+                  )}
                 </div>
               </Box>
             </div>

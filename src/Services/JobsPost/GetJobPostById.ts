@@ -44,15 +44,17 @@ interface FetchError extends Error {
 
 interface signal{
   signal:AbortSignal
+  id:number
 }
 
-export const GetJobPost = async ({signal}:signal): Promise<{
-  JobPosts: JobPost[];
+export const GetJobPostById = async ({signal ,id}:signal): Promise<{
+  JobPosts: JobPost;
 }> => {
   try {
     const response = await httpClient.get({
-      url: apiLinks.JobPosts.GET,
-      signal:signal
+      url: `${apiLinks.JobPosts.GET}/Id/${id}`,
+      signal:signal,
+      params:{id}
     });
 
     if (response.status !== 200) {
@@ -66,10 +68,10 @@ export const GetJobPost = async ({signal}:signal): Promise<{
 
     const JobPost = response.data;
     return {
-      JobPosts: JobPost.result as JobPost[],
+      JobPosts: JobPost.result as JobPost,
     };
   } catch (error) {
-    console.error("Fetching SkillSet failed", error);
+    console.error("Fetching JobPost failed", error);
     throw error;
   }
 };

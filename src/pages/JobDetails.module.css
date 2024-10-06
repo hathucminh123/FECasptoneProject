@@ -21,11 +21,7 @@
   position: absolute;
   top: 0;
   height: 580px;
-  background: linear-gradient(
-    180deg,
-    #ff8243,
-    #ffd194
-  );
+  background: linear-gradient(180deg, #ff8243, #ffd194);
   border-radius: 0 0 70% 50%;
   z-index: -1;
 }
@@ -77,8 +73,6 @@
   justify-content: space-between;
 }
 
-
-
 .detail {
   width: 100%;
   border-bottom-left-radius: 8px;
@@ -95,7 +89,7 @@
   display: block;
 }
 
-.section{
+.section {
   margin-bottom: 24px !important;
   margin-top: 4px !important;
   box-sizing: border-box;
@@ -104,14 +98,14 @@
   color: #414042 !important;
 }
 
-.section1{
+.section1 {
   overflow: hidden !important;
   box-sizing: border-box;
   display: block;
   color: #414042 !important;
 }
 
-.section2{
+.section2 {
   grid-template-columns: repeat(3, 1fr);
   gap: 4px !important;
   align-items: center !important;
@@ -120,7 +114,7 @@
   color: #414042 !important;
 }
 
-.section3{
+.section3 {
   cursor: pointer;
   position: relative !important;
   box-sizing: border-box;
@@ -238,15 +232,14 @@
   border-radius: 8px;
 }
 
-.company1{
-display: flex;
-align-items: flex-start;
-text-align: left;
-flex-direction: row;
+.company1 {
+  display: flex;
+  align-items: flex-start;
+  text-align: left;
+  flex-direction: row;
 }
 
 .containercpn {
-
   margin-top: 24px !important;
   margin-left: 0px !important;
   margin-right: 0px !important;
@@ -260,43 +253,40 @@ flex-direction: row;
   padding-left: 0px !important;
   padding-right: 0px !important;
   flex: 0 0 auto;
-        width: 60%;
-        display: block;
-        box-sizing: border-box;
+  width: 60%;
+  display: block;
+  box-sizing: border-box;
 }
 
 .containerLeftcpn {
   padding-left: 0px !important;
   padding-right: 0px !important;
   flex: 0 0 auto;
-        width: 66.66666667%;
-        display: block;
-        box-sizing: border-box;
+  width: 66.66666667%;
+  display: block;
+  box-sizing: border-box;
 }
-
 
 .cardJob {
   --i-gutter-x: 1.5rem;
   --i-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
-  margin-top: calc(-1* var(--i-gutter-y));
-  margin-right: calc(-0.5* var(--i-gutter-x));
-  margin-left: calc(-0.5* var(--i-gutter-x));
+  margin-top: calc(-1 * var(--i-gutter-y));
+  margin-right: calc(-0.5 * var(--i-gutter-x));
+  margin-left: calc(-0.5 * var(--i-gutter-x));
 }
 @media (max-width: 768px) {
   .containerLeft {
     width: 100%;
     margin-bottom: 20px;
   }
-  .cardJob{
+  .cardJob {
     flex-direction: column;
   }
 }
 
-
-
-.alert{
+.alert {
   left: inherit;
   right: 0;
   top: 120px;
@@ -307,14 +297,59 @@ flex-direction: row;
   z-index: 11 !important;
   background-color: #eaf9e9;
   padding: 16px 16px 16px 24px;
-    border: none;
-    border-radius: 8px;
-    max-width: 400px;
-    position: fixed;
-    box-shadow: 0px 6px 32px rgba(0, 0, 0, .08);
-    display: none !important;
-    font-size: 0.875rem;
-    pointer-events: auto;
-    transition: opacity .15s linear;
-    box-sizing: border-box;
+  border: none;
+  border-radius: 8px;
+  max-width: 400px;
+  position: fixed;
+  box-shadow: 0px 6px 32px rgba(0, 0, 0, 0.08);
+  display: none !important;
+  font-size: 0.875rem;
+  pointer-events: auto;
+  transition: opacity 0.15s linear;
+  box-sizing: border-box;
+}
+
+.main {
+  margin-top: 16px !important;
+  box-sizing: border-box;
+  display: block;
+}
+
+.main1 {
+  border-bottom: 1px dashed #dedede;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  --i-gutter-x: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--i-gutter-y));
+  margin-right: calc(-0.5 * var(--i-gutter-x));
+  margin-left: calc(-0.5 * var(--i-gutter-x));
+  box-sizing: border-box;
+}
+
+.main2{
+  color: #a6a6a6 !important;
+  flex: 1 0 0%;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--i-gutter-x)* .5);
+  padding-left: calc(var(--i-gutter-x)* .5);
+  margin-top: var(--i-gutter-y);
+  box-sizing: border-box;
+  display: block;
+}
+
+
+.main3{
+  color: #121212 !important;
+  text-align: right !important;
+  flex: 1 0 0%;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--i-gutter-x)* .5);
+  padding-left: calc(var(--i-gutter-x)* .5);
+  margin-top: var(--i-gutter-y);
+  box-sizing: border-box;
+  display: block;
 }

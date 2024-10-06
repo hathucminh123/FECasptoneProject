@@ -138,3 +138,20 @@
     margin-bottom: 24px !important;
     display: block;
 }
+
+.filename{
+    /* margin-left: 36px !important; */
+    margin-top: 4px !important;
+    align-items: center !important;
+    display: flex !important;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+.a{
+    color: #0e2eed;
+    margin-right: 8px !important;
+    line-height: 1 !important;
+    text-decoration: none;
+    box-sizing: border-box;
+}

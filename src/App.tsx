@@ -80,11 +80,11 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       {
-        path: "jobs/detail/:id",
+        path: "jobs/detail/:JobId",
         element: <JobDetails />,
       },
       {
-        path: "company/detail/:id",
+        path: "company/detail/:CompanyId",
         element: <CompanyDetailRoot />,
         children: [
           {
@@ -160,7 +160,7 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "job/Apply",
+    path: "job/Apply/:JobId",
     element: (
       <ProtectedRoute>
         <Apply />

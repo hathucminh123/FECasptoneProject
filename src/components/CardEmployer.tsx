@@ -5,28 +5,44 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-// Khai báo kiểu dữ liệu cho Job và Company
-interface Job {
+interface BusinessStream {
   id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
+  businessStreamName: string;
+  description: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string; 
+  expiryDate: string; 
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: string | null; 
+  jobLocation: string | null; 
+  skillSets: string[];
 }
 
 interface Company {
   id: number;
-  name: string;
-  overview: {
-    title: string;
-    description: string;
-  };
-  jobs: Job[];
-  location: string;
-  jobOpeningsCount: number;
-  image: string;
+  companyName: string;
+  companyDescription: string;
+  websiteURL: string;
+  establishedYear: number;
+  country: string;
+  city: string;
+  address: string;
+  numberOfEmployees: number;
+  businessStream: BusinessStream;
+  jobPosts: JobPost[];
 }
 
 interface CardEmployerProps {
@@ -38,7 +54,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
 
   const handleNavigate = (data: Company) => {
     console.log("Navigating with data:", data);
-    navigate(`/company/detail/${data.id}`, { state: data });
+    navigate(`/company/detail/${data.id}`);
   };
 
   return (
@@ -60,8 +76,8 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
       </div>
       <div className={classes.image}>
         <img
-          src={data.image}
-          alt={`${data.name} logo`}
+          // src={data.jobPosts[0].imageURL}
+          alt={`${data.companyName} logo`}
           style={{ textAlign: "center" }}
         />
       </div>
@@ -84,14 +100,14 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
               mb: 0,
             }}
           >
-            {data.name} {/* Hiển thị tên công ty từ dữ liệu */}
+            {data.companyName} {/* Hiển thị tên công ty từ dữ liệu */}
           </Typography>
 
           <div className={classes.skillsContainer}>
             <div className={classes.skill1}>
-              {data.jobs.map((job) => (
+              {data.jobPosts.map((job) => (
                 <React.Fragment key={job.id}>
-                  {job.tags.map((tag, index) => (
+                  {job.skillSets.map((tag, index) => (
                     <Button
                       key={index}
                       sx={{
@@ -115,10 +131,10 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
         </div>
       </div>
       <div className={classes.location}>
-        <div className={classes.divlocation}>{data.location}</div>
+        <div className={classes.divlocation}>{data.address}, in {data.city} city</div>
         <div className={classes.divjob}>
           <span></span>
-          {data.jobOpeningsCount} jobs
+          {data.jobPosts.length} jobs
           <ArrowRightIcon
             sx={{
               width: "20px",

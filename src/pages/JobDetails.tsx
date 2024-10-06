@@ -10,10 +10,10 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 // import Image from "./../assets/image/minh.jpg";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 // import CardJob from "../components/CardJob";
-import { companyData, jobData } from "../assets/data/CompanyData";
+
 // import { compose } from "@reduxjs/toolkit";
 import useScrollToTop from "../hook/useScrollToTop";
 
@@ -27,42 +27,13 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import { view } from "../redux/slices/viewJob";
-interface Job {
-  id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
-  companyId?: number;
-  companyImage?: string;
-}
-interface Company {
-  id: number;
-  name: string;
-  overview: {
-    title: string;
-    description: string;
-  };
-  jobs: Job[];
-  location: string;
-  jobOpeningsCount: number;
-  image: string;
-}
-
-// interface Company {
-//   id: number;
-//   name: string;
-//   overview: {
-//     title: string;
-//     description: string;
-//   };
-//   jobs: Job[];
-//   location: string;
-//   jobOpeningsCount: number;
-//   image: string;
-// }
+import { useQuery } from "@tanstack/react-query";
+import { GetJobPostById } from "../Services/JobsPost/GetJobPostById";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import WorkIcon from "@mui/icons-material/Work";
+// import HourglassFullIcon from '@mui/icons-material/HourglassFull';
+// import VerifiedIcon from '@mui/icons-material/Verified';
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: #0d6efd;
@@ -72,30 +43,41 @@ const StyledLink = styled(Link)`
   }
 `;
 
-// interface Job {
-//   id: number;
-//   title: string;
-//   location: string;
-//   salary: string;
-//   tags: string[];
-//   postDate: string;
-//   hotTag: boolean;
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
+}
 
-// }
+interface JobLocation {
+  id: number;
+  district: string;
+  city: string;
+  postCode: string;
+  state: string;
+  country: string;
+  stressAddress: string;
+}
 
-// interface Company {
-//   id: number;
-//   name: string;
-//   overview: {
-//     title: string;
-//     description: string;
-//   };
-//   jobs: Job[];
-//   location: string;
-//   jobOpeningsCount: number;
-//   image: string; // New field for the company image
-// }
-
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType; // jobType là đối tượng JobType
+  jobLocation: JobLocation; // jobLocation là đối tượng JobLocation
+  skillSets: string[]; // Array of skill sets, có thể là array rỗng
+}
 export default function JobDetails() {
   useScrollToTop();
   const [favorite, setFavorite] = useState<boolean>(false);
@@ -103,13 +85,43 @@ export default function JobDetails() {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const applyRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
-  const { company } = location.state || {};
+  // const { company } = location.state || {};
   const auth = localStorage.getItem("Auth");
   const dispatch = useAppDispatch();
+  const { JobId } = useParams();
+  console.log("id", JobId);
+  const { data: jobData } = useQuery({
+    queryKey: ["Job-details", JobId],
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }), // Convert JobId to number
+    enabled: !!JobId, // Chỉ chạy query khi JobId có giá trị
+  });
 
-  const job: Job | null = location.state ?? null;
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const Companiesdata = Company?.Companies;
+
+  const job = jobData?.JobPosts;
+  const JobPostsdata = JobPosts?.JobPosts;
+  // const job: Job | null = location.state ?? null;
 
   // const job: Job | null = location.state ?? null;
   // const company: Company | null = location.state ?? null;
@@ -139,7 +151,6 @@ export default function JobDetails() {
       dispatch(remove(job.id));
     }
   }, [favorite, job, dispatch]);
-  const [detailsCompany, setDetailsCompany] = useState<Company | null>(company);
 
   const handleNavigateApply = () => {
     if (!auth) {
@@ -147,7 +158,7 @@ export default function JobDetails() {
         state: { from: window.location.pathname },
       });
     } else {
-      navigate("/job/Apply");
+      navigate(`/job/Apply/${job?.id}`);
     }
   };
 
@@ -160,23 +171,10 @@ export default function JobDetails() {
       setFavorite((prev) => !prev);
     }
   };
-  useEffect(() => {
-    if (!company && job) {
-      const foundCompany = companyData.find(
-        (item) => item.id === job.companyId
-      );
-      setDetailsCompany(foundCompany ?? null);
-    }
-  }, [company, job]);
-  // const foundCompany = companyData.find((item) => item.id === job.companyId);
-  // console.log('quao',foundCompany)
-  useEffect(() => {
-    console.log("jobkl", job);
-    console.log("company", detailsCompany);
-  }, [job, detailsCompany]);
-
-  console.log("quao ", detailsCompany);
-  const handleNavigateJob = (job: Job) => {
+  const detailsCompany = Companiesdata?.find(
+    (item) => item.id === job?.companyId
+  );
+  const handleNavigateJob = (job: JobPost) => {
     navigate(`/jobs/detail/${job.id}`, {
       state: job,
     });
@@ -300,7 +298,7 @@ export default function JobDetails() {
                     color: "#333",
                   }}
                 >
-                  {job?.title}
+                  {job?.jobTitle}
                 </Typography>
 
                 <Typography
@@ -314,7 +312,7 @@ export default function JobDetails() {
                     mb: 3,
                   }}
                 >
-                  {detailsCompany?.name}
+                  {detailsCompany?.companyName}
                 </Typography>
 
                 <div className={classes.money}>
@@ -434,7 +432,9 @@ export default function JobDetails() {
                         fontSize: "16px",
                       }}
                     >
-                      {detailsCompany?.location}
+                      {job?.jobLocation.stressAddress},{" "}
+                      {job?.jobLocation.district} , {job?.jobLocation.city} in{" "}
+                      {job?.jobLocation.country}
                     </Typography>
                   </div>
                   <div className={classes.time}>
@@ -458,7 +458,32 @@ export default function JobDetails() {
                         fontSize: "16px",
                       }}
                     >
-                      {job?.postDate}
+                      From: {job?.postingDate.slice(0, 10)} - To:{" "}
+                      {job?.expiryDate.slice(0, 10)}
+                    </Typography>
+                  </div>
+                  <div className={classes.location}>
+                    <WorkIcon
+                      fontSize="large"
+                      sx={{
+                        width: "16px",
+                        height: "16px",
+                        color: "#a6a6a6",
+                        mt: "10px",
+                      }}
+                    />
+                    <Typography
+                      variant="h5"
+                      gutterBottom
+                      sx={{
+                        alignItems: "start",
+                        fontWeight: 500,
+                        mt: "7px",
+                        color: " #414042 ",
+                        fontSize: "16px",
+                      }}
+                    >
+                      {job?.experienceRequired} years
                     </Typography>
                   </div>
                   <div className={classes.skill}>
@@ -475,7 +500,7 @@ export default function JobDetails() {
                     >
                       Skill :
                     </Typography>
-                    {job?.tags?.map((item: string) => (
+                    {job?.skillSets?.map((item: string) => (
                       <button key={item} className={classes.button}>
                         {item}
                       </button>
@@ -552,38 +577,7 @@ export default function JobDetails() {
                     lineHeight: 1.8,
                   }}
                 >
-                  About The Role Exciting opportunity for an enthusiastic Java
-                  Software Developer with at least 5 years of experience to join
-                  our CIS-P Team in Ho Chi Minh City. Take a key role in driving
-                  success as you collaborate with our team to provide enterprise
-                  CRM solutions to the utilities sector with key customers in
-                  Australia, Ireland, the USA, and Japan. About You You are an
-                  enthusiastic individual with proven experience and strong Java
-                  knowledge of J2EE, design patterns, core libraries, and
-                  frameworks such as Spring, Hibernate, and Java messaging
-                  frameworks. You possess a curious nature and thrive in diverse
-                  technical environments, where your skills in SQL, exposure to
-                  DevOps, and experience working in Linux environments are
-                  highly valued. You have a good command of English and
-                  Vietnamese communication with an eagerness to work with
-                  complicated business requirements and implementation to
-                  technical specifications. Key Responsibilities Design, code,
-                  and test software as part of the Agile team Update status and
-                  technical documents in Jira Troubleshoot and escalate issues
-                  Participate in an R&D program where we are using Docker,
-                  Kafka, Kubernetes Benefits and Perks Join us for a rewarding
-                  career with competitive compensation, leave entitlements,
-                  health coverage, and financial security. Enjoy work-life
-                  balance, growth, and recognition for your exceptional
-                  performance. Our team will unveil the intricacies of our
-                  benefits package during the selection process. Company
-                  Overview Hansen Technologies (ASX: HSN) is a global software
-                  and services provider, serving energy, water/utilities, and
-                  telecommunications industries. With customers in 80+
-                  countries, we foster collaboration across 36 international
-                  offices. From 5G advancements to renewable energy transitions,
-                  we empower customers to overcome challenges, innovate, and
-                  drive new business models.
+                  {job?.jobDescription}
                 </Typography>
               </div>
               <div style={{ borderBottom: "1px dashed #dedede" }}></div>
@@ -606,9 +600,9 @@ export default function JobDetails() {
                       color: "#121212",
                     }}
                   >
-                    Global Company- Develop Your Career & English
+                    {job?.qualificationRequired}
                   </li>
-                  <li
+                  {/* <li
                     style={{
                       fontSize: "16px",
                       fontWeight: 400,
@@ -677,7 +671,7 @@ export default function JobDetails() {
                     }}
                   >
                     Onsite opportunities
-                  </li>
+                  </li> */}
                 </ul>
               </div>
               <div style={{ borderBottom: "1px dashed #dedede" }}></div>
@@ -689,10 +683,20 @@ export default function JobDetails() {
                     lineHeight: "1.5",
                   }}
                 >
-                  Your skills and experience
+                  Benefits for joining us
                 </h2>
                 <ul style={{ paddingLeft: "18px", marginBottom: "1rem" }}>
-                  <li
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontSize: "16px",
+                      fontWeight: 400,
+                      lineHeight: 1.8,
+                    }}
+                  >
+                    {job?.benefits}
+                  </Typography>
+                  {/* <li
                     style={{
                       fontSize: "16px",
                       fontWeight: 400,
@@ -771,7 +775,7 @@ export default function JobDetails() {
                     }}
                   >
                     Onsite opportunities
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>
@@ -781,7 +785,7 @@ export default function JobDetails() {
               <div className={classes.company1}>
                 <img
                   style={{ width: "200px" }}
-                  src={detailsCompany.image}
+                  src={job?.imageURL}
                   alt="company image"
                 />
                 <div style={{ display: "block", paddingLeft: "12px " }}>
@@ -795,11 +799,11 @@ export default function JobDetails() {
                       textAlign: "left",
                     }}
                   >
-                    {detailsCompany.name}
+                    {detailsCompany.companyName}
                   </Typography>
                   <StyledLink
                     to={`/company/detail/${detailsCompany.id}`}
-                    state={detailsCompany}
+                    // state={detailsCompany}
                   >
                     View Company
                   </StyledLink>
@@ -811,8 +815,58 @@ export default function JobDetails() {
                   sx={{ fontSize: "16px", color: "#414042" }}
                 >
                   {" "}
-                  Vietnam's top quality company
+                 {detailsCompany?.companyDescription}
                 </Typography>
+              </div>
+              <div className={classes.main}>
+                <div className={classes.main1}>
+                  <div className={classes.main2}>
+                    Company EstablishedYear
+                  </div>
+                  <div className={classes.main3}>
+                    {detailsCompany?.establishedYear} 
+                  </div>
+                </div>
+              </div>
+              <div className={classes.main}>
+                <div className={classes.main1}>
+                  <div className={classes.main2}>
+                    Company WebSite
+                  </div>
+                  <div className={classes.main3}>
+                    {detailsCompany?.websiteURL} 
+                  </div>
+                </div>
+              </div>
+              <div className={classes.main}>
+                <div className={classes.main1}>
+                  <div className={classes.main2}>
+                    Company Country
+                  </div>
+                  <div className={classes.main3}>
+                    {detailsCompany?.country} 
+                  </div>
+                </div>
+              </div>
+              <div className={classes.main}>
+                <div className={classes.main1}>
+                  <div className={classes.main2}>
+                    Company Size
+                  </div>
+                  <div className={classes.main3}>
+                    {detailsCompany?.numberOfEmployees} employees
+                  </div>
+                </div>
+              </div>
+              <div className={classes.main}>
+                <div className={classes.main1}>
+                  <div className={classes.main2}>
+                    Company job Opening
+                  </div>
+                  <div className={classes.main3}>
+                    {detailsCompany?.jobPosts.length} Jobs 
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -834,15 +888,14 @@ export default function JobDetails() {
             More jobs for you
           </Typography>
           <div className={classes.cardJob}>
-            {jobData.map((job) => {
-              const companys = companyData.find(
+            {JobPostsdata?.map((job) => {
+              const companys = Companiesdata?.find(
                 (item) => item.id === job.companyId
               );
               return (
                 <CardJobDetails
                   key={job.id}
                   data={job}
-                  img={job.companyImage}
                   company={companys}
                   onclick={() => handleNavigateJob(job)} // Correct the event handler name
                 />

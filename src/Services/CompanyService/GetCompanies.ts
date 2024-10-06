@@ -48,10 +48,15 @@ interface FetchError extends Error {
   info?: Record<string, unknown>;
 }
 
-export const fetchCompanies = async (): Promise<{ Companies: Company[] }> => {
+interface signal{
+  signal:AbortSignal
+}
+
+export const fetchCompanies = async ({signal}:signal): Promise<{ Companies: Company[] }> => {
   try {
     const response = await httpClient.get({
       url: apiLinks.Company.GET,
+      signal:signal
     });
 
     if (response.status !== 200) {

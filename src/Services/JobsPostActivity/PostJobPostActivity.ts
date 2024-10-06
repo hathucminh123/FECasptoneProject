@@ -3,7 +3,7 @@ import { apiLinks } from "../mainService";
 
 
 interface JobPostActivity{
-    data: { [key: string]: string|number };
+    data: { [key: string]: string|number|undefined };
 }
 
 export const PostJobPostActivity = async ({ data }: JobPostActivity) => {

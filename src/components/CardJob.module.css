@@ -157,3 +157,13 @@
   align-self: flex-end;
   gap:10px;
 }
+
+/* Tạo file CSS hoặc sử dụng một CSS module */
+.link {
+  text-decoration: none;
+  color: black; 
+}
+
+.link:hover {
+  text-decoration: underline;
+}

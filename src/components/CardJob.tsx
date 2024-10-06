@@ -8,41 +8,75 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { Link } from "react-router-dom";
 
-interface Job {
+interface JobType {
   id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
+  name: string;
+  description: string;
+}
+
+interface JobLocation {
+  id: number;
+  district: string;
+  city: string;
+  postCode: string;
+  state: string;
+  country: string;
+  stressAddress: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType | string | null;
+  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  skillSets: string[];
+}
+
+interface BusinessStream {
+  id: number;
+  businessStreamName: string;
+  description: string;
 }
 
 interface Company {
   id: number;
-  name: string;
-  overview: {
-    title: string;
-    description: string;
-  };
-  jobs: Job[];
-  location: string;
-  jobOpeningsCount: number;
-  image: string;
+  companyName: string;
+  companyDescription: string;
+  websiteURL: string;
+  establishedYear: number;
+  country: string;
+  city: string;
+  address: string;
+  numberOfEmployees: number;
+  businessStream: BusinessStream;
+  jobPosts: JobPost[];
 }
 
 interface MyComponentProps {
   Maxwidth?: string;
   className?: string;
   formButton?: boolean;
-  data?: Job;
   img?: string;
+  data?: JobPost;
   company?: Company;
   onclick?: () => void;
   setShowAlert?: Dispatch<SetStateAction<boolean>>;
   setShowAlertt?: Dispatch<SetStateAction<boolean>>;
-  setUndoData?: Dispatch<SetStateAction<Job | null>>; // Hàm để lưu lại công việc khi undo
+  setUndoData?: Dispatch<SetStateAction<JobPost | null>>;
 }
 
 export default function CardJob({
@@ -50,10 +84,9 @@ export default function CardJob({
   className,
   formButton,
   data,
-  img,
   setShowAlert,
   setShowAlertt,
-  setUndoData, // Nhận thêm prop để lưu công việc khi xóa
+  setUndoData,
   company,
   onclick,
 }: MyComponentProps) {
@@ -73,19 +106,35 @@ export default function CardJob({
     e.stopPropagation();
     if (data) {
       if (favorite) {
-        dispatch(remove(data.id)); 
-        setShowAlert?.(true); 
-        setUndoData?.(data); 
+        dispatch(remove(data.id));
+        setShowAlert?.(true);
+        setUndoData?.(data);
       } else {
-        dispatch(add(data)); 
-        setShowAlertt?.(true); 
+        dispatch(add(data));
+        setShowAlertt?.(true);
       }
       setFavorite((prev) => !prev);
     }
   };
 
+  const getJobLocation = (
+    jobLocation: JobLocation | string | null | undefined
+  ): string => {
+    if (typeof jobLocation === "string") {
+      return jobLocation;
+    } else if (jobLocation === null) {
+      return "Location not specified";
+    } else {
+      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+    }
+  };
+
   return (
-    <div className={classes.card_main} onClick={onclick} style={{ cursor: 'pointer' }}>
+    <div
+      className={classes.card_main}
+      onClick={onclick}
+      style={{ cursor: "pointer" }}
+    >
       <div
         className={`${className ? className : classes.card_item}`}
         style={Maxwidth ? { maxWidth: Maxwidth } : {}}
@@ -102,25 +151,28 @@ export default function CardJob({
                   color: "#a6a6a6 !important",
                 }}
               >
-                {data?.postDate}
+                From: {data?.postingDate.slice(0, 10)} - To:{" "}
+                {data?.expiryDate.slice(0, 10)}
               </Typography>
             </div>
-            <Typography
-              variant="h5"
-              gutterBottom
-              sx={{
-                lineHeight: "1.5",
-                fontWeight: "bold",
-                color: "#121212",
-                marginTop: "12px !important",
-              }}
-            >
-              {data?.title}
-            </Typography>
+            <Link to={`jobs/detail/${data?.id}`} className={classes.link}>
+              <Typography
+                variant="h5"
+                gutterBottom
+                sx={{
+                  lineHeight: "1.5",
+                  fontWeight: "bold",
+                  color: "#121212",
+                  marginTop: "12px !important",
+                }}
+              >
+                {data?.jobTitle}
+              </Typography>
+            </Link>
             <div className={classes.logo}>
               <img
                 className={classes.image}
-                src={company ? company?.image : img}
+                src={data?.imageURL}
                 alt="image-job"
               />
               <Typography
@@ -132,11 +184,13 @@ export default function CardJob({
                   color: "#414042 !important",
                 }}
               >
-                {company?.name}
+                {company?.companyName}
               </Typography>
             </div>
             <div className={classes.money}>
-              <MonetizationOnOutlinedIcon sx={{ color: "#0ab305 !important" }} />
+              <MonetizationOnOutlinedIcon
+                sx={{ color: "#0ab305 !important" }}
+              />
               <Typography
                 variant="h6"
                 gutterBottom
@@ -165,12 +219,12 @@ export default function CardJob({
                   fontSize: "14px",
                 }}
               >
-                {data?.location}
+                {getJobLocation(data?.jobLocation)}
               </Typography>
             </div>
 
             <div className={classes.job}>
-              {data?.tags.map((tag, index) => (
+              {data?.skillSets.map((tag, index) => (
                 <button key={index} className={classes.button}>
                   {tag}
                 </button>
@@ -207,7 +261,7 @@ export default function CardJob({
                 </Button>
                 <div
                   style={{ cursor: "pointer" }}
-                  onClick={handleFavoriteClick} // Gọi hàm xử lý khi click yêu thích
+                  onClick={handleFavoriteClick}
                 >
                   {favorite ? (
                     <FavoriteIcon

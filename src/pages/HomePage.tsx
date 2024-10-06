@@ -5,9 +5,11 @@ import FormSearch from "../components/FormSearch";
 import CardService from "../components/CardService";
 import CardEmployer from "../components/CardEmployer";
 import CardJob from "../components/CardJob";
-import { companyData } from "../assets/data/CompanyData";
+
 import { useNavigate } from "react-router-dom";
-import { jobData } from "../assets/data/CompanyData";
+import { useQuery } from "@tanstack/react-query";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 
 const skillsColumns = [
   "Java",
@@ -19,18 +21,6 @@ const skillsColumns = [
   "Android",
   "iOS",
 ];
-
-interface Job {
-  id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
-  companyId?: number;
-  companyImage?: string;
-}
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -45,12 +35,40 @@ export default function HomePage() {
     }
   };
 
-  // Handling job navigation with job data
-  const handleNavigateJob = (job: Job) => {
-    navigate(`/jobs/detail/${job.id}`, {
-      state: job,
-    });
-  };
+  // Fetching Job Posts using React Query
+  const {
+    data: JobPosts,
+    isLoading: isJobLoading,
+    isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  // Fetching Companies using React Query
+  const {
+    data: Company,
+    isLoading: isCompanyLoading,
+    isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const JobPostsdata = JobPosts?.JobPosts;
+  const Companiesdata = Company?.Companies;
+
+  // Handle loading state
+  if (isJobLoading || isCompanyLoading) {
+    return <div>Loading...</div>;
+  }
+
+  // Handle error state
+  if (isJobError || isCompanyError) {
+    return <div>Error loading data...</div>;
+  }
 
   return (
     <>
@@ -161,7 +179,6 @@ export default function HomePage() {
                 title="CV Templates"
                 text="Generate professional IT CV with new templates - recommended by recruiters"
                 textButton="View templates"
-                // className={`${classes.card_shadow}`}
               >
                 <div className={classes.divne}></div>
               </CardService>
@@ -201,7 +218,7 @@ export default function HomePage() {
             </div>
 
             <div className={classes.card1}>
-              {companyData.map((company) => (
+              {Companiesdata?.map((company) => (
                 <CardEmployer key={company.id} data={company} />
               ))}
             </div>
@@ -232,17 +249,18 @@ export default function HomePage() {
               </Typography>
             </div>
             <div className={classes.cardJob}>
-              {jobData.map((job) => {
-                const companys = companyData.find(
+              {JobPostsdata?.map((job) => {
+                const company = Companiesdata?.find(
                   (item) => item.id === job.companyId
                 );
+                if (!company) {
+                  return null;
+                }
                 return (
                   <CardJob
                     key={job.id}
                     data={job}
-                    img={job.companyImage}
-                    company={companys}
-                    onclick={() => handleNavigateJob(job)} // Correct the event handler name
+                    company={company} 
                   />
                 );
               })}

@@ -15,7 +15,7 @@ export const apiLinks = {
       POST:`${baseURL}/Company`,
       GET:`${baseURL}/Company`,
       DELETE:`${baseURL}/Company`,
-      GetJobbyId:`${baseURL}/Company`,
+      GetCompaniesbyId:`${baseURL}/Company`,
     },
     JobPosts:{
       POST:`${baseURL}/JobPosts`,
