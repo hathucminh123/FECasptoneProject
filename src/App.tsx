@@ -52,6 +52,8 @@ import ManageJobPosting from "./pages/Admin/ManageJobPosting";
 import EditableJobDetailPage from "./pages/Employer/JobDetails";
 import ManageComments from "./pages/Admin/ManageComments";
 import NotificationSystemAdmin from "./pages/Admin/NotificationSystemAdmin";
+import CreateCompany from "./pages/Employer/CreateCompany";
+import ChooseCompany from "./pages/Employer/ChooseCompany";
 
 const router = createBrowserRouter([
   {
@@ -203,7 +205,7 @@ const router = createBrowserRouter([
     element: (
       <EmployerProtectedRoute>
         <RootSystem />
-     </EmployerProtectedRoute>
+      </EmployerProtectedRoute>
     ),
     errorElement: <ErrorPage />,
     loader: tokenLoader,
@@ -240,6 +242,16 @@ const router = createBrowserRouter([
             path: "company",
             element: <CompanyInfo />,
           },
+          {
+            path: "Choosecompany",
+            element: <CreateCompany />,
+            children:[
+              {
+                index:true,
+                element:<ChooseCompany/>
+              }
+            ]
+          },
         ],
       },
       {
@@ -255,9 +267,9 @@ const router = createBrowserRouter([
         element: <NotificationSystem />,
       },
       {
-        path:"jobDetail/:id",
-        element:<EditableJobDetailPage/>
-      }
+        path: "jobDetail/:id",
+        element: <EditableJobDetailPage />,
+      },
     ],
   },
   {
@@ -267,24 +279,24 @@ const router = createBrowserRouter([
     id: "root2",
     children: [
       {
-        path:'Account',
-        index:true,
-        element:<ManageAccount/>
+        path: "Account",
+        index: true,
+        element: <ManageAccount />,
       },
       {
-        path:'JobPosting',
+        path: "JobPosting",
         // index:true,
-        element:<ManageJobPosting/>
+        element: <ManageJobPosting />,
       },
       {
-        path:'Comment',
+        path: "Comment",
         // index:true,
-        element:<ManageComments/>
+        element: <ManageComments />,
       },
       {
-         path:'Notification',
-          element:<NotificationSystemAdmin/>
-      }
+        path: "Notification",
+        element: <NotificationSystemAdmin />,
+      },
     ],
   },
 ]);

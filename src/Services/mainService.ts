@@ -11,4 +11,62 @@ export const apiLinks = {
       login: `${baseURL}/Auth/login`,
       register:`${baseURL}/Auth/register`,
     },
+    Company:{
+      POST:`${baseURL}/Company`,
+      GET:`${baseURL}/Company`,
+      DELETE:`${baseURL}/Company`,
+      GetJobbyId:`${baseURL}/Company`,
+    },
+    JobPosts:{
+      POST:`${baseURL}/JobPosts`,
+      GET:`${baseURL}/JobPosts`,
+      PostJobPostsSkillset:`${baseURL}/JobPosts/SkillSet`,
+      // GetJobbyId:`${baseURL}/JobPosts`,
+      GetSeekerByJobPosts:`${baseURL}/JobPosts`,
+    },
+    CV:{
+      POST:`${baseURL}/CV`,
+      GET:`${baseURL}/CV/JobSeeker`,
+
+    },
+    EducationDetails:{
+      POST:`${baseURL}/EducationDetails`,
+      GET:`${baseURL}/EducationDetails`,
+    },
+    ExperienceDetail:{
+      POST:`${baseURL}/ExperienceDetail`,
+      GET:`${baseURL}/ExperienceDetail`,
+    },
+    SkillSet:{
+      POST:`${baseURL}/SkillSet`,
+      GET:`${baseURL}/SkillSet`,
+      DELETE:`${baseURL}/SkillSet`
+    },
+    JobLocation:{
+      POST:`${baseURL}/JobLocation`,
+      GET:`${baseURL}/JobLocation`,
+      DELETE:`${baseURL}/JobLocation`
+    },
+    JobPostActivity:{
+      POST:`${baseURL}/JobPostActivity`,
+      PUT:`${baseURL}/JobPostActivity`,
+      
+    },
+    JobType:{
+      POST:`${baseURL}/JobType`,
+      GET:`${baseURL}/JobType`,
+      DELETE:`${baseURL}/JobType`,
+    },
+    UserApply:{
+      GET:`${baseURL}/User/JobPostActivity`,
+      PUT:`${baseURL}/User`,
+    },
+    BusinessStream:{
+      POST:`${baseURL}/BusinessStream`,
+      GET:`${baseURL}/BusinessStream`,
+    }
+
+
+
+
 }

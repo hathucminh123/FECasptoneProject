@@ -3,15 +3,14 @@ import classes from "./CardProfile.module.css";
 
 import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-interface EducationDetail {
+interface ExperienceDetail {
   id: number;
-  name: string;
-  institutionName: string;
-  degree: string;
-  fieldOfStudy: string;
+  companyName: string;
+  position: string;
   startDate: string;
   endDate: string;
-  gpa: number;
+  responsibilities: string;
+  achievements: string;
 }
 
 interface form {
@@ -21,15 +20,15 @@ interface form {
   icon2?: JSX.Element;
   img?: string;
   onClick?: () => void;
-  data?: EducationDetail[];
+  data?: ExperienceDetail[];
 }
 
-export default function CardProfile({
+export default function CardExperience({
   title,
   text,
   icon,
-  icon2,
   img,
+  icon2,
   onClick,
   data,
 }: form) {
@@ -43,7 +42,6 @@ export default function CardProfile({
           >
             {title}
           </Typography>
-
           {data?.length ? (
             <div onClick={onClick} className={classes.mainab}>
               {icon2}
@@ -53,6 +51,9 @@ export default function CardProfile({
               {icon}
             </div>
           )}
+          {/* <div onClick={onClick} className={classes.mainab}>
+            {icon}
+          </div> */}
         </div>
         <div className={classes.separator}></div>
 
@@ -73,21 +74,45 @@ export default function CardProfile({
                         mb: 0,
                       }}
                     >
-                      {item?.fieldOfStudy}
+                      Position: {item?.position}
                     </Typography>
                     <div>
                       <DeleteIcon />
                     </div>
                   </div>
-                  <div className={classes.main6}>{item.name}</div>
+                  <div className={classes.main6}>
+                    Company: {item.companyName}
+                  </div>
 
                   {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
                   <div className={classes.main7}>
                     From: {item.startDate.slice(0, 10)} - To:{" "}
                     {item.endDate.slice(0, 10)}
                   </div>
-                  <div className={classes.main7}>{item.degree}</div>
-                  <div className={classes.main7}>{item.gpa}</div>
+                  {/* <div className={classes.main7}>{item.responsibilities}</div> */}
+                  {/* <div className={classes.main7}>{item.achievements}</div> */}
+                  <div
+                    className={classes.main7}
+                    dangerouslySetInnerHTML={{ __html: item.responsibilities }}
+                  />
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      lineHeight: 1.5,
+                      fontSize: "18px",
+                      color: "#121212",
+                      fontWeight: 700,
+                      mt: 0,
+                      mb: 0,
+                    }}
+                  >
+                    Project
+                  </Typography>
+
+                  <div
+                    className={classes.main7}
+                    dangerouslySetInnerHTML={{ __html: item.achievements }}
+                  />
                 </div>
               </div>
             </div>

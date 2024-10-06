@@ -1,0 +1,139 @@
+.main{
+    min-height: 110px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, .05098);
+    border-radius: 10px;
+    padding: .57rem !important;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+.main1{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.img{
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+    background-image: url("https://tuyendung.topcv.vn/images/letter-avatar/CG.png");
+    background-size: cover;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 125%;
+    margin-right: .57rem !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main2{
+    width: 59%;
+    color: #5e6368;
+    box-sizing: border-box;
+    display: block;
+}
+
+.p{
+    font-size: 14px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: .285rem !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main3{
+    display: flex !important;
+    box-sizing: border-box;
+    color: #5e6368;
+}
+
+.span1{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    color: #5e6368;
+}
+
+.span2{
+    margin: 5px 0;
+    box-sizing: border-box;
+    color: #5e6368;
+}
+
+.span3{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 12px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    color: #5e6368;
+}
+
+.p1{
+    font-size: 14px;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.span4{
+    background: #e8edf2;
+    padding: 3px 5px;
+    margin-right: 3px;
+    border-radius: 5px;
+    margin: 5px 0;    box-sizing: border-box;
+    font-size: 14px;
+    white-space: nowrap;
+    color: #5e6368;
+
+}
+
+.main4{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 21%;
+    text-align: right !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+}
+
+.button{
+    background-color: #ffd4c3;
+    color: #ff6f61;
+    min-width: 50px;
+    border-radius: 20px;
+    border: none;
+    font-size: 14px;
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: button;
+    text-transform: none;
+    overflow: visible;
+    font-family: inherit;
+    box-sizing: border-box;
+}

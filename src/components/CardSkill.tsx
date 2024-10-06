@@ -1,38 +1,64 @@
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-import classes from "./CardProfile.module.css";
-
-import React from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-interface EducationDetail {
+import { useMutation } from "@tanstack/react-query";
+import { message } from "antd";
+
+import { queryClient } from "../Services/mainService";
+import { DeleteSkillSet } from "../Services/SkillSet/DeleteSkillSet";
+import classes from "./CardSkill.module.css";
+
+interface SkillSet {
   id: number;
   name: string;
-  institutionName: string;
-  degree: string;
-  fieldOfStudy: string;
-  startDate: string;
-  endDate: string;
-  gpa: number;
+  shorthand: string;
+  description: string;
 }
 
-interface form {
+interface FormProps {
   title?: string;
   text?: string;
   icon?: JSX.Element;
   icon2?: JSX.Element;
   img?: string;
   onClick?: () => void;
-  data?: EducationDetail[];
+  data?: SkillSet[];
 }
 
-export default function CardProfile({
+export default function CardSkill({
   title,
   text,
   icon,
-  icon2,
   img,
+  icon2,
   onClick,
   data,
-}: form) {
+}: FormProps) {
+//   const navigate = useNavigate();
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const { mutate } = useMutation({
+    mutationFn: DeleteSkillSet,
+    onSuccess: () => {
+      // Invalidate and refetch the cache to ensure the UI is updated immediately
+      queryClient.invalidateQueries({
+        queryKey: ["SkillSetDetails"],
+        refetchType: "active", // Ensure an active refetch
+      });
+      message.success("SkillSet Details Deleted Successfully");
+      setDeletingId(null); 
+    },
+    onError: () => {
+      message.error("Failed to delete the skill set");
+      setDeletingId(null);
+    },
+  });
+
+  const handleDelete = (id: number) => {
+    setDeletingId(id);
+    mutate({ id });
+  };
+
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -43,7 +69,6 @@ export default function CardProfile({
           >
             {title}
           </Typography>
-
           {data?.length ? (
             <div onClick={onClick} className={classes.mainab}>
               {icon2}
@@ -57,8 +82,8 @@ export default function CardProfile({
         <div className={classes.separator}></div>
 
         {data?.length ? (
-          data.map((item, index) => (
-            <div key={index}>
+          data.map((item) => (
+            <div key={item.id}>
               <div className={classes.main3}>
                 <div className={classes.main4}>
                   <div className={classes.main5}>
@@ -73,21 +98,21 @@ export default function CardProfile({
                         mb: 0,
                       }}
                     >
-                      {item?.fieldOfStudy}
+                      Skill name: {item?.name}
                     </Typography>
-                    <div>
-                      <DeleteIcon />
-                    </div>
+                    {deletingId === item.id ? (
+                      <>Please wait a second...</> 
+                    ) : (
+                      <div style={{cursor:'pointer'}} onClick={() => handleDelete(item.id)}>
+                        <DeleteIcon />
+                      </div>
+                    )}
                   </div>
-                  <div className={classes.main6}>{item.name}</div>
-
-                  {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
-                  <div className={classes.main7}>
-                    From: {item.startDate.slice(0, 10)} - To:{" "}
-                    {item.endDate.slice(0, 10)}
-                  </div>
-                  <div className={classes.main7}>{item.degree}</div>
-                  <div className={classes.main7}>{item.gpa}</div>
+                  <div className={classes.main6}>Short Hand: {item.shorthand}</div>
+                  <div
+                    className={classes.main7}
+                    dangerouslySetInnerHTML={{ __html: item.description }}
+                  />
                 </div>
               </div>
             </div>
@@ -97,13 +122,12 @@ export default function CardProfile({
             {text}
           </Typography>
         )}
-
         <span className={classes.img}>
           <img
             style={{ width: "80px", height: "80px", verticalAlign: "middle" }}
             src={img}
             alt="custom image"
-          />{" "}
+          />
         </span>
       </div>
     </div>

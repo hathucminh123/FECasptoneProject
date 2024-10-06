@@ -18,7 +18,14 @@ import AboutMe from "../components/AboutMe";
 import Education from "../components/Education";
 import WorkExperience from "../components/WorkExperience";
 import PersonalProject from "../components/PersonalProject";
-import Certificates from "../components/Certificates";
+// import Certificates from "../components/Certificates";
+import { useQuery } from "@tanstack/react-query";
+import { fetchEducationDetails } from "../Services/EducationDetails/GetEducationDetails";
+import CardExperience from "../components/CardExperience";
+import { fetchExperienceDetails } from "../Services/ExperienceDetailService/GetExperienceDetail";
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CardSkill from "../components/CardSkill";
+import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 export default function Profilecv() {
   const [more, setMore] = useState<boolean>(false);
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
@@ -33,8 +40,8 @@ export default function Profilecv() {
   const [isCreatingNewChallenge4, setIsCreatingNewChallenge4] =
     useState<boolean>(false);
 
-    const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
-    useState<boolean>(false);
+    // const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
+    // useState<boolean>(false);
   console.log("why", isCreatingNewChallenge);
   function handleStartAddNewChallenge() {
     setIsCreatingNewChallenge(true);
@@ -44,9 +51,9 @@ export default function Profilecv() {
     setIsCreatingNewChallenge(false);
   }
 
-  function handleStartAddNewChallenge1() {
-    setIsCreatingNewChallenge1(true);
-  }
+  // function handleStartAddNewChallenge1() {
+  //   setIsCreatingNewChallenge1(true);
+  // }
 
   function handleDone1() {
     setIsCreatingNewChallenge1(false);
@@ -76,13 +83,13 @@ export default function Profilecv() {
     setIsCreatingNewChallenge4(false);
   }
 
-  function handleStartAddNewChallenge5() {
-    setIsCreatingNewChallenge5(true);
-  }
+  // function handleStartAddNewChallenge5() {
+  //   setIsCreatingNewChallenge5(true);
+  // }
 
-  function handleDone5() {
-    setIsCreatingNewChallenge5(false);
-  }
+  // function handleDone5() {
+  //   setIsCreatingNewChallenge5(false);
+  // }
 
 
   interface data {
@@ -104,6 +111,35 @@ export default function Profilecv() {
     setMore((prev) => !prev);
   };
 
+  const {data}=useQuery({
+    queryKey:['EducationDetails'],
+    queryFn:({signal})=>fetchEducationDetails({signal:signal}),
+    staleTime:5000,
+   
+
+  })
+  const {data:ExperienceData}=useQuery({
+    queryKey:['ExperienceDetails'],
+    queryFn:({signal})=>fetchExperienceDetails({signal:signal}),
+    staleTime:5000,
+   
+
+  })
+  const {data:SkillSetData}=useQuery({
+    queryKey:['SkillSetDetails'],
+    queryFn:({signal})=>GetSkillSets({signal:signal}),
+    staleTime:1000,
+   
+
+  })
+ 
+
+  const EducationData= data?.EducationDetails
+  // console.log('meme',data?.EducationDetails)
+ const ExperienceDatas =ExperienceData?.ExperienceDetails
+
+
+ const SkillSetDatas =SkillSetData?.SkillSets
   return (
     <div className={classes.icontainer}>
       <div className={classes.container}>
@@ -180,7 +216,7 @@ export default function Profilecv() {
                               },
                             }}
                           >
-                            About me
+                          Work Experience
                           </Typography>
                         </div>
                       </div>
@@ -248,12 +284,12 @@ export default function Profilecv() {
                                     },
                                   }}
                                 >
-                                  Add Certificates
+                                SkillsSet
                                 </Typography>
                               </div>
                             </div>
                           </div>
-                          <div className={classes.button1}>
+                          {/* <div className={classes.button1}>
                             <div className={classes.button2}>
                               <div className={classes.button3}>
                                 <div className={classes.iconadd}>
@@ -282,7 +318,7 @@ export default function Profilecv() {
                                 </Typography>
                               </div>
                             </div>
-                          </div>
+                          </div> */}
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -424,47 +460,55 @@ export default function Profilecv() {
               </div>
             </div>
           </div>
-          <CardProfile
+          {/* <CardProfile
             title="About Me"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge1}
-          />
+          /> */}
           <CardProfile
             title="Education"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
+            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge2}
+            data={EducationData}
           />
-          <CardProfile
+          <CardExperience
             title="Work Experience"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
+            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge3}
+            data={ExperienceDatas}
+
           />
-          <CardProfile
+          {/* <CardSkill
             title="Skills"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
+            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
             img="https://itviec.com/assets/profile/skill_no_info-02f56fa0a5b0ab2ae7d233ceac098f1102a4f774de22f70b0c81fd8e1fb9efbf.svg"
-          />
-          <CardProfile
-            title="Personal Project"
-            text="Highlight detailed information about your job history"
+          /> */}
+          <CardSkill
+           title="Skills"
+            text="Highlight Your skills Set"
+            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
             onClick={handleStartAddNewChallenge4}
+            data={SkillSetDatas}
           />
-          <CardProfile
+          {/* <CardProfile
             title="Certificates"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/certificate_no_info-26fedfa95c272adfe65f1136c3c04973002bea978cc21f91d04f7ce81caeda3f.svg"
             onClick={handleStartAddNewChallenge5}
-          />
+          /> */}
         </div>
       </div>
       <AnimatePresence>
@@ -486,9 +530,9 @@ export default function Profilecv() {
         {isCreatingNewChallenge4 && <PersonalProject onDone={handleDone4} />}
       </AnimatePresence>
 
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {isCreatingNewChallenge5 && <Certificates onDone={handleDone5} />}
-      </AnimatePresence>
+      </AnimatePresence> */}
     </div>
   );
 }

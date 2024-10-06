@@ -17,6 +17,7 @@ import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined
 import classes from "./ModalChildren.module.css";
 import Image from "./../assets/image/minh.jpg";
 
+
 interface Props {
   onDone?: () => void;
 }
@@ -69,6 +70,8 @@ export default function ModalChildren({ onDone }: Props) {
           : theme.typography.fontWeightMedium,
     };
   };
+
+
 
   return (
     <Modal title="Personal Details" onClose={onDone}>

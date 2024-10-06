@@ -1,0 +1,126 @@
+.main{
+box-sizing: border-box;
+display: block;
+}
+
+.main1{
+    border: 1px solid #e8edf2;
+    display: block;
+    border-top: 0 !important;
+    min-height: 1px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+}
+.form{
+
+}
+
+.main2{
+    flex-direction: row !important;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+.main3{
+    width: 90%;
+    position: relative;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.span{
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #a8afb6;
+    font-style: normal;
+    font-feature-settings: normal;
+    font-variant: normal;
+    text-rendering: auto;
+    box-sizing: border-box;
+    margin-top:5px;
+}
+
+.input{
+    padding-left: 2.375rem;
+    border-radius: 20px;
+    color: #000;
+    display: block;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    /* padding: .375rem .75rem; */
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #e8edf2;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.span1{
+    margin-left: .57rem !important;
+    box-sizing: border-box;
+}
+
+.button{
+    background: #ff6f61 ;
+    min-width: 100px;
+    font-size: 14px;
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    padding: .375rem .75rem;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    width: 100%;
+    height: calc(1.5em + .75rem + 2px);
+    -webkit-appearance: button;
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    border-radius: 20px;
+    border: none;
+    color: #fff;
+}
+
+.p{
+    margin-top: 0;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main4{
+
+    margin-bottom: 16px;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+.main5{
+    padding-right: 8px;
+    width: 50%;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main6{
+
+    padding-left: 8px;
+    width: 50%;
+    box-sizing: border-box;
+    display: block;
+}

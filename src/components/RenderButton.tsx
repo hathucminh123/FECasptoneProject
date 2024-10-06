@@ -7,9 +7,11 @@ export const renderButton = (
   color: string,
   variant: "contained" | "outlined",
   sxOverrides: Record<string, unknown> = {},
-  onClick?: () => void
+  onClick?: () => void,
+  disabled?:boolean
 ) => (
   <Button
+    disabled={disabled}
     onClick={onClick}
     variant={variant}
     size="large"

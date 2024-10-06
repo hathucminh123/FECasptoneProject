@@ -2,36 +2,29 @@ import React, { useState } from "react";
 import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import "react-quill/dist/quill.snow.css";
 import classes from "./PersonalProject.module.css";
 import TextField from "@mui/material/TextField";
-const months = [
-  { value: "January", label: "January" },
-  { value: "February", label: "February" },
-  { value: "March", label: "March" },
-  { value: "April", label: "April" },
-  { value: "May", label: "May" },
-  { value: "June", label: "June" },
-  { value: "July", label: "July" },
-  { value: "August", label: "August" },
-  { value: "September", label: "September" },
-  { value: "October", label: "October" },
-  { value: "November", label: "November" },
-  { value: "December", label: "December" },
-];
+import { message } from "antd";
+import { queryClient } from "../Services/mainService";
+import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 interface Props {
   onDone?: () => void;
 }
-const years = Array.from(new Array(50), (val, index) => index + 1970).map(
-  (year) => ({ value: year, label: year })
-);
+
 export default function PersonalProject({ onDone }: Props) {
-  const [value, setValue] = useState<string>("");
-  // const [valueProject, setValueProject] = useState<string>("");
+  // const [value, setValue] = useState<string>("");
+  const [formData, setFormData] = useState({
+    name: "",
+    shorthand: "",
+    description: "",
+  });
+
   const maxLength = 2500;
 
   // Strip HTML tags to count only text characters
@@ -41,10 +34,47 @@ export default function PersonalProject({ onDone }: Props) {
     return tmp.textContent || tmp.innerText || "";
   };
 
-  const remainingChars = maxLength - stripHTML(value).length;
+  const remainingChars = maxLength - stripHTML(formData.description).length;
+
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationFn: PostSkillSets,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["SkillSetDetails"] });
+      navigate("#");
+      setFormData({
+        name: "",
+        shorthand: "",
+        description: "",
+      });
+      onDone?.();
+      message.success("SkillSet Details Updated Successfully");
+    },
+    onError: () => {
+      message.error("Failed to update experience details");
+    },
+  });
+
+  const handleSubmit = () => {
+    // Perform validation and submit formData
+    if (!formData.name || !formData.shorthand || !formData.description) {
+      alert("Please fill in all fields.");
+      return;
+    }
+
+    mutate({
+      data: {
+        name: formData.name,
+        shorthand: formData.shorthand,
+        description: formData.description,
+      },
+    });
+    // Call your API or perform any action with the form data
+    console.log("Submitting:", formData);
+  };
+
   return (
-    <Modal title="Personal Project" onClose={onDone}>
-      {" "}
+    <Modal title="Skill Sets" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.tipContainer}>
@@ -60,117 +90,28 @@ export default function PersonalProject({ onDone }: Props) {
             <div className={classes.tipText}>
               <b>
                 <span className={classes.tipHighlight}>Tips: </span>
-                Share the project that relates to your skills and capabilities
+                You can share the project that relates to your skills and
+                capabilities
               </b>
             </div>
           </div>
 
           <div className={classes.form}>
+            {/* Project Name (name) */}
             <div className={classes.projectname}>
               <TextField
-                label="Project Name"
+                label="Skill Name"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 required
                 variant="outlined"
                 className={classes.inputGroup}
               />
             </div>
-            <div className={classes.date}>
-              <div className={classes.from}>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    lineHeight: 1.5,
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    mt: 0,
-                    mb: 0,
-                  }}
-                >
-                  Start Date
-                </Typography>
-                <div className={classes.startdate}>
-                  <TextField
-                    select
-                    label="From Month"
-                    required
-                    variant="outlined"
-                    className={classes.field}
-                  >
-                    {months.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </div>
-              </div>
-              <div className={classes.from1}>
-                <br></br>
-                <div className={classes.startyear}>
-                  <TextField
-                    select
-                    label="From Year"
-                    required
-                    variant="outlined"
-                    className={classes.field}
-                  >
-                    {years.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </div>
-              </div>
-              <div className={classes.to}>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    lineHeight: 1.5,
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    mt: 0,
-                    mb: 0,
-                  }}
-                >
-                  End Date
-                </Typography>
-                <div className={classes.enddate}>
-                  <TextField
-                    select
-                    label="From Month"
-                    required
-                    variant="outlined"
-                    className={classes.field}
-                  >
-                    {months.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </div>
-              </div>
-              <div className={classes.to1}>
-              <br></br>
-                <div className={classes.endyear}>
-            
-                  <TextField
-                    select
-                    label="to Year"
-                    required
-                    variant="outlined"
-                    className={classes.field}
-                  >
-                    {years.map((option) => (
-                      <MenuItem key={option.value} value={option.value}>
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </TextField>
-                </div>
-              </div>
-            </div>
+
+            {/* Short Description (shorthand) */}
             <div className={classes.description}>
               <div style={{ display: "block" }}>
                 <Typography
@@ -183,31 +124,44 @@ export default function PersonalProject({ onDone }: Props) {
                     mb: 0,
                   }}
                 >
-                  Short Description
+                  Short Hand
                 </Typography>
-                {/* <div className={classes.tipContainer}>
-                  <div className={classes.iconContainer}>
-                    <CreateOutlinedIcon
-                      sx={{
-                        width: "20px",
-                        height: "20px",
-                        color: "white",
-                      }}
-                    />
-                  </div>
-                  <div className={classes.tipText}>
-                    <b>
-                      <span className={classes.tipHighlight}>Tips: </span>
-                      Brief the company's industry, then detail your
-                      responsibilities and achievements. For projects, write on
-                      the "Project" field below.
-                    </b>
-                  </div>
-                </div> */}
+                <TextField
+                  label="shorthand"
+                  value={formData.shorthand}
+                  onChange={(e) =>
+                    setFormData({ ...formData, shorthand: e.target.value })
+                  }
+                  required
+                  variant="outlined"
+                  multiline
+                  rows={4}
+                  className={classes.inputGroup}
+                />
+              </div>
+            </div>
+
+            {/* Detailed Description (description) */}
+            <div className={classes.description}>
+              <div style={{ display: "block" }}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    lineHeight: 1.5,
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    mt: 0,
+                    mb: 0,
+                  }}
+                >
+                  Detailed Description
+                </Typography>
                 <ReactQuill
-                  value={value}
-                  onChange={setValue}
-                  placeholder="Enter your summary"
+                  value={formData.description}
+                  onChange={(value) =>
+                    setFormData({ ...formData, description: value })
+                  }
+                  placeholder="Enter your detailed description"
                   style={{ height: "300px", marginBottom: "16px" }}
                 />
                 <Typography
@@ -222,13 +176,12 @@ export default function PersonalProject({ onDone }: Props) {
                 </Typography>
               </div>
             </div>
-            <div className={classes.url}>
-              <TextField
-                label="Project URL"
-                required
-                variant="outlined"
-                className={classes.inputGroup}
-              />
+
+            {/* Submit Button */}
+            <div style={{ marginTop: "20px" }}>
+              {/* <button type="button" onClick={handleSubmit}>
+                Submit
+              </button> */}
             </div>
           </div>
         </div>

@@ -2,12 +2,17 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import classes from "./WorkExperience.module.css";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+// import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
+import { useMutation } from "@tanstack/react-query";
+import { PostExperienceDetails } from "../Services/ExperienceDetailService/PostExperienceDetail";
+import { queryClient } from "../Services/mainService";
+import { useNavigate } from "react-router-dom";
+import { message } from "antd";
+import classes from "./WorkExperience.module.css";
 
 interface Props {
   onDone?: () => void;
@@ -28,37 +33,106 @@ const months = [
   { value: "December", label: "December" },
 ];
 
-const years = Array.from(new Array(50), (val, index) => index + 1970).map(
+const years = Array.from(new Array(60), (val, index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
-export default function WorkExperience({ onDone }: Props) {
-  const [value, setValue] = useState<string>("");
-  const [valueProject, setValueProject] = useState<string>("");
-  const maxLength = 2500;
+const monthMap: { [key: string]: number } = {
+  January: 1,
+  February: 2,
+  March: 3,
+  April: 4,
+  May: 5,
+  June: 6,
+  July: 7,
+  August: 8,
+  September: 9,
+  October: 10,
+  November: 11,
+  December: 12,
+};
 
-  // Strip HTML tags to count only text characters
-  const stripHTML = (html: string) => {
-    const tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+export default function WorkExperience({ onDone }: Props) {
+  // const [value, setValue] = useState<string>("");
+  // const [valueProject, setValueProject] = useState<string>("");
+  const [formData, setFormData] = useState({
+    companyName: "",
+    position: "",
+    startMonth: "",
+    startYear: "",
+    endMonth: "",
+    endYear: "",
+    responsibilities: "",
+    achievements: "",
+  });
+
+  const navigate = useNavigate();
+  const { mutate, isPending } = useMutation({
+    mutationFn: PostExperienceDetails,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['ExperienceDetails'] });
+      navigate('#');
+      setFormData({
+        companyName: "",
+        position: "",
+        startMonth: "",
+        startYear: "",
+        endMonth: "",
+        endYear: "",
+        responsibilities: "",
+        achievements: "",
+      });
+      onDone?.();
+      message.success("Experience Details Updated Successfully");
+    },
+    onError: () => {
+      message.error("Failed to update experience details");
+    },
+  });
+
+  const handleSubmit = () => {
+    if (!formData.startYear || !formData.startMonth || !formData.endYear || !formData.endMonth) {
+      message.error("Please fill in all date fields");
+      return;
+    }
+
+    // Convert month and year into ISO date format
+    const startMonthNumber = monthMap[formData.startMonth];
+    const endMonthNumber = monthMap[formData.endMonth];
+
+    const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
+    const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
+
+    // Call mutation API with the form data
+    mutate({
+      data: {
+        companyName: formData.companyName,
+        position: formData.position,
+        startDate,
+        endDate,
+        responsibilities: formData.responsibilities,
+        achievements: formData.achievements,
+      },
+    });
   };
 
-  const remainingChars = maxLength - stripHTML(value).length;
-  const remainingCharsProject = maxLength - stripHTML(valueProject).length;
   return (
-    <Modal title="Work Experience" onClose={onDone}>
+    <Modal title="Work Experience" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>
             <TextField
-              label="Job title"
+              label="Company Name"
+              value={formData.companyName}
+              onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
               required
               variant="outlined"
               className={classes.inputGroup}
             />
             <TextField
-              label="Company"
+              label="Position"
+              value={formData.position}
+              onChange={(e) => setFormData({ ...formData, position: e.target.value })}
               required
               variant="outlined"
               className={classes.inputGroup}
@@ -69,6 +143,8 @@ export default function WorkExperience({ onDone }: Props) {
                 <TextField
                   select
                   label="From Month"
+                  value={formData.startMonth}
+                  onChange={(e) => setFormData({ ...formData, startMonth: e.target.value })}
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -82,6 +158,8 @@ export default function WorkExperience({ onDone }: Props) {
                 <TextField
                   select
                   label="From Year"
+                  value={formData.startYear}
+                  onChange={(e) => setFormData({ ...formData, startYear: e.target.value })}
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -99,6 +177,8 @@ export default function WorkExperience({ onDone }: Props) {
                 <TextField
                   select
                   label="To Month"
+                  value={formData.endMonth}
+                  onChange={(e) => setFormData({ ...formData, endMonth: e.target.value })}
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -112,6 +192,8 @@ export default function WorkExperience({ onDone }: Props) {
                 <TextField
                   select
                   label="To Year"
+                  value={formData.endYear}
+                  onChange={(e) => setFormData({ ...formData, endYear: e.target.value })}
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -124,108 +206,29 @@ export default function WorkExperience({ onDone }: Props) {
                 </TextField>
               </div>
             </div>
-            <div className={classes.description}>
-              <div style={{ display: "block" }}>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    lineHeight: 1.5,
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    mt: 0,
-                    mb: 0,
-                  }}
-                >
-                  Description
-                </Typography>
-                <div className={classes.tipContainer}>
-                  <div className={classes.iconContainer}>
-                    <CreateOutlinedIcon
-                      sx={{
-                        width: "20px",
-                        height: "20px",
-                        color: "white",
-                      }}
-                    />
-                  </div>
-                  <div className={classes.tipText}>
-                    <b>
-                      <span className={classes.tipHighlight}>Tips: </span>
-                      Brief the company's industry, then detail your
-                      responsibilities and achievements. For projects, write on
-                      the "Project" field below.
-                    </b>
-                  </div>
-                </div>
-                <ReactQuill
-                  value={value}
-                  onChange={setValue}
-                  placeholder="Enter your summary"
-                  style={{ height: "300px", marginBottom: "16px" }}
-                />
-                <Typography
-                  variant="body2"
-                  sx={{
-                    textAlign: "right",
-                    color: remainingChars < 0 ? "red" : "#a6a6a6",
-                    fontSize: "14px",
-                  }}
-                >
-                  {remainingChars} of 2500 characters remaining
-                </Typography>
-              </div>
-            </div>
 
             <div className={classes.description}>
-              <div style={{ display: "block" }}>
-                <Typography
-                  variant="h4"
-                  sx={{
-                    lineHeight: 1.5,
-                    fontSize: "16px",
-                    fontWeight: 600,
-                    mt: 0,
-                    mb: 0,
-                  }}
-                >
-               Project
-                </Typography>
-                <div className={classes.tipContainer}>
-                  <div className={classes.iconContainer}>
-                    <CreateOutlinedIcon
-                      sx={{
-                        width: "20px",
-                        height: "20px",
-                        color: "white",
-                      }}
-                    />
-                  </div>
-                  <div className={classes.tipText}>
-                    <b>
-                      <span className={classes.tipHighlight}>Tips: </span>
-                      Include project details, your role, technologies and team size.
-                    </b>
-                  </div>
-                </div>
-                <ReactQuill
-                  value={valueProject}
-                  onChange={setValueProject}
-                  placeholder="Enter your summary"
-                  style={{ height: "300px", marginBottom: "16px" }}
-                />
-                <Typography
-                  variant="body2"
-                  sx={{
-                    textAlign: "right",
-                    color: remainingCharsProject < 0 ? "red" : "#a6a6a6",
-                    fontSize: "14px",
-                  }}
-                >
-                  {remainingCharsProject} of 2500 characters remaining
-                </Typography>
-              </div>
+              <Typography variant="h6">Responsibilities</Typography>
+              <ReactQuill
+                value={formData.responsibilities}
+                onChange={(value) => setFormData({ ...formData, responsibilities: value })}
+                placeholder="Describe your responsibilities"
+                style={{height:200}}
+              />
+            </div>
+            <div className={classes.description}>
+              <Typography variant="h6">Achievements Project</Typography>
+              <ReactQuill
+                value={formData.achievements}
+                onChange={(value) => setFormData({ ...formData, achievements: value })}
+                placeholder="Describe your achievements Project"
+                style={{height:200}}
+              />
             </div>
           </div>
+          {/* <button type="button" onClick={handleSubmit}>
+            Submit
+          </button> */}
         </div>
       </Box>
     </Modal>
