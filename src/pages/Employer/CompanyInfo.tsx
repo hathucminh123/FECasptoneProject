@@ -8,6 +8,8 @@ import MultipleSelect from "../../components/Employer/MultipleSelect";
 import { jobSkills } from "../../assets/data/SkillData";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
+import { useQuery } from "@tanstack/react-query";
 
 const dataCompanySize: string[] = [
   "100-500",
@@ -30,7 +32,22 @@ export default function CompanyInfo() {
   const [address, setAddress] = useState<string>("");
   const [update, setUpdate] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const CompanyId = localStorage.getItem("CompanyId");
 
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const Companiesdata = Company?.Companies;
+  const CompanyEmployer = Companiesdata?.find(
+    (company) => company.id === Number(CompanyId)
+  );
+  console.log("quao", CompanyEmployer);
   const handleOpenUpdate = () => {
     setUpdate(!update);
   };
@@ -48,7 +65,7 @@ export default function CompanyInfo() {
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!companyName) newErrors.companyName= "Company Name is required";
+    if (!companyName) newErrors.companyName = "Company Name is required";
     if (!email || !email.includes("@"))
       newErrors.email = "A valid email is required";
     if (!selectSize) newErrors.selectSize = "Company Size is required";
@@ -164,9 +181,7 @@ export default function CompanyInfo() {
                             text="Employees"
                           />
                           {errors.selectSize && (
-                            <p className={classes.error}>
-                              {errors.selectSize}
-                            </p>
+                            <p className={classes.error}>{errors.selectSize}</p>
                           )}
                         </div>
                       </div>
@@ -310,9 +325,9 @@ export default function CompanyInfo() {
                     <div className={classes.div20}>
                       <div className={classes.img2}></div>
                       <div className={classes.div21}>
-                        <p className={classes.p1}>Công ty 4 thành viên</p>
+                        <p className={classes.p1}>{CompanyEmployer?.companyName}</p>
                         <p className={classes.p2}>
-                          FPT quận 9 Thành phố Hồ Chí Minh | 500 employees
+                          {CompanyEmployer?.address}, {" "} {CompanyEmployer?.city} | {CompanyEmployer?.numberOfEmployees} employees
                         </p>
                       </div>
                     </div>
@@ -337,13 +352,13 @@ export default function CompanyInfo() {
                         <div className={classes.div25}>
                           <div className={classes.div26}>Website Company:</div>
                           <div className={classes.div27}>
-                            hathucminh456@gmail.com
+                            {CompanyEmployer?.websiteURL}
                           </div>
                         </div>
                         <div className={classes.div25}>
                           <div className={classes.div26}>Company Size:</div>
                           <div className={classes.div27}>
-                            500-1000 Employees
+                            {CompanyEmployer?.numberOfEmployees} employees
                           </div>
                         </div>
                         <div className={classes.div25}>
@@ -355,11 +370,9 @@ export default function CompanyInfo() {
                     <div className={classes.div28}>
                       <div className={classes.div29}>
                         <div className={classes.div30}>
-                          <div className={classes.div31}>
-                            Company Address:
-                          </div>
+                          <div className={classes.div31}>Company Address:</div>
                           <div className={classes.div32}>
-                            quận 9 Lê Văn Việt Thủ Đức thành Phố Hồ Chí Minh
+                             {CompanyEmployer?.address}, {" "}   {CompanyEmployer?.city}
                           </div>
                         </div>
                         <div className={classes.div30}>
@@ -367,7 +380,7 @@ export default function CompanyInfo() {
                             Company Description:
                           </div>
                           <div className={classes.div32}>
-                            Công ty is so good
+                           {CompanyEmployer?.companyDescription}
                           </div>
                         </div>
                       </div>

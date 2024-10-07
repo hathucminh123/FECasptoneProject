@@ -109,3 +109,15 @@ position: relative;
     margin-bottom: 1.5rem !important;
     display: block !important;
 }
+
+.main1{
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+  
+
+}
+
+.main1:hover{
+    background-color: #ffd194;
+}

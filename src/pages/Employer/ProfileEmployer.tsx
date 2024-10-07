@@ -3,9 +3,11 @@ import classes from "./ProfileEmployer.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import { NavLink, Outlet } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
-import LockIcon from '@mui/icons-material/Lock';
-import ApartmentIcon from '@mui/icons-material/Apartment';
+import LockIcon from "@mui/icons-material/Lock";
+import ApartmentIcon from "@mui/icons-material/Apartment";
+
 export default function ProfileEmployer() {
+  const CompanyId = localStorage.getItem("CompanyId");
   const disappear: boolean = true;
   return (
     <div className={classes.main}>
@@ -27,7 +29,7 @@ export default function ProfileEmployer() {
                 <PersonIcon fontSize="small" sx={{ marginRight: "0.57rem" }} />
                 Personal Information
               </NavLink>
-                <NavLink
+              <NavLink
                 to="ChangePassord"
                 className={({ isActive }) =>
                   isActive ? classes.active : undefined
@@ -39,19 +41,22 @@ export default function ProfileEmployer() {
                 Change Password
               </NavLink>
               <NavLink
-                to="company"
+                to={CompanyId === "null" ? "Choosecompany"  : "company"}
                 className={({ isActive }) =>
                   isActive ? classes.active : undefined
                 }
                 end
               >
                 {" "}
-                <ApartmentIcon fontSize="small" sx={{ marginRight: "0.57rem" }} />
+                <ApartmentIcon
+                  fontSize="small"
+                  sx={{ marginRight: "0.57rem" }}
+                />
                 Company Information
               </NavLink>
             </div>
           </div>
-          <Outlet/>
+          <Outlet />
         </div>
       </div>
     </div>

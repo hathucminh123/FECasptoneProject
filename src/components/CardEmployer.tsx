@@ -43,6 +43,7 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
+  imageUrl:string
 }
 
 interface CardEmployerProps {
@@ -57,6 +58,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
     navigate(`/company/detail/${data.id}`);
   };
 
+  console.log('haha',data.imageUrl)
   return (
     <div className={classes.card_item} onClick={() => handleNavigate(data)}>
       <div style={{ textAlign: "center", display: "block" }}>
@@ -76,11 +78,13 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
       </div>
       <div className={classes.image}>
         <img
-          // src={data.jobPosts[0].imageURL}
+          src={data?.imageUrl}
           alt={`${data.companyName} logo`}
           style={{ textAlign: "center" }}
+          // className={classes.image}
         />
       </div>
+      
       <div className={classes.content}>
         <div
           style={{ display: "block", textAlign: "center", cursor: "pointer" }}

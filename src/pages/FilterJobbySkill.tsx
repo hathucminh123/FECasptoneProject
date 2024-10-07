@@ -12,46 +12,145 @@ import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import { Link, useNavigate } from "react-router-dom";
 import { TodoListSelector } from "../redux/selectorLogic/logicseacrh";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
-import { companyData } from "../assets/data/CompanyData";
+// import { companyData } from "../assets/data/CompanyData";
 import CardJobSearch from "../components/CardJobSearch";
 import { add, remove } from "../redux/slices/favoriteJob";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
-interface Job {
+import { RootState } from "../redux/store";
+// import { useCompanyAndJobData } from "../redux/selectorLogic/data";
+// import { setCompanies } from "../redux/slices/companyJobslice";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import moment from "moment";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { setCompanies, setJobPosts } from "../redux/slices/companyJobslice";
+
+import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+
+interface JobType {
   id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
-  companyId?: number;
-  companyImage?: string;
+  name: string;
+  description: string;
+}
+
+interface JobLocation {
+  id: number;
+  district: string;
+  city: string;
+  postCode: string;
+  state: string;
+  country: string;
+  stressAddress: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType | string | null;
+  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  skillSets: string[];
+}
+
+interface BusinessStream {
+  id: number;
+  businessStreamName: string;
+  description: string;
+}
+interface UserJobActivity {
+  id: number;
+  applicationDate: string;
+  status: string;
+  imageURL: string;
+  jobTitle: string;
+  userId: number;
+  jobPostId: number;
 }
 interface Company {
   id: number;
-  name: string;
-  overview: {
-    title: string;
-    description: string;
-  };
-  jobs: Job[];
-  location: string;
-  jobOpeningsCount: number;
-  image: string;
+  companyName: string;
+  companyDescription: string;
+  websiteURL: string;
+  establishedYear: number;
+  country: string;
+  city: string;
+  address: string;
+  numberOfEmployees: number;
+  businessStream: BusinessStream;
+  jobPosts: JobPost[];
 }
 
 export default function FilterJobbySkill() {
   const [favorite, setFavorite] = useState<boolean>(false);
-  const [jobDetails, setJobDetails] = useState<Job | null>(null);
+  const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
   const navigate = useNavigate();
   const auth = localStorage.getItem("Auth");
 
-  console.log("co len ", auth);
   const filteredJobs = useAppSelector(TodoListSelector);
+
+  console.log("dasd", filteredJobs);
+
+  const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
+  console.log("oke", dataa);
+
   const [detailsCompany, setDetailsCompany] = useState<Company | undefined>();
-  const [selectedJob, setSelectedJob] = useState<null | Job>(null);
+  const [selectedJob, setSelectedJob] = useState<null | JobPost>(null);
+  const [applied, setApplied] = useState<UserJobActivity | undefined>();
+  const dispatch = useAppDispatch();
+  const selectJobData = (state: RootState) => state.companyJobs.jobPosts;
+  console.log("hihi", selectJobData);
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: JobPostActivity,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPostActivity"],
+    queryFn: ({ signal }) => GetJobActivity({ signal: signal }),
+    staleTime: 5000,
+  });
+  const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
+  const JobPostsdata = JobPosts?.JobPosts;
+  const Companiesdata = Company?.Companies;
+  useEffect(() => {
+    if (Companiesdata || JobPostsdata) {
+      dispatch(setCompanies(Companiesdata || []));
+      dispatch(setJobPosts(JobPostsdata || []));
+
+      console.log("buon", Companiesdata);
+    }
+  }, [Companiesdata, JobPostsdata, dispatch]);
 
   useEffect(() => {
     if (filteredJobs.length > 0) {
@@ -62,10 +161,13 @@ export default function FilterJobbySkill() {
         const firstJob = filteredJobs[0];
         setJobDetails(firstJob);
         setSelectedJob(firstJob);
-
-        const foundCompany = companyData.find(
+        const hasAppliedJobActivity = JobPostActivitydata?.find(
+          (activity) => activity.jobPostId === firstJob?.id
+        );
+        const foundCompany = Companiesdata?.find(
           (item) => item.id === firstJob.companyId
         );
+        setApplied(hasAppliedJobActivity);
         setDetailsCompany(foundCompany);
       }
     } else {
@@ -73,7 +175,7 @@ export default function FilterJobbySkill() {
       setJobDetails(null);
       setDetailsCompany(undefined);
     }
-  }, [filteredJobs, selectedJob]);
+  }, [filteredJobs, selectedJob, Companiesdata]);
 
   const handleApplyClick = () => {
     if (!auth) {
@@ -81,16 +183,23 @@ export default function FilterJobbySkill() {
         state: { from: window.location.pathname },
       });
     } else {
-      navigate("/job/Apply");
+      navigate(`/job/Apply/${jobDetails?.id}`);
     }
   };
 
-  const handleOnclickDetails = (job: Job) => {
+  const handleOnclickDetails = (job: JobPost) => {
     setJobDetails(job);
     setSelectedJob(job);
 
-    const foundCompany = companyData.find((item) => item.id === job.companyId);
+    const foundCompany = Companiesdata?.find(
+      (item) => item.id === job.companyId
+    );
     setDetailsCompany(foundCompany);
+
+    const hasAppliedJobActivity = JobPostActivitydata?.find(
+      (activity) => activity.jobPostId === job?.id
+    );
+    setApplied(hasAppliedJobActivity);
   };
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const handleSaveJob = () => {
@@ -102,7 +211,7 @@ export default function FilterJobbySkill() {
       setFavorite((prev) => !prev);
     }
   };
-  const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (favorite && jobDetails) {
       dispatch(add(jobDetails));
@@ -117,6 +226,17 @@ export default function FilterJobbySkill() {
     }
   }, [favorite, jobDetails, dispatch]);
 
+  const getJobLocation = (
+    jobLocation: JobLocation | string | null | undefined
+  ): string => {
+    if (typeof jobLocation === "string") {
+      return jobLocation;
+    } else if (jobLocation === null) {
+      return "Location not specified";
+    } else {
+      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+    }
+  };
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -239,15 +359,25 @@ export default function FilterJobbySkill() {
                 <div className={classes.detail}>
                   <div className={classes.detailleft}>
                     {filteredJobs.map((job) => {
-                      const companys = companyData.find(
+                      const companys = Companiesdata?.find(
                         (item) => item.id === job.companyId
                       );
+                      // const hasAppliedJobActivity = filteredJobs?.some((job) =>
+                      //   JobPostActivitydata?.some(
+                      //     (activity) => job.id === activity.jobPostId
+                      //   )
+                      // );
+                      const hasAppliedJobActivity = JobPostActivitydata?.find(
+                        (activity) => activity.jobPostId === job?.id
+                      );
+
                       return (
                         <CardJobSearch
                           selectedJob={selectedJob}
                           key={job.id}
                           data={job}
-                          img={job.companyImage}
+                          applied={hasAppliedJobActivity}
+                          // img={job.companyImage}
                           company={companys}
                           onclick={() => handleOnclickDetails(job)}
                         />
@@ -260,7 +390,7 @@ export default function FilterJobbySkill() {
                         <div className={classes.apply1}>
                           <div className={classes.apply2}>
                             <img
-                              src={detailsCompany?.image}
+                              // src={detailsCompany?.image}
                               alt="Job"
                               style={{ width: "100px", height: "100px" }}
                             />
@@ -276,7 +406,7 @@ export default function FilterJobbySkill() {
                                   mb: 0,
                                 }}
                               >
-                                {jobDetails?.title}
+                                {jobDetails?.jobTitle}
                               </Typography>
                               <Typography
                                 variant="body1"
@@ -289,7 +419,7 @@ export default function FilterJobbySkill() {
                                   mb: 0,
                                 }}
                               >
-                                {detailsCompany?.name}
+                                {detailsCompany?.companyName}
                               </Typography>
                               <div className={classes.money}>
                                 <MonetizationOnOutlinedIcon
@@ -305,58 +435,70 @@ export default function FilterJobbySkill() {
                                     color: "#0ab305 !important",
                                   }}
                                 >
-                                  $4000
+                                  {jobDetails?.salary}
                                 </Typography>
                               </div>
                             </div>
                           </div>
-                          <div className={classes.button_icon}>
-                            <Button
-                              onClick={handleApplyClick}
-                              sx={{
-                                mt: 3,
-                                width: "90%",
-                                backgroundColor: "#ed1b2f",
-                                borderColor: "#ed1b2f",
-                                color: "#fff",
-                                borderRadius: "4px",
-                                fontSize: "16px",
-                                fontWeight: "bold",
-                                padding: "11px 24px",
-
-                                "&:hover": {
-                                  backgroundColor: "#C82222",
-                                  color: "white",
-                                },
-                              }}
-                            >
-                              Apply now
-                            </Button>
-                            <div
-                              style={{ cursor: "pointer" }}
-                              onClick={handleSaveJob}
-                            >
-                              {favorite ? (
-                                <FavoriteIcon
-                                  fontSize="large"
-                                  sx={{
-                                    color: "#ed1b2f !important",
-                                    marginTop: "20px",
-                                    mr: 2,
-                                  }}
-                                />
-                              ) : (
-                                <FavoriteBorderOutlinedIcon
-                                  fontSize="large"
-                                  sx={{
-                                    color: "#ed1b2f !important",
-                                    marginTop: "20px",
-                                    mr: 2,
-                                  }}
-                                />
-                              )}
+                          {applied ? (
+                            <div className={classes.jobapply}>
+                              <div className={classes.jobapply1}>
+                                <CheckCircleOutlineOutlinedIcon />
+                                Applied{" "}
+                                {moment(applied?.applicationDate).format(
+                                  "YYYY-MM-DD"
+                                )}
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            <div className={classes.button_icon}>
+                              <Button
+                                onClick={handleApplyClick}
+                                sx={{
+                                  mt: 3,
+                                  width: "90%",
+                                  backgroundColor: "#ed1b2f",
+                                  borderColor: "#ed1b2f",
+                                  color: "#fff",
+                                  borderRadius: "4px",
+                                  fontSize: "16px",
+                                  fontWeight: "bold",
+                                  padding: "11px 24px",
+
+                                  "&:hover": {
+                                    backgroundColor: "#C82222",
+                                    color: "white",
+                                  },
+                                }}
+                              >
+                                Apply now
+                              </Button>
+                              <div
+                                style={{ cursor: "pointer" }}
+                                onClick={handleSaveJob}
+                              >
+                                {favorite ? (
+                                  <FavoriteIcon
+                                    fontSize="large"
+                                    sx={{
+                                      color: "#ed1b2f !important",
+                                      marginTop: "20px",
+                                      mr: 2,
+                                    }}
+                                  />
+                                ) : (
+                                  <FavoriteBorderOutlinedIcon
+                                    fontSize="large"
+                                    sx={{
+                                      color: "#ed1b2f !important",
+                                      marginTop: "20px",
+                                      mr: 2,
+                                    }}
+                                  />
+                                )}
+                              </div>
+                            </div>
+                          )}
                         </div>
                         <hr
                           style={{
@@ -395,7 +537,35 @@ export default function FilterJobbySkill() {
                                     fontSize: "16px",
                                   }}
                                 >
-                                  {detailsCompany?.location}
+                                  {getJobLocation(jobDetails?.jobLocation)}
+                                  {/* {detailsCompany?.address} in{" "}
+                                  {detailsCompany?.city} */}
+                                </Typography>
+                              </div>
+                              <div className={classes.location}>
+                                <LocationOnOutlinedIcon
+                                  fontSize="large"
+                                  sx={{
+                                    width: "16px",
+                                    height: "16px",
+                                    color: "#a6a6a6",
+                                    mt: "10px",
+                                  }}
+                                />
+                                <Typography
+                                  variant="h5"
+                                  gutterBottom
+                                  sx={{
+                                    alignItems: "start",
+                                    fontWeight: 500,
+                                    mt: "7px",
+                                    color: " #414042 ",
+                                    fontSize: "16px",
+                                  }}
+                                >
+                                  {/* {getJobLocation(jobDetails?.jobLocation)} */}
+                                  {detailsCompany?.address} in{" "}
+                                  {detailsCompany?.city}
                                 </Typography>
                               </div>
                               <div className={classes.time}>
@@ -419,7 +589,14 @@ export default function FilterJobbySkill() {
                                     fontSize: "16px",
                                   }}
                                 >
-                                  {jobDetails?.postDate}
+                                  From{" "}
+                                  {moment(jobDetails?.postingDate).format(
+                                    "YYYY-MM-DD"
+                                  )}{" "}
+                                  To{" "}
+                                  {moment(jobDetails?.expiryDate).format(
+                                    "YYYY-MM-DD"
+                                  )}
                                 </Typography>
                               </div>
                               <div className={classes.skill}>
@@ -436,7 +613,7 @@ export default function FilterJobbySkill() {
                                 >
                                   Skill :
                                 </Typography>
-                                {jobDetails?.tags.map((item, index) => (
+                                {jobDetails?.skillSets.map((item, index) => (
                                   <button
                                     key={index}
                                     className={classes.button}
@@ -464,32 +641,20 @@ export default function FilterJobbySkill() {
                           <div className={classes.line}></div>
                           <Content
                             title="Job description"
-                            arraylist={[
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
-                            ]}
+                            arraylist={[jobDetails?.jobDescription]}
                           />
                           <div className={classes.line}></div>
                           <Content
                             title="Your skills and experience"
                             arraylist={[
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
+                              `Yêu cầu kinh nghiệm  ${jobDetails?.experienceRequired}`,
+                              jobDetails?.jobDescription,
                             ]}
                           />
                           <div className={classes.line}></div>
                           <Content
                             title="Why you'll love working here"
-                            arraylist={[
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Thiết kế cấu trúc ứng dụng",
-                              "Lập trình, phát triển các ứng dụng của Ngân hàng",
-                            ]}
+                            arraylist={[jobDetails?.benefits]}
                           />
                           <hr
                             style={{
@@ -522,7 +687,7 @@ export default function FilterJobbySkill() {
 
 interface ContentProps {
   title: string;
-  arraylist: string[];
+  arraylist: string[] | number[] | (string | number)[];
 }
 
 const Content = ({ title, arraylist }: ContentProps) => {

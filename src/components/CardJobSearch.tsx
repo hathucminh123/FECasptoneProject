@@ -4,40 +4,83 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Typography from "@mui/material/Typography";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { Link } from "react-router-dom";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import moment from "moment";
 
-interface Job {
+interface JobType {
   id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
-  companyId?: number;
-  companyImage?: string;
+  name: string;
+  description: string;
+}
+
+interface JobLocation {
+  id: number;
+  district: string;
+  city: string;
+  postCode: string;
+  state: string;
+  country: string;
+  stressAddress: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType | string | null;
+  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  skillSets: string[];
+}
+
+interface BusinessStream {
+  id: number;
+  businessStreamName: string;
+  description: string;
 }
 
 interface Company {
   id: number;
-  name: string;
-  overview: {
-    title: string;
-    description: string;
-  };
-  jobs: Job[];
-  location: string;
-  jobOpeningsCount: number;
-  image: string;
+  companyName: string;
+  companyDescription: string;
+  websiteURL: string;
+  establishedYear: number;
+  country: string;
+  city: string;
+  address: string;
+  numberOfEmployees: number;
+  businessStream: BusinessStream;
+  jobPosts: JobPost[];
+}
+interface UserJobActivity {
+  id: number;
+  applicationDate: string;
+  status: string;
+  imageURL: string;
+  jobTitle: string;
+  userId: number;
+  jobPostId: number;
 }
 interface MyComponentProps {
   Maxwidth?: string;
   className?: string;
   formButton?: boolean;
-  data?: Job;
+  data?: JobPost;
   img?: string;
   company?: Company;
   onclick?: () => void;
-  selectedJob?: null | Job;
+  selectedJob?: null | JobPost;
+  applied?: UserJobActivity;
 }
 
 export default function CardJobSearch({
@@ -46,8 +89,20 @@ export default function CardJobSearch({
   img,
   company,
   selectedJob,
+  applied,
 }: MyComponentProps) {
   console.log("cố lenasd", company);
+  const getJobLocation = (
+    jobLocation: JobLocation | string | null | undefined
+  ): string => {
+    if (typeof jobLocation === "string") {
+      return jobLocation;
+    } else if (jobLocation === null) {
+      return "Location not specified";
+    } else {
+      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+    }
+  };
   return (
     <div
       className={`  ${
@@ -75,7 +130,7 @@ export default function CardJobSearch({
               color: "#121212",
             }}
           >
-            {data?.title}
+            {data?.jobTitle}
           </Typography>
           <div className={classes.logo}>
             <img
@@ -102,7 +157,7 @@ export default function CardJobSearch({
                 }}
                 to={"/"}
               >
-                {company?.name}{" "}
+                {company?.companyName}{" "}
               </Link>
             </span>
           </div>
@@ -154,19 +209,25 @@ export default function CardJobSearch({
                 fontWeight: 400,
               }}
             >
-           {data?.location}
+              {getJobLocation(data?.jobLocation)}
             </span>
           </div>
           <div className={classes.skill}>
-            {data?.tags.map((item)=>(
-              
-            <button className={classes.button}>{item}</button>
+            {data?.skillSets.map((item) => (
+              <button className={classes.button}>{item}</button>
             ))}
             {/* <button className={classes.button}>asdasd</button>
             <button className={classes.button}>asdasd</button> */}
           </div>
         </div>
+
       </div>
+      {applied ? (
+          <div className={classes.main1}>
+            <CheckCircleOutlineOutlinedIcon />
+            Applied {moment(applied.applicationDate).format("YYYY-MM-DD")}
+          </div>
+        ) : undefined}
     </div>
   );
 }

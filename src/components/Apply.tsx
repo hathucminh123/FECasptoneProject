@@ -15,6 +15,7 @@ import { fetchCVs } from "../Services/CVService/GetCV";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { message } from "antd";
 import { PostJobPostActivity } from "../Services/JobsPostActivity/PostJobPostActivity";
+import { queryClient } from "../Services/mainService";
 
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState("");
@@ -47,10 +48,17 @@ export default function Apply() {
     setSelectedCvId(cvId); // Lưu ID của CV được chọn
   };
 
+
+
   const { mutate } = useMutation({
     mutationFn: PostJobPostActivity,
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["JobPostActivity"],
+        refetchType: "active", // Ensure an active refetch
+      });
       message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+      navigate(`/thankyou/${job?.id}`)
     },
     onError: () => {
       message.error("Failed to Apply CV.");

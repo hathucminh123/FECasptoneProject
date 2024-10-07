@@ -27,6 +27,7 @@ export const apiLinks = {
     CV:{
       POST:`${baseURL}/CV`,
       GET:`${baseURL}/CV/JobSeeker`,
+      DELETE:`${baseURL}/CV/JobSeeker`,
 
     },
     EducationDetails:{
@@ -60,6 +61,7 @@ export const apiLinks = {
     UserApply:{
       GET:`${baseURL}/User/JobPostActivity`,
       PUT:`${baseURL}/User`,
+      POST:`${baseURL}/User/Company`
     },
     BusinessStream:{
       POST:`${baseURL}/BusinessStream`,

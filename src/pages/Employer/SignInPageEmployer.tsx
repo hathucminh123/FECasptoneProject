@@ -20,6 +20,7 @@ interface CustomJwtPayload extends JwtPayload {
   Role: string;
   UserId: string;
   name: string;
+  CompanyId:string
 }
 
 export default function SignInPageEmployer() {
@@ -98,6 +99,7 @@ export default function SignInPageEmployer() {
       const userId = userInfo.UserId.toLowerCase();
       const expiration = new Date();
       const userName = userInfo.name;
+      const CompanyId=userInfo.CompanyId
       expiration.setHours(expiration.getHours() + 1);
       const token = data.result;
       if (userRole === "employer") {
@@ -106,6 +108,8 @@ export default function SignInPageEmployer() {
         localStorage.setItem("role", userRole);
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("CompanyId",CompanyId)
+
         localStorage.setItem("expiration", expiration.toISOString());
         navigate("/employer-verify/jobs");
       } else {

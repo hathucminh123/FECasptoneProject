@@ -39,6 +39,7 @@ interface BusinessStream {
     numberOfEmployees: number;
     businessStream: BusinessStream;
     jobPosts: JobPost[];
+    imageUrl:string
   }
   
 

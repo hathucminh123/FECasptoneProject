@@ -2,15 +2,57 @@ import React from "react";
 import classes from "./AppliedJob.module.css";
 import {
   FormControl,
-//   InputLabel,
+  //   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import CardJob from "../components/CardJob";
+// import CardJob from "../components/CardJob";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { useQuery } from "@tanstack/react-query";
+import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
+import CardApply from "../components/CardApply";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 export default function AppliedJob() {
   const [age, setAge] = React.useState("");
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: JobPostActivity,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPostActivity"],
+    queryFn: ({ signal }) => GetJobActivity({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const Companiesdata = Company?.Companies;
+  const JobPostsdata = JobPosts?.JobPosts;
+  const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
+
+  console.log("activity", JobPostActivitydata);
+  const appliedJobActivity = JobPostsdata?.find((job) =>
+    JobPostActivitydata?.some((activity) => job.id === activity.jobPostId)
+  );
+
+  console.log("sd", appliedJobActivity);
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string);
@@ -33,7 +75,7 @@ export default function AppliedJob() {
                     mb: 0,
                   }}
                 >
-                     Applied Jobs (0)
+                  Applied Jobs (0)
                 </Typography>
                 <div className={classes.sort}>
                   <Typography
@@ -70,9 +112,22 @@ export default function AppliedJob() {
               </div>
             </div>
             <div className={classes.job}>
-                <div className={classes.job1}>
-                    <CardJob className={classes.carditem} formButton={true}/>
-                </div>
+              <div className={classes.job1}>
+                {JobPostActivitydata?.map((activity) => {
+                  const companys = Companiesdata?.find(
+                    (item) => item.id === appliedJobActivity?.id
+                  );
+
+                  return (
+                    <CardApply
+                      company={companys}
+                      job={appliedJobActivity}
+                      activity={activity}
+                      key={activity.id}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>

@@ -170,6 +170,7 @@ export default function CompanyDetailRoot() {
             <div className={classes.container3}>
               <div style={{ paddingRight: "14px" }}>
                 <img
+                src={companyDataa?.imageUrl}
                   style={{ width: "200px" }}
                   alt={`Logo of ${companyDataa.companyName}`}
                 />

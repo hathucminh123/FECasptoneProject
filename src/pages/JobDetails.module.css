@@ -353,3 +353,32 @@
   box-sizing: border-box;
   display: block;
 }
+
+.main4{
+  border-radius: 4px;
+  padding: 8px !important;
+  background-color: #eaf9e9 !important;
+  align-items: center !important;
+  display: flex !important;
+  box-sizing: border-box;
+  color: #414042 !important;
+}
+
+.span{
+
+  padding-right: 8px !important;
+  color: #0ab305 !important;
+  line-height: 1 !important;
+  box-sizing: border-box;
+}
+
+.main5{
+  color: #121212 !important;
+  box-sizing: border-box;
+  display: block;
+}
+
+.span1{
+  box-sizing: border-box;
+  color: #121212 !important;
+}

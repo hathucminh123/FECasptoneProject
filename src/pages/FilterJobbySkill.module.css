@@ -202,3 +202,24 @@
 ul>li ::marker{
     color: red;
 }
+
+.jobapply{
+  border-radius: 4px;
+  margin-top: 16px !important;
+  margin-bottom: 12px !important;
+  padding-left: 12px !important;
+  padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    background-color: #eaf9e9 !important;
+    color: #121212 !important;
+    box-sizing: border-box;
+    display: block;
+}
+.jobapply1{
+  align-items: center !important;
+  gap: .5rem !important;
+  display: flex !important;
+  box-sizing: border-box;
+  color: #121212 !important;
+}
+

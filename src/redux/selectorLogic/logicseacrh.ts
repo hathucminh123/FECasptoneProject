@@ -1,11 +1,22 @@
 import { createSelector } from "reselect";
 import { RootState } from "../store";
-import { companyData, jobData } from "../../assets/data/CompanyData";
+
+
+
 
 // Helper function to remove accents and normalize strings
+interface JobLocation {
+  id: number;
+  district: string;
+  city: string;
+  postCode: string;
+  state: string;
+  country: string;
+  stressAddress: string;
+}
 const removeAccents = (str: string | null) => {
-  if (typeof str !== 'string') {
-    return '';
+  if (typeof str !== "string") {
+    return "";
   }
   return str
     .normalize("NFD")
@@ -17,35 +28,44 @@ const removeAccents = (str: string | null) => {
 
 // Selectors
 const selectSearch = (state: RootState) => state.search.search;
-const selectJobData = () => jobData;
-const selectCompanyData = () => companyData;
+const selectJobData = (state: RootState) => state.companyJobs.jobPosts;
+const selectCompanyData = (state: RootState) => state.companyJobs.companies;
 
 // Updated TodoListSelector
 export const TodoListSelector = createSelector(
   [selectJobData, selectSearch, selectCompanyData],
   (jobs, search, companies) => {
-    return jobs.filter((job) => {
- 
+    return jobs?.filter((job) => {
       const searchText = removeAccents(search.text || "");
 
       const matchesText = searchText
-        ? removeAccents(job.title).includes(searchText)
+        ? removeAccents(job?.jobTitle).includes(searchText)
         : true;
 
-      const company = companies.find((item) => item.id === job.companyId);
+      const company = companies?.find((item) => item.id === job.companyId);
 
-      // Check if company name matches the search text
       const matchCompanyName = company
-        ? removeAccents(company.name).includes(searchText)
+        ? removeAccents(company?.companyName).includes(searchText)
         : false;
 
       const matchSkill = searchText
-        ? job.tags.some((skill) => removeAccents(skill).includes(searchText))
+        ? job.skillSets.some((skill) => removeAccents(skill).includes(searchText))
         : false;
 
+      const getJobLocation = (
+        jobLocation: JobLocation | string | null | undefined
+      ): string => {
+        if (typeof jobLocation === "string") {
+          return jobLocation;
+        } else if (jobLocation === null) {
+          return "Location not specified";
+        } else {
+          return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+        }
+      };
 
       const matchesLocation = search.location
-        ? removeAccents(job.location || "").includes(
+        ? removeAccents(getJobLocation(job?.jobLocation) || "").includes(
             removeAccents(search.location)
           )
         : true;

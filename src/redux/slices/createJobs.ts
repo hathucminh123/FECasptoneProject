@@ -1,23 +1,45 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-interface JobFormData {
-  id:string,
-  title: string,
-  selectedDate: Date|null,
-  count: number,
-  city: string,
-  district: string,
-  specificLocation:string,
-  skills: string[],
-  description: string,
-  requirements: string,
-  benefits: string,
-  selectedFile: File[],
-};
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface JobLocation {
+  id: number;
+  district: string;
+  city: string;
+  postCode: string;
+  state: string;
+  country: string;
+  stressAddress: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string; 
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType; // jobType là đối tượng JobType
+  jobLocation: JobLocation; // jobLocation là đối tượng JobLocation
+  skillSets: string[]; // Array of skill sets, có thể là array rỗng
+}
+
 
 
 interface Job {
-    item: JobFormData[];
+    item: JobPost[];
   }
   
 
@@ -33,7 +55,7 @@ export const createJobSlice = createSlice({
     initialState,
     reducers: {
   
-      add: (state, action: PayloadAction<JobFormData>) => {
+      add: (state, action: PayloadAction<JobPost>) => {
         const jobExists = state.item.find((job) => job.id === action.payload.id);
         if (!jobExists) {
           state.item.push(action.payload);
@@ -41,7 +63,7 @@ export const createJobSlice = createSlice({
       },
   
       remove: (state, action: PayloadAction<string>) => {
-        state.item = state.item.filter((job) => job.id !== action.payload); 
+        state.item = state.item.filter((job) => job.id !== Number(action.payload)); 
       },
     },
   });

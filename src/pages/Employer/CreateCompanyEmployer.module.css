@@ -1,0 +1,496 @@
+.main1{
+    width: calc(100% - 230px);
+    border-radius: .214rem !important;
+    background-color: #fff !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.form{
+    box-sizing: border-box;
+    display: block;
+    margin-top: 0em;
+    word-wrap: break-word;
+}   
+
+.div{
+    display: block;
+    box-sizing: border-box;
+}
+
+.div1{
+    border-radius: calc(.25rem - 1px) calc(.25rem - 1px) 0 0;
+    font-weight: 500 !important;
+    border: 0 !important;
+    background-color: #fff !important;
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div2{
+    padding-top: .285rem !important;
+    min-height: 1px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div3{
+    padding: 1.14rem !important;
+    border: 1px solid #e8edf2 !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div4{
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+}
+
+.img{   
+    width: 72px;
+    height: 72px;
+    flex: 0 0 72px;
+    background-image: url("https://tuyendung.topcv.vn/images/letter-avatar/CT.png");
+    background-size: cover;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 125%;
+    margin-right: .57rem !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.img1{
+    box-sizing: border-box;
+    display: block;
+}
+
+.button{
+    cursor: pointer;
+    background: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-size: 32px;
+    background-color: #868d94;
+    transform: translate(-30px, 45px);
+    padding: 0;
+    border-radius: 50%;
+    white-space: nowrap;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: button;
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+
+ .div5{
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+ }
+
+ .p{
+    transform: translate(-10px, 5px);
+    
+    margin-top: 0;
+    margin-bottom: 1rem;
+    box-sizing: border-box; 
+ }
+
+ .div6{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+ }
+
+ .div7{
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+ }
+
+ .div8{
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+    display: block;
+
+ }
+
+ .div33{
+margin-top: 10px;
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+ }
+
+ .label{
+    color: #5e6368;
+    display: inline-block;
+    margin-bottom: .5rem;
+    box-sizing: border-box;
+    cursor: default;
+ }
+
+ .span{
+    margin-left: 3px;
+    color: #da4538;
+    font-weight: 400 !important;
+    box-sizing: border-box;
+    cursor: default;
+ }
+
+ .div9{
+    display: block;
+    box-sizing: border-box;
+ }
+
+ .div10{
+    margin-left: auto !important;
+    position: relative !important;
+    box-sizing: border-box;
+    display: block;
+ }
+
+ .div11{
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+ }
+
+ .quill_editor {
+    height: 300px; /* Đặt chiều cao bạn muốn */
+    margin-bottom: 16px;
+  }
+  
+  .quill-editor .ql_container {
+    height: 100%; /* Đảm bảo phần nội dung bên trong cũng chiếm đủ không gian */
+  }
+  
+  .quill_editor .ql_toolbar {
+    background: #f5f5f5;
+  }
+
+  .div12{
+    justify-content: flex-end !important;
+    display: flex !important;
+    flex: 0 0 100%;
+    max-width: 100%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+  }
+
+  .button1{
+    cursor: pointer;
+    min-width: 100px;
+    font-size: 14px;    
+    color: #303235;
+    background: #f5f8fa;
+    white-space: nowrap;
+    border-radius: 5px;
+    margin-right: .57rem !important;
+    border-color: #e8edf2;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: button;
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+
+  .button2{
+    cursor: pointer;
+    min-width: 100px;
+    font-size: 14px;    
+    color: white;
+    background: #FF6F61;
+    white-space: nowrap;
+    border-radius: 5px;
+    margin-right: .57rem !important;
+    border-color: #FF6F61;
+    display: inline-block;
+    font-weight: 400;
+    text-align: center;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    padding: .375rem .75rem;
+    line-height: 1.5;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -webkit-appearance: button;
+    text-transform: none;
+    overflow: visible;
+    margin: 0;
+    font-family: inherit;
+    box-sizing: border-box;
+  }
+
+  .div13{
+    padding-top: .285rem !important;
+    min-height: 1px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div14{
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div15{
+    padding: 1.14rem !important;
+    margin-bottom: 1.14rem !important;
+    justify-content: space-between !important;
+    display: flex !important;
+
+    border: 1px solid #e8edf2 !important;
+    box-sizing: border-box;
+  }
+
+  .div16{
+    font-weight: 600;
+    box-sizing: border-box; 
+    display: block;
+  }
+
+  .div17{
+    background-color: #FF6F61;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div18{
+    border: 1px solid #e8edf2 !important;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div19{
+    border-bottom: 1px solid #e8edf2;
+    padding: 1.14rem !important;
+    margin-bottom: .57rem !important;
+    justify-content: space-between !important;
+    display: flex !important;
+
+    box-sizing: border-box;
+  }
+
+  .div20{
+    display: flex !important;
+    box-sizing: border-box;
+    align-items: center;
+    
+
+  }
+
+  .img2{
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    background-image: url("https://tuyendung.topcv.vn/app/_nuxt/img/noavatar-2.18f0212.svg");
+    background-size: cover;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 125%;
+    margin-right: 1.14rem !important;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div21{
+    display: block;
+    box-sizing: border-box;
+  }
+
+  .p1{
+    font-weight: 600;
+    margin-bottom: .285rem !important;
+    margin-top: 0;
+    box-sizing: border-box;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+  }
+
+  .p2{
+    color: #5e6368 !important;
+    margin-bottom: 0 !important;
+    margin-top: 0;
+    box-sizing: border-box;
+    display: block;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    unicode-bidi: isolate;
+  }
+
+  .div22{
+    padding-left: 1.14rem !important;
+    padding-right: 1.14rem !important;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .div23{
+    margin-top: 1.14rem !important;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+  }
+  .div24{
+    flex: 0 0 50%;
+    max-width: 50%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+  }
+
+.div25{
+    margin-bottom: .57rem !important;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+}
+
+.div26{
+    color: #5e6368 !important;
+    font-weight: 500 !important;
+    flex: 0 0 41.6666666667%;
+    max-width: 41.6666666667%;
+    position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+}
+
+.div27{
+    flex: 0 0 58.3333333333%;
+    max-width: 58.3333333333%;
+    position: relative;
+
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div28{
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+}
+
+.div29{
+    flex: 0 0 100%;
+        max-width: 100%;
+        position: relative;
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.div30{
+
+    margin-bottom: .57rem !important;
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing: border-box;
+}
+
+.div31{
+    width: 20.8333%;
+    flex: 0 0 20.8333%;
+    max-width: 20.8333%;
+    color: #5e6368 !important;
+    font-weight: 500 !important;
+    position: relative;
+   box-sizing: border-box;
+    padding-right: 15px;
+    padding-left: 15px;
+    display: block;
+}
+
+.div32{
+    width: 79.1667%;
+    flex: 0 0 79.1667%;
+    max-width: 79.1667%;
+    position: relative;
+  display: block;
+    box-sizing: border-box;
+    padding-right: 15px;
+    padding-left: 15px;
+}

@@ -13,7 +13,7 @@ export default function CreateCompany() {
         <div className={classes.main2}>
           <ul className={classes.ul}>
             <NavLink
-              to="#"
+              to="/employer-verify/jobs/account/Choosecompany"
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
               }
@@ -66,7 +66,7 @@ export default function CreateCompany() {
             </NavLink>
 
             <NavLink
-              to="/"
+              to="create"
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
               }

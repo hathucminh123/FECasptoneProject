@@ -12,12 +12,15 @@ import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import { fetchCVs } from "../Services/CVService/GetCV";
 import { renderButton } from "../components/RenderButton";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { DeleteCV } from "../Services/CVService/DeleteCV";
 
 export default function ManageCV() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [value, setValue] = useState("");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
 
   const handleStartAddNewChallenge = () => {
     setIsCreatingNewChallenge(true);
@@ -40,6 +43,22 @@ export default function ManageCV() {
     },
     onError: () => {
       message.error("Failed to upload CV.");
+    },
+  });
+  const { mutate: deleteCV } = useMutation({
+    mutationFn: DeleteCV,
+    onSuccess: () => {
+      // Invalidate and refetch the cache to ensure the UI is updated immediately
+      queryClient.invalidateQueries({
+        queryKey: ["CVs"],
+        refetchType: "active", // Ensure an active refetch
+      });
+      message.success("CVs Details Deleted Successfully");
+      setDeletingId(null);
+    },
+    onError: () => {
+      message.error("Failed to delete the CVs");
+      setDeletingId(null);
     },
   });
 
@@ -66,6 +85,10 @@ export default function ManageCV() {
     // Implement cover letter save logic (API call)
   };
 
+  const handleDeleteCV = (id: number) => {
+    setDeletingId(id);
+    deleteCV({ id });
+  };
   return (
     <div className={classes.icontainer}>
       <div className={classes.container}>
@@ -165,23 +188,42 @@ export default function ManageCV() {
                         >
                           Uploaded CVs:
                         </Typography>
-                        {dataCVS.map((cv: { url: string }, index: number) => (
-                          <Typography
-                            key={index}
-                            variant="body1"
-                            sx={{ marginTop: ".5rem", fontSize: "14px" }}
-                          >
-                            <a
-                              href={cv.url}
-                              download
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              style={{ textDecoration: "none", color: "blue" }}
-                            >
-                              {cv.url}
-                            </a>
-                          </Typography>
-                        ))}
+                        {dataCVS.map(
+                          (cv: { url: string; id: number }, index: number) => (
+                            <div className={classes.main1}>
+                              <Typography
+                                key={index}
+                                variant="body1"
+                                sx={{ marginTop: ".5rem", fontSize: "14px" }}
+                              >
+                                <a
+                                  href={cv.url}
+                                  download
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    textDecoration: "none",
+                                    color: "blue",
+                                  }}
+                                >
+                                  {cv.url}
+                                </a>
+                              </Typography>
+                              {deletingId === cv.id ? (
+                                <>Please wait a second...</>
+                              ) : (
+                                <div
+                                  onClick={() => handleDeleteCV(cv.id)}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <DeleteOutlineOutlinedIcon
+                                    sx={{ color: "blue" }}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          )
+                        )}
                       </div>
                     )}
                   </Box>

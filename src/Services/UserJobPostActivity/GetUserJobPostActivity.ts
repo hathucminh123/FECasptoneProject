@@ -2,7 +2,14 @@ import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
 interface UserJobActivity {
-  data: { [key: string]: string | number };
+ id:number;
+ applicationDate:string;
+ status:string;
+ imageURL:string;
+ jobTitle:string;
+ userId:number;
+ jobPostId:number
+
 }
 
 interface FetchError extends Error {
@@ -10,12 +17,17 @@ interface FetchError extends Error {
   info?: Record<string, unknown>;
 }
 
-export const GetJobType = async (): Promise<{
+interface signal{
+  signal:AbortSignal
+}
+
+export const GetJobActivity = async ({signal}:signal): Promise<{
   UserJobActivitys: UserJobActivity[];
 }> => {
   try {
     const response = await httpClient.get({
       url: apiLinks.UserApply.GET,
+      signal:signal
     });
 
     if (response.status !== 200) {

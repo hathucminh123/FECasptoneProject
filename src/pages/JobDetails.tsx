@@ -32,6 +32,9 @@ import { GetJobPostById } from "../Services/JobsPost/GetJobPostById";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import WorkIcon from "@mui/icons-material/Work";
+import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
+import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import moment from "moment";
 // import HourglassFullIcon from '@mui/icons-material/HourglassFull';
 // import VerifiedIcon from '@mui/icons-material/Verified';
 const StyledLink = styled(Link)`
@@ -116,7 +119,17 @@ export default function JobDetails() {
     queryFn: ({ signal }) => GetJobPost({ signal: signal }),
     staleTime: 5000,
   });
+  const {
+    data: JobPostActivity,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPostActivity"],
+    queryFn: ({ signal }) => GetJobActivity({ signal: signal }),
+    staleTime: 5000,
+  });
 
+  const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
   const Companiesdata = Company?.Companies;
 
   const job = jobData?.JobPosts;
@@ -125,6 +138,16 @@ export default function JobDetails() {
 
   // const job: Job | null = location.state ?? null;
   // const company: Company | null = location.state ?? null;
+
+  // const hasAppliedJobActivity = job?.some((job) =>
+  //   JobPostActivitydata?.some((activity) => job.id === activity.jobPostId)
+  // );
+
+  const hasAppliedJobActivity = JobPostActivitydata?.find(
+    (activity) => activity.jobPostId === job?.id
+  );
+
+  console.log("true", hasAppliedJobActivity);
 
   if (job) {
     // const state = { bv: companyData };
@@ -332,52 +355,70 @@ export default function JobDetails() {
                     {job?.salary}
                   </Typography>
                 </div>
-                <div className={classes.button_icon}>
-                  <Button
-                    onClick={handleNavigateApply}
-                    sx={{
-                      mt: 3,
-                      width: "90%",
-                      backgroundColor: "#ed1b2f",
-                      borderColor: "#ed1b2f",
-                      color: "#fff",
-                      borderRadius: "4px",
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                      padding: "11px 24px",
-
-                      "&:hover": {
-                        backgroundColor: "#C82222",
-
-                        color: "white",
-                      },
-                    }}
-                  >
-                    Apply now
-                  </Button>
-                  <div style={{ cursor: "pointer" }} onClick={handleSaveJob}>
-                    {favorite ? (
-                      <FavoriteIcon
-                        fontSize="large"
-                        sx={{
-                          color: "#ed1b2f !important",
-                          marginTop: "20px",
-                          mr: 2,
-                        }}
-                      />
-                    ) : (
-                      <FavoriteBorderOutlinedIcon
-                        fontSize="large"
-                        sx={{
-                          color: "#ed1b2f !important",
-
-                          marginTop: "20px",
-                          mr: 2,
-                        }}
-                      />
-                    )}
+                {hasAppliedJobActivity ? (
+                  <div className={classes.main4}>
+                    <span className={classes.span}>
+                      <CheckCircleOutlineOutlinedIcon />
+                    </span>
+                    <div className={classes.main5}>
+                      <span className={classes.span1}>
+                        {hasAppliedJobActivity.status}{" "}
+                      </span>
+                      <span className={classes.span1}>
+                        {moment(hasAppliedJobActivity.applicationDate).format(
+                          "YYYY-MM-DD"
+                        )}
+                      </span>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className={classes.button_icon}>
+                    <Button
+                      onClick={handleNavigateApply}
+                      sx={{
+                        mt: 3,
+                        width: "90%",
+                        backgroundColor: "#ed1b2f",
+                        borderColor: "#ed1b2f",
+                        color: "#fff",
+                        borderRadius: "4px",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        padding: "11px 24px",
+
+                        "&:hover": {
+                          backgroundColor: "#C82222",
+
+                          color: "white",
+                        },
+                      }}
+                    >
+                      Apply now
+                    </Button>
+                    <div style={{ cursor: "pointer" }} onClick={handleSaveJob}>
+                      {favorite ? (
+                        <FavoriteIcon
+                          fontSize="large"
+                          sx={{
+                            color: "#ed1b2f !important",
+                            marginTop: "20px",
+                            mr: 2,
+                          }}
+                        />
+                      ) : (
+                        <FavoriteBorderOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            color: "#ed1b2f !important",
+
+                            marginTop: "20px",
+                            mr: 2,
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -815,44 +856,34 @@ export default function JobDetails() {
                   sx={{ fontSize: "16px", color: "#414042" }}
                 >
                   {" "}
-                 {detailsCompany?.companyDescription}
+                  {detailsCompany?.companyDescription}
                 </Typography>
               </div>
               <div className={classes.main}>
                 <div className={classes.main1}>
-                  <div className={classes.main2}>
-                    Company EstablishedYear
-                  </div>
+                  <div className={classes.main2}>Company EstablishedYear</div>
                   <div className={classes.main3}>
-                    {detailsCompany?.establishedYear} 
+                    {detailsCompany?.establishedYear}
                   </div>
                 </div>
               </div>
               <div className={classes.main}>
                 <div className={classes.main1}>
-                  <div className={classes.main2}>
-                    Company WebSite
-                  </div>
+                  <div className={classes.main2}>Company WebSite</div>
                   <div className={classes.main3}>
-                    {detailsCompany?.websiteURL} 
+                    {detailsCompany?.websiteURL}
                   </div>
                 </div>
               </div>
               <div className={classes.main}>
                 <div className={classes.main1}>
-                  <div className={classes.main2}>
-                    Company Country
-                  </div>
-                  <div className={classes.main3}>
-                    {detailsCompany?.country} 
-                  </div>
+                  <div className={classes.main2}>Company Country</div>
+                  <div className={classes.main3}>{detailsCompany?.country}</div>
                 </div>
               </div>
               <div className={classes.main}>
                 <div className={classes.main1}>
-                  <div className={classes.main2}>
-                    Company Size
-                  </div>
+                  <div className={classes.main2}>Company Size</div>
                   <div className={classes.main3}>
                     {detailsCompany?.numberOfEmployees} employees
                   </div>
@@ -860,11 +891,9 @@ export default function JobDetails() {
               </div>
               <div className={classes.main}>
                 <div className={classes.main1}>
-                  <div className={classes.main2}>
-                    Company job Opening
-                  </div>
+                  <div className={classes.main2}>Company job Opening</div>
                   <div className={classes.main3}>
-                    {detailsCompany?.jobPosts.length} Jobs 
+                    {detailsCompany?.jobPosts.length} Jobs
                   </div>
                 </div>
               </div>

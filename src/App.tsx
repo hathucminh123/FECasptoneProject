@@ -54,6 +54,9 @@ import ManageComments from "./pages/Admin/ManageComments";
 import NotificationSystemAdmin from "./pages/Admin/NotificationSystemAdmin";
 import CreateCompany from "./pages/Employer/CreateCompany";
 import ChooseCompany from "./pages/Employer/ChooseCompany";
+import ApplySuccess from "./pages/ApplySuccess";
+import ProtectedRouteCompany from "./components/Employer/ProtectedRouteCompany";
+import CreateCompanyEmployer from "./pages/Employer/CreateCompanyEmployer";
 
 const router = createBrowserRouter([
   {
@@ -144,6 +147,7 @@ const router = createBrowserRouter([
       {
         path: "it-jobs",
         element: <FilterJobbySkill />,
+        id: "CompanyJob",
       },
       {
         path: "all/company",
@@ -153,11 +157,16 @@ const router = createBrowserRouter([
         path: "vietnam-best-it-companies",
         element: <Recommend />,
       },
+
       {
         path: "logout",
         action: LogoutAction,
       },
     ],
+  },
+  {
+    path: "thankyou/:JobId",
+    element: <ApplySuccess />,
   },
   {
     path: "job/Apply/:JobId",
@@ -240,17 +249,27 @@ const router = createBrowserRouter([
           },
           {
             path: "company",
-            element: <CompanyInfo />,
+
+            element: (
+              <ProtectedRouteCompany>
+                <CompanyInfo />
+               </ProtectedRouteCompany>
+            ),
           },
           {
             path: "Choosecompany",
             element: <CreateCompany />,
-            children:[
+            children: [
               {
-                index:true,
-                element:<ChooseCompany/>
+              
+                index: true,
+                element: <ChooseCompany />,
+              },
+              {
+                path:'create',
+                element:<CreateCompanyEmployer/>
               }
-            ]
+            ],
           },
         ],
       },

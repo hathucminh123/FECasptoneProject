@@ -108,6 +108,7 @@ display: block;
     margin-bottom: 16px;
     display: flex !important;
     box-sizing: border-box;
+    flex-wrap: wrap;
 }
 
 .main5{

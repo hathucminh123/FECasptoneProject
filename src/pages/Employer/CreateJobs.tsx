@@ -21,9 +21,9 @@ import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutl
 import ImageIcon from "@mui/icons-material/Image";
 import { useRef } from "react";
 import ImagePreview from "../../components/Employer/ImagePreview ";
-import { useAppDispatch } from "../../redux/hooks/hooks";
+// import { useAppDispatch } from "../../redux/hooks/hooks";
 import { v4 as uuidv4 } from "uuid";
-import { add } from "../../redux/slices/createJobs";
+// import { add } from "../../redux/slices/createJobs";
 import NotificationAlert from "../../components/NotificationAlert";
 
 export default function CreateJobs() {
@@ -38,6 +38,8 @@ export default function CreateJobs() {
   const [specificLocation, setSpecificLocation] = useState<string>("");
   const [skills, setSkills] = useState<string[]>([]); // Array for multiple skills
   const [inputSkill, setInputSkill] = useState<string>("");
+  const [salary,setSalary]=useState<number>();
+  const [skillLevel,setSkillLevel]=useState<number>();
   const [description, setDescription] = useState<string>("");
   const [requirements, setRequirement] = useState<string>("");
   const [benefits, setBenefits] = useState<string>("");
@@ -45,24 +47,26 @@ export default function CreateJobs() {
   const [selectedFile, setSelectedFile] = useState<File[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const handleOncreate = () => {
     const data = {
       id: uuidv4(),
-      title: title,
+      jobTitle: title,
+      salary:salary,
       selectedDate: selectedDate,
-      count: count,
+      experienceRequired: count,
       city: city,
       district: district,
       specificLocation: specificLocation,
-      description: description,
-      requirements: requirements,
+      jobDescription: description,
+      qualificationRequired: requirements,
       benefits: benefits,
       skills: skills,
+      skillLevelRequired:skillLevel,
       selectedFile: selectedFile,
     };
 
-    dispatch(add(data))
+    // dispatch(add(data))
     setShowAlert(true)
   };
 
@@ -178,11 +182,16 @@ export default function CreateJobs() {
   const handleOpenSelectSkill = () => {
     setIsSelectOpenSkill(!isSelectOpenSkill);
   };
-
   const handleControl = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+    const { name, value } = e.target;
+    if (name === "title") {
+      setTitle(value);
+    } else if (name === "salary") {
+      setSalary(Number(value));
+    } else if (name === "skillLevel") {
+      setSkillLevel(Number(value));
+    }
   };
-
   const maxLength = 50;
 
   const stripHTML = (html: string) => {
@@ -245,6 +254,7 @@ export default function CreateJobs() {
                           {remainingChars}/50
                         </span>
                         <input
+                        name="title"
                           value={title}
                           type="text"
                           autoComplete="true"
@@ -300,7 +310,7 @@ export default function CreateJobs() {
                       htmlFor="Number of recruitment"
                       className={classes.label}
                     >
-                      Number of recruitment
+                       Experience Required
                       <span className={classes.span}>*</span>
                     </label>
                     <div className={classes.div8}>
@@ -328,6 +338,66 @@ export default function CreateJobs() {
                     </div>
                   </div>
                 </div>
+                <div className={classes.div3}>
+                    <label htmlFor="title" className={classes.label}>
+                      Salary
+                      <span className={classes.span}>*</span>
+                    </label>
+                    <div className={classes.div}>
+                      <div className={classes.form}>
+                        <span className={classes.span1}>
+                          <span className={classes.span2}>
+                            <i onClick={() => setTitle("")}>
+                              <HighlightOffOutlinedIcon
+                                fontSize="small"
+                                sx={{ color: "#868d94" }}
+                              />
+                            </i>
+                          </span>
+                          {remainingChars}/50
+                        </span>
+                        <input
+                          name="salary"
+                          value={salary}
+                          type="number"
+                          autoComplete="true"
+                          onChange={handleControl}
+                          placeholder="Input Salary"
+                          className={classes.input}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className={classes.div3}>
+                    <label htmlFor="title" className={classes.label}>
+                    skillLevelRequired
+                      <span className={classes.span}>*</span>
+                    </label>
+                    <div className={classes.div}>
+                      <div className={classes.form}>
+                        {/* <span className={classes.span1}>
+                          <span className={classes.span2}>
+                            <i onClick={() => setTitle("")}>
+                              <HighlightOffOutlinedIcon
+                                fontSize="small"
+                                sx={{ color: "#868d94" }}
+                              />
+                            </i>
+                          </span>
+                          {remainingChars}/50
+                        </span> */}
+                        <input
+                        name="skillLevel"
+                          value={skillLevel}
+                          type="number"
+                          autoComplete="true"
+                          onChange={handleControl}
+                          placeholder="Input level"
+                          className={classes.input}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 <div className={classes.div11}>
                   <label htmlFor="title" className={classes.label}>
                     Work place
