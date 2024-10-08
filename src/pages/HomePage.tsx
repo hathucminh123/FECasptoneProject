@@ -82,7 +82,8 @@ export default function HomePage() {
                 textAlign: "start",
                 fontWeight: "bold",
                 mb: 3,
-                color: "#333",
+                
+                color: "#fff",
               }}
             >
               934 IT Jobs For "Chất" Developers
@@ -109,7 +110,7 @@ export default function HomePage() {
                 gutterBottom
                 sx={{
                   fontWeight: "bold",
-                  color: "#333",
+                  color: "#fff",
                 }}
               >
                 Suggestions for you:

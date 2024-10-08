@@ -239,6 +239,40 @@ const router = createBrowserRouter([
         index: true,
         element: <JobPage />,
       },
+      // {
+      //   path: "account",
+      //   element: <ProfileEmployer />,
+      //   children: [
+      //     {
+      //       index: true,
+      //       element: <Profile />,
+      //     },
+      //     {
+      //       path: "company",
+
+      //       element: (
+      //         <ProtectedRouteCompany>
+      //           <CompanyInfo />
+      //          </ProtectedRouteCompany>
+      //       ),
+      //     },
+      //     {
+      //       path: "Choosecompany",
+      //       element: <CreateCompany />,
+      //       children: [
+      //         {
+              
+      //           index: true,
+      //           element: <ChooseCompany />,
+      //         },
+      //         {
+      //           path:'create',
+      //           element:<CreateCompanyEmployer/>
+      //         }
+      //       ],
+      //     },
+      //   ],
+      // },
       {
         path: "account",
         element: <ProfileEmployer />,
@@ -249,11 +283,10 @@ const router = createBrowserRouter([
           },
           {
             path: "company",
-
             element: (
               <ProtectedRouteCompany>
                 <CompanyInfo />
-               </ProtectedRouteCompany>
+              </ProtectedRouteCompany>
             ),
           },
           {
@@ -261,14 +294,13 @@ const router = createBrowserRouter([
             element: <CreateCompany />,
             children: [
               {
-              
                 index: true,
                 element: <ChooseCompany />,
               },
               {
-                path:'create',
-                element:<CreateCompanyEmployer/>
-              }
+                path: "create",
+                element: <CreateCompanyEmployer />,
+              },
             ],
           },
         ],

@@ -12,20 +12,12 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCompaniesById } from "../Services/CompanyService/GetCompanyById";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import Image from './../assets/image/download.png'
+
 interface JobType {
   id: number;
   name: string;
   description: string;
-}
-
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
 }
 
 interface JobPost {
@@ -34,7 +26,7 @@ interface JobPost {
   jobDescription: string;
   salary: number;
   postingDate: string;
-  expiryDate: string; 
+  expiryDate: string;
   experienceRequired: number;
   qualificationRequired: string;
   benefits: string;
@@ -43,10 +35,12 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType; 
-  jobLocation: JobLocation; 
-  skillSets: string[]; 
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
+  skillSets: string[];
 }
+
 
 export default function CompanyDetailRoot() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
@@ -170,7 +164,11 @@ export default function CompanyDetailRoot() {
             <div className={classes.container3}>
               <div style={{ paddingRight: "14px" }}>
                 <img
-                src={companyDataa?.imageUrl}
+               src={
+                companyDataa?.imageUrl === null || companyDataa?.imageUrl === "string"
+                  ? Image
+                  : companyDataa?.imageUrl
+              }
                   style={{ width: "200px" }}
                   alt={`Logo of ${companyDataa.companyName}`}
                 />
@@ -190,7 +188,7 @@ export default function CompanyDetailRoot() {
                 </Typography>
                 <div className={classes.locationjob}>
                   <div className={classes.location}>
-                    <LocationOnOutlinedIcon />
+                    <LocationOnOutlinedIcon sx={{color:'#fff'}} />
                     <Typography
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
@@ -199,7 +197,7 @@ export default function CompanyDetailRoot() {
                     </Typography>
                   </div>
                   <div className={classes.job}>
-                    <WorkOutlineOutlinedIcon />
+                    <WorkOutlineOutlinedIcon sx={{color:'#fff'}} />
                     <Typography
                       variant="body2"
                       sx={{

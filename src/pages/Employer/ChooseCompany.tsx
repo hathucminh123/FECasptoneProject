@@ -7,41 +7,61 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { queryClient } from "../../Services/mainService";
+
 export default function ChooseCompany() {
-  const CompanyId = localStorage.getItem("CompanyId")
+  const navigate = useNavigate();
   const { data: Company } = useQuery({
     queryKey: ["Company"],
-    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    queryFn: ({ signal }) => fetchCompanies({ signal }),
     staleTime: 5000,
   });
   const Companiesdata = Company?.Companies;
-const navigate =useNavigate()
+  // const { mutate } = useMutation({
+  //   mutationFn: PostUserCompanyService,
+  //   onSuccess: () => {
+  //     message.success("Choose Company Successfully");
+  //     const redirectPath = localStorage.getItem("redirectAfterLogin") || "/employer-verify/jobs/account/company";
+  //     navigate(redirectPath);
+  //     localStorage.removeItem("redirectAfterLogin");
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Choose the Company");
+  //   },
+  // });
   const { mutate } = useMutation({
     mutationFn: PostUserCompanyService,
-    onSuccess: () => {  
-      // Invalidate and refetch the cache to ensure the UI is updated immediately
-      // queryClient.invalidateQueries({
-      //   queryKey: ["SkillSetDetails"],
-      //   refetchType: "active", // Ensure an active refetch
-      // });
+    onSuccess: () => {
       message.success("Choose Company Successfully");
-      if(CompanyId !=="null"){
-        navigate('/employer-verify/jobs/account/company')
-      }
-     
+      const redirectPath =
+        // localStorage.getItem("redirectAfterLogin") ||
+        "/employer-verify/jobs/account/company";
+      // localStorage.removeItem("redirectAfterLogin");
+
+      // Invalidate and refetch the company data
+      // queryClient.invalidateQueries({"Company"});
+      queryClient.invalidateQueries({
+        queryKey: ["Company"],
+        refetchType: "active", // Ensure an active refetch
+      });
+       
+      navigate(redirectPath);
+      window.location.reload()
     },
     onError: () => {
       message.error("Failed to Choose the Company");
     },
   });
+
   const handleOnChooseCompanyUser = (id: number) => {
     mutate({ data: { companyId: id } });
+    localStorage.setItem("CompanyId", id.toString());
   };
+
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
-        <form action="">
-          {" "}
+        <form>
           <div className={classes.main2}>
             <div className={classes.main3}>
               <span className={classes.span}>
@@ -62,18 +82,15 @@ const navigate =useNavigate()
           </div>
         </form>
         <p className={classes.p}>New company created</p>
-
         <div style={{ display: "block", boxSizing: "border-box" }}>
           <div className={classes.main4}>
             {Companiesdata?.map((item) => (
-              <>
-                <div className={classes.main5}>
-                  <CompanyCard
-                    company={item}
-                    onChoose={() => handleOnChooseCompanyUser(item?.id)}
-                  />
-                </div>
-              </>
+              <div className={classes.main5} key={item.id}>
+                <CompanyCard
+                  company={item}
+                  onChoose={() => handleOnChooseCompanyUser(item?.id)}
+                />
+              </div>
             ))}
           </div>
         </div>

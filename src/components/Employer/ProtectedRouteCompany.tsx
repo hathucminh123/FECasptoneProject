@@ -1,18 +1,22 @@
-import { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
-interface EmployerProtectedRouteProps {
-  children: ReactNode; 
-}
+import { ReactNode, useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRouteCompany = ({ children }: EmployerProtectedRouteProps) => {
-//   const userRole = localStorage.getItem("role");
-const CompanyId = localStorage.getItem("CompanyId")
+const ProtectedRouteCompany = ({ children }: { children: ReactNode }) => {
+  const [companyId, setCompanyId] = useState<string | null>(localStorage.getItem("CompanyId"));
+  const location = useLocation();
 
-  if (CompanyId ==="null") {
-    return <Navigate to="/employer-verify/jobs/account/Choosecompany" />; 
-  }
+  useEffect(() => {
+    const storedCompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(storedCompanyId);
+  }, []);
 
-  return children;
+  useEffect(() => {
+    if (!companyId || companyId === "null") {
+      localStorage.setItem("redirectAfterLogin", location.pathname);
+    }
+  }, [companyId, location]);
+
+  return companyId && companyId !== "null" ? children : <Navigate to="/employer-verify/jobs/account/Choosecompany" replace />;
 };
 
 export default ProtectedRouteCompany;

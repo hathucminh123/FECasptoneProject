@@ -14,7 +14,8 @@
   right: 0;
   left: 0;
   z-index: 1030;
-  background: rgba(255, 255, 255, 0.5); 
+  /* background: rgba(255, 255, 255, 0.5);  */
+  background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -75,7 +76,7 @@
 
 .link {
   cursor: pointer;
-  color: #333333; 
+  color: #fff; 
   padding: 12px;
   align-items: center !important;
   display: flex;
@@ -85,13 +86,13 @@
 
 .link1 {
   cursor: pointer;
-  color: #333333;
+  color: #fff;
   display: list-item;
   list-style: none;
 }
 
 .linkk {
-  color: #000000 !important;
+  color: #fff !important;
   text-decoration: none;
 }
 
@@ -114,7 +115,7 @@
 .li {
   padding: 32px 0;
   cursor: pointer;
-  color: #333333; 
+  color: #fff; 
   position: relative !important;
   display: list-item;
   list-style: none;
@@ -123,7 +124,7 @@
 .liprofile {
   padding: 32px 0;
   cursor: pointer;
-  color: #333333;
+  color: #fff;
   position: relative !important;
   display: list-item;
   list-style: none;
@@ -134,7 +135,7 @@
   height: 24px;
   align-items: center !important;
   cursor: pointer;
-  color: #333333;
+  color: #fff;
 }
 
 .profileleft {
@@ -161,6 +162,6 @@
 
 .link.active,
 .linkk.active {
-  color: #000000;
+  color: #fff;
   background-color: rgba(0, 0, 0, 0.2);
 }

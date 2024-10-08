@@ -428,9 +428,10 @@ export default function SignInPageJobSeekers() {
                     margin: 0,
                     fontWeight: 700,
                     fontFamily: "Roboto, Helvetica, Verdana, Arial, sans-serif",
-                    color: "#222831",
+                    color: "#fff",
                     letterSpacing: 0,
                     lineHeight: 1.5,
+                    
                   }}
                 >
                   Register/Login
@@ -440,6 +441,7 @@ export default function SignInPageJobSeekers() {
                     fontSize: "18px",
                     margin: "8px 0 0 0",
                     textAlign: "center",
+                    color:'#fff'
                   }}
                 >
                   Link your account to continue using our system services.

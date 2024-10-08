@@ -29,21 +29,12 @@ import { setCompanies, setJobPosts } from "../redux/slices/companyJobslice";
 
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import Image from "./../assets/image/download.png"
 
 interface JobType {
   id: number;
   name: string;
   description: string;
-}
-
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
 }
 
 interface JobPost {
@@ -61,8 +52,9 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType | string | null;
-  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
   skillSets: string[];
 }
 
@@ -71,15 +63,7 @@ interface BusinessStream {
   businessStreamName: string;
   description: string;
 }
-interface UserJobActivity {
-  id: number;
-  applicationDate: string;
-  status: string;
-  imageURL: string;
-  jobTitle: string;
-  userId: number;
-  jobPostId: number;
-}
+
 interface Company {
   id: number;
   companyName: string;
@@ -92,6 +76,16 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
+  imageUrl: string;
+}
+interface UserJobActivity {
+  id: number;
+  applicationDate: string;
+  status: string;
+  imageURL: string;
+  jobTitle: string;
+  userId: number;
+  jobPostId: number;
 }
 
 export default function FilterJobbySkill() {
@@ -226,17 +220,17 @@ export default function FilterJobbySkill() {
     }
   }, [favorite, jobDetails, dispatch]);
 
-  const getJobLocation = (
-    jobLocation: JobLocation | string | null | undefined
-  ): string => {
-    if (typeof jobLocation === "string") {
-      return jobLocation;
-    } else if (jobLocation === null) {
-      return "Location not specified";
-    } else {
-      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-    }
-  };
+  // const getJobLocation = (
+  //   jobLocation: JobLocation | string | null | undefined
+  // ): string => {
+  //   if (typeof jobLocation === "string") {
+  //     return jobLocation;
+  //   } else if (jobLocation === null) {
+  //     return "Location not specified";
+  //   } else {
+  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+  //   }
+  // };
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -377,7 +371,11 @@ export default function FilterJobbySkill() {
                           key={job.id}
                           data={job}
                           applied={hasAppliedJobActivity}
-                          // img={job.companyImage}
+                          img={
+                            job?.imageURL === null || job?.imageURL === "string"
+                              ? Image
+                              : job?.imageURL
+                          }
                           company={companys}
                           onclick={() => handleOnclickDetails(job)}
                         />
@@ -390,7 +388,11 @@ export default function FilterJobbySkill() {
                         <div className={classes.apply1}>
                           <div className={classes.apply2}>
                             <img
-                              // src={detailsCompany?.image}
+                             src={
+                              detailsCompany?.imageUrl === null || detailsCompany?.imageUrl === "string"
+                                ? Image
+                                : detailsCompany?.imageUrl
+                            }
                               alt="Job"
                               style={{ width: "100px", height: "100px" }}
                             />
@@ -440,7 +442,7 @@ export default function FilterJobbySkill() {
                               </div>
                             </div>
                           </div>
-                          {applied ? (
+                          {applied && auth ? (
                             <div className={classes.jobapply}>
                               <div className={classes.jobapply1}>
                                 <CheckCircleOutlineOutlinedIcon />
@@ -516,58 +518,65 @@ export default function FilterJobbySkill() {
                         <div className={classes.morecontent}>
                           <div className={classes.morecontent1}>
                             <div className={classes.morecontent2}>
-                              <div className={classes.location}>
-                                <LocationOnOutlinedIcon
-                                  fontSize="large"
-                                  sx={{
-                                    width: "16px",
-                                    height: "16px",
-                                    color: "#a6a6a6",
-                                    mt: "10px",
-                                  }}
-                                />
-                                <Typography
-                                  variant="h5"
-                                  gutterBottom
-                                  sx={{
-                                    alignItems: "start",
-                                    fontWeight: 500,
-                                    mt: "7px",
-                                    color: " #414042 ",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  {getJobLocation(jobDetails?.jobLocation)}
-                                  {/* {detailsCompany?.address} in{" "}
-                                  {detailsCompany?.city} */}
-                                </Typography>
-                              </div>
-                              <div className={classes.location}>
-                                <LocationOnOutlinedIcon
-                                  fontSize="large"
-                                  sx={{
-                                    width: "16px",
-                                    height: "16px",
-                                    color: "#a6a6a6",
-                                    mt: "10px",
-                                  }}
-                                />
-                                <Typography
-                                  variant="h5"
-                                  gutterBottom
-                                  sx={{
-                                    alignItems: "start",
-                                    fontWeight: 500,
-                                    mt: "7px",
-                                    color: " #414042 ",
-                                    fontSize: "16px",
-                                  }}
-                                >
-                                  {/* {getJobLocation(jobDetails?.jobLocation)} */}
-                                  {detailsCompany?.address} in{" "}
-                                  {detailsCompany?.city}
-                                </Typography>
-                              </div>
+                              {jobDetails.jobLocationAddressDetail.length >
+                              0 ? (
+                                jobDetails.jobLocationAddressDetail.map(
+                                  (item, index) => (
+                                    <div
+                                      key={index}
+                                      className={classes.location}
+                                    >
+                                      <LocationOnOutlinedIcon
+                                        fontSize="large"
+                                        sx={{
+                                          width: "16px",
+                                          height: "16px",
+                                          color: "#a6a6a6",
+                                          mt: "10px",
+                                        }}
+                                      />
+                                      <Typography
+                                        variant="h5"
+                                        gutterBottom
+                                        sx={{
+                                          alignItems: "start",
+                                          fontWeight: 500,
+                                          mt: "7px",
+                                          color: "#414042",
+                                          fontSize: "16px",
+                                        }}
+                                      >
+                                        {item}
+                                      </Typography>
+                                    </div>
+                                  )
+                                )
+                              ) : (
+                                <div className={classes.location}>
+                                  <LocationOnOutlinedIcon
+                                    fontSize="large"
+                                    sx={{
+                                      width: "16px",
+                                      height: "16px",
+                                      color: "#a6a6a6",
+                                      mt: "10px",
+                                    }}
+                                  />
+                                  <Typography
+                                    variant="h5"
+                                    gutterBottom
+                                    sx={{
+                                      alignItems: "start",
+                                      fontWeight: 500,
+                                      mt: "7px",
+                                      color: "#414042",
+                                      fontSize: "16px",
+                                    }}
+                                  >
+                                    No location yet
+                                  </Typography>
+                                </div>
+                              )}
                               <div className={classes.time}>
                                 <AccessTimeOutlinedIcon
                                   fontSize="large"

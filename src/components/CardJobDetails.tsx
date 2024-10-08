@@ -10,21 +10,14 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Link } from "react-router-dom";
 
+
 interface JobType {
   id: number;
   name: string;
   description: string;
 }
 
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
-}
+
 
 interface JobPost {
   id: number;
@@ -42,7 +35,8 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType | string | null;
-  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  jobLocationCities:string[] ;
+  jobLocationAddressDetail:string[]
   skillSets: string[];
 }
 
@@ -64,6 +58,7 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
+  imageUrl:string;
 }
 
 interface MyComponentProps {
@@ -117,17 +112,17 @@ export default function CardJobDetails({
     }
   };
 
-  const getJobLocation = (
-    jobLocation: JobLocation | string | null | undefined
-  ): string => {
-    if (typeof jobLocation === "string") {
-      return jobLocation;
-    } else if (jobLocation === null) {
-      return "Location not specified";
-    } else {
-      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-    }
-  };
+  // const getJobLocation = (
+  //   jobLocation: JobLocation | string | null | undefined
+  // ): string => {
+  //   if (typeof jobLocation === "string") {
+  //     return jobLocation;
+  //   } else if (jobLocation === null) {
+  //     return "Location not specified";
+  //   } else {
+  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+  //   }
+  // };
 
   return (
     <div
@@ -219,7 +214,7 @@ export default function CardJobDetails({
                   fontSize: "14px",
                 }}
               >
-                {getJobLocation(data?.jobLocation)}
+                {data?.jobLocationCities.map((item)=>(item))}
               </Typography>
             </div>
 

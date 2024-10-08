@@ -1,8 +1,10 @@
 import Typography from "@mui/material/Typography";
 import classes from "./CardProfile.module.css";
-
-import React from "react";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { AnimatePresence } from "framer-motion";
+import EducationEdit from "./EducationEdit";
 interface EducationDetail {
   id: number;
   name: string;
@@ -33,6 +35,16 @@ export default function CardProfile({
   onClick,
   data,
 }: form) {
+  const [openEducation, setOpenEducation] = useState<boolean>(false);
+  const [selectEducation, setSelectEducation] = useState<EducationDetail | null>(null);
+  const handleOnEdit = (item: EducationDetail) => {
+    setOpenEducation(true);
+    setSelectEducation(item);
+  };
+  function handleDone2() {
+    setOpenEducation(false);
+  }
+
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -73,21 +85,31 @@ export default function CardProfile({
                         mb: 0,
                       }}
                     >
-                      {item?.fieldOfStudy}
+                      School name: {item?.name}
                     </Typography>
-                    <div>
+                    <div className={classes.edit}>
+                      <div style={{cursor:'pointer'}} onClick={() => handleOnEdit(item)}>
+                        <EditOutlinedIcon
+                          sx={{
+                            color: "#ed1b2f",
+                          }}
+                        />
+                      </div>
                       <DeleteIcon />
                     </div>
                   </div>
-                  <div className={classes.main6}>{item.name}</div>
+                  <div className={classes.main6}>
+                    {" "}
+                    School branch: {item.institutionName}
+                  </div>
 
                   {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
                   <div className={classes.main7}>
                     From: {item.startDate.slice(0, 10)} - To:{" "}
                     {item.endDate.slice(0, 10)}
                   </div>
-                  <div className={classes.main7}>{item.degree}</div>
-                  <div className={classes.main7}>{item.gpa}</div>
+                  <div className={classes.main7}>Degree: {item.degree}</div>
+                  <div className={classes.main7}>GPA: {item.gpa}</div>
                 </div>
               </div>
             </div>
@@ -106,6 +128,9 @@ export default function CardProfile({
           />{" "}
         </span>
       </div>
+      <AnimatePresence>
+        {openEducation && <EducationEdit onDone={handleDone2} data={selectEducation}  />}
+      </AnimatePresence>
     </div>
   );
 }

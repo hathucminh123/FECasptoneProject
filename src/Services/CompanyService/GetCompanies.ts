@@ -6,13 +6,19 @@ interface BusinessStream {
     businessStreamName: string;
     description: string;
   }
+  interface JobType {
+    id: number;
+    name: string;
+    description: string;
+  }
+  
   
   interface JobPost {
     id: number;
     jobTitle: string;
     jobDescription: string;
     salary: number;
-    postingDate: string; 
+    postingDate: string;
     expiryDate: string; 
     experienceRequired: number;
     qualificationRequired: string;
@@ -22,11 +28,11 @@ interface BusinessStream {
     companyId: number;
     companyName: string;
     websiteCompanyURL: string;
-    jobType: string | null; 
-    jobLocation: string | null; 
-    skillSets: string[];
+    jobType: JobType; // jobType là đối tượng JobType
+    jobLocationCities:string[];
+    jobLocationAddressDetail:string[]
+    skillSets: string[]; // Array of skill sets, có thể là array rỗng
   }
-  
   interface Company {
     id: number;
     companyName: string;

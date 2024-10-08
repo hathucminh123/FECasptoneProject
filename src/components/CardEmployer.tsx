@@ -4,20 +4,23 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import Image from './../assets/image/download.png'
 
-interface BusinessStream {
+interface JobType {
   id: number;
-  businessStreamName: string;
+  name: string;
   description: string;
 }
+
+
 
 interface JobPost {
   id: number;
   jobTitle: string;
   jobDescription: string;
   salary: number;
-  postingDate: string; 
-  expiryDate: string; 
+  postingDate: string;
+  expiryDate: string;
   experienceRequired: number;
   qualificationRequired: string;
   benefits: string;
@@ -26,9 +29,16 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: string | null; 
-  jobLocation: string | null; 
+  jobType: JobType | string | null;
+  jobLocationCities:string[] ;
+  jobLocationAddressDetail:string[]
   skillSets: string[];
+}
+
+interface BusinessStream {
+  id: number;
+  businessStreamName: string;
+  description: string;
 }
 
 interface Company {
@@ -78,7 +88,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
       </div>
       <div className={classes.image}>
         <img
-          src={data?.imageUrl}
+         src={data?.imageUrl === null || data?.imageUrl === "string" ? Image : data?.imageUrl}
           alt={`${data.companyName} logo`}
           style={{ textAlign: "center" }}
           // className={classes.image}

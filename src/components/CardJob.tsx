@@ -4,26 +4,18 @@ import { add, remove } from "../redux/slices/favoriteJob";
 import Typography from "@mui/material/Typography";
 import classes from "./CardJob.module.css";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Link } from "react-router-dom";
+import Image from "./../assets/image/download.png";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
 interface JobType {
   id: number;
   name: string;
   description: string;
-}
-
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
 }
 
 interface JobPost {
@@ -41,8 +33,9 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType | string | null;
-  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
   skillSets: string[];
 }
 
@@ -64,6 +57,7 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
+  imageUrl: string;
 }
 
 interface MyComponentProps {
@@ -117,17 +111,17 @@ export default function CardJob({
     }
   };
 
-  const getJobLocation = (
-    jobLocation: JobLocation | string | null | undefined
-  ): string => {
-    if (typeof jobLocation === "string") {
-      return jobLocation;
-    } else if (jobLocation === null) {
-      return "Location not specified";
-    } else {
-      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-    }
-  };
+  // const getJobLocation = (
+  //   jobLocation: JobLocation | string | null | undefined
+  // ): string => {
+  //   if (typeof jobLocation === "string") {
+  //     return jobLocation;
+  //   } else if (jobLocation === null) {
+  //     return "Location not specified";
+  //   } else {
+  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+  //   }
+  // };
 
   return (
     <div
@@ -172,7 +166,11 @@ export default function CardJob({
             <div className={classes.logo}>
               <img
                 className={classes.image}
-                src={data?.imageURL}
+                src={
+                  data?.imageURL === null || data?.imageURL === "string"
+                    ? Image
+                    : data?.imageURL
+                }
                 alt="image-job"
               />
               <Typography
@@ -207,7 +205,7 @@ export default function CardJob({
             <div className={classes.separator}></div>
 
             <div className={classes.location}>
-              <LocationOnIcon />
+              <LocationOnOutlinedIcon />
               <Typography
                 variant="h6"
                 gutterBottom
@@ -219,7 +217,52 @@ export default function CardJob({
                   fontSize: "14px",
                 }}
               >
-                {getJobLocation(data?.jobLocation)}
+                {data?.jobLocationCities &&
+                data?.jobLocationCities?.length > 0 ? (
+                  data?.jobLocationCities.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        gap: 2,
+                      }}
+                    >
+                      {item}
+                      {index < data.jobLocationCities.length - 1 && ", "}
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      gap: 2,
+                    }}
+                  >
+                    No Location yet
+                  </div>
+                )}
+              </Typography>
+            </div>
+
+            <div className={classes.location}>
+              <BusinessCenterOutlinedIcon />
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  alignItems: "start",
+                  fontWeight: 400,
+                  mt: "7px",
+                  color: " #414042 !important",
+                  fontSize: "14px",
+                }}
+              >
+
+                {data?.jobType?.name}
               </Typography>
             </div>
 

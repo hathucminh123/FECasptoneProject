@@ -231,7 +231,7 @@ export default function HeaderNavigation({token}:props) {
                         variant="body1"
                         sx={{
                           marginLeft: "12px",
-                          color: "#000000",
+                          color: "#fff",
                           cursor: "pointer",
                         }}
                       >

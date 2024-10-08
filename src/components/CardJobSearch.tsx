@@ -6,21 +6,13 @@ import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlin
 import { Link } from "react-router-dom";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import moment from "moment";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+
 
 interface JobType {
   id: number;
   name: string;
   description: string;
-}
-
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
 }
 
 interface JobPost {
@@ -38,8 +30,9 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType | string | null;
-  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
   skillSets: string[];
 }
 
@@ -61,6 +54,7 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
+  imageUrl: string;
 }
 interface UserJobActivity {
   id: number;
@@ -92,17 +86,17 @@ export default function CardJobSearch({
   applied,
 }: MyComponentProps) {
   console.log("cố lenasd", company);
-  const getJobLocation = (
-    jobLocation: JobLocation | string | null | undefined
-  ): string => {
-    if (typeof jobLocation === "string") {
-      return jobLocation;
-    } else if (jobLocation === null) {
-      return "Location not specified";
-    } else {
-      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-    }
-  };
+  // const getJobLocation = (
+  //   jobLocation: JobLocation | string | null | undefined
+  // ): string => {
+  //   if (typeof jobLocation === "string") {
+  //     return jobLocation;
+  //   } else if (jobLocation === null) {
+  //     return "Location not specified";
+  //   } else {
+  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+  //   }
+  // };
   return (
     <div
       className={`  ${
@@ -209,9 +203,54 @@ export default function CardJobSearch({
                 fontWeight: 400,
               }}
             >
-              {getJobLocation(data?.jobLocation)}
+             {data?.jobLocationCities &&
+                data?.jobLocationCities?.length > 0 ? (
+                  data?.jobLocationCities.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        gap: 2,
+                      }}
+                    >
+                      {item}
+                      {index < data.jobLocationCities.length - 1 && ", "}
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      gap: 2,
+                    }}
+                  >
+                    No Location yet
+                  </div>
+                )}
+
             </span>
           </div>
+          <div className={classes.location}>
+              <BusinessCenterOutlinedIcon />
+              <Typography
+                variant="h6"
+                gutterBottom
+                sx={{
+                  alignItems: "start",
+                  fontWeight: 400,
+                  mt: "7px",
+                  color: " #414042 !important",
+                  fontSize: "14px",
+                }}
+              >
+
+                {data?.jobType?.name}
+              </Typography>
+            </div>
           <div className={classes.skill}>
             {data?.skillSets.map((item) => (
               <button className={classes.button}>{item}</button>
@@ -220,14 +259,13 @@ export default function CardJobSearch({
             <button className={classes.button}>asdasd</button> */}
           </div>
         </div>
-
       </div>
       {applied ? (
-          <div className={classes.main1}>
-            <CheckCircleOutlineOutlinedIcon />
-            Applied {moment(applied.applicationDate).format("YYYY-MM-DD")}
-          </div>
-        ) : undefined}
+        <div className={classes.main1}>
+          <CheckCircleOutlineOutlinedIcon />
+          Applied {moment(applied.applicationDate).format("YYYY-MM-DD")}
+        </div>
+      ) : undefined}
     </div>
   );
 }

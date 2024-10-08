@@ -5,7 +5,8 @@
 
 .footer {
     color: var(--i-silver-grey);
-    background: linear-gradient(180deg, #ffd194, #ff8243);
+    /* background: linear-gradient(180deg, #ffd194, #ff8243); */
+    background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
     padding-top: 48px;
     box-sizing: border-box;
     display: block;

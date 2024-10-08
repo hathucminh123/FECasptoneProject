@@ -33,10 +33,13 @@ export const apiLinks = {
     EducationDetails:{
       POST:`${baseURL}/EducationDetails`,
       GET:`${baseURL}/EducationDetails`,
+      PUT:`${baseURL}/EducationDetails`,
+
     },
     ExperienceDetail:{
       POST:`${baseURL}/ExperienceDetail`,
       GET:`${baseURL}/ExperienceDetail`,
+      PUT:`${baseURL}/ExperienceDetail`,
     },
     SkillSet:{
       POST:`${baseURL}/SkillSet`,

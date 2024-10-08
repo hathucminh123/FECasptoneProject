@@ -23,7 +23,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchEducationDetails } from "../Services/EducationDetails/GetEducationDetails";
 import CardExperience from "../components/CardExperience";
 import { fetchExperienceDetails } from "../Services/ExperienceDetailService/GetExperienceDetail";
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardSkill from "../components/CardSkill";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 export default function Profilecv() {
@@ -40,8 +40,8 @@ export default function Profilecv() {
   const [isCreatingNewChallenge4, setIsCreatingNewChallenge4] =
     useState<boolean>(false);
 
-    // const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
-    // useState<boolean>(false);
+  // const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
+  // useState<boolean>(false);
   console.log("why", isCreatingNewChallenge);
   function handleStartAddNewChallenge() {
     setIsCreatingNewChallenge(true);
@@ -91,7 +91,6 @@ export default function Profilecv() {
   //   setIsCreatingNewChallenge5(false);
   // }
 
-
   interface data {
     // icon: JSX.Element,
     icon: React.ElementType;
@@ -111,35 +110,27 @@ export default function Profilecv() {
     setMore((prev) => !prev);
   };
 
-  const {data}=useQuery({
-    queryKey:['EducationDetails'],
-    queryFn:({signal})=>fetchEducationDetails({signal:signal}),
-    staleTime:5000,
-   
+  const { data } = useQuery({
+    queryKey: ["EducationDetails"],
+    queryFn: ({ signal }) => fetchEducationDetails({ signal: signal }),
+    staleTime: 5000,
+  });
+  const { data: ExperienceData } = useQuery({
+    queryKey: ["ExperienceDetails"],
+    queryFn: ({ signal }) => fetchExperienceDetails({ signal: signal }),
+    staleTime: 5000,
+  });
+  const { data: SkillSetData } = useQuery({
+    queryKey: ["SkillSetDetails"],
+    queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
+    staleTime: 1000,
+  });
 
-  })
-  const {data:ExperienceData}=useQuery({
-    queryKey:['ExperienceDetails'],
-    queryFn:({signal})=>fetchExperienceDetails({signal:signal}),
-    staleTime:5000,
-   
-
-  })
-  const {data:SkillSetData}=useQuery({
-    queryKey:['SkillSetDetails'],
-    queryFn:({signal})=>GetSkillSets({signal:signal}),
-    staleTime:1000,
-   
-
-  })
- 
-
-  const EducationData= data?.EducationDetails
+  const EducationData = data?.EducationDetails;
   // console.log('meme',data?.EducationDetails)
- const ExperienceDatas =ExperienceData?.ExperienceDetails
+  const ExperienceDatas = ExperienceData?.ExperienceDetails;
 
-
- const SkillSetDatas =SkillSetData?.SkillSets
+  const SkillSetDatas = SkillSetData?.SkillSets;
   return (
     <div className={classes.icontainer}>
       <div className={classes.container}>
@@ -193,7 +184,10 @@ export default function Profilecv() {
                     </div>
                     <div className={classes.button1}>
                       <div className={classes.button2}>
-                        <div className={classes.button3}>
+                        <div
+                          onClick={() => setIsCreatingNewChallenge3(true)}
+                          className={classes.button3}
+                        >
                           <div className={classes.iconadd}>
                             <AddCircleOutlineOutlinedIcon
                               sx={{
@@ -216,14 +210,17 @@ export default function Profilecv() {
                               },
                             }}
                           >
-                          Work Experience
+                            Work Experience
                           </Typography>
                         </div>
                       </div>
                     </div>
                     <div className={classes.button1}>
                       <div className={classes.button2}>
-                        <div className={classes.button3}>
+                        <div
+                          onClick={() => setIsCreatingNewChallenge2(true)}
+                          className={classes.button3}
+                        >
                           <div className={classes.iconadd}>
                             <AddCircleOutlineOutlinedIcon
                               sx={{
@@ -261,7 +258,10 @@ export default function Profilecv() {
                         >
                           <div className={classes.button1}>
                             <div className={classes.button2}>
-                              <div className={classes.button3}>
+                              <div
+                                onClick={() => setIsCreatingNewChallenge4(true)}
+                                className={classes.button3}
+                              >
                                 <div className={classes.iconadd}>
                                   <AddCircleOutlineOutlinedIcon
                                     sx={{
@@ -284,7 +284,7 @@ export default function Profilecv() {
                                     },
                                   }}
                                 >
-                                SkillsSet
+                                  SkillsSet
                                 </Typography>
                               </div>
                             </div>
@@ -471,7 +471,7 @@ export default function Profilecv() {
             title="Education"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
-            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge2}
             data={EducationData}
@@ -480,11 +480,10 @@ export default function Profilecv() {
             title="Work Experience"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
-            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge3}
             data={ExperienceDatas}
-
           />
           {/* <CardSkill
             title="Skills"
@@ -494,9 +493,9 @@ export default function Profilecv() {
             img="https://itviec.com/assets/profile/skill_no_info-02f56fa0a5b0ab2ae7d233ceac098f1102a4f774de22f70b0c81fd8e1fb9efbf.svg"
           /> */}
           <CardSkill
-           title="Skills"
+            title="Skills"
             text="Highlight Your skills Set"
-            icon2={<AddCircleOutlineIcon sx={{color:'red'}} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
             onClick={handleStartAddNewChallenge4}

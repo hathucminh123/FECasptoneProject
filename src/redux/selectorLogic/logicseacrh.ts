@@ -1,20 +1,8 @@
 import { createSelector } from "reselect";
 import { RootState } from "../store";
 
-
-
-
 // Helper function to remove accents and normalize strings
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
-}
-const removeAccents = (str: string | null) => {
+const removeAccents = (str: string | null | string[]) => {
   if (typeof str !== "string") {
     return "";
   }
@@ -52,22 +40,16 @@ export const TodoListSelector = createSelector(
         ? job.skillSets.some((skill) => removeAccents(skill).includes(searchText))
         : false;
 
-      const getJobLocation = (
-        jobLocation: JobLocation | string | null | undefined
-      ): string => {
-        if (typeof jobLocation === "string") {
-          return jobLocation;
-        } else if (jobLocation === null) {
-          return "Location not specified";
-        } else {
-          return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-        }
-      };
+      // Join jobLocationCities and jobLocationAddressDetail into a single string for location comparison
+      const jobLocations = [
+        ...(job.jobLocationCities || []),
+        ...(job.jobLocationAddressDetail || []),
+      ]
+        .map(removeAccents)
+        .join(" ");
 
       const matchesLocation = search.location
-        ? removeAccents(getJobLocation(job?.jobLocation) || "").includes(
-            removeAccents(search.location)
-          )
+        ? jobLocations.includes(removeAccents(search.location))
         : true;
 
       return (matchesText || matchCompanyName || matchSkill) && matchesLocation;

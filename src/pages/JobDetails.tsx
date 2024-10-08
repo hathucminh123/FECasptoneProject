@@ -52,15 +52,15 @@ interface JobType {
   description: string;
 }
 
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
-}
+// interface JobLocation {
+//   id: number;
+//   district: string;
+//   city: string;
+//   postCode: string;
+//   state: string;
+//   country: string;
+//   stressAddress: string;
+// }
 
 interface JobPost {
   id: number;
@@ -78,7 +78,9 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType; // jobType là đối tượng JobType
-  jobLocation: JobLocation; // jobLocation là đối tượng JobLocation
+  // jobLocation: JobLocation;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[]; // jobLocation là đối tượng JobLocation
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
 }
 export default function JobDetails() {
@@ -452,32 +454,60 @@ export default function JobDetails() {
               </section>
               <div className={classes.detail1}>
                 <div className={classes.detail2}>
-                  <div className={classes.location}>
-                    <LocationOnOutlinedIcon
-                      fontSize="large"
-                      sx={{
-                        width: "16px",
-                        height: "16px",
-                        color: "#a6a6a6",
-                        mt: "10px",
-                      }}
-                    />
-                    <Typography
-                      variant="h5"
-                      gutterBottom
-                      sx={{
-                        alignItems: "start",
-                        fontWeight: 500,
-                        mt: "7px",
-                        color: " #414042 ",
-                        fontSize: "16px",
-                      }}
-                    >
-                      {job?.jobLocation.stressAddress},{" "}
-                      {job?.jobLocation.district} , {job?.jobLocation.city} in{" "}
-                      {job?.jobLocation.country}
-                    </Typography>
-                  </div>
+                  {job.jobLocationAddressDetail.length > 0 ? (
+                    job.jobLocationAddressDetail.map((item, index) => (
+                      <div key={index} className={classes.location}>
+                        <LocationOnOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            width: "16px",
+                            height: "16px",
+                            color: "#a6a6a6",
+                            mt: "10px",
+                          }}
+                        />
+                        <Typography
+                          variant="h5"
+                          gutterBottom
+                          sx={{
+                            alignItems: "start",
+                            fontWeight: 500,
+                            mt: "7px",
+                            color: "#414042",
+                            fontSize: "16px",
+                          }}
+                        >
+                          {item}
+                        </Typography>
+                      </div>
+                    ))
+                  ) : (
+                    <div  className={classes.location}>
+                        <LocationOnOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            width: "16px",
+                            height: "16px",
+                            color: "#a6a6a6",
+                            mt: "10px",
+                          }}
+                        />
+                        <Typography
+                          variant="h5"
+                          gutterBottom
+                          sx={{
+                            alignItems: "start",
+                            fontWeight: 500,
+                            mt: "7px",
+                            color: "#414042",
+                            fontSize: "16px",
+                          }}
+                        >
+                          No location yet
+                        </Typography>
+                      </div>
+                  )}
+
                   <div className={classes.time}>
                     <AccessTimeOutlinedIcon
                       fontSize="large"

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./CompanyInfo.module.css";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import Input from "../../components/Employer/Input";
@@ -32,10 +32,14 @@ export default function CompanyInfo() {
   const [address, setAddress] = useState<string>("");
   const [update, setUpdate] = useState<boolean>(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const CompanyId = localStorage.getItem("CompanyId");
+  // const CompanyId = localStorage.getItem("CompanyId");
+  const [companyId, setCompanyId] = useState<string | null>(
+    localStorage.getItem("CompanyId")
+  );
 
   const {
     data: Company,
+    refetch: refetchCompanies,
     // isLoading: isCompanyLoading,
     // isError: isCompanyError,
   } = useQuery({
@@ -45,7 +49,7 @@ export default function CompanyInfo() {
   });
   const Companiesdata = Company?.Companies;
   const CompanyEmployer = Companiesdata?.find(
-    (company) => company.id === Number(CompanyId)
+    (company) => company.id === Number(companyId)
   );
   console.log("quao", CompanyEmployer);
   const handleOpenUpdate = () => {
@@ -63,6 +67,12 @@ export default function CompanyInfo() {
     }
   };
 
+  useEffect(() => {
+    // Sync companyId from localStorage if it changes
+    const storedCompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(storedCompanyId);
+    refetchCompanies();
+  }, [companyId, refetchCompanies]);
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     if (!companyName) newErrors.companyName = "Company Name is required";
@@ -325,9 +335,12 @@ export default function CompanyInfo() {
                     <div className={classes.div20}>
                       <div className={classes.img2}></div>
                       <div className={classes.div21}>
-                        <p className={classes.p1}>{CompanyEmployer?.companyName}</p>
+                        <p className={classes.p1}>
+                          {CompanyEmployer?.companyName}
+                        </p>
                         <p className={classes.p2}>
-                          {CompanyEmployer?.address}, {" "} {CompanyEmployer?.city} | {CompanyEmployer?.numberOfEmployees} employees
+                          {CompanyEmployer?.address}, {CompanyEmployer?.city} |{" "}
+                          {CompanyEmployer?.numberOfEmployees} employees
                         </p>
                       </div>
                     </div>
@@ -372,7 +385,7 @@ export default function CompanyInfo() {
                         <div className={classes.div30}>
                           <div className={classes.div31}>Company Address:</div>
                           <div className={classes.div32}>
-                             {CompanyEmployer?.address}, {" "}   {CompanyEmployer?.city}
+                            {CompanyEmployer?.address}, {CompanyEmployer?.city}
                           </div>
                         </div>
                         <div className={classes.div30}>
@@ -380,7 +393,7 @@ export default function CompanyInfo() {
                             Company Description:
                           </div>
                           <div className={classes.div32}>
-                           {CompanyEmployer?.companyDescription}
+                            {CompanyEmployer?.companyDescription}
                           </div>
                         </div>
                       </div>

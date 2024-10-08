@@ -7,15 +7,15 @@ interface JobType {
   description: string;
 }
 
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
-}
+// interface JobLocation {
+//   id: number;
+//   district: string;
+//   city: string;
+//   postCode: string;
+//   state: string;
+//   country: string;
+//   stressAddress: string;
+// }
 
 interface JobPost {
   id: number;
@@ -33,7 +33,8 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType; // jobType là đối tượng JobType
-  jobLocation: JobLocation; // jobLocation là đối tượng JobLocation
+  jobLocationCities:string[];
+  jobLocationAddressDetail:string[]
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
 }
 

@@ -1,8 +1,10 @@
 import Typography from "@mui/material/Typography";
 import classes from "./CardProfile.module.css";
-
-import React from "react";
+import { AnimatePresence } from "framer-motion";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ExperienceEdit from "./ExperienceEdit";
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -32,6 +34,16 @@ export default function CardExperience({
   onClick,
   data,
 }: form) {
+  const [openExperience, setOpenExperience] = useState<boolean>(false);
+  const [selectExperience, setSelectExperience] = useState<ExperienceDetail | null>(null);
+  const handleOnEdit = (item: ExperienceDetail) => {
+    setOpenExperience(true);
+    setSelectExperience(item);
+  };
+  function handleDone2() {
+    setOpenExperience(false);
+  }
+
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -76,7 +88,14 @@ export default function CardExperience({
                     >
                       Position: {item?.position}
                     </Typography>
-                    <div>
+                    <div className={classes.edit}>
+                      <div style={{cursor:'pointer'}} onClick={() => handleOnEdit(item)}>
+                        <EditOutlinedIcon
+                          sx={{
+                            color: "#ed1b2f",
+                          }}
+                        />
+                      </div>
                       <DeleteIcon />
                     </div>
                   </div>
@@ -131,6 +150,9 @@ export default function CardExperience({
           />{" "}
         </span>
       </div>
+      <AnimatePresence>
+        {openExperience && <ExperienceEdit onDone={handleDone2} data={selectExperience}  />}
+      </AnimatePresence>
     </div>
   );
 }

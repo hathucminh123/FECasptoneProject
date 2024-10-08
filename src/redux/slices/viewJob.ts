@@ -7,15 +7,15 @@ interface JobType {
   description: string;
 }
 
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
-}
+// interface JobLocation {
+//   id: number;
+//   district: string;
+//   city: string;
+//   postCode: string;
+//   state: string;
+//   country: string;
+//   stressAddress: string;
+// }
 
 interface JobPost {
   id: number;
@@ -33,10 +33,10 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType | string | null;
-  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
+  jobLocationCities:string[];
+  jobLocationAddressDetail:string[]
   skillSets: string[];
 }
-
 interface JobState {
   item: JobPost[];
 }
