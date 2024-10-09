@@ -29,7 +29,7 @@ import { setCompanies, setJobPosts } from "../redux/slices/companyJobslice";
 
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
-import Image from "./../assets/image/download.png"
+import Image from "./../assets/image/download.png";
 
 interface JobType {
   id: number;
@@ -155,21 +155,29 @@ export default function FilterJobbySkill() {
         const firstJob = filteredJobs[0];
         setJobDetails(firstJob);
         setSelectedJob(firstJob);
-        const hasAppliedJobActivity = JobPostActivitydata?.find(
-          (activity) => activity.jobPostId === firstJob?.id
-        );
-        const foundCompany = Companiesdata?.find(
-          (item) => item.id === firstJob.companyId
+      }
+
+      if (selectedJob && JobPostActivitydata) {
+        const hasAppliedJobActivity = JobPostActivitydata.find(
+          (activity) => activity.jobPostId === selectedJob.id
         );
         setApplied(hasAppliedJobActivity);
+      }
+
+      if (selectedJob && Companiesdata) {
+        const foundCompany = Companiesdata.find(
+          (item) => item.id === selectedJob.companyId
+        );
         setDetailsCompany(foundCompany);
       }
     } else {
+      // Reset states if there are no filtered jobs.
       setSelectedJob(null);
       setJobDetails(null);
       setDetailsCompany(undefined);
+      setApplied(undefined);
     }
-  }, [filteredJobs, selectedJob, Companiesdata]);
+  }, [filteredJobs, selectedJob, Companiesdata, JobPostActivitydata]);
 
   const handleApplyClick = () => {
     if (!auth) {
@@ -365,6 +373,7 @@ export default function FilterJobbySkill() {
                         (activity) => activity.jobPostId === job?.id
                       );
 
+                
                       return (
                         <CardJobSearch
                           selectedJob={selectedJob}
@@ -388,11 +397,12 @@ export default function FilterJobbySkill() {
                         <div className={classes.apply1}>
                           <div className={classes.apply2}>
                             <img
-                             src={
-                              detailsCompany?.imageUrl === null || detailsCompany?.imageUrl === "string"
-                                ? Image
-                                : detailsCompany?.imageUrl
-                            }
+                              src={
+                                detailsCompany?.imageUrl === null ||
+                                detailsCompany?.imageUrl === "string"
+                                  ? Image
+                                  : detailsCompany?.imageUrl
+                              }
                               alt="Job"
                               style={{ width: "100px", height: "100px" }}
                             />

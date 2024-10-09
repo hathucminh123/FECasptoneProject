@@ -7,21 +7,18 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
 import moment from "moment";
 // import JobDetails from "../pages/JobDetails";
+
+interface BusinessStream {
+  id: number;
+  businessStreamName: string;
+  description: string;
+}
 interface JobType {
   id: number;
   name: string;
   description: string;
 }
 
-interface JobLocation {
-  id: number;
-  district: string;
-  city: string;
-  postCode: string;
-  state: string;
-  country: string;
-  stressAddress: string;
-}
 
 interface JobPost {
   id: number;
@@ -29,7 +26,7 @@ interface JobPost {
   jobDescription: string;
   salary: number;
   postingDate: string;
-  expiryDate: string;
+  expiryDate: string; 
   experienceRequired: number;
   qualificationRequired: string;
   benefits: string;
@@ -38,17 +35,11 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType | string | null;
-  jobLocation: JobLocation | string | null; // Allow jobLocation to be either JobLocation, string, or null
-  skillSets: string[];
+  jobType: JobType; // jobType là đối tượng JobType
+  jobLocationCities:string[];
+  jobLocationAddressDetail:string[]
+  skillSets: string[]; // Array of skill sets, có thể là array rỗng
 }
-
-interface BusinessStream {
-  id: number;
-  businessStreamName: string;
-  description: string;
-}
-
 interface Company {
   id: number;
   companyName: string;
@@ -61,7 +52,9 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
+  imageUrl:string
 }
+
 interface UserJobActivity {
   id: number;
   applicationDate: string;
@@ -79,17 +72,7 @@ interface props {
 }
 
 export default function CardApply({ company, job, activity }: props) {
-  const getJobLocation = (
-    jobLocation: JobLocation | string | null | undefined
-  ): string => {
-    if (typeof jobLocation === "string") {
-      return jobLocation;
-    } else if (jobLocation === null) {
-      return "Location not specified";
-    } else {
-      return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-    }
-  };
+ 
 
   return (
     <div className={classes.main}>
@@ -97,7 +80,7 @@ export default function CardApply({ company, job, activity }: props) {
         <div className={classes.main2}>
           <div className={classes.status}>
             <CheckCircleOutlineOutlinedIcon />
-            Applied
+            {activity.status}
           </div>
           <div className={classes.main3}>
             <span className={classes.span}>
@@ -143,7 +126,34 @@ export default function CardApply({ company, job, activity }: props) {
           <div className={classes.main8}>
             <LocationOnIcon />
             <span className={classes.span3}>
-              {getJobLocation(job?.jobLocation)}
+            {job?.jobLocationCities &&
+                job?.jobLocationCities?.length > 0 ? (
+                  job?.jobLocationCities.map((item, index) => (
+                    <div
+                      key={index}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        gap: 2,
+                      }}
+                    >
+                      {item}
+                      {index < job.jobLocationCities.length - 1 && ", "}
+                    </div>
+                  ))
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      flexWrap: "wrap",
+                      gap: 2,
+                    }}
+                  >
+                    No Location yet
+                  </div>
+                )}
             </span>
           </div>
           <div className={classes.button}>

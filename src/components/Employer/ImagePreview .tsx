@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Dialog, DialogContent } from '@mui/material';
 
 interface ImagePreviewProps {
-  file: File;
+  file: File ;
   index: number;
 }
 

@@ -97,6 +97,7 @@ export default function CardJobSearch({
   //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
   //   }
   // };
+
   return (
     <div
       className={`  ${

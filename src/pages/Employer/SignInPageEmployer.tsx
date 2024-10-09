@@ -372,7 +372,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    You created JobSeeker Account Successfully
+                    You created Employer Account Successfully
                   </Typography>
                 </div>
                 {/* <div

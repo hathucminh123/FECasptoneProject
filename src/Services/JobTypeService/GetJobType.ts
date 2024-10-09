@@ -12,12 +12,17 @@ interface FetchError extends Error {
   info?: Record<string, unknown>;
 }
 
-export const GetJobType = async (): Promise<{
+
+interface signal{
+  signal:AbortSignal
+}
+export const GetJobType = async ({signal}:signal): Promise<{
     JobTypes: JobType[];
 }> => {
   try {
     const response = await httpClient.get({
       url: apiLinks.JobType.GET,
+      signal:signal
     });
 
     if (response.status !== 200) {

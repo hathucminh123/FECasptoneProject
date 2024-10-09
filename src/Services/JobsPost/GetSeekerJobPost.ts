@@ -2,20 +2,37 @@ import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
 interface SeekersByJobPost {
-    data: { [key: string]:  number|string };
-  }
+  id: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: number;
+  cvId: number;
+  cvPath: string;
+  jobPostActivityId: number;
+}
+
+interface signal {
+  signal?: AbortSignal;
+  id: number;
+}
 
 interface FetchError extends Error {
   code?: number;
   info?: Record<string, unknown>;
 }
 
-export const GetSeekerJobPost = async (): Promise<{
-    GetSeekers: SeekersByJobPost[];
+export const GetSeekerJobPost = async ({
+  id,
+  signal,
+}: signal): Promise<{
+  GetSeekers: SeekersByJobPost[];
 }> => {
   try {
     const response = await httpClient.get({
-      url: apiLinks.JobPosts.GetSeekerByJobPosts,
+      url: `${apiLinks.JobPosts.GetSeekerByJobPosts}/${id}/Seekers`,
+      signal: signal,
     });
 
     if (response.status !== 200) {
@@ -29,7 +46,7 @@ export const GetSeekerJobPost = async (): Promise<{
 
     const Seeker = response.data;
     return {
-        GetSeekers: Seeker.result as SeekersByJobPost[],
+      GetSeekers: Seeker.result as SeekersByJobPost[],
     };
   } catch (error) {
     console.error("Fetching Seekfer by JobPost failed", error);

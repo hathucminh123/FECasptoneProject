@@ -4,15 +4,22 @@ import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import Input from "../../components/Employer/Input";
 import FormSelect from "../../components/Employer/FormSelect";
 import RequiredText from "../../components/Employer/RequiredText";
-// import MultipleSelect from "../../components/Employer/MultipleSelect";
-// import { jobSkills } from "../../assets/data/SkillData";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { queryClient } from "../../Services/mainService";
 import { PostCompanies } from "../../Services/CompanyService/PostCompanies";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { PostBusinessStream } from "../../Services/BusinessStreamService/PostBusinessStream";
+import { GetBusinessStream } from "../../Services/BusinessStreamService/GetBusinessStream";
+import FormSelectBusinessStream from "../../components/Employer/FormSelectBusinessStream";
+
+interface BusinessStreamprops {
+  id: number;
+  businessStreamName: string;
+  description: string;
+}
 
 const dataCompanySize: string[] = [
   "100-500",
@@ -26,18 +33,19 @@ export default function CreateCompanyEmployer() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectSize, setSelectSize] = useState<string>("");
-  //   const [skills, setSkills] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");
   const [companyName, setCompanyName] = useState<string>("");
-  //   const [email, setEmail] = useState<string>("");
   const [website, setWebsite] = useState<string>("");
-  //   const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [establishedYear, setEstablishedYear] = useState<string>("");
   const [country, setCountry] = useState<string>("");
   const [city, setCity] = useState<string>("");
-  const [businessStreamId, setBusinessStreamId] = useState<string>("");
+  const [selectbusinessStream, setSelectBusinessStream] =
+    useState<BusinessStreamprops | null>(null);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [businessStreamName, setBusinessStreamName] = useState<string>("");
+  const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
+
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
@@ -51,6 +59,28 @@ export default function CreateCompanyEmployer() {
       message.error("Failed to update company details.");
     },
   });
+
+  const { mutate: MutateBusinessStream, isPending: Pedingbusiness } =
+    useMutation({
+      mutationFn: PostBusinessStream,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["BusinessStream"] });
+        message.success("Post BusinessStream successfully.");
+        setBusinessStreamName("");
+        setDescriptionBusiness("");
+      },
+      onError: () => {
+        message.error("Failed to Post BusinessStream details.");
+      },
+    });
+
+  const { data: BusinessStream } = useQuery({
+    queryKey: ["BusinessStream"],
+    queryFn: ({ signal }) => GetBusinessStream({ signal }),
+    staleTime: 5000,
+  });
+
+  const BusinessStreamData = BusinessStream?.BusinessStreams;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -66,20 +96,17 @@ export default function CreateCompanyEmployer() {
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     if (!companyName) newErrors.companyName = "Company Name is required";
-    // if (!email || !email.includes("@"))
-    //   newErrors.email = "A valid email is required";
     if (!selectSize) newErrors.selectSize = "Company Size is required";
-    // if (!phoneNumber) newErrors.phoneNumber = "Phone Number is required";
     if (!address) newErrors.address = "Address is required";
     if (!description) newErrors.description = "Description is required";
     if (!establishedYear)
       newErrors.establishedYear = "Established Year is required";
     if (!country) newErrors.country = "Country is required";
     if (!city) newErrors.city = "City is required";
-    if (!businessStreamId)
-      newErrors.businessStreamId = "Business Stream ID is required";
+    if (!selectbusinessStream)
+      newErrors.businessStreamId = "Business stream is required";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -94,26 +121,46 @@ export default function CreateCompanyEmployer() {
         city,
         address,
         numberOfEmployees: parseInt(selectSize.replace(/[^0-9]/g, "")) || 0,
-        businessStreamId: parseInt(businessStreamId),
+        businessStreamId: selectbusinessStream?.id,
         imageUrl: selectedFile ? URL.createObjectURL(selectedFile) : "",
       };
+      
       mutate({ data: formData });
+    }
+  };
+  const validateBusinessStreamForm = () => {
+    const newErrors: { [key: string]: string } = {};
+    if (!businessStreamName)
+      newErrors.businessStreamName = "Business Stream Name is required";
+    if (!descriptionBusiness)
+      newErrors.descriptionBusiness =
+        "Description for Business Stream is required";
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmitBusinessStream = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateBusinessStreamForm()) {
+      MutateBusinessStream({
+        data: {
+          businessStreamName,
+          description: descriptionBusiness,
+        },
+      });
     }
   };
 
   const handleCancel = () => {
     setCompanyName("");
-    // setEmail("");
     setWebsite("");
     setSelectSize("");
-    // setSkills([]);
-    // setPhoneNumber("");
     setAddress("");
     setDescription("");
     setEstablishedYear("");
     setCountry("");
     setCity("");
-    setBusinessStreamId("");
+    setSelectBusinessStream(null);
     setSelectedFile(null);
     setErrors({});
   };
@@ -138,7 +185,6 @@ export default function CreateCompanyEmployer() {
                 className={classes.inputup}
                 type="file"
                 accept="image/png, image/jpeg, image/jpg"
-                multiple={false}
                 onChange={handleFileChange}
                 hidden
               />
@@ -174,15 +220,6 @@ export default function CreateCompanyEmployer() {
                   <p className={classes.error}>{errors.selectSize}</p>
                 )}
               </div>
-              {/* <div className={classes.div8}>
-                <label className={classes.label}>Email *</label>
-                <Input
-                  placeholder="Input Email Company"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-                {errors.email && <p className={classes.error}>{errors.email}</p>}
-              </div> */}
               <div className={classes.div8}>
                 <RequiredText text="Company Name" />
                 <Input
@@ -207,23 +244,6 @@ export default function CreateCompanyEmployer() {
               </div>
             </div>
             <div className={classes.div7}>
-              {/* <RequiredText text="Field of operation" />
-              <MultipleSelect
-                options={jobSkills}
-                placeholder="Select Field of operation."
-                skills={skills}
-                setSkills={setSkills}
-              /> */}
-
-              {/* <RequiredText text="Company Phone Number" />
-              <Input
-                placeholder="Input Company Phone Number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
-              {errors.phoneNumber && (
-                <p className={classes.error}>{errors.phoneNumber}</p>
-              )} */}
               <RequiredText text="Established Year" />
               <Input
                 placeholder="Input Established Year"
@@ -249,17 +269,66 @@ export default function CreateCompanyEmployer() {
                 onChange={(e) => setCity(e.target.value)}
               />
               {errors.city && <p className={classes.error}>{errors.city}</p>}
-              <RequiredText text="Business Stream ID" />
-              <Input
-                placeholder="Input Business Stream ID"
-                value={businessStreamId}
-                onChange={(e) => setBusinessStreamId(e.target.value)}
-              />
-              {errors.businessStreamId && (
-                <p className={classes.error}>{errors.businessStreamId}</p>
-              )}
+              <div>
+                <RequiredText text="Create Business Stream ID" />
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                  }}
+                >
+                  <div style={{ paddingRight: 5 }}>
+                    <Input
+                      placeholder="businessStreamName"
+                      value={businessStreamName}
+                      onChange={(e) => setBusinessStreamName(e.target.value)}
+                    />
+                    {errors.businessStreamName && (
+                      <p className={classes.error}>
+                        {errors.businessStreamName}
+                      </p>
+                    )}
+                  </div>
+                  <div style={{ paddingLeft: 5 }}>
+                    <Input
+                      placeholder="description"
+                      value={descriptionBusiness}
+                      onChange={(e) => setDescriptionBusiness(e.target.value)}
+                    />
+                    {errors.descriptionBusiness && (
+                      <p className={classes.error}>
+                        {errors.descriptionBusiness}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div style={{ textAlign: "end", marginTop: 10 }}>
+                  {Pedingbusiness ? (
+                    <>Wait a minute</>
+                  ) : (
+                    <button
+                      onClick={(e) => handleSubmitBusinessStream(e)}
+                      className={classes.button2}
+                    >
+                      Save BusinessStream
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className={classes.div8}>
+                <label className={classes.label}>Business Stream ID *</label>
+                <FormSelectBusinessStream
+                  selectedValue={selectbusinessStream}
+                  setSelectedValue={setSelectBusinessStream}
+                  data={BusinessStreamData}
+                  placeholder="Select Business Stream"
+                />
+                {errors.businessStreamId && (
+                  <p className={classes.error}>{errors.businessStreamId}</p>
+                )}
+              </div>
             </div>
-
             <div className={classes.div33}>
               <RequiredText text="Company Description" />
               <ReactQuill

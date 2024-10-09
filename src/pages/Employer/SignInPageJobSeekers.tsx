@@ -133,8 +133,10 @@ export default function SignInPageJobSeekers() {
         // Combine both redirect states into one object
 
         localStorage.setItem("expiration", expiration.toISOString());
-
+         
         navigate(from !== "/" ? from : redirectPath, { state: combinedState });
+        // window.location.reload();
+       
       } else {
         setAlertMessage(true);
       }

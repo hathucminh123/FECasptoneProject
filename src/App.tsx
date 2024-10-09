@@ -63,7 +63,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <JobSeekerProtectedRoute>
-        <RootLayout />,
+        <RootLayout />
       </JobSeekerProtectedRoute>
     ),
 
@@ -221,7 +221,7 @@ const router = createBrowserRouter([
     id: "root1",
     children: [
       {
-        path: "Detail/CV/AppliedCV",
+        path: "Detail/CV/AppliedCV/:JobId",
         element: <DetailsCV />,
         children: [
           {

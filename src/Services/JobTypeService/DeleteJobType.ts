@@ -8,8 +8,8 @@ interface JobType {
 export const DeleteJobType = async ({ id }: JobType) => {
   try {
     const response = await httpClient.delete({
-      url: `${apiLinks.JobLocation.DELETE}?id=${id}`,
-      params: { id },
+      url: `${apiLinks.JobType.DELETE}?id=${id}`,
+      // params: { id },
     });
     return response.data;
   } catch (error: unknown) {

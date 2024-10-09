@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./JobPage.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
@@ -9,70 +9,154 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { Link, useNavigate } from "react-router-dom";
-import Tooltip from '@mui/material/Tooltip';
-import PauseIcon from '@mui/icons-material/Pause';
-import { useAppSelector } from "../../redux/hooks/hooks";
-// import Popover from "@mui/material/Popover";
-interface JobFormData {
-  id:string,
-  title: string,
-  selectedDate: Date|null,
-  count: number,
-  city: string,
-  district: string,
-  specificLocation:string,
-  skills: string[],
-  description: string,
-  requirements: string,
-  benefits: string,
-  selectedFile: File[],
-};
+import Tooltip from "@mui/material/Tooltip";
+import PauseIcon from "@mui/icons-material/Pause";
+import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+import { PostJobLcation } from "../../Services/JobPostLocation/PostJobLcation";
+import { queryClient } from "../../Services/mainService";
+import {
+  Modal,
+  Box,
+  Select,
+  MenuItem,
+  Button,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
+import { message } from "antd";
+
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
+  skillSets: string[];
+}
 
 export default function JobPage() {
-  const dataa = ["All", "Approved", "Pending", "Failed"];
+  const statusOptions = ["All", "Approved", "Pending", "Failed"];
   const [state, setState] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
-  // const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
-  const data = useAppSelector((state) => state.create.item);
-  console.log('quao',data)
+  const companyId = localStorage.getItem("CompanyId");
+  const [jobCVCounts, setJobCVCounts] = useState<Record<number, number>>({});
+  const [isFetchingCVs, setIsFetchingCVs] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [selectJobId, setselectJobId] = useState<number>();
+  const [stressAddressDetail, setStressAddressDetail] = useState<string>("");
+  const [selectedStatus, setSelectedStatus] = useState<string>("1");
+  const navigate = useNavigate();
+
+  const {
+    data: JobPosts,
+    isLoading: isJobLoading,
+    isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal }),
+    staleTime: 5000,
+  });
+
+  const JobPostsdata = JobPosts?.JobPosts;
+  const JobinCompany = useMemo(() => {
+    return JobPostsdata?.filter((item) => item.companyId === Number(companyId));
+  }, [JobPostsdata, companyId]);
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setSelectedStatus(event.target.value as string);
+  };
+
+  const fetchCVsForJobs = useCallback(async () => {
+    if (JobinCompany) {
+      setIsFetchingCVs(true);
+      const cvCounts: Record<number, number> = {};
+      await Promise.all(
+        JobinCompany.map(async (job) => {
+          const seekerData = await GetSeekerJobPost({ id: job.id });
+          const data = seekerData?.GetSeekers?.length || 0;
+          cvCounts[job.id] = data;
+        })
+      );
+      setJobCVCounts(cvCounts);
+      setIsFetchingCVs(false);
+    }
+  }, [JobinCompany]);
+
+  const { mutate } = useMutation({
+    mutationFn: PostJobLcation,
+    onSuccess: () => {
+      // Invalidate and refetch the cache to ensure the UI is updated immediately
+      queryClient.invalidateQueries({
+        queryKey: ["JobPosts"],
+        refetchType: "active", // Ensure an active refetch
+      });
+      message.success("Add Job location Successfully");
+      setOpenModal(false);
+    },
+    onError: () => {
+      message.error("Failed to Add job location set");
+    },
+  });
+
+  useEffect(() => {
+    fetchCVsForJobs();
+  }, [fetchCVsForJobs]);
+
   const handleMouseEnter = (index: number) => {
     setHovered(index);
   };
 
-  // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorEl(event.currentTarget); // Set the DOM element as anchorEl
-  // };
+  const handleNavigateDetail = (job: JobPost) => {
+    navigate(`/employer-verify/jobs/jobDetail/${job.id}`, {
+      state: { job, id: job.id },
+    });
+  };
 
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
+  const handleEditClick = (id: number) => {
+    setselectJobId(id);
+    setOpenModal(true);
+  };
 
-  // const open = Boolean(anchorEl);
-  // const id = open ? "simple-popover" : undefined;
+  const handleSave = () => {
+    if (selectJobId) {
+      mutate({
+        data: {
+          locationId: Number(selectedStatus),
+          jobPostId: selectJobId,
+          stressAddressDetail: stressAddressDetail,
+        },
+      });
+    }
+  };
 
-  // const jobs = [
-  //   {
-  //     id: "#12123123123",
-  //     title: "FullStack",
-  //     status: "No CV yet",
-  //     status1: "Failed",
-  //   },
-  //   {
-  //     id: "#45645645678",
-  //     title: "Backend Developer",
-  //     status: "No CV yet",
-  //     status1: "Approved",
-  //   },
-  // ];
+  if (isJobLoading) {
+    return <div>Loading jobs...</div>;
+  }
 
+  if (isJobError) {
+    return <div>Error loading jobs. Please try again later.</div>;
+  }
 
-const navigate = useNavigate();
-
-const handleNavigateDetail = (job: JobFormData) => {
-  navigate(`/employer-verify/jobs/jobDetail/${job.id}`, {
-    state: { job, id: job.id }, 
-  });
-};
   return (
     <div className={classes.main}>
       <div className={classes.div}>
@@ -108,7 +192,7 @@ const handleNavigateDetail = (job: JobFormData) => {
                       selectedValue={state}
                       setSelectedValue={setState}
                       placeholder=""
-                      data={dataa}
+                      data={statusOptions}
                       padding={true}
                     />
                   </div>
@@ -149,210 +233,203 @@ const handleNavigateDetail = (job: JobFormData) => {
                     variant="h1"
                     sx={{ fontSize: "16px", fontWeight: 500, color: "#303235" }}
                   >
-                  Filter CVs
+                    Filter CVs
                   </Typography>
                 </div>
-
-                <div className={classes.right1} >
+                <div className={classes.right1}>
                   <div className={classes.icon1}>
                     <SettingsOutlinedIcon />
                   </div>
                 </div>
-              
-                {/* <div className={classes.right} >
-                  <div className={classes.icon1}>
-                    <SettingsOutlinedIcon />
-                  </div>
-                </div> */}
               </div>
             </div>
           </div>
 
-          {data.map((job, index) => (
-            <div
-              className={classes.divtable}
-              onMouseEnter={() => handleMouseEnter(index)}
-              onMouseLeave={() => setHovered(null)}
-              key={job.id}
-              style={{
-                backgroundColor: hovered === index ? "#FFD4C3" : "transparent",
-                color: hovered === index ? "transparent" : "#5e6368",
-              }}
-            >
-              <div className={classes.divtable1}>
-                <div className={classes.divtable2}>
-                  <div className={classes.left}>
-                    <div className={classes.div1}>
-                      <div className={classes.div2}>
-                        <div className={classes.div3}>
-                          <span
-                            className={classes.span1}
-                            style={{
-                              color:
-                                hovered === index ? "transparent" : "#5e6368",
-                            }}
-                          >
-                            {job.id}
-                          </span>
+          {isFetchingCVs ? (
+            <div>Loading CV data...</div>
+          ) : (
+            JobinCompany?.map((job, index) => (
+              <div
+                className={classes.divtable}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={() => setHovered(null)}
+                key={job.id}
+                style={{
+                  backgroundColor:
+                    hovered === index ? "#FFD4C3" : "transparent",
+                }}
+              >
+                <div className={classes.divtable1}>
+                  <div className={classes.divtable2}>
+                    <div className={classes.left}>
+                      <div className={classes.div1}>
+                        <div className={classes.div2}>
+                          <div className={classes.div3}>
+                            <span className={classes.span1}>{job.id}</span>
+                          </div>
+                          <Link to="#" className={classes.link}>
+                            {job.jobTitle}
+                          </Link>
+                          <div className={classes.div4}>
+                            {jobCVCounts[job.id]
+                              ? `Have ${jobCVCounts[job.id]} CV Applied`
+                              : "No CV yet"}
+                          </div>
+                          {hovered === index && (
+                            <>
+                              <div className={classes.div5}>
+                                <Link
+                                  to={`Detail/CV/AppliedCV/${job.id}`}
+                                  className={classes.link1}
+                                >
+                                  View Candidate's CV
+                                </Link>
+                              </div>
+                              <div
+                                className={classes.div5}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => handleEditClick(job.id)}
+                              >
+                                <Link to="#" className={classes.link1}>
+                                  Add JobLocation
+                                </Link>
+                              </div>
+                            </>
+                          )}
                         </div>
-                        <Link
-                          to="/"
-                          className={classes.link}
-                          style={{
-                            color:
-                              hovered === index ? "transparent" : "#5e6368",
-                          }}
-                        >
-                          {job.title}
-                        </Link>
-                        <div className={classes.div4}>No CV yet</div>
-                        {hovered === index && (
-                          <>
-                            <div className={classes.div6}>
-                              <Link to="" className={classes.link2}>
-                                View Report
-                              </Link>
-                            </div>
-                            <div className={classes.div5}>
-                              <Link to="Detail/CV/AppliedCV" className={classes.link1}>
-                                View Candidate's CV
-                              </Link>
-                            </div>
-                          </>
-                        )}
                       </div>
                     </div>
-                  </div>
 
-                  <div className={classes.left1}>
-                    <Typography
-                      variant="h1"
-                      sx={{
-                        fontSize: "12px",
-                        fontWeight: 400,
-                        paddingRight: ".6em",
-                        paddingLeft: ".6em",
-                        borderRadius: "10rem",
-                        display: "inline-block",
-                        padding: ".25em .4em",
-                        lineHeight: 1,
-                        textAlign: "center",
-                        whiteSpace: "nowrap",
-                        verticalAlign: "baseline",
-                        // background:
-                        //   job.status1 === "Failed"
-                        //     ? "#fff3f2"
-                        //     : job.status1 === "Approved"
-                        //     ? "#00B14F"
-                        //     : undefined,
-                        // color:
-                        //   job.status1 === "Failed"
-                        //     ? "#da4538"
-                        //     : job.status1 === "Approved"
-                        //     ? "white"
-                        //     : undefined,
-                        color:"white",
-                        background:"#00B14F"
-                      }}
-                    >
-                      Approved
-                    </Typography>
-                  </div>
+                    <div className={classes.left1}>
+                      <Typography
+                        variant="h1"
+                        sx={{
+                          fontSize: "12px",
+                          fontWeight: 400,
+                          paddingRight: ".6em",
+                          paddingLeft: ".6em",
+                          borderRadius: "10rem",
+                          display: "inline-block",
+                          padding: ".25em .4em",
+                          lineHeight: 1,
+                          textAlign: "center",
+                          background: "#00B14F",
+                          color: "white",
+                        }}
+                      >
+                        Approved
+                      </Typography>
+                    </div>
 
-                  <div className={classes.right}>
-                    <div className={classes.div7}>
+                    <div className={classes.right}>
+                      <div className={classes.div7}>
+                        <div className={classes.div9}>
+                          <Link
+                            to="Detail/CV/AppliedCV/CV/Recommend"
+                            className={classes.link4}
+                          >
+                            <RemoveRedEyeIcon
+                              fontSize="small"
+                              sx={{ color: "#a8afb6" }}
+                            />
+                            View Details
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={classes.right}>
+                      <div className={classes.div7}>
+                        <div className={classes.div9}>
+                          <Link
+                            to="Detail/CV/AppliedCV/CV/Recommend"
+                            className={classes.link3}
+                          >
+                            Find CVs
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className={classes.right1}>
                       <div
-                        className={classes.div8}
-                        style={{
-                          color: hovered === index ? "transparent" : "#5e6368",
-                        }}
+                        className={classes.icon2}
+                        onClick={() => handleNavigateDetail(job)}
                       >
-                        Recommended CV/Profile
-                      </div>
-                      <div className={classes.div9}>
-                        <Link to="Detail/CV/AppliedCV/CV/Recommend" className={classes.link4}>
-                          <RemoveRedEyeIcon
+                        <Tooltip title="Edit">
+                          <ModeEditIcon
                             fontSize="small"
-                            sx={{ color: "#a8afb6" }}
+                            sx={{
+                              backgroundColor:
+                                hovered === index ? "#FF6F61" : "#e8edf2",
+                              borderRadius: "50%",
+                              padding: "10px",
+                              color: hovered === index ? "#fff" : undefined,
+                            }}
                           />
-                          View Details
-                        </Link>
+                        </Tooltip>
+                      </div>
+                      <div className={classes.icon2}>
+                        <Tooltip title="Delete">
+                          <PauseIcon
+                            fontSize="small"
+                            sx={{
+                              backgroundColor:
+                                hovered === index ? "#FF6F61" : "#e8edf2",
+                              borderRadius: "50%",
+                              padding: "10px",
+                              color: hovered === index ? "#fff" : undefined,
+                            }}
+                          />
+                        </Tooltip>
                       </div>
                     </div>
-                  </div>
-                  <div className={classes.right}>
-                    <div className={classes.div7}>
-                      {/* <div
-                        className={classes.div8}
-                        style={{
-                          color: hovered === index ? "transparent" : "#5e6368",
-                        }}
-                      >
-                        Recommended CV/Profile
-                      </div> */}
-                      <div className={classes.div9}>
-                        <Link to="Detail/CV/AppliedCV/CV/Recommend" className={classes.link3}>
-                                Find CVs
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className={classes.right1}>
-                    {/* <Popover
-                      id={id}
-                      open={open}
-                      anchorEl={anchorEl}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                      }}
-                    >
-                      <Typography sx={{ p: 2 }}>Edit</Typography>
-                    </Popover> */}
-                    <div
-                      className={classes.icon2}
-                      // onMouseEnter={handleClick}
-                      // onMouseLeave={handleClose}
-                      onClick={()=>handleNavigateDetail(job)}
-                    >
-                      <Tooltip title="Edit">
-                      <ModeEditIcon
-                        fontSize="small"
-                        sx={{
-                          backgroundColor: hovered ===index ?"#FF6F61": "#e8edf2",
-                          borderRadius: "50%",
-                          padding: "10px",
-                          color: hovered === index ? "#fff" : undefined,
-                        }}
-                      />
-                      </Tooltip>
-                    </div>
-                    <div
-                      className={classes.icon2}
-                      // onMouseEnter={handleClick}
-                      // onMouseLeave={handleClose}
-                    >
-                      <Tooltip title="Delete">
-                      <PauseIcon
-                        fontSize="small"
-                        sx={{
-                          backgroundColor: hovered ===index ?"#FF6F61": "#e8edf2",
-                          borderRadius: "50%",
-                          padding: "10px",
-                          color: hovered === index ? "#fff" : undefined,
-                        }}
-                      />
-                      </Tooltip>
-                    </div>
-                   
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
+        <Modal open={openModal} onClose={() => setOpenModal(false)}>
+          <Box className={classes.modalBox}>
+            <Typography variant="h6" component="h2">
+              Update Status
+            </Typography>
+            <Select
+              value={selectedStatus}
+              onChange={handleStatusChange}
+              fullWidth
+            >
+              <MenuItem value="1">Hồ Chí Minh</MenuItem>
+              <MenuItem value="2">Hà Nội</MenuItem>
+              <MenuItem value="3">Đà Nẵng</MenuItem>
+              <MenuItem value="4">Hải Phòng</MenuItem>
+              <MenuItem value="5">Cần Thơ</MenuItem>
+              <MenuItem value="6">Nha Trang</MenuItem>
+            </Select>
+            <TextField
+              fullWidth
+              sx={{ marginTop: 2 }}
+              label="stressAddressDetail"
+              placeholder="Input your address"
+              value={stressAddressDetail}
+              onChange={(e) => setStressAddressDetail(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={handleSave}
+              style={{ marginTop: 16 }}
+            >
+              Save
+            </Button>
+            <Button
+              variant="outlined"
+              onClick={() => setOpenModal(false)}
+              style={{ marginTop: 16 }}
+            >
+              Cancel
+            </Button>
+          </Box>
+        </Modal>
       </div>
     </div>
   );

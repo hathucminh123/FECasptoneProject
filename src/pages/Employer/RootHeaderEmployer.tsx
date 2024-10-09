@@ -2,7 +2,7 @@ import React from "react";
 import HeaderNavigationEmployer from "../../components/Employer/HeaderNavigationEmployer";
 import { Outlet } from "react-router-dom";
 import classes from './RootHeaderEmployer.module.css'
-import Footer from "../../components/Footer";
+// import Footer from "../../components/Footer";
 export default function RootHeaderEmployer() {
   return (
     <>
@@ -11,7 +11,7 @@ export default function RootHeaderEmployer() {
         <Outlet/>
       </section>
       <footer className={classes.footer}>
-        <Footer />
+        {/* <Footer /> */}
       </footer>
     </>
   );

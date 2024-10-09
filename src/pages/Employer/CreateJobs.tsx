@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import classes from "./CreateJobs.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import Typography from "@mui/material/Typography";
@@ -6,191 +6,211 @@ import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Modal from "@mui/material/Modal";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 import RemoveOutlinedIcon from "@mui/icons-material/RemoveOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import FormSelect from "../../components/Employer/FormSelect";
-import { districts } from "../../assets/data/locationData";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { jobSkills } from "../../assets/data/SkillData";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import ImageIcon from "@mui/icons-material/Image";
-import { useRef } from "react";
-import ImagePreview from "../../components/Employer/ImagePreview ";
-// import { useAppDispatch } from "../../redux/hooks/hooks";
-import { v4 as uuidv4 } from "uuid";
-// import { add } from "../../redux/slices/createJobs";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { message } from "antd";
+// import { v4 as uuidv4 } from "uuid";
+import { PostJobType } from "../../Services/JobTypeService/PostJobType";
+import { GetJobType } from "../../Services/JobTypeService/GetJobType";
+import { DeleteJobType } from "../../Services/JobTypeService/DeleteJobType";
+import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
+import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
+import { DeleteSkillSet } from "../../Services/SkillSet/DeleteSkillSet";
+import { PostJobPosts } from "../../Services/JobsPost/PostJobPosts";
+import { queryClient } from "../../Services/mainService";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import NotificationAlert from "../../components/NotificationAlert";
+import Input from "../../components/Employer/Input";
+import RequiredText from "../../components/Employer/RequiredText";
+import FormSelect from "../../components/Employer/FormSelect";
+
+const dataType = ["Full Time", "Part Time", "Remote"];
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
+interface SkillSet {
+  id: number;
+  name: string;
+  shorthand: string;
+  description: string;
+}
 
 export default function CreateJobs() {
   const [title, setTitle] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
-  const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const [isSelectOpenSkill, setIsSelectOpenSkill] = useState<boolean>(false);
   const [count, setCount] = useState<number>(1);
-  const [city, setCity] = useState<string>("");
-  const [district, setDistrict] = useState<string>("");
-  const [specificLocation, setSpecificLocation] = useState<string>("");
-  const [skills, setSkills] = useState<string[]>([]); // Array for multiple skills
+  const [skills, setSkills] = useState<string[]>([]);
   const [inputSkill, setInputSkill] = useState<string>("");
-  const [salary,setSalary]=useState<number>();
-  const [skillLevel,setSkillLevel]=useState<number>();
+  const [salary, setSalary] = useState<number>();
+  const [skillLevel, setSkillLevel] = useState<number>();
   const [description, setDescription] = useState<string>("");
   const [requirements, setRequirement] = useState<string>("");
   const [benefits, setBenefits] = useState<string>("");
-  const [showAlert,setShowAlert]=useState<boolean>(false)
-  const [selectedFile, setSelectedFile] = useState<File[]>([]);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [selectedFile, setSelectedFile] = useState<File|null>(null);
+  const [nameJobType, setNameJobtype] = useState<string>("");
+  const [typeDescription, setTypeDescription] = useState<string>("");
+  const [selectedTopTypeID, setSelectedTopTypeID] = useState<number>();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [nameSkill, setNameSkill] = useState("");
+  const [shorthand, setShorthand] = useState("");
+  const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
+  const [skillId, setSkillId] = useState<number[]>([]);
 
-  // const dispatch = useAppDispatch();
-  const handleOncreate = () => {
-    const data = {
-      id: uuidv4(),
-      jobTitle: title,
-      salary:salary,
-      selectedDate: selectedDate,
-      experienceRequired: count,
-      city: city,
-      district: district,
-      specificLocation: specificLocation,
-      jobDescription: description,
-      qualificationRequired: requirements,
-      benefits: benefits,
-      skills: skills,
-      skillLevelRequired:skillLevel,
-      selectedFile: selectedFile,
-    };
-
-    // dispatch(add(data))
-    setShowAlert(true)
-  };
-
-  console.log("city", city);
-  const locationData: string[] = [
-    "Miền Bắc",
-    "Hà Nội",
-    "Ba Đình",
-    "Hoàn Kiếm",
-    "Tây Hồ",
-    "Long Biên",
-    "Hải Phòng",
-    "Lê Chân",
-    "Ngô Quyền",
-    "Hồng Bàng",
-    "Quảng Ninh",
-    "Hạ Long",
-    "Cẩm Phả",
-    "Uông Bí",
-    "Miền Trung",
-    "Đà Nẵng",
-    "Cẩm Lệ",
-    "Hải Châu",
-    "Liên Chiểu",
-    "Thừa Thiên Huế",
-    "Huế",
-    "Hương Thủy",
-    "Phú Vang",
-    "Quảng Nam",
-    "Tam Kỳ",
-    "Hội An",
-    "Điện Bàn",
-    "Miền Nam",
-    "Hồ Chí Minh",
-    "Quận 1",
-    "Quận 3",
-    "Bình Thạnh",
-    "Đồng Nai",
-    "Biên Hòa",
-    "Long Khánh",
-    "Nhơn Trạch",
-    "Bình Dương",
-    "Thủ Dầu Một",
-    "Dĩ An",
-    "Thuận An",
-  ];
-
+  const companyId = localStorage.getItem("CompanyId");
+  const userId = localStorage.getItem("userId");
   const onChange = (value: number) => {
     setCount(Number(value));
   };
-  const handleLocation = (data: string) => {
-    setCity(data);
-    setIsSelectOpen(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
+  const { data: JobTypedata } = useQuery({
+    queryKey: ["JobType"],
+    queryFn: ({ signal }) => GetJobType({ signal }),
+    staleTime: 5000,
+  });
+
+  const JobTypeDatas = JobTypedata?.JobTypes;
+
+  const { mutate: JobPost } = useMutation({
+    mutationFn: PostJobPosts,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
+      message.success("Post Job successfully.");
+      setShowAlert(true);
+    },
+    onError: () => {
+      message.error("Failed to post the job.");
+    },
+  });
+
+  const handleOncreate = () => {
+    const data = {
+      jobtitle: title,
+      jobDescription: description,
+      salary: salary ?? 0,
+      experienceRequired: count,
+      qualificationRequired: requirements,
+      benefits,
+      skillLevelRequired: skillLevel ?? 0,
+      jobTypeId: selectedTopTypeID ?? 0,
+      companyID: Number(companyId),
+      imageURL: selectedFile ? URL.createObjectURL(selectedFile) : "",
+      userID: Number(userId),
+      skillSetIds: skillId ,
+    };
+    JobPost({ data });
   };
-  const handleSkill = (selectedSkill: string) => {
-    // Add skill if it's not already in the array
-    if (!skills.includes(selectedSkill)) {
-      setSkills([...skills, selectedSkill]);
+
+  const handleSkill = (selectedSkill: SkillSet) => {
+    if (!skills.includes(selectedSkill.name)) {
+      setSkills([...skills, selectedSkill.name]);
     }
     setIsSelectOpenSkill(false);
     setInputSkill("");
+    setSkillId([...skillId, selectedSkill.id]);
   };
+
   const handleRemoveSkill = (skillToRemove: string) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
   };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      // Spread previous files and add new ones
-      setSelectedFile((prevFiles) => [...prevFiles, ...Array.from(files)]);
-    }
-  };
-  const handleRemoveFile = (fileToRemove: File) => {
-    setSelectedFile((prevFiles) =>
-      prevFiles.filter((file) => file !== fileToRemove)
-    );
+    const file = event.target.files?.[0] || null;
+    setSelectedFile(file);
   };
 
   const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-    if (selectedFile) {
-      // Thực hiện logic upload file, ví dụ gửi file lên server qua API
-      console.log("File to upload:", selectedFile);
-    } else {
-      console.log("No file selected");
-    }
+    fileInputRef.current?.click();
   };
+
   const handleChangeCount = (type: string, limited: boolean) => {
-    if (type === "increase") {
-      if (!limited) {
-        setCount(count + 1);
-        console.log("Tăng");
-      }
-    } else {
-      if (!limited && count > 1) {
-        setCount(count - 1);
-      }
-    }
+    if (type === "increase" && !limited) setCount(count + 1);
+    if (type === "decrease" && !limited && count > 1) setCount(count - 1);
   };
 
   const handleIconClick = () => {
     setIsDatePickerOpen(!isDatePickerOpen);
   };
 
-  const handleOpenSelect = () => {
-    setIsSelectOpen(!isSelectOpen);
-    console.log("ok chua,", isSelectOpen);
-  };
-
-  const handleOpenSelectSkill = () => {
-    setIsSelectOpenSkill(!isSelectOpenSkill);
-  };
   const handleControl = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "title") {
-      setTitle(value);
-    } else if (name === "salary") {
-      setSalary(Number(value));
-    } else if (name === "skillLevel") {
-      setSkillLevel(Number(value));
-    }
+    if (name === "title") setTitle(value);
+    if (name === "salary") setSalary(Number(value));
+    if (name === "skillLevel") setSkillLevel(Number(value));
+  };
+
+  const { mutate: JobType,isPending:PedingJobtype } = useMutation({
+    mutationFn: PostJobType,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["JobType"] });
+      message.success("Job type created successfully.");
+      setNameJobtype("");
+      setTypeDescription("");
+    },
+    onError: () => {
+      message.error("Failed to create job type.");
+    },
+  });
+
+  const handleSubmitJobtype = (e: React.FormEvent) => {
+    e.preventDefault();
+    JobType({ data: { name: nameJobType, description: typeDescription } });
+  };
+
+  const handleJobTypeSelect = (Id: number) => {
+    setSelectedTopTypeID(Id);
+  };
+
+  const { mutate: deleteSkillSet } = useMutation({
+    mutationFn: DeleteSkillSet,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
+      message.success("Skill set deleted successfully.");
+    },
+    onError: () => {
+      message.error("Failed to delete skill set.");
+    },
+  });
+
+  const handledeleteSkillSet = (Id: number) => {
+    deleteSkillSet({ id: Id });
   };
   const maxLength = 50;
 
@@ -200,7 +220,58 @@ export default function CreateJobs() {
     return tmp.textContent || tmp.innerText || "";
   };
 
+
   const remainingChars = maxLength - stripHTML(title).length;
+  const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
+    mutationFn: PostSkillSets,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
+      message.success("Skill set created successfully.");
+      handleClose();
+    },
+    onError: () => {
+      message.error("Failed to create skill set.");
+    },
+  });
+
+  const handleSubmitSkillSet = () => {
+    createSkillSet({
+      data: {
+        name: nameSkill,
+        shorthand: shorthand,
+        description: descriptionSkillSet,
+      },
+    });
+  };
+
+  const handleOpenSelectSkill = () => {
+    setIsSelectOpenSkill(!isSelectOpenSkill);
+  };
+  const { data: SkillSetdata } = useQuery({
+    queryKey: ["SkillSet"],
+    queryFn: ({ signal }) => GetSkillSets({ signal }),
+    staleTime: 5000,
+  });
+  const { mutate: deleteJobType } = useMutation({
+    mutationFn: DeleteJobType,
+    onSuccess: () => {
+      // Invalidate and refetch the cache to ensure the UI is updated immediately
+      queryClient.invalidateQueries({
+        queryKey: ["JobType"],
+        refetchType: "active", // Ensure an active refetch
+      });
+      message.success("JobType Details Deleted Successfully");
+      // setDeletingId(null);
+    },
+    onError: () => {
+      message.error("Failed to delete the Job Types");
+    },
+  });
+
+  const handleDeleteJobType = (id: number) => {
+    deleteJobType({ id: id });
+  };
+  const SkillSetdataa = SkillSetdata?.SkillSets;
 
   return (
     <div className={classes.main}>
@@ -211,7 +282,13 @@ export default function CreateJobs() {
           onclick={handleOncreate}
         />
       </div>
-      <NotificationAlert showAlert={showAlert} severity="success" location="List jobs" notification="created successfully" link="/employer-verify/jobs" />
+      <NotificationAlert
+        showAlert={showAlert}
+        severity="success"
+        location="List jobs"
+        notification="created successfully"
+        link="/employer-verify/jobs"
+      />
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.mainLeft}>
@@ -254,7 +331,7 @@ export default function CreateJobs() {
                           {remainingChars}/50
                         </span>
                         <input
-                        name="title"
+                          name="title"
                           value={title}
                           type="text"
                           autoComplete="true"
@@ -310,7 +387,7 @@ export default function CreateJobs() {
                       htmlFor="Number of recruitment"
                       className={classes.label}
                     >
-                       Experience Required
+                      Experience Required
                       <span className={classes.span}>*</span>
                     </label>
                     <div className={classes.div8}>
@@ -339,43 +416,43 @@ export default function CreateJobs() {
                   </div>
                 </div>
                 <div className={classes.div3}>
-                    <label htmlFor="title" className={classes.label}>
-                      Salary
-                      <span className={classes.span}>*</span>
-                    </label>
-                    <div className={classes.div}>
-                      <div className={classes.form}>
-                        <span className={classes.span1}>
-                          <span className={classes.span2}>
-                            <i onClick={() => setTitle("")}>
-                              <HighlightOffOutlinedIcon
-                                fontSize="small"
-                                sx={{ color: "#868d94" }}
-                              />
-                            </i>
-                          </span>
-                          {remainingChars}/50
+                  <label htmlFor="title" className={classes.label}>
+                    Salary
+                    <span className={classes.span}>*</span>
+                  </label>
+                  <div className={classes.div}>
+                    <div className={classes.form}>
+                      <span className={classes.span1}>
+                        <span className={classes.span2}>
+                          <i onClick={() => setTitle("")}>
+                            <HighlightOffOutlinedIcon
+                              fontSize="small"
+                              sx={{ color: "#868d94" }}
+                            />
+                          </i>
                         </span>
-                        <input
-                          name="salary"
-                          value={salary}
-                          type="number"
-                          autoComplete="true"
-                          onChange={handleControl}
-                          placeholder="Input Salary"
-                          className={classes.input}
-                        />
-                      </div>
+                        {remainingChars}/50
+                      </span>
+                      <input
+                        name="salary"
+                        value={salary}
+                        type="number"
+                        autoComplete="true"
+                        onChange={handleControl}
+                        placeholder="Input Salary"
+                        className={classes.input}
+                      />
                     </div>
                   </div>
-                  <div className={classes.div3}>
-                    <label htmlFor="title" className={classes.label}>
+                </div>
+                <div className={classes.div3}>
+                  <label htmlFor="title" className={classes.label}>
                     skillLevelRequired
-                      <span className={classes.span}>*</span>
-                    </label>
-                    <div className={classes.div}>
-                      <div className={classes.form}>
-                        {/* <span className={classes.span1}>
+                    <span className={classes.span}>*</span>
+                  </label>
+                  <div className={classes.div}>
+                    <div className={classes.form}>
+                      {/* <span className={classes.span1}>
                           <span className={classes.span2}>
                             <i onClick={() => setTitle("")}>
                               <HighlightOffOutlinedIcon
@@ -386,128 +463,118 @@ export default function CreateJobs() {
                           </span>
                           {remainingChars}/50
                         </span> */}
-                        <input
+                      <input
                         name="skillLevel"
-                          value={skillLevel}
-                          type="number"
-                          autoComplete="true"
-                          onChange={handleControl}
-                          placeholder="Input level"
-                          className={classes.input}
-                        />
-                      </div>
+                        value={skillLevel}
+                        type="number"
+                        autoComplete="true"
+                        onChange={handleControl}
+                        placeholder="Input level"
+                        className={classes.input}
+                      />
                     </div>
                   </div>
+                </div>
                 <div className={classes.div11}>
                   <label htmlFor="title" className={classes.label}>
-                    Work place
+                    Job Type
                     <span className={classes.span}>*</span>
                   </label>
                   <div className={classes.div}>
                     <div className={classes.div12}>
-                      <div className={classes.div13}>
-                        <div className={classes.div14}>
-                          <div className={classes.div15}>
-                            <LocationOnIcon
-                              fontSize="small"
-                              sx={{ color: "#FF6F61", marginRight: ".57rem" }}
-                            />
-                            <span className={classes.span3}>location</span>
-                          </div>
-                          <div className={classes.div16}>
-                            <div className={classes.div17}>
-                              <div className={classes.div18}>
-                                {city && (
-                                  <span className={classes.spande}>
-                                    <i onClick={() => setCity("")}>
-                                      <HighlightOffOutlinedIcon
-                                        fontSize="small"
-                                        sx={{ color: "#868d94" }}
-                                      />
-                                    </i>
-                                  </span>
-                                )}
-
-                                <div className={classes.div19}>
-                                  <div
-                                    className={classes.div20}
-                                    onClick={handleOpenSelect}
-                                  >
-                                    <ArrowDropDownIcon />
-                                  </div>
-                                  <div className={classes.div21}>
-                                    <div className={classes.div22}></div>
-                                    <div className={classes.div23}></div>
-                                    <input
-                                      className={classes.inputlocation}
-                                      type="text"
-                                      autoComplete="nope"
-                                      placeholder="chọn khu vực/Tỉnh/Thành phố"
-                                      tabIndex={0}
-                                      value={city}
-                                      onChange={(e) => setCity(e.target.value)}
-                                    />
-                                    {city ? (
-                                      <span className={classes.spanlocation}>
-                                        {city}
-                                      </span>
-                                    ) : (
-                                      <span className={classes.spanlocation}>
-                                        Select Region/ Province/ City
-                                      </span>
-                                    )}
-                                  </div>
-                                  {isSelectOpen && (
-                                    <div className={classes.divselect}>
-                                      <ul className={classes.ul}>
-                                        {locationData.map((data, index) => (
-                                          <li
-                                            onClick={() => handleLocation(data)}
-                                            key={index}
-                                            className={classes.li}
-                                          >
-                                            <span
-                                              className={classes.spanselect}
-                                            >
-                                              <span> {data}</span>
-                                            </span>
-                                          </li>
-                                        ))}
-                                      </ul>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                       <div className={classes.divlocation}>
                         <div className={classes.div24}>
                           <div className={classes.div25}>
                             <div className={classes.div26}>
+                              <RequiredText text="Name" />
                               <FormSelect
-                                placeholder="Select District"
-                                selectedValue={district}
-                                setSelectedValue={setDistrict}
-                                data={districts}
+                                selectedValue={nameJobType}
+                                setSelectedValue={setNameJobtype}
+                                data={dataType}
+                                placeholder="Select Jobtype name"
                               />
                             </div>
                             <div className={classes.div27}>
                               <div className={classes.div28}>
-                                <input
-                                  type="text"
-                                  className={classes.inputdetaillocation}
-                                  autoComplete="on"
-                                  placeholder="Enter specific workplace location."
+                                <RequiredText text="Description" />
+                                <Input
+                                  placeholder="jobtype description"
+                                  value={typeDescription}
                                   onChange={(e) =>
-                                    setSpecificLocation(e.target.value)
+                                    setTypeDescription(e.target.value)
                                   }
                                 />
+                              </div>
+                              <div style={{ textAlign: "end", marginTop: 10 }}>
+                                {PedingJobtype ? (
+                                  <>Wait a minute</>
+                                ) : (
+                                  <button
+                                    onClick={(e) => handleSubmitJobtype(e)}
+                                    className={classes.button2}
+                                  >
+                                    Create JobType
+                                  </button>
+                                )}
                               </div>
                             </div>
                           </div>
                         </div>
+                        {JobTypeDatas?.map((item) => (
+                          <div
+                            className={`${
+                              selectedTopTypeID === item.id
+                                ? classes.formupload1
+                                : classes.div50
+                            }`}
+                            style={{ border: "1px solid #dedede" }}
+                          >
+                            <div className={classes.div51}>
+                              <div className={classes.check}>
+                                <FormGroup>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        checked={selectedTopTypeID === item.id}
+                                        onChange={() =>
+                                          handleJobTypeSelect(item.id)
+                                        }
+                                        name="form"
+                                      />
+                                    }
+                                    label="Select this Job Type"
+                                  />
+                                </FormGroup>
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={() => handleDeleteJobType(item.id)}
+                                >
+                                  <DeleteOutlineOutlinedIcon
+                                    sx={{
+                                      marginLeft: ".57rem",
+                                      color: "#a8afb6",
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                              <div className={classes.div52}>
+                                <div className={classes.div28}>
+                                  <RequiredText text="Name Jobtype" />
+                                  <Input value={item.name} disabled={true} />
+                                </div>
+                                <div className={classes.div28}>
+                                  <RequiredText text="Type Description" />
+                                  <Input
+                                    disabled={true}
+                                    value={item.description}
+
+                                    // value={typeDescription}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -587,7 +654,7 @@ export default function CreateJobs() {
                     </button>
                   </div>
                   <div className={classes.div32}>
-                  <ReactQuill
+                    <ReactQuill
                       value={benefits}
                       onChange={(content: string) => setBenefits(content)}
                       placeholder="Enter your Benefits"
@@ -600,6 +667,51 @@ export default function CreateJobs() {
                       Skill need for Jobs
                       <span className={classes.span}>*</span>
                     </span>
+                    <button className={classes.button2} onClick={handleOpen}>
+                      Create Skilset
+                    </button>
+                    <Modal open={open} onClose={handleClose}>
+                      <Box sx={style}>
+                        <Typography variant="h6" component="h2">
+                          Create Skillset
+                        </Typography>
+                        <TextField
+                          label="Name"
+                          value={nameSkill}
+                          onChange={(e) => setNameSkill(e.target.value)}
+                          fullWidth
+                          margin="normal"
+                        />
+                        <TextField
+                          label="Shorthand"
+                          value={shorthand}
+                          onChange={(e) => setShorthand(e.target.value)}
+                          fullWidth
+                          margin="normal"
+                        />
+                        <TextField
+                          label="Description"
+                          value={descriptionSkillSet}
+                          onChange={(e) =>
+                            setDescriptionSkillSet(e.target.value)
+                          }
+                          fullWidth
+                          multiline
+                          rows={4}
+                          margin="normal"
+                        />
+                        <Button
+                          variant="contained"
+                          onClick={handleSubmitSkillSet}
+                          disabled={isLoadingSkillSet}
+                        >
+                          {isLoadingSkillSet ? "Creating..." : "Create"}
+                        </Button>
+                        <Button onClick={handleClose} variant="text">
+                          Cancel
+                        </Button>
+                      </Box>
+                    </Modal>
                   </div>
                   <div className={classes.div33}>
                     <div className={classes.div34}>
@@ -655,16 +767,32 @@ export default function CreateJobs() {
                         {isSelectOpenSkill && (
                           <div className={classes.divselect}>
                             <ul className={classes.ul}>
-                              {jobSkills.length > 0 ? (
-                                jobSkills.map((item, index) => (
+                              {SkillSetdataa?.length ? (
+                                SkillSetdataa?.map((item, index) => (
                                   <li
                                     onClick={() => handleSkill(item)}
                                     key={index}
                                     className={classes.li}
                                   >
                                     <span className={classes.spanselect}>
-                                      <span>{item}</span>
+                                      <span>{item.name}</span>
                                     </span>
+                                    <div
+                                    style={{cursor:'pointer',flex:'0 0 10%',textAlign:'center'}}
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        handledeleteSkillSet(item.id);
+                                      }}
+                                    >
+                                      <DeleteOutlineOutlinedIcon
+                                        sx={{
+                                         marginTop:'5px',
+                                          color: "#a8afb6",
+                                         
+                                         
+                                        }}
+                                      />
+                                    </div>
                                   </li>
                                 ))
                               ) : (
@@ -695,19 +823,19 @@ export default function CreateJobs() {
                   Adding Images will help your company information appear more
                   professional.
                 </div>
-                {selectedFile.map((file, index) => (
-                  <div key={index} className={classes.div46}>
+              
+                  <div className={classes.div46}>
                     <div className={classes.div47}>
                       <div className={classes.divimg}>
-                        {/* <img
+                        <img
                     
-                          src={URL.createObjectURL(file)}
-                          alt={`preview-${index}`}
+                          src={selectedFile ? URL.createObjectURL(selectedFile): ""}
+                          alt={`preview-${selectedFile?.name}`}
                           className={classes.divimg}
-                        /> */}
-                        <ImagePreview file={file} index={index} key={index} />
+                        />
+                        {/* <ImagePreview file={selectedFile}  /> */}
                       </div>
-                      <div
+                      {/* <div
                         className={classes.divdelete}
                         onClick={() => handleRemoveFile(file)}
                       >
@@ -715,10 +843,10 @@ export default function CreateJobs() {
                           fontSize="small"
                           sx={{ marginRight: "2px" }}
                         />
-                      </div>
+                      </div> */}
                     </div>
                   </div>
-                ))}
+          
 
                 <div className={classes.div45}>
                   <div

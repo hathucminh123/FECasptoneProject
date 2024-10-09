@@ -2,7 +2,7 @@ import React from 'react'
 import classes from './Input.module.css'
 
 interface Props {
-  placeholder: string;
+  placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   value?: string;
   type?: string;

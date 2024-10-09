@@ -574,9 +574,11 @@ const ProfileMenu = ({
   const handleSignout = (item: string) => {
     if (item === "Item 3") {
       localStorage.clear();
+  
     //   localStorage.removeItem('token');
     // localStorage.removeItem('expiration');
-      navigate('/'); 
+      // navigate('/'); 
+      window.location.reload();
     } else if (item === "Item 1") {
       navigate("/profile-cv");
     } else if (item === "Item 2") {

@@ -14,8 +14,8 @@ import { getTokenDuration } from "../utils/Auth";
 
 export default function RootLayout() {
   const token = useRouteLoaderData("root");
-  const userRole = localStorage.getItem('role')
-  console.log('rolene',userRole)
+  const userRole = localStorage.getItem("role");
+  console.log("rolene", userRole);
   console.log("tokenne", token);
   // const navigate =useNavigate()
   const submit = useSubmit();
@@ -29,7 +29,6 @@ export default function RootLayout() {
   //       navigate('/employer-verify/jobs')
   //     }
   //  },[userRole,navigate])
-
 
   useEffect(() => {
     if (!token) {
@@ -76,6 +75,7 @@ export default function RootLayout() {
       <footer className={classes.footer}>
         <Footer onClick={handelScroll} scroll={scroll} />
       </footer>
+    
     </>
   );
 }

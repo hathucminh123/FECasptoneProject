@@ -15,7 +15,8 @@ const request = (arg: Body) => {
   const token = localStorage.getItem("token");
   const {
     method,
-    contentType = "application/json",
+    // contentType =   "multipart/form-data",
+    contentType = "application/json" ,
     url,
     data,
     params,

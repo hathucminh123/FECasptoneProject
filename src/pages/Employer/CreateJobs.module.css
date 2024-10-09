@@ -473,8 +473,9 @@
 }
 
 .li {
-  display: block;
+  display: flex;
   box-sizing: border-box;
+  justify-content: space-between;
 }
 
 .spanselect {
@@ -488,7 +489,8 @@
   white-space: normal !important;
   box-sizing: border-box;
   outline: none;
-
+  flex: 0 0 90%;
+width: 90%;
   line-height: 16px;
   vertical-align: middle;
   text-align: -webkit-match-parent;
@@ -528,6 +530,7 @@
   justify-content: space-between !important;
   display: flex !important;
   box-sizing: border-box;
+  
 }
 
 .div25 {
@@ -975,3 +978,74 @@
     display: flex !important;
     box-sizing: border-box;
 }
+.button2{
+  cursor: pointer;
+  min-width: 100px;
+  font-size: 14px;    
+  color: white;
+  background: #FF6F61;
+  white-space: nowrap;
+  border-radius: 5px;
+  margin-right: .57rem !important;
+  border-color: #FF6F61;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: .375rem .75rem;
+  line-height: 1.5;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  -webkit-appearance: button;
+  text-transform: none;
+  overflow: visible;
+  margin: 0;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.check{
+  z-index: 0;
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 16px;
+  cursor: default;
+  padding-left: 35px;
+}
+
+
+.div50{
+  display: block;
+  box-sizing: border-box;
+  margin-bottom: 1.14rem !important;
+  border-radius: 4;
+}
+.formupload1{
+  background-color: #fff5f5;
+  border: 1px solid #ed1b2f;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 1.14rem !important;
+  display: block;
+}
+
+.div51 {
+  width: calc(100% - 15px);
+  /* display: flex;
+  flex-wrap: wrap; */
+  margin-right: -15px;
+  margin-left: -15px;
+  box-sizing: border-box;
+}
+.div52 {
+  width: calc(100% - 15px);
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -85px;
+  box-sizing: border-box;
+}
+
