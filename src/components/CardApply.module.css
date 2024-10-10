@@ -62,6 +62,39 @@
     position: absolute !important;
     box-sizing: border-box;
 }
+.Pending{
+    background-color: #0ab3ff;
+
+    gap: 4px;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    right: 0 !important;
+    position: absolute !important;
+    box-sizing: border-box;
+}
+.Rejected{
+    background-color:#ff0000 ;
+
+    gap: 4px;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 600;
+    right: 0 !important;
+    position: absolute !important;
+    box-sizing: border-box;
+}
+
 
 .status::after{
     content: "";

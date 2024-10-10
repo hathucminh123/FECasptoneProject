@@ -167,3 +167,10 @@
 .link:hover {
   text-decoration: underline;
 }
+
+
+.link2{
+  text-decoration: none;
+  color: black; 
+  /* color: black;  */
+}

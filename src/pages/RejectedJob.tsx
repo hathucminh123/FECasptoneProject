@@ -21,7 +21,7 @@ import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostAc
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import CardApply from "../components/CardApply";
 
-export default function AppliedJob() {
+export default function RejectedJob() {
   //   const data = useAppSelector((state) => state.favorite.item);
   //   const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -59,7 +59,7 @@ export default function AppliedJob() {
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
 
   const JobPending = JobPostActivitydata?.filter(
-    (item) => item.status === "Applied"
+    (item) => item.status === "Rejected"
   );
 
   const PendingJobApplied = JobPostsdata?.find((job) =>
@@ -144,7 +144,7 @@ export default function AppliedJob() {
                     mb: 0,
                   }}
                 >
-                  Passed Job ({JobPending?.length})
+                  Rejected Job ({JobPending?.length})
                 </Typography>
              
               </div>

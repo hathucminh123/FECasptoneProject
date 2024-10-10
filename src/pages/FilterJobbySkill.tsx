@@ -30,6 +30,9 @@ import { setCompanies, setJobPosts } from "../redux/slices/companyJobslice";
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import Image from "./../assets/image/download.png";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
+
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface JobType {
   id: number;
@@ -373,7 +376,6 @@ export default function FilterJobbySkill() {
                         (activity) => activity.jobPostId === job?.id
                       );
 
-                
                       return (
                         <CardJobSearch
                           selectedJob={selectedJob}
@@ -453,13 +455,31 @@ export default function FilterJobbySkill() {
                             </div>
                           </div>
                           {applied && auth ? (
-                            <div className={classes.jobapply}>
+                            <div
+                              className={
+                                applied?.status === "Pending"
+                                  ? classes.Pending
+                                  : applied?.status === "Rejected"
+                                  ? classes.Rejected
+                                  : classes.jobapply
+                              }
+                            >
                               <div className={classes.jobapply1}>
-                                <CheckCircleOutlineOutlinedIcon />
-                                Applied{" "}
-                                {moment(applied?.applicationDate).format(
-                                  "YYYY-MM-DD"
+                                {applied?.status === "Pending" ? (
+                                  <HourglassEmptyIcon />
+                                ) : applied?.status ===
+                                  "Rejected" ? (
+                                  <CancelIcon />
+                                ) : (
+                                  <CheckCircleOutlineOutlinedIcon />
                                 )}
+                                {applied.status}{" "}
+                                <div style={{ marginLeft: "auto" }}>
+                                  Applied Date: {""}
+                                  {moment(applied?.applicationDate).format(
+                                    "YYYY-MM-DD"
+                                  )}
+                                </div>
                               </div>
                             </div>
                           ) : (

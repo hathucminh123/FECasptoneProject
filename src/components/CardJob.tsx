@@ -124,6 +124,7 @@ export default function CardJob({
   // };
 
   return (
+    <Link to={`jobs/detail/${data?.id}`} className={classes.link2}>
     <div
       className={classes.card_main}
       onClick={onclick}
@@ -330,5 +331,6 @@ export default function CardJob({
         </div>
       </div>
     </div>
+    </Link>
   );
 }

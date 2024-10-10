@@ -57,6 +57,12 @@ import ChooseCompany from "./pages/Employer/ChooseCompany";
 import ApplySuccess from "./pages/ApplySuccess";
 import ProtectedRouteCompany from "./components/Employer/ProtectedRouteCompany";
 import CreateCompanyEmployer from "./pages/Employer/CreateCompanyEmployer";
+import RootJobsStatus from "./pages/RootJobsStatus";
+import PendingJob from "./pages/PendingJob";
+import RejectedJob from "./pages/RejectedJob";
+import PassedJob from "./pages/PassedJob";
+import RootCVtemplate from "./pages/RootCVtemplate";
+import ElegantTemplate from "./pages/ElegantTemplate";
 
 const router = createBrowserRouter([
   {
@@ -104,9 +110,9 @@ const router = createBrowserRouter([
         // Protect profile-cv routes
         path: "profile-cv",
         element: (
-          // <ProtectedRoute>
-          <RootProfile />
-          // </ProtectedRoute>
+          <ProtectedRoute>
+            <RootProfile />
+          </ProtectedRoute>
         ),
         children: [
           {
@@ -116,6 +122,31 @@ const router = createBrowserRouter([
           {
             path: "manage-cv",
             element: <ManageCV />,
+          },
+        ],
+      },
+      {
+        // Protect my-jobs routes
+        path: "Job-invitation",
+        element: (
+          <ProtectedRoute>
+            <RootJobsStatus />
+          </ProtectedRoute>
+        ),
+        children: [
+          {
+            index: true,
+            element: <PendingJob />,
+          },
+
+          {
+            path: "Rejected-Jobs",
+            element: <RejectedJob />,
+          },
+
+          {
+            path: "Passed",
+            element: <PassedJob />,
           },
         ],
       },
@@ -161,6 +192,22 @@ const router = createBrowserRouter([
       {
         path: "logout",
         action: LogoutAction,
+      },
+    ],
+  },
+  {
+    path: "cv-templates",
+
+    element: (
+      <ProtectedRoute>
+        <RootCVtemplate />,
+      </ProtectedRoute>
+    ),
+
+    children: [
+      {
+        index: true,
+        element: <ElegantTemplate />,
       },
     ],
   },
@@ -261,7 +308,7 @@ const router = createBrowserRouter([
       //       element: <CreateCompany />,
       //       children: [
       //         {
-              
+
       //           index: true,
       //           element: <ChooseCompany />,
       //         },

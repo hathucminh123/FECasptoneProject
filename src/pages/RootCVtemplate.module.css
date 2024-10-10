@@ -1,0 +1,209 @@
+.main{
+    min-height: calc(100vh - 495px);
+    flex-direction: column !important;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+.main1{
+    flex-grow: 1 !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main2{
+    height: 100vh !important;
+    overflow: hidden !important;
+    box-sizing: border-box;
+display: block;
+}
+.header{
+    height: 65px;
+    background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
+    box-sizing: border-box;
+    display: block;
+}
+.header1{
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+    height: 100% !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.header2{
+    text-align: center !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 100% !important;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+
+.link{
+    color: #fff !important;
+    align-items: center !important;
+    display: flex !important;
+    text-decoration: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: center;
+}
+
+.header3{
+    gap: 16px !important;
+    color: #fff !important;
+    text-align: center !important;
+    align-items: center !important;
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+.main3{
+    background-color: #414042 !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main4{
+    padding-left: 24px !important;
+    display: flex !important;
+    box-sizing: border-box;
+
+}
+
+.main5{
+    gap: 8px !important;
+
+    margin-top: 24px !important;
+    padding-right: 24px !important;
+    align-items: flex-start !important;
+    flex-wrap: wrap !important;
+    display: flex !important;
+    flex: 0 0 auto;
+    width: 33.33333333%;
+    box-sizing: border-box;
+}
+
+.main6{
+    height: 100svh;
+    padding-bottom: 100px !important;
+    display: flex !important;
+
+    overflow: auto !important;
+    flex-wrap: wrap;
+    margin-top: calc(-1* var(--i-gutter-y));
+    margin-right: calc(-0.5* var(--i-gutter-x));
+    margin-left: calc(-0.5* var(--i-gutter-x));
+
+    box-sizing: border-box;
+}
+
+.main7{
+
+    margin-top: 8px !important;
+    margin-bottom: 8px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    flex: 0 0 auto;
+    width: 50%;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+}
+
+.link2{
+    position: relative !important;
+    display: block !important;
+    color: #0d6efd;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+
+
+.img{
+  
+    object-fit: contain;
+    border-radius: 4px;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    box-sizing: border-box;
+    width: 100%;
+
+}
+ .active{
+    box-shadow: 0 0 0 4px #0ab305;
+    object-fit: contain;
+    border-radius: 4px;
+    max-width: 100%;
+    height: auto;
+    vertical-align: middle;
+    box-sizing: border-box;
+    width: 100%;
+
+}
+
+.main7 a{
+    position: relative !important;
+    display: block !important;
+    color: #0d6efd;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.main8{
+    padding-right: 12px !important;
+    padding-bottom: 12px !important;
+    bottom: 0 !important;
+    position: absolute !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main9{
+    border-radius: 0 4px 4px 0;
+    background-color: #085bdd;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: 400 !important;
+    box-sizing: border-box;
+}
+
+.main9::after{
+    border-right: 8px solid transparent;
+    border-left: 0;
+    left: 0;
+    border-top: 8px solid #085bdd;
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    width: 0;
+    height: 0;  
+    box-sizing: border-box;
+}
+
+.main10{
+    display: block;
+    transform: translate(-50%, -50%) !important;
+    left: 50% !important;
+    top: 50% !important;
+    position: absolute !important;
+    box-sizing: border-box;
+}
+
+.main11{
+    width: 64px;
+    height: 64px;
+    background-color: #0ab305;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: block;
+}

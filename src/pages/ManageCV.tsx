@@ -14,6 +14,9 @@ import { fetchCVs } from "../Services/CVService/GetCV";
 import { renderButton } from "../components/RenderButton";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { DeleteCV } from "../Services/CVService/DeleteCV";
+import { storage} from '../firebase/config.ts'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ManageCV() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -62,9 +65,12 @@ export default function ManageCV() {
     },
   });
 
-  const handleUploadClick = () => {
+  const handleUploadClick =async () => {
     if (selectedFile) {
-      mutate({ data: { url: selectedFile.name } });
+      const fileRef = ref(storage, `${uuidv4()}-${selectedFile.name}`);
+      await uploadBytes(fileRef, selectedFile);
+      const fileUrl = await getDownloadURL(fileRef);
+      mutate({ data: { url: fileUrl ,name:selectedFile.name} });
       console.log("File to upload:", selectedFile);
     } else {
       console.log("No file selected");
@@ -189,7 +195,7 @@ export default function ManageCV() {
                           Uploaded CVs:
                         </Typography>
                         {dataCVS.map(
-                          (cv: { url: string; id: number }, index: number) => (
+                          (cv: { url: string; id: number ;name:string }, index: number) => (
                             <div className={classes.main1}>
                               <Typography
                                 key={index}
@@ -206,7 +212,7 @@ export default function ManageCV() {
                                     color: "blue",
                                   }}
                                 >
-                                  {cv.url}
+                                  {cv.name}
                                 </a>
                               </Typography>
                               {deletingId === cv.id ? (

@@ -6,6 +6,8 @@ import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlin
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import CancelIcon from "@mui/icons-material/Cancel";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 // import JobDetails from "../pages/JobDetails";
 
 interface BusinessStream {
@@ -19,14 +21,13 @@ interface JobType {
   description: string;
 }
 
-
 interface JobPost {
   id: number;
   jobTitle: string;
   jobDescription: string;
   salary: number;
   postingDate: string;
-  expiryDate: string; 
+  expiryDate: string;
   experienceRequired: number;
   qualificationRequired: string;
   benefits: string;
@@ -36,8 +37,8 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType; // jobType là đối tượng JobType
-  jobLocationCities:string[];
-  jobLocationAddressDetail:string[]
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
 }
 interface Company {
@@ -52,7 +53,7 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
-  imageUrl:string
+  imageUrl: string;
 }
 
 interface UserJobActivity {
@@ -72,16 +73,27 @@ interface props {
 }
 
 export default function CardApply({ company, job, activity }: props) {
- 
-
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
         <div className={classes.main2}>
-          <div className={classes.status}>
-            <CheckCircleOutlineOutlinedIcon />
-            {activity.status}
-          </div>
+          {activity.status === "Pending" ? (
+            <div className={classes.Pending}>
+             <HourglassEmptyIcon />
+              {activity.status}
+            </div>
+          ) : activity.status === "Rejected" ? (
+            <div className={classes.Rejected}>
+                  <CancelIcon />
+              {activity.status}
+            </div>
+          ) : (
+            <div className={classes.status}>
+              <CheckCircleOutlineOutlinedIcon />
+              {activity.status}
+            </div>
+          )}
+
           <div className={classes.main3}>
             <span className={classes.span}>
               Applied Date:{" "}
@@ -110,7 +122,10 @@ export default function CardApply({ company, job, activity }: props) {
               <img src="" alt="" className={classes.link1} />
             </Link>
             <span className={classes.span1}>
-              <Link to={`/company/detail/${company?.id}`} className={classes.link1}>
+              <Link
+                to={`/company/detail/${company?.id}`}
+                className={classes.link1}
+              >
                 {" "}
                 {company?.companyName}
               </Link>
@@ -126,24 +141,10 @@ export default function CardApply({ company, job, activity }: props) {
           <div className={classes.main8}>
             <LocationOnIcon />
             <span className={classes.span3}>
-            {job?.jobLocationCities &&
-                job?.jobLocationCities?.length > 0 ? (
-                  job?.jobLocationCities.map((item, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        gap: 2,
-                      }}
-                    >
-                      {item}
-                      {index < job.jobLocationCities.length - 1 && ", "}
-                    </div>
-                  ))
-                ) : (
+              {job?.jobLocationCities && job?.jobLocationCities?.length > 0 ? (
+                job?.jobLocationCities.map((item, index) => (
                   <div
+                    key={index}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -151,9 +152,22 @@ export default function CardApply({ company, job, activity }: props) {
                       gap: 2,
                     }}
                   >
-                    No Location yet
+                    {item}
+                    {index < job.jobLocationCities.length - 1 && ", "}
                   </div>
-                )}
+                ))
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    gap: 2,
+                  }}
+                >
+                  No Location yet
+                </div>
+              )}
             </span>
           </div>
           <div className={classes.button}>

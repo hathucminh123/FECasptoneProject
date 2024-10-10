@@ -213,7 +213,7 @@ export default function Apply() {
                             style={{ textDecoration: "none", color: "blue" }}
                             className={classes.a}
                           >
-                            {cv.url}
+                            {cv.name}
                           </a>
                           <a
                             href={cv.url}

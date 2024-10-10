@@ -11,7 +11,9 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 // import Image from "./../assets/image/minh.jpg";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import styled from "styled-components";
+import CancelIcon from "@mui/icons-material/Cancel";
 // import CardJob from "../components/CardJob";
 
 // import { compose } from "@reduxjs/toolkit";
@@ -358,15 +360,30 @@ export default function JobDetails() {
                   </Typography>
                 </div>
                 {hasAppliedJobActivity ? (
-                  <div className={classes.main4}>
+                  <div
+                    className={
+                      hasAppliedJobActivity?.status === "Pending"
+                        ? classes.Pending
+                        : hasAppliedJobActivity?.status === "Rejected"
+                        ? classes.Rejected
+                        : classes.main4
+                    }
+                  >
                     <span className={classes.span}>
-                      <CheckCircleOutlineOutlinedIcon />
+                        {hasAppliedJobActivity?.status === "Pending" ? (
+                          <HourglassEmptyIcon />
+                        ) : hasAppliedJobActivity?.status === "Rejected" ? (
+                          <CancelIcon />
+                        ) : (
+                          <CheckCircleOutlineOutlinedIcon />
+                        )}
+                        <span className={classes.span1}>
+                          {hasAppliedJobActivity.status}{" "}
+                        </span>
                     </span>
                     <div className={classes.main5}>
                       <span className={classes.span1}>
-                        {hasAppliedJobActivity.status}{" "}
-                      </span>
-                      <span className={classes.span1}>
+                        Applied Date:{" "}
                         {moment(hasAppliedJobActivity.applicationDate).format(
                           "YYYY-MM-DD"
                         )}
@@ -482,30 +499,30 @@ export default function JobDetails() {
                       </div>
                     ))
                   ) : (
-                    <div  className={classes.location}>
-                        <LocationOnOutlinedIcon
-                          fontSize="large"
-                          sx={{
-                            width: "16px",
-                            height: "16px",
-                            color: "#a6a6a6",
-                            mt: "10px",
-                          }}
-                        />
-                        <Typography
-                          variant="h5"
-                          gutterBottom
-                          sx={{
-                            alignItems: "start",
-                            fontWeight: 500,
-                            mt: "7px",
-                            color: "#414042",
-                            fontSize: "16px",
-                          }}
-                        >
-                          No location yet
-                        </Typography>
-                      </div>
+                    <div className={classes.location}>
+                      <LocationOnOutlinedIcon
+                        fontSize="large"
+                        sx={{
+                          width: "16px",
+                          height: "16px",
+                          color: "#a6a6a6",
+                          mt: "10px",
+                        }}
+                      />
+                      <Typography
+                        variant="h5"
+                        gutterBottom
+                        sx={{
+                          alignItems: "start",
+                          fontWeight: 500,
+                          mt: "7px",
+                          color: "#414042",
+                          fontSize: "16px",
+                        }}
+                      >
+                        No location yet
+                      </Typography>
+                    </div>
                   )}
 
                   <div className={classes.time}>

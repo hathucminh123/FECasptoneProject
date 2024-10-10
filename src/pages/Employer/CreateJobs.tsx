@@ -37,6 +37,9 @@ import NotificationAlert from "../../components/NotificationAlert";
 import Input from "../../components/Employer/Input";
 import RequiredText from "../../components/Employer/RequiredText";
 import FormSelect from "../../components/Employer/FormSelect";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../firebase/config";
+import { v4 as uuidv4 } from "uuid";
 
 const dataType = ["Full Time", "Part Time", "Remote"];
 
@@ -73,7 +76,7 @@ export default function CreateJobs() {
   const [requirements, setRequirement] = useState<string>("");
   const [benefits, setBenefits] = useState<string>("");
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [selectedFile, setSelectedFile] = useState<File|null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [nameJobType, setNameJobtype] = useState<string>("");
   const [typeDescription, setTypeDescription] = useState<string>("");
   const [selectedTopTypeID, setSelectedTopTypeID] = useState<number>();
@@ -83,6 +86,7 @@ export default function CreateJobs() {
   const [shorthand, setShorthand] = useState("");
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
   const [skillId, setSkillId] = useState<number[]>([]);
+  const [fileUrl, setFileUrl] = useState<string>();
 
   const companyId = localStorage.getItem("CompanyId");
   const userId = localStorage.getItem("userId");
@@ -108,7 +112,7 @@ export default function CreateJobs() {
 
   const JobTypeDatas = JobTypedata?.JobTypes;
 
-  const { mutate: JobPost } = useMutation({
+  const { mutate: JobPost ,isPending:PostPending} = useMutation({
     mutationFn: PostJobPosts,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
@@ -120,22 +124,47 @@ export default function CreateJobs() {
     },
   });
 
-  const handleOncreate = () => {
-    const data = {
-      jobtitle: title,
-      jobDescription: description,
-      salary: salary ?? 0,
-      experienceRequired: count,
-      qualificationRequired: requirements,
-      benefits,
-      skillLevelRequired: skillLevel ?? 0,
-      jobTypeId: selectedTopTypeID ?? 0,
-      companyID: Number(companyId),
-      imageURL: selectedFile ? URL.createObjectURL(selectedFile) : "",
-      userID: Number(userId),
-      skillSetIds: skillId ,
-    };
-    JobPost({ data });
+  const handleOnCreate = async () => {
+    try {
+      // Kiểm tra nếu `selectedFile` tồn tại trước khi tiếp tục
+      if (!selectedFile) {
+        console.error("No file selected");
+        message.warning("Please select a file to upload.");
+        return;
+      }
+
+      const fileName = `${uuidv4()}-${selectedFile.name}`;
+      const fileRef = ref(storage, fileName);
+
+      await uploadBytes(fileRef, selectedFile);
+
+      const fileUrl = await getDownloadURL(fileRef);
+
+      setFileUrl(fileUrl);
+
+      const data = {
+        jobtitle: title,
+        jobDescription: description,
+        salary: salary ?? 0,
+        experienceRequired: count,
+        qualificationRequired: requirements,
+        benefits,
+        skillLevelRequired: skillLevel ?? 0,
+        jobTypeId: selectedTopTypeID ?? 0,
+        companyID: Number(companyId),
+        imageURL: fileUrl, 
+        userID: Number(userId),
+        skillSetIds: skillId,
+      };
+
+      // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
+       await JobPost({ data });
+
+      console.log("Job created successfully with image URL:", fileUrl);
+    } catch (error) {
+      console.error("Error creating job:", error);
+      message.error("Failed to create job. Please try again.");
+    }
   };
 
   const handleSkill = (selectedSkill: SkillSet) => {
@@ -153,7 +182,12 @@ export default function CreateJobs() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
+    if (file) {
+      setSelectedFile(file);
+   
+      const previewUrl = URL.createObjectURL(file);
+      setFileUrl(previewUrl);
+    }
   };
 
   const handleUploadClick = () => {
@@ -176,7 +210,7 @@ export default function CreateJobs() {
     if (name === "skillLevel") setSkillLevel(Number(value));
   };
 
-  const { mutate: JobType,isPending:PedingJobtype } = useMutation({
+  const { mutate: JobType, isPending: PedingJobtype } = useMutation({
     mutationFn: PostJobType,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobType"] });
@@ -219,7 +253,6 @@ export default function CreateJobs() {
     tmp.innerHTML = html;
     return tmp.textContent || tmp.innerText || "";
   };
-
 
   const remainingChars = maxLength - stripHTML(title).length;
   const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
@@ -276,10 +309,12 @@ export default function CreateJobs() {
   return (
     <div className={classes.main}>
       <div className={classes.div}>
+       
         <HeaderSystem
           title="Recruitment Post"
+          pending ={PostPending}
           buttonstring="Save and Post "
-          onclick={handleOncreate}
+          onclick={handleOnCreate}
         />
       </div>
       <NotificationAlert
@@ -778,7 +813,11 @@ export default function CreateJobs() {
                                       <span>{item.name}</span>
                                     </span>
                                     <div
-                                    style={{cursor:'pointer',flex:'0 0 10%',textAlign:'center'}}
+                                      style={{
+                                        cursor: "pointer",
+                                        flex: "0 0 10%",
+                                        textAlign: "center",
+                                      }}
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         handledeleteSkillSet(item.id);
@@ -786,10 +825,8 @@ export default function CreateJobs() {
                                     >
                                       <DeleteOutlineOutlinedIcon
                                         sx={{
-                                         marginTop:'5px',
+                                          marginTop: "5px",
                                           color: "#a8afb6",
-                                         
-                                         
                                         }}
                                       />
                                     </div>
@@ -823,19 +860,18 @@ export default function CreateJobs() {
                   Adding Images will help your company information appear more
                   professional.
                 </div>
-              
-                  <div className={classes.div46}>
-                    <div className={classes.div47}>
-                      <div className={classes.divimg}>
-                        <img
-                    
-                          src={selectedFile ? URL.createObjectURL(selectedFile): ""}
-                          alt={`preview-${selectedFile?.name}`}
-                          className={classes.divimg}
-                        />
-                        {/* <ImagePreview file={selectedFile}  /> */}
-                      </div>
-                      {/* <div
+
+                <div className={classes.div46}>
+                  <div className={classes.div47}>
+                    <div className={classes.divimg}>
+                      <img
+                        src={fileUrl || ""}
+                        alt={`preview-${selectedFile?.name}`}
+                        className={classes.divimg}
+                      />
+                      {/* <ImagePreview file={selectedFile}  /> */}
+                    </div>
+                    {/* <div
                         className={classes.divdelete}
                         onClick={() => handleRemoveFile(file)}
                       >
@@ -844,9 +880,8 @@ export default function CreateJobs() {
                           sx={{ marginRight: "2px" }}
                         />
                       </div> */}
-                    </div>
                   </div>
-          
+                </div>
 
                 <div className={classes.div45}>
                   <div

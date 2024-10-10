@@ -7,7 +7,9 @@ import { Link } from "react-router-dom";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import moment from "moment";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
+import CancelIcon from "@mui/icons-material/Cancel";
 
 interface JobType {
   id: number;
@@ -204,24 +206,11 @@ export default function CardJobSearch({
                 fontWeight: 400,
               }}
             >
-             {data?.jobLocationCities &&
-                data?.jobLocationCities?.length > 0 ? (
-                  data?.jobLocationCities.map((item, index) => (
-                    <div
-                      key={index}
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        gap: 2,
-                      }}
-                    >
-                      {item}
-                      {index < data.jobLocationCities.length - 1 && ", "}
-                    </div>
-                  ))
-                ) : (
+              {data?.jobLocationCities &&
+              data?.jobLocationCities?.length > 0 ? (
+                data?.jobLocationCities.map((item, index) => (
                   <div
+                    key={index}
                     style={{
                       display: "flex",
                       flexDirection: "row",
@@ -229,29 +218,40 @@ export default function CardJobSearch({
                       gap: 2,
                     }}
                   >
-                    No Location yet
+                    {item}
+                    {index < data.jobLocationCities.length - 1 && ", "}
                   </div>
-                )}
-
+                ))
+              ) : (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                    gap: 2,
+                  }}
+                >
+                  No Location yet
+                </div>
+              )}
             </span>
           </div>
           <div className={classes.location}>
-              <BusinessCenterOutlinedIcon />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  alignItems: "start",
-                  fontWeight: 400,
-                  mt: "7px",
-                  color: " #414042 !important",
-                  fontSize: "14px",
-                }}
-              >
-
-                {data?.jobType?.name}
-              </Typography>
-            </div>
+            <BusinessCenterOutlinedIcon />
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                alignItems: "start",
+                fontWeight: 400,
+                mt: "7px",
+                color: " #414042 !important",
+                fontSize: "14px",
+              }}
+            >
+              {data?.jobType?.name}
+            </Typography>
+          </div>
           <div className={classes.skill}>
             {data?.skillSets.map((item) => (
               <button className={classes.button}>{item}</button>
@@ -262,9 +262,27 @@ export default function CardJobSearch({
         </div>
       </div>
       {applied ? (
-        <div className={classes.main1}>
-          <CheckCircleOutlineOutlinedIcon />
-          Applied {moment(applied.applicationDate).format("YYYY-MM-DD")}
+        <div
+          className={
+            applied?.status === "Pending"
+              ? classes.Pending
+              : applied?.status === "Rejected"
+              ? classes.Rejected
+              : classes.main1
+          }
+        >
+          {applied?.status === "Pending" ? (
+            <HourglassEmptyIcon />
+          ) : applied?.status === "Rejected" ? (
+            <CancelIcon />
+          ) : (
+            <CheckCircleOutlineOutlinedIcon />
+          )}
+          {applied?.status}
+          <div style={{ marginLeft: "auto" }}>
+            Applied Date: {""}
+            {moment(applied.applicationDate).format("YYYY-MM-DD")}
+          </div>
         </div>
       ) : undefined}
     </div>

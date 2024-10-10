@@ -14,6 +14,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { PostBusinessStream } from "../../Services/BusinessStreamService/PostBusinessStream";
 import { GetBusinessStream } from "../../Services/BusinessStreamService/GetBusinessStream";
 import FormSelectBusinessStream from "../../components/Employer/FormSelectBusinessStream";
+import { v4 as uuidv4 } from "uuid";
+import { storage } from "../../firebase/config";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface BusinessStreamprops {
   id: number;
@@ -45,6 +48,7 @@ export default function CreateCompanyEmployer() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [businessStreamName, setBusinessStreamName] = useState<string>("");
   const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState<string>();
 
   const navigate = useNavigate();
 
@@ -84,7 +88,12 @@ export default function CreateCompanyEmployer() {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
+    if (file) {
+      setSelectedFile(file);
+
+      const previewUrl = URL.createObjectURL(file);
+      setFileUrl(previewUrl);
+    }
   };
 
   const handleUploadClick = () => {
@@ -109,23 +118,45 @@ export default function CreateCompanyEmployer() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (validateForm()) {
-      const formData = {
-        companyName,
-        companyDescription: description,
-        websiteURL: website,
-        establishedYear: parseInt(establishedYear),
-        country,
-        city,
-        address,
-        numberOfEmployees: parseInt(selectSize.replace(/[^0-9]/g, "")) || 0,
-        businessStreamId: selectbusinessStream?.id,
-        imageUrl: selectedFile ? URL.createObjectURL(selectedFile) : "",
-      };
-      
-      mutate({ data: formData });
+      try {
+        if (!selectedFile) {
+          console.error("No file selected");
+          message.warning("Please select a file to upload.");
+          return;
+        }
+
+        const fileName = `${uuidv4()}-${selectedFile.name}`;
+        const fileRef = ref(storage, fileName);
+
+        await uploadBytes(fileRef, selectedFile);
+
+        const fileUrl = await getDownloadURL(fileRef);
+
+        const formData = {
+          companyName,
+          companyDescription: description,
+          websiteURL: website,
+          establishedYear: parseInt(establishedYear),
+          country,
+          city,
+          address,
+          numberOfEmployees: parseInt(selectSize.replace(/[^0-9]/g, "")) || 0,
+          businessStreamId: selectbusinessStream?.id,
+          imageUrl: fileUrl,
+        };
+
+     
+        mutate({ data: formData });
+
+        console.log("Form submitted successfully");
+      } catch (error) {
+        console.error("Error during file upload or form submission:", error);
+        message.error("Failed to upload file or submit form.");
+      }
     }
   };
   const validateBusinessStreamForm = () => {
@@ -173,7 +204,7 @@ export default function CreateCompanyEmployer() {
             <div className={classes.img}>
               {selectedFile && (
                 <img
-                  src={URL.createObjectURL(selectedFile)}
+                  src={fileUrl || ""}
                   alt="Company logo"
                   className={classes.img}
                 />

@@ -90,7 +90,7 @@ export default function CreateCompany() {
                     <div className={classes.main6}>
                       <p className={classes.p}>
                         <b style={{ fontWeight: 500 }}>
-                          Find Company Information
+                          Create new Company Infomation
                         </b>
                       </p>
                       <span className={classes.span}>

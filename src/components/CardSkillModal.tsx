@@ -3,11 +3,12 @@ import Typography from "@mui/material/Typography";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
-
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
 import { queryClient } from "../Services/mainService";
-// import { DeleteSkillSet } from "../Services/SkillSet/DeleteSkillSet";
-import classes from "./CardSkill.module.css";
-import { DeleteUserProfileCV } from "../Services/UserProfileService/DeleteUserProfileCV";
+import { DeleteSkillSet } from "../Services/SkillSet/DeleteSkillSet";
+import classes from "./CardSkillModal.module.css";
 
 interface SkillSet {
   id: number;
@@ -24,30 +25,38 @@ interface FormProps {
   img?: string;
   onClick?: () => void;
   data?: SkillSet[];
+  setSelectedCvId: (id: number | null) => void;
+   selectedCvId?: number| null
 }
 
-export default function CardSkill({
+export default function CardSkillModal({
   title,
   text,
   icon,
   img,
   icon2,
+  selectedCvId,
+  setSelectedCvId,
   onClick,
   data,
 }: FormProps) {
-//   const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
-  const userId = localStorage.getItem("userId");
+//   const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
+  const handleCVSelect = (cvId: number) => {
+    setSelectedCvId(cvId); // Lưu ID của CV được chọn
+  };
+
   const { mutate } = useMutation({
-    mutationFn: DeleteUserProfileCV,
+    mutationFn: DeleteSkillSet,
     onSuccess: () => {
       // Invalidate and refetch the cache to ensure the UI is updated immediately
       queryClient.invalidateQueries({
-        queryKey: ["UserProfile"],
+        queryKey: ["SkillSetDetails"],
         refetchType: "active", // Ensure an active refetch
       });
       message.success("SkillSet Details Deleted Successfully");
-      setDeletingId(null); 
+      setDeletingId(null);
     },
     onError: () => {
       message.error("Failed to delete the skill set");
@@ -57,15 +66,11 @@ export default function CardSkill({
 
   const handleDelete = (id: number) => {
     setDeletingId(id);
-    mutate({ data:{
-      userId:Number(userId),
-      skillSetId:id,
-      proficiencyLevel:""
-    } });
+    mutate({ id });
   };
 
   return (
-    <div className={classes.main}>
+    <div className={classes.main} style={{ width: "100%" }}>
       <div className={classes.main1}>
         <div className={classes.main2}>
           <Typography
@@ -90,7 +95,19 @@ export default function CardSkill({
           data.map((item) => (
             <div key={item.id}>
               <div className={classes.main3}>
-                <div className={classes.main4}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={selectedCvId === item.id}
+                        onChange={() => handleCVSelect(item.id)}
+                        name="form"
+                      />
+                    }
+                    label=""
+                  />
+                </FormGroup>
+                <div className={classes.main4} style={{ flexGrow: 1 }}>
                   <div className={classes.main5}>
                     <Typography
                       variant="h3"
@@ -106,14 +123,19 @@ export default function CardSkill({
                       Skill name: {item?.name}
                     </Typography>
                     {deletingId === item.id ? (
-                      <>Please wait a second...</> 
+                      <>Please wait a second...</>
                     ) : (
-                      <div style={{cursor:'pointer'}} onClick={() => handleDelete(item.id)}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDelete(item.id)}
+                      >
                         <DeleteIcon />
                       </div>
                     )}
                   </div>
-                  <div className={classes.main6}>Short Hand: {item.shorthand}</div>
+                  <div className={classes.main6}>
+                    Short Hand: {item.shorthand}
+                  </div>
                   <div
                     className={classes.main7}
                     dangerouslySetInnerHTML={{ __html: item.description }}

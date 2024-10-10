@@ -4,6 +4,7 @@ import { apiLinks } from "../mainService";
 interface CV {
   id: number;
   url: string;
+  name:string
 }
 interface props {
   signal: AbortSignal;

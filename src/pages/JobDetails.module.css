@@ -361,16 +361,45 @@
   background-color: #eaf9e9 !important;
   align-items: center !important;
   display: flex !important;
+  justify-content: space-between;
   box-sizing: border-box;
   color: #414042 !important;
+
+}
+
+.Pending{
+  border-radius: 4px;
+  padding: 8px !important;
+  background-color: #add8e6 !important;
+  align-items: center !important;
+  display: flex !important;
+  justify-content: space-between;
+  box-sizing: border-box;
+  color: #414042 !important;
+
+}
+.Rejected{
+  border-radius: 4px;
+  padding: 8px !important;
+  background-color: #f8d7da !important;
+
+  align-items: center !important;
+  display: flex !important;
+  justify-content: space-between;
+  box-sizing: border-box;
+  color: #414042 !important;
+
 }
 
 .span{
-
+  display: flex;
+  align-items: center;
+  gap:10px;
   padding-right: 8px !important;
-  color: #0ab305 !important;
+  /* color: #0ab305 !important; */
   line-height: 1 !important;
   box-sizing: border-box;
+  margin-left: -7px;
 }
 
 .main5{

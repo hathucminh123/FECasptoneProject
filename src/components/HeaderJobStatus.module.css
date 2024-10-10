@@ -1,0 +1,90 @@
+.container {
+  background-color: #f7f7f7 !important;
+  min-height: calc(100vh - 495px);
+  display: block;
+  margin-top: auto;
+}
+
+.header {
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.06);
+  display: block;
+  background-color: white;
+}
+
+.icontainer {
+  max-width: 1340px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+.icontainer1 {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 16px;
+  line-height: 1.5;
+  align-items: center !important;
+  overflow: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  white-space: nowrap;
+  gap: 48px;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  flex-wrap: nowrap !important;
+  box-sizing: border-box;
+}
+
+/* New class for li elements to avoid inline styles */
+.menuItem {
+  padding: 16px 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+.icontainer1 a {
+  padding: 16px 0;
+  opacity: 0.7;
+  color: #121212;
+  font-weight: 600;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap !important;
+  text-decoration: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  list-style: none;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.icontainer1 a:hover {
+  border-bottom: 3px solid #a6a6a6;
+  text-decoration: none;
+}
+
+.icontainer1 a.active {
+  color: #ed1b2f;
+  border-bottom: 3px solid #ed1b2f;
+  opacity: 1;
+  text-decoration: none;
+}
+
+.main {
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 12px;
+  font-weight: 400;
+  line-height: 24px;
+  font-size: 16px;
+  color: #121212;
+  background-color: #dedede;
+  margin-left: 10px !important;
+  margin-right: 4px !important;
+  box-sizing: border-box;
+}

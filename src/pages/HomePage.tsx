@@ -60,6 +60,10 @@ export default function HomePage() {
   const JobPostsdata = JobPosts?.JobPosts;
   const Companiesdata = Company?.Companies;
 
+  const handleNavigate =()=>{
+    navigate('/cv-templates')
+  }
+
   // Handle loading state
   if (isJobLoading || isCompanyLoading) {
     return <div>Loading...</div>;
@@ -86,7 +90,7 @@ export default function HomePage() {
                 color: "#fff",
               }}
             >
-              934 IT Jobs For "Chất" Developers
+              {JobPostsdata?.length} IT Jobs For "Chất" Developers
             </Typography>
 
             <div style={{ display: "block" }}>
@@ -180,6 +184,7 @@ export default function HomePage() {
                 title="CV Templates"
                 text="Generate professional IT CV with new templates - recommended by recruiters"
                 textButton="View templates"
+                onClick={handleNavigate}
               >
                 <div className={classes.divne}></div>
               </CardService>
@@ -254,6 +259,7 @@ export default function HomePage() {
                 const company = Companiesdata?.find(
                   (item) => item.id === job.companyId
                 );
+                console.log('ccccc',company)
                 if (!company) {
                   return null;
                 }

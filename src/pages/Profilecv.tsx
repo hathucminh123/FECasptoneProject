@@ -25,7 +25,9 @@ import CardExperience from "../components/CardExperience";
 import { fetchExperienceDetails } from "../Services/ExperienceDetailService/GetExperienceDetail";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardSkill from "../components/CardSkill";
-import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
+// import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
+import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
+// import { useNavigate } from "react-router-dom";
 export default function Profilecv() {
   const [more, setMore] = useState<boolean>(false);
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
@@ -39,6 +41,7 @@ export default function Profilecv() {
 
   const [isCreatingNewChallenge4, setIsCreatingNewChallenge4] =
     useState<boolean>(false);
+  const userId = localStorage.getItem("userId");
 
   // const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
   // useState<boolean>(false);
@@ -120,17 +123,29 @@ export default function Profilecv() {
     queryFn: ({ signal }) => fetchExperienceDetails({ signal: signal }),
     staleTime: 5000,
   });
-  const { data: SkillSetData } = useQuery({
-    queryKey: ["SkillSetDetails"],
-    queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
+  // const { data: SkillSetData } = useQuery({
+  //   queryKey: ["SkillSetDetails"],
+  //   queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
+  //   staleTime: 1000,
+  // });
+
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
   });
-
+  
+  const UserProfileData =UserProfile?.UserProfiles
   const EducationData = data?.EducationDetails;
   // console.log('meme',data?.EducationDetails)
   const ExperienceDatas = ExperienceData?.ExperienceDetails;
+  // const navigate= useNavigate()
 
-  const SkillSetDatas = SkillSetData?.SkillSets;
+  // const handleNavigate =()=>{
+  //   navigate('cv-templates')
+  // }
+  // const SkillSetDatas = SkillSetData?.SkillSets;
   return (
     <div className={classes.icontainer}>
       <div className={classes.container}>
@@ -369,7 +384,7 @@ export default function Profilecv() {
               </div>
               <div className={classes.btnform}>
                 {renderButton("Preview & Download CV", "#ed1b2f", "contained", {
-                  minWidth: "300px",
+                  minWidth: "300px"
                 })}
               </div>
             </div>
@@ -499,7 +514,7 @@ export default function Profilecv() {
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
             onClick={handleStartAddNewChallenge4}
-            data={SkillSetDatas}
+            data={UserProfileData?.skillSets}
           />
           {/* <CardProfile
             title="Certificates"

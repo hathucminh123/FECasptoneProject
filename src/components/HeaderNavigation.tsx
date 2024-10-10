@@ -19,15 +19,16 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import Imagee from "./../assets/image/logo.jpg.webp";
+import InboxIcon from "@mui/icons-material/Inbox";
+// import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
 
 interface props {
-  token:unknown
+  token: unknown;
 }
 
-export default function HeaderNavigation({token}:props) {
+export default function HeaderNavigation({ token }: props) {
   const [searchParams] = useSearchParams();
   const isLogin = searchParams.get("mode") === "login";
   const isSignup = searchParams.get("mode") === "signup";
@@ -35,14 +36,14 @@ export default function HeaderNavigation({token}:props) {
   const [headerHeight, setHeaderHeight] = useState<number>(88);
   const [hovered, setHovered] = useState<null | string>(null);
   const [selectedMenu, setSelectedMenu] = useState<null | string>(null);
-  const name = localStorage.getItem('name');
+  const name = localStorage.getItem("name");
   const location = useLocation();
 
   const handleSavePath = () => {
     localStorage.setItem("redirectPath", location.pathname);
   };
 
-  console.log('name',name)
+  console.log("name", name);
   //profile
   const [anchorElProflie, setAnchorElProfile] =
     React.useState<null | HTMLElement>(null);
@@ -128,9 +129,9 @@ export default function HeaderNavigation({token}:props) {
       >
         <div className={classes.container}>
           <div className={classes.containerleft}>
-            <Link to="/">
+            <Link to="/" style={{textDecoration:'none'}}>
               {" "}
-              <img
+              {/* <img
                 src={Imagee}
                 alt="logo"
                 style={{
@@ -141,9 +142,24 @@ export default function HeaderNavigation({token}:props) {
                   overflow: "clip",
                   cursor: "pointer",
                   verticalAlign: "middle",
-                  borderRadius:'50%'
+                  borderRadius: "50%",
                 }}
-              />
+              /> */}
+               <Typography
+                    variant="h2"
+                    sx={{
+                      lineHeight: 1.5,
+                      fontSize: "22px",
+                      fontWeight: 700,
+                      marginTop: 0,
+                      marginBottom: 0,
+                      boxSizing: "border-box",
+                      display: "block",
+                      color:'#fff'
+                    }}
+                  >
+                   Amazing Job
+                  </Typography>
             </Link>
           </div>
           <div className={classes.containerright}>
@@ -235,7 +251,7 @@ export default function HeaderNavigation({token}:props) {
                           cursor: "pointer",
                         }}
                       >
-                      {name}
+                        {name}
                       </Typography>
                       <ArrowDropDownIcon
                         sx={{
@@ -563,26 +579,33 @@ const ProfileMenu = ({
       itemKey: "Item 2",
     },
     {
+      text: "Job invitation",
+      icon: InboxIcon,
+      itemKey: "Item 3",
+    },
+    {
       text: "Sign out",
       icon: LogoutOutlinedIcon,
-      itemKey: "Item 3",
+      itemKey: "Item 4",
     },
   ];
 
   const navigate = useNavigate();
 
   const handleSignout = (item: string) => {
-    if (item === "Item 3") {
+    if (item === "Item 4") {
       localStorage.clear();
-  
-    //   localStorage.removeItem('token');
-    // localStorage.removeItem('expiration');
-      // navigate('/'); 
+
+      //   localStorage.removeItem('token');
+      // localStorage.removeItem('expiration');
+      // navigate('/');
       window.location.reload();
     } else if (item === "Item 1") {
       navigate("/profile-cv");
     } else if (item === "Item 2") {
       navigate("/my-jobs");
+    } else if (item === "Item 3") {
+      navigate("/Job-invitation");
     }
 
     setSelectedMenu(item);

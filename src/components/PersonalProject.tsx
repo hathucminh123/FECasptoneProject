@@ -11,18 +11,47 @@ import { message } from "antd";
 import { queryClient } from "../Services/mainService";
 import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
 import { useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
+
+import CardSkillModal from "./CardSkillModal";
+import { renderButton } from "./RenderButton";
+import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
 
 interface Props {
   onDone?: () => void;
 }
 
 export default function PersonalProject({ onDone }: Props) {
+  const userId = localStorage.getItem("userId");
+  const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
   // const [value, setValue] = useState<string>("");
+  const { data: SkillSetData } = useQuery({
+    queryKey: ["SkillSetDetails"],
+    queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
+    staleTime: 1000,
+  });
+
+  const SkillSetDatas = SkillSetData?.SkillSets;
   const [formData, setFormData] = useState({
     name: "",
     shorthand: "",
     description: "",
+  });
+  const { mutate: Save, isPending: isSaving } = useMutation({
+    mutationFn: PostUserSkill,
+    onSuccess: () => {
+      // Invalidate and refetch the cache to ensure the UI is updated immediately
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active", // Ensure an active refetch
+      });
+        onDone?.();
+      message.success("SkillSet Details Save Successfully");
+    },
+    onError: () => {
+      message.error("Failed to Save the skill set");
+    },
   });
 
   const maxLength = 2500;
@@ -47,13 +76,22 @@ export default function PersonalProject({ onDone }: Props) {
         shorthand: "",
         description: "",
       });
-      onDone?.();
+      // onDone?.();
       message.success("SkillSet Details Updated Successfully");
     },
     onError: () => {
       message.error("Failed to update experience details");
     },
   });
+  const handleSaveSkillSet = () => {
+    Save({
+      data: {
+        userId: Number(userId),
+        skillSetId: selectedCvId,
+        proficiencyLevel: "",
+      },
+    });
+  };
 
   const handleSubmit = () => {
     // Perform validation and submit formData
@@ -74,7 +112,12 @@ export default function PersonalProject({ onDone }: Props) {
   };
 
   return (
-    <Modal title="Skill Sets" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
+    <Modal
+      title="Skill Sets"
+      onClose={onDone}
+      isPending={isSaving}
+      onClickSubmit={handleSaveSkillSet}
+    >
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.tipContainer}>
@@ -162,7 +205,7 @@ export default function PersonalProject({ onDone }: Props) {
                     setFormData({ ...formData, description: value })
                   }
                   placeholder="Enter your detailed description"
-                  style={{ height: "300px", marginBottom: "16px" }}
+                  // style={{ height: "300px", marginBottom: "16px" }}
                 />
                 <Typography
                   variant="body2"
@@ -175,14 +218,40 @@ export default function PersonalProject({ onDone }: Props) {
                   {remainingChars} of 2500 characters remaining
                 </Typography>
               </div>
-            </div>
-
-            {/* Submit Button */}
-            <div style={{ marginTop: "20px" }}>
               {/* <button type="button" onClick={handleSubmit}>
                 Submit
               </button> */}
+              {isPending
+                ? renderButton(
+                    "Wait a minute",
+                    "white",
+                    "outlined",
+                    {},
+                    undefined,
+                    true
+                  )
+                : renderButton(
+                    "Add Skill Set",
+                    "#ed1b2f",
+                    "contained",
+                    { minWidth: "180px" },
+                    handleSubmit,
+                    false
+                  )}
             </div>
+            <CardSkillModal
+              title="Skills"
+              text="Highlight Your skills Set"
+              // icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+              // icon={<EditNoteOutlinedIcon />}
+              setSelectedCvId={setSelectedCvId}
+              selectedCvId={selectedCvId}
+              img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
+              data={SkillSetDatas}
+            />
+
+            {/* Submit Button */}
+            <div style={{ marginTop: "20px" }}></div>
           </div>
         </div>
       </Box>

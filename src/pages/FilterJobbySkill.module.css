@@ -12,7 +12,7 @@
   padding-left: 160px !important;
   padding-right: 160px !important;
   /* background: linear-gradient(180deg, #FF8243, #FFD194); */
-  background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
+  background: linear-gradient(269.85deg, #54151c 0%, #121212 54.89%);
   display: block;
 }
 
@@ -177,50 +177,73 @@
 }
 
 .button {
-    background-color: white;
-    border-radius: 200px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    line-height: 1.5;
-    border: 1px solid transparent;
-    border-color: #dedede;
-    padding: 4px 10px;
-    gap: 4px;
-    cursor: pointer;
-    color: #414042;
-    transition: border 0.3s ease;
-  }
-
-
-.line{
-    border-top: 1px dashed #dedede;
-    margin-top: 24px !important;
-    margin-bottom: 24px !important;
-    display: block;
-}  
-
-ul>li ::marker{
-    color: red;
+  background-color: white;
+  border-radius: 200px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5;
+  border: 1px solid transparent;
+  border-color: #dedede;
+  padding: 4px 10px;
+  gap: 4px;
+  cursor: pointer;
+  color: #414042;
+  transition: border 0.3s ease;
 }
 
-.jobapply{
+.line {
+  border-top: 1px dashed #dedede;
+  margin-top: 24px !important;
+  margin-bottom: 24px !important;
+  display: block;
+}
+
+ul > li ::marker {
+  color: red;
+}
+
+.jobapply {
   border-radius: 4px;
   margin-top: 16px !important;
   margin-bottom: 12px !important;
   padding-left: 12px !important;
   padding-top: 8px !important;
-    padding-bottom: 8px !important;
-    background-color: #eaf9e9 !important;
-    color: #121212 !important;
-    box-sizing: border-box;
-    display: block;
+  padding-bottom: 8px !important;
+  background-color: #eaf9e9 !important;
+  color: #121212 !important;
+  box-sizing: border-box;
+  display: block;
 }
-.jobapply1{
+.Pending {
+  border-radius: 4px;
+  margin-top: 16px !important;
+  margin-bottom: 12px !important;
+  padding-left: 12px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  background-color: #add8e6 !important;
+  color: #121212 !important;
+  box-sizing: border-box;
+  display: block;
+}
+.Rejected {
+  border-radius: 4px;
+  margin-top: 16px !important;
+  margin-bottom: 12px !important;
+  padding-left: 12px !important;
+  padding-top: 8px !important;
+  padding-bottom: 8px !important;
+  background-color: #f8d7da !important;
+  color: #121212 !important;
+  box-sizing: border-box;
+  display: block;
+}
+
+.jobapply1 {
   align-items: center !important;
-  gap: .5rem !important;
+  gap: 0.5rem !important;
   display: flex !important;
   box-sizing: border-box;
   color: #121212 !important;
 }
-
