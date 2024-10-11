@@ -152,7 +152,7 @@ const AppliedCV: React.FC = () => {
                       >
                         <Edit />
                       </IconButton>
-                      <IconButton component={Link} to={`/details/${row.id}`}>
+                      <IconButton component={Link} to={`/userProfileSystem/${row.id}`}>
                         <Visibility />
                       </IconButton>
                     </TableCell>

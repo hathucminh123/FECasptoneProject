@@ -58,6 +58,7 @@ export default function JobPage() {
   const statusOptions = ["All", "Approved", "Pending", "Failed"];
   const [state, setState] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Added state for search term
   const companyId = localStorage.getItem("CompanyId");
   const [jobCVCounts, setJobCVCounts] = useState<Record<number, number>>({});
   const [isFetchingCVs, setIsFetchingCVs] = useState<boolean>(false);
@@ -67,6 +68,7 @@ export default function JobPage() {
   const [selectedStatus, setSelectedStatus] = useState<string>("1");
   const navigate = useNavigate();
 
+  console.log('haha',jobCVCounts)
   const {
     data: JobPosts,
     isLoading: isJobLoading,
@@ -81,6 +83,14 @@ export default function JobPage() {
   const JobinCompany = useMemo(() => {
     return JobPostsdata?.filter((item) => item.companyId === Number(companyId));
   }, [JobPostsdata, companyId]);
+
+  // Filter jobs based on search term
+  const filteredJobs = useMemo(() => {
+    if (!searchTerm) return JobinCompany;
+    return JobinCompany?.filter((job) =>
+      job.jobTitle.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [JobinCompany, searchTerm]);
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     setSelectedStatus(event.target.value as string);
@@ -105,10 +115,9 @@ export default function JobPage() {
   const { mutate } = useMutation({
     mutationFn: PostJobLcation,
     onSuccess: () => {
-      // Invalidate and refetch the cache to ensure the UI is updated immediately
       queryClient.invalidateQueries({
         queryKey: ["JobPosts"],
-        refetchType: "active", // Ensure an active refetch
+        refetchType: "active",
       });
       message.success("Add Job location Successfully");
       setOpenModal(false);
@@ -182,6 +191,8 @@ export default function JobPage() {
                       className={classes.inputsearch}
                       autoComplete="on"
                       placeholder="Search for job postings by title or job code"
+                      value={searchTerm} // Bind input to search term state
+                      onChange={(e) => setSearchTerm(e.target.value)} // Update search term state
                     />
                   </div>
                 </div>
@@ -248,7 +259,7 @@ export default function JobPage() {
           {isFetchingCVs ? (
             <div>Loading CV data...</div>
           ) : (
-            JobinCompany?.map((job, index) => (
+            filteredJobs?.map((job, index) => (
               <div
                 className={classes.divtable}
                 onMouseEnter={() => handleMouseEnter(index)}
@@ -325,7 +336,7 @@ export default function JobPage() {
                       <div className={classes.div7}>
                         <div className={classes.div9}>
                           <Link
-                            to="Detail/CV/AppliedCV/CV/Recommend"
+                            to={`Detail/CV/AppliedCV/${job.id}/CV/Recommend`}
                             className={classes.link4}
                           >
                             <RemoveRedEyeIcon

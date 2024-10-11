@@ -27,6 +27,7 @@ import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CardSkill from "../components/CardSkill";
 // import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 export default function Profilecv() {
   const [more, setMore] = useState<boolean>(false);
@@ -108,7 +109,11 @@ export default function Profilecv() {
     { icon: LocationOnOutlinedIcon, text: "Your current address" },
     { icon: LanguageOutlinedIcon, text: "Your personal link" },
   ];
+  const navigate = useNavigate();
 
+  const handleNavigate = () => {
+    navigate("/cv-templates");
+  };
   const handleonclick = () => {
     setMore((prev) => !prev);
   };
@@ -135,8 +140,8 @@ export default function Profilecv() {
       GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
   });
-  
-  const UserProfileData =UserProfile?.UserProfiles
+
+  const UserProfileData = UserProfile?.UserProfiles;
   const EducationData = data?.EducationDetails;
   // console.log('meme',data?.EducationDetails)
   const ExperienceDatas = ExperienceData?.ExperienceDetails;
@@ -383,9 +388,13 @@ export default function Profilecv() {
                 </Typography>
               </div>
               <div className={classes.btnform}>
-                {renderButton("Preview & Download CV", "#ed1b2f", "contained", {
-                  minWidth: "300px"
-                })}
+                {renderButton(
+                  "Preview & Download CV",
+                  "#ed1b2f",
+                  "contained",
+                  { minWidth: "300px" },
+                  handleNavigate
+                )}
               </div>
             </div>
           </div>

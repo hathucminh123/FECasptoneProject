@@ -3,7 +3,7 @@ import classes from "./ProfileEmployer.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import { NavLink, Outlet } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
-import LockIcon from "@mui/icons-material/Lock";
+// import LockIcon from "@mui/icons-material/Lock";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 
 export default function ProfileEmployer() {
@@ -30,10 +30,10 @@ export default function ProfileEmployer() {
                 <PersonIcon fontSize="small" sx={{ marginRight: "0.57rem" }} />
                 Personal Information
               </NavLink>
-              <NavLink to="ChangePassword" className={getNavLinkClass} end>
+              {/* <NavLink to="ChangePassword" className={getNavLinkClass} end>
                 <LockIcon fontSize="small" sx={{ marginRight: "0.57rem" }} />
                 Change Password
-              </NavLink>
+              </NavLink> */}
               <NavLink
                 to={companyId === "null" || !companyId ? "Choosecompany" : "company"}
                 className={getNavLinkClass}

@@ -43,7 +43,7 @@ export default function RootCVtemplate() {
               <div className={classes.main5}>
                 <div className={classes.main6}>
                   <div className={classes.main7}>
-                    <NavLink to="/cv-templates" className={classes.link2}>
+                    <NavLink to="/cv-templates" className={classes.link2} end>
                       {({ isActive }) => (
                         <>
                           <img
@@ -103,7 +103,7 @@ export default function RootCVtemplate() {
                   </div>
                   <div className={classes.main7}>
                     <NavLink
-                      to="/dasd"
+                      to="Minimal-template"
                       className={({ isActive }) =>
                         isActive ? classes.active : undefined
                       }
@@ -117,6 +117,7 @@ export default function RootCVtemplate() {
                             className={`${classes.img} ${
                               isActive ? classes.active : ""
                             }`}
+                            
                           />
 
                           {isActive && (

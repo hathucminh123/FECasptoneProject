@@ -107,9 +107,7 @@ export default function ElegantTemplate() {
 
                   <div className={classes.skill2}>
                     {UserProfileData?.skillSets.map((skill) => (
-                      <div
-                       className={classes.education3}
-                      >
+                      <div className={classes.education3}>
                         <div className={classes.skill3}>
                           <div className={classes.skill4}>Skill Name</div>
                           <div className={classes.skill5}>
@@ -154,7 +152,11 @@ export default function ElegantTemplate() {
                         <div className={classes.experience6}>
                           <div className={classes.experience7}>
                             <div className={classes.experience8}>
-                              {exp.responsibilities}
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: exp.responsibilities,
+                                }}
+                              />
                             </div>
                           </div>
                         </div>
@@ -165,7 +167,11 @@ export default function ElegantTemplate() {
                           <div className={classes.experience6}>
                             <div className={classes.experience7}>
                               <div className={classes.experience8}>
-                                {exp.achievements}
+                                <div
+                                  dangerouslySetInnerHTML={{
+                                    __html: exp.achievements,
+                                  }}
+                                />
                               </div>
                             </div>
                           </div>

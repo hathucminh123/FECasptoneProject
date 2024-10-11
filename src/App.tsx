@@ -63,6 +63,8 @@ import RejectedJob from "./pages/RejectedJob";
 import PassedJob from "./pages/PassedJob";
 import RootCVtemplate from "./pages/RootCVtemplate";
 import ElegantTemplate from "./pages/ElegantTemplate";
+import MinimalTemplate from "./pages/MinimalTemplate";
+import ProfileSystem from "./pages/Employer/ProfileSystem";
 
 const router = createBrowserRouter([
   {
@@ -209,6 +211,10 @@ const router = createBrowserRouter([
         index: true,
         element: <ElegantTemplate />,
       },
+      {
+        path:"Minimal-template",
+        element:<MinimalTemplate/>
+      }
     ],
   },
   {
@@ -369,6 +375,12 @@ const router = createBrowserRouter([
         element: <EditableJobDetailPage />,
       },
     ],
+  },
+
+  {
+    path:'userProfileSystem/:ProfileId',
+    element:<ProfileSystem/>
+
   },
   {
     path: "Admin",

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import classes from "./ManageCVs.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
@@ -20,7 +20,6 @@ import {
   Typography,
   SelectChangeEvent,
 } from "@mui/material";
-// import { Link } from "react-router-dom";
 import Visibility from "@mui/icons-material/Visibility";
 import Edit from "@mui/icons-material/Edit";
 import FormSelectJobPost from "../../components/Employer/FormSelectJobPost";
@@ -30,6 +29,7 @@ import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
+import { useNavigate } from "react-router-dom";
 
 const headers = ["Full Name", "Email", "Phone Number", "CV File", "Action"];
 const stateData = ["Available data", "Meeting", "Accept a Job", "Rejected", "Pending"];
@@ -68,18 +68,17 @@ export default function ManageCVs() {
   const [selectedCV, setSelectedCV] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedStatus, setSelectedStatus] = useState<string>("1");
-
+  const [searchTerm, setSearchTerm] = useState<string>(""); // State for search term
   const [currentJobPostId, setCurrentJobPostId] = useState<number | null>(null);
-  const CompanyId =localStorage.getItem("CompanyId");
-  
+  const CompanyId = localStorage.getItem("CompanyId");
+  const navigate = useNavigate();
 
   const { mutate } = useMutation({
     mutationFn: PutJobPostActivityStatus,
     onSuccess: () => {
-      // Invalidate and refetch the cache to ensure the UI is updated immediately
       queryClient.invalidateQueries({
         queryKey: ["JobPostActivity"],
-        refetchType: "active", // Ensure an active refetch
+        refetchType: "active",
       });
       message.success("Status Details Update Successfully");
     },
@@ -87,7 +86,6 @@ export default function ManageCVs() {
       message.error("Failed to Update the status set");
     },
   });
-
 
   const handleSave = () => {
     if (currentJobPostId) {
@@ -101,7 +99,6 @@ export default function ManageCVs() {
     setOpenModal(false);
   };
 
-
   const {
     data: JobPosts,
     isLoading: isJobLoading,
@@ -113,14 +110,18 @@ export default function ManageCVs() {
   });
 
   const JobPostsdata = JobPosts?.JobPosts;
+  const JobinCompany = JobPostsdata?.filter(
+    (item) => item.companyId === Number(CompanyId)
+  );
 
-  const JobinCompany = useMemo(() => {
-    return JobPostsdata?.filter((item) => item.companyId === Number(CompanyId));
-  }, [JobPostsdata, CompanyId]);
-
-  const { data: SeekerApply, isLoading: isSeekerLoading, isError: isSeekerError } = useQuery({
+  const {
+    data: SeekerApply,
+    isLoading: isSeekerLoading,
+    isError: isSeekerError,
+  } = useQuery({
     queryKey: ["SeekerApply", selectedJob?.id],
-    queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(selectedJob?.id), signal }),
+    queryFn: ({ signal }) =>
+      GetSeekerJobPost({ id: Number(selectedJob?.id), signal }),
     enabled: !!selectedJob?.id,
   });
 
@@ -135,19 +136,30 @@ export default function ManageCVs() {
       jobPostActivityId: seeker.jobPostActivityId,
     })) || [];
 
+
+  const filteredData = searchTerm
+    ? dataSeekerApply.filter((row) => {
+        const phoneNumber = String(row["Phone Number"]);
+        return (
+          row.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          row.Email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          phoneNumber.includes(searchTerm)
+        );
+      })
+    : dataSeekerApply;
+
   const handleViewDetail = (id: number) => {
-    console.log("View Detail clicked for:", id);
-    alert(`Viewing details for ID: ${id}`);
+    navigate(`/userProfileSystem/${id}`);
   };
-  
+
   const handleStatusChange = (event: SelectChangeEvent) => {
     setSelectedStatus(event.target.value as string);
   };
+
   const handleEditClick = (id: number) => {
     setCurrentJobPostId(id);
     setOpenModal(true);
   };
-
 
   if (isJobLoading || isSeekerLoading) {
     return <div>Loading...</div>;
@@ -171,6 +183,8 @@ export default function ManageCVs() {
                   type="text"
                   className={classes.input}
                   placeholder="Input name, email, phone number"
+                  value={searchTerm} // Bind search input to state
+                  onChange={(e) => setSearchTerm(e.target.value)} // Update state on change
                 />
                 <button className={classes.button}>
                   <SearchOutlinedIcon fontSize="small" />
@@ -203,7 +217,7 @@ export default function ManageCVs() {
           <div className={classes.main8}>
             <div className={classes.main9}>
               <div className={classes.main10}>
-                Found <span className={classes.span}>{dataSeekerApply.length}</span> Candidate(s)
+                Found <span className={classes.span}>{filteredData.length}</span> Candidate(s)
               </div>
             </div>
             <div className={classes.main11}>
@@ -228,7 +242,7 @@ export default function ManageCVs() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {dataSeekerApply.map((row) => (
+                  {filteredData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.fullName}</TableCell>
                       <TableCell>{row.Email}</TableCell>
