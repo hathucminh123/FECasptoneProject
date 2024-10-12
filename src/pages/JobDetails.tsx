@@ -370,22 +370,22 @@ export default function JobDetails() {
                     }
                   >
                     <span className={classes.span}>
-                        {hasAppliedJobActivity?.status === "Pending" ? (
-                          <HourglassEmptyIcon />
-                        ) : hasAppliedJobActivity?.status === "Rejected" ? (
-                          <CancelIcon />
-                        ) : (
-                          <CheckCircleOutlineOutlinedIcon />
-                        )}
-                        <span className={classes.span1}>
-                          {hasAppliedJobActivity.status}{" "}
-                        </span>
+                      {hasAppliedJobActivity?.status === "Pending" ? (
+                        <HourglassEmptyIcon />
+                      ) : hasAppliedJobActivity?.status === "Rejected" ? (
+                        <CancelIcon />
+                      ) : (
+                        <CheckCircleOutlineOutlinedIcon />
+                      )}
+                      <span className={classes.span1}>
+                        {hasAppliedJobActivity.status}{" "}
+                      </span>
                     </span>
                     <div className={classes.main5}>
                       <span className={classes.span1}>
                         Applied Date:{" "}
                         {moment(hasAppliedJobActivity.applicationDate).format(
-                          "YYYY-MM-DD"
+                          "YYYY/MM/DD HH:mm"
                         )}
                       </span>
                     </div>
@@ -665,7 +665,11 @@ export default function JobDetails() {
                     lineHeight: 1.8,
                   }}
                 >
-                  {job?.jobDescription}
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: job?.jobDescription,
+                    }}
+                  />
                 </Typography>
               </div>
               <div style={{ borderBottom: "1px dashed #dedede" }}></div>
@@ -688,7 +692,11 @@ export default function JobDetails() {
                       color: "#121212",
                     }}
                   >
-                    {job?.qualificationRequired}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: job?.qualificationRequired,
+                      }}
+                    />
                   </li>
                   {/* <li
                     style={{
@@ -782,7 +790,11 @@ export default function JobDetails() {
                       lineHeight: 1.8,
                     }}
                   >
-                    {job?.benefits}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: job?.benefits,
+                      }}
+                    />
                   </Typography>
                   {/* <li
                     style={{

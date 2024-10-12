@@ -5,6 +5,8 @@ import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import Image from './../assets/image/download.png'
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { useQuery } from "@tanstack/react-query";
 
 interface JobType {
   id: number;
@@ -68,6 +70,17 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
     navigate(`/company/detail/${data.id}`);
   };
 
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const JobPostsdata = JobPosts?.JobPosts;
+
   console.log('haha',data.imageUrl)
   return (
     <div className={classes.card_item} onClick={() => handleNavigate(data)}>
@@ -119,9 +132,13 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
 
           <div className={classes.skillsContainer}>
             <div className={classes.skill1}>
-              {data.jobPosts.map((job) => (
+              {data.jobPosts.map((job) =>{ 
+                const jobs = JobPostsdata?.find((item)=> item.id === job.id)
+                console.log('thiet khong',jobs)
+                return(
                 <React.Fragment key={job.id}>
-                  {job.skillSets.map((tag, index) => (
+                  
+                  {jobs?.skillSets.map((tag, index) => (
                     <Button
                       key={index}
                       sx={{
@@ -139,7 +156,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
                     </Button>
                   ))}
                 </React.Fragment>
-              ))}
+              )})}
             </div>
           </div>
         </div>

@@ -415,7 +415,15 @@ export default function CompanyDetail() {
             lineHeight: 1.8,
           }}
         >
-          {companyDataa?.companyDescription}
+          {companyDataa && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: companyDataa?.companyDescription,
+              }}
+            />
+          )}
+
+          {/* {companyDataa?.companyDescription} */}
         </Typography>
       </div>
       <div className={classes.overview}>
@@ -468,7 +476,14 @@ export default function CompanyDetail() {
             lineHeight: 1.8,
           }}
         >
-          {companyDataa?.companyDescription}
+          {companyDataa && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: companyDataa?.companyDescription,
+              }}
+            />
+          )}
+          {/* {companyDataa?.companyDescription} */}
         </Typography>
       </div>
       <div className={classes.overview}>
@@ -493,7 +508,14 @@ export default function CompanyDetail() {
             lineHeight: 1.8,
           }}
         >
-          {companyDataa?.companyDescription}
+          {companyDataa && (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: companyDataa?.companyDescription,
+              }}
+            />
+          )}
+          {/* {companyDataa?.companyDescription} */}
         </Typography>
       </div>
     </>
