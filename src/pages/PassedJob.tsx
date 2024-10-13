@@ -158,7 +158,7 @@ export default function PassedJob() {
                     job.id === activity.jobPostId
                   );
                   const companys = Companiesdata?.find(
-                    (job) => job.id === PendingJobApplied?.id
+                    (item) => item.id === PendingJobApplied?.companyId
                   );
 
                   return (

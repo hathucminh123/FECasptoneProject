@@ -31,7 +31,7 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 
-const headers = ["Full Name", "Email", "Phone Number", "CV File", "Action"];
+const headers = ["Full Name", "Email", "Phone Number", "CV File","Status", "Action"];
 const stateData = ["Available data", "Meeting", "Accept a Job", "Rejected", "Pending"];
 const CVOptions = ["Show All CVs", "Show only unseen CVs"];
 
@@ -132,8 +132,10 @@ export default function ManageCVs() {
       Email: seeker.email,
       "Phone Number": seeker.phoneNumber || "Not provided",
       "CV file": `${seeker.cvPath}`,
+      Status:  seeker.status,
       Action: "View Details",
       jobPostActivityId: seeker.jobPostActivityId,
+
     })) || [];
 
 
@@ -252,6 +254,7 @@ export default function ManageCVs() {
                           Download CV
                         </a>
                       </TableCell>
+                      <TableCell>{row.Status}</TableCell>
                       <TableCell>
                         <IconButton onClick={() => handleViewDetail(row.id)}>
                           <Visibility />

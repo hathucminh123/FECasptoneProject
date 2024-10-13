@@ -11,6 +11,7 @@ interface SeekersByJobPost {
   cvId: number;
   cvPath: string;
   jobPostActivityId: number;
+  status:string;
 }
 
 interface signal {

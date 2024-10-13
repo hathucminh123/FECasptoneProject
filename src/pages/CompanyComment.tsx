@@ -9,7 +9,8 @@ import Box from "@mui/material/Box";
 import { Flex, Rate } from "antd";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
-import { renderButton } from "../components/RenderButton";
+
+import RenderButton from "../components/RenderButton";
 
 const desc = ["terrible", "bad", "normal", "good", "wonderful"];
 export default function CompanyComment() {
@@ -323,9 +324,12 @@ export default function CompanyComment() {
                       </div>
                     </div>
                     <div>
-                      {renderButton("Send my Review", "#ed1b2f", "contained", {
-                        width: "100%",
-                      })}
+                      <RenderButton
+                        text="Send my REview"
+                        color="#ed1b2f"
+                        variant="contained"
+                        sxOverrides={{ width: "100%" }} // Set width to 100%
+                      />
                     </div>
                   </Box>
                 </div>
@@ -346,14 +350,27 @@ export default function CompanyComment() {
                     </Typography>
                   </div>
                   <div className={classes.text}>
-                    <p className={classes.text1}>In order for a review to be displayed on the website, it must adhere to the Guidelines & Conditions for reviews.</p>
+                    <p className={classes.text1}>
+                      In order for a review to be displayed on the website, it
+                      must adhere to the Guidelines & Conditions for reviews.
+                    </p>
                     <p className={classes.text1}>Please ensure that:</p>
                     <ul className={classes.ul}>
-                        <li className={classes.li}>Do not use offensive or derogatory language</li>
-                        <li className={classes.li}>Do not provide personal information</li>
-                        <li className={classes.li}>Do not provide confidential or proprietary business information</li>
+                      <li className={classes.li}>
+                        Do not use offensive or derogatory language
+                      </li>
+                      <li className={classes.li}>
+                        Do not provide personal information
+                      </li>
+                      <li className={classes.li}>
+                        Do not provide confidential or proprietary business
+                        information
+                      </li>
                     </ul>
-                    <p className={classes.text1}>In order for a review to be displayed on the website, it must adhere to the Guidelines & Conditions for reviews.</p>
+                    <p className={classes.text1}>
+                      In order for a review to be displayed on the website, it
+                      must adhere to the Guidelines & Conditions for reviews.
+                    </p>
                   </div>
                 </div>
               </div>

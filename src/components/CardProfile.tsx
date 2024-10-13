@@ -5,6 +5,10 @@ import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { AnimatePresence } from "framer-motion";
 import EducationEdit from "./EducationEdit";
+import { DeleteEducationDetails } from "../Services/EducationDetails/DeleteEducationDetails";
+import { queryClient } from "../Services/mainService";
+import { useMutation } from "@tanstack/react-query";
+import { message } from "antd";
 interface EducationDetail {
   id: number;
   name: string;
@@ -37,6 +41,7 @@ export default function CardProfile({
 }: form) {
   const [openEducation, setOpenEducation] = useState<boolean>(false);
   const [selectEducation, setSelectEducation] = useState<EducationDetail | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const handleOnEdit = (item: EducationDetail) => {
     setOpenEducation(true);
     setSelectEducation(item);
@@ -44,6 +49,29 @@ export default function CardProfile({
   function handleDone2() {
     setOpenEducation(false);
   }
+
+  const { mutate } = useMutation({
+    mutationFn: DeleteEducationDetails,
+    onSuccess: () => {
+
+      queryClient.invalidateQueries({
+        queryKey: ["EducationDetails"],
+        refetchType: "active", 
+      });
+      message.success("Education Details Deleted Successfully");
+      setDeletingId(null); 
+    },
+    onError: () => {
+      message.error("Failed to delete the skill set");
+      setDeletingId(null);
+    },
+  });
+
+  const handleDelete = (id: number) => {
+    setDeletingId(id);
+    mutate({id:id})
+  };
+
 
   return (
     <div className={classes.main}>
@@ -95,7 +123,13 @@ export default function CardProfile({
                           }}
                         />
                       </div>
-                      <DeleteIcon />
+                      {deletingId === item.id ? (
+                      <>Please wait a second...</> 
+                    ) : (
+                      <div style={{cursor:'pointer'}} onClick={() => handleDelete(item.id)}>
+                        <DeleteIcon />
+                      </div>
+                    )}
                     </div>
                   </div>
                   <div className={classes.main6}>

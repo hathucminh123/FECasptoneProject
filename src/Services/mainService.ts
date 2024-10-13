@@ -10,6 +10,7 @@ export const apiLinks = {
   auth: {
     login: `${baseURL}/Auth/login`,
     register: `${baseURL}/Auth/register`,
+    password:`${baseURL}/Auth/UpdatePassword`,
   },
   Company: {
     POST: `${baseURL}/Company`,
@@ -33,11 +34,13 @@ export const apiLinks = {
     POST: `${baseURL}/EducationDetails`,
     GET: `${baseURL}/EducationDetails`,
     PUT: `${baseURL}/EducationDetails`,
+    DELETE: `${baseURL}/EducationDetails`,
   },
   ExperienceDetail: {
     POST: `${baseURL}/ExperienceDetail`,
     GET: `${baseURL}/ExperienceDetail`,
     PUT: `${baseURL}/ExperienceDetail`,
+    DELETE:`${baseURL}/ExperienceDetail`,
   },
   SkillSet: {
     POST: `${baseURL}/SkillSet`,
@@ -69,10 +72,16 @@ export const apiLinks = {
   },
   UserSkills: {
     POST: `${baseURL}/User/SkilSet`,
-      DELETESKILL:`${baseURL}/User/SkilSet`
+    DELETESKILL:`${baseURL}/User/SkilSet`
   },
   UserProfile:{
     GET: `${baseURL}/User/Profile`,
   
+  },
+
+  CompanyFollow:{
+    POST: `${baseURL}/FollowCompany`,
+    GET:`${baseURL}/FollowCompany`,
+    DELETE:`${baseURL}/FollowCompany`,
   }
 };

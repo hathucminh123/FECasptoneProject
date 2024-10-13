@@ -5,15 +5,21 @@ import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import _ from "lodash";
 import CardJob from "../components/CardJob";
-import { renderButton } from "../components/RenderButton";
+import RenderButton from "../components/RenderButton";
 import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import useScrollToTop from "../hook/useScrollToTop";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompaniesById } from "../Services/CompanyService/GetCompanyById";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
-import Image from './../assets/image/download.png'
-
+import Image from "./../assets/image/download.png";
+import { GetFollowCompany } from "../Services/FollowCompany/GetFollowCompany";
+import { PostFollowCompany } from "../Services/FollowCompany/PostFollowCompany";
+import { queryClient } from "../Services/mainService";
+import { message } from "antd";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from '@mui/icons-material/Close';
+import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompany";
 interface JobType {
   id: number;
   name: string;
@@ -41,7 +47,6 @@ interface JobPost {
   skillSets: string[];
 }
 
-
 export default function CompanyDetailRoot() {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -49,9 +54,14 @@ export default function CompanyDetailRoot() {
   console.log("id", CompanyId);
 
   // Lấy chi tiết công ty bằng React Query
-  const { data: CompanyDa, isLoading, error } = useQuery({
+  const {
+    data: CompanyDa,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["Company-details", CompanyId], // Sửa lại tên key cho chính xác
-    queryFn: ({ signal }) => fetchCompaniesById({ id: Number(CompanyId), signal }),
+    queryFn: ({ signal }) =>
+      fetchCompaniesById({ id: Number(CompanyId), signal }),
     enabled: !!CompanyId,
   });
 
@@ -122,6 +132,56 @@ export default function CompanyDetailRoot() {
   });
   const Companiesdata = Company?.Companies;
 
+  const { mutate } = useMutation({
+    mutationFn: PostFollowCompany,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FollowCompany"],
+        refetchType: "active",
+      });
+      message.success(`Follow ${companyDataa?.companyName} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to Follow ${companyDataa?.companyName} `);
+    },
+  });
+  const { mutate:Unfollow } = useMutation({
+    mutationFn: DeleteFollowCompany,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FollowCompany"],
+        refetchType: "active",
+      });
+      message.success(`Unfollow ${companyDataa?.companyName} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to UnFollow ${companyDataa?.companyName} `);
+    },
+  });
+
+  const handleFollow = () => {
+    mutate({
+      data: {
+        companyId: Number(CompanyId),
+      },
+    });
+  };
+
+ const  handleUnFollow =()=>{
+  Unfollow({id:Number(haveFollow?.id)})
+ }
+
+  const { data: FollowCompany } = useQuery({
+    queryKey: ["FollowCompany"],
+    queryFn: ({ signal }) => GetFollowCompany({ signal }),
+    staleTime: 5000,
+  });
+  const FollowCompanydata = FollowCompany?.Companies;
+
+  const haveFollow = FollowCompanydata?.find(
+    (item) => item.id === Number(CompanyId)
+  );
+
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading company data</div>;
 
@@ -137,7 +197,9 @@ export default function CompanyDetailRoot() {
 
   return (
     <div className={classes.main_container}>
-      <div className={isScrolled ? classes.sticky_container : classes.container}>
+      <div
+        className={isScrolled ? classes.sticky_container : classes.container}
+      >
         <div className={classes.container1}>
           {isScrolled ? (
             <div className={classes.container2}>
@@ -156,19 +218,29 @@ export default function CompanyDetailRoot() {
                 </Typography>
               </div>
               <div className={classes.containerscroll2}>
-                {renderButton("Write review", "#ed1b2f", "contained", {}, handleNavigate)}
-                {renderButton("Follow", "white", "outlined", { minWidth: "180px" })}
+                {/* {renderButton(
+                  <></>,
+                  "Write review",
+                  "#ed1b2f",
+                  "contained",
+                  {},
+                  handleNavigate
+                )}
+                {renderButton(<></>, "Follow", "white", "outlined", {
+                  minWidth: "180px",
+                })} */}
               </div>
             </div>
           ) : (
             <div className={classes.container3}>
               <div style={{ paddingRight: "14px" }}>
                 <img
-               src={
-                companyDataa?.imageUrl === null || companyDataa?.imageUrl === "string"
-                  ? Image
-                  : companyDataa?.imageUrl
-              }
+                  src={
+                    companyDataa?.imageUrl === null ||
+                    companyDataa?.imageUrl === "string"
+                      ? Image
+                      : companyDataa?.imageUrl
+                  }
                   style={{ width: "200px" }}
                   alt={`Logo of ${companyDataa.companyName}`}
                 />
@@ -188,7 +260,7 @@ export default function CompanyDetailRoot() {
                 </Typography>
                 <div className={classes.locationjob}>
                   <div className={classes.location}>
-                    <LocationOnOutlinedIcon sx={{color:'#fff'}} />
+                    <LocationOnOutlinedIcon sx={{ color: "#fff" }} />
                     <Typography
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
@@ -197,7 +269,7 @@ export default function CompanyDetailRoot() {
                     </Typography>
                   </div>
                   <div className={classes.job}>
-                    <WorkOutlineOutlinedIcon sx={{color:'#fff'}} />
+                    <WorkOutlineOutlinedIcon sx={{ color: "#fff" }} />
                     <Typography
                       variant="body2"
                       sx={{
@@ -213,8 +285,33 @@ export default function CompanyDetailRoot() {
                   </div>
                 </div>
                 <div className={classes.button}>
-                  {renderButton("Write review", "#ed1b2f", "contained", {}, handleNavigate)}
-                  {renderButton("Follow", "white", "outlined", { minWidth: "180px" })}
+                  
+                  <RenderButton
+                    // icon={<CheckIcon />}
+                    text="Write review"
+                    color="#ed1b2f"
+                    variant="contained"
+                    onClick={handleNavigate}
+                  />
+                  {haveFollow ? (
+                    <RenderButton
+                      icon={<CheckIcon />}
+                      iconHovered={<CloseIcon/>}
+                      text="Following"
+                      textHover="Unfollow"
+                      color="#fff"
+                      variant="outlined"
+                      onClick={handleUnFollow}
+                    />
+                  ) : (
+                    <RenderButton
+                    
+                      text="Follow"
+                      color="#fff"
+                      variant="outlined"
+                      onClick={handleFollow}
+                    />
+                  )}
                 </div>
               </div>
             </div>

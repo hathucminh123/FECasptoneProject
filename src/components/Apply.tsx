@@ -7,7 +7,8 @@ import TextField from "@mui/material/TextField";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { renderButton } from "./RenderButton";
+// import { renderButton } from "./RenderButton";
+import RenderButton from "./RenderButton";
 import { useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPostById } from "../Services/JobsPost/GetJobPostById";
@@ -48,8 +49,6 @@ export default function Apply() {
     setSelectedCvId(cvId); // Lưu ID của CV được chọn
   };
 
-
-
   const { mutate } = useMutation({
     mutationFn: PostJobPostActivity,
     onSuccess: () => {
@@ -58,7 +57,7 @@ export default function Apply() {
         refetchType: "active", // Ensure an active refetch
       });
       message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-      navigate(`/thankyou/${job?.id}`)
+      navigate(`/thankyou/${job?.id}`);
     },
     onError: () => {
       message.error("Failed to Apply CV.");
@@ -296,13 +295,13 @@ export default function Apply() {
                   </Typography>
                 </div>
                 <div>
-                  {renderButton(
-                    "Send my cv",
-                    "#ed1b2f",
-                    "contained",
-                    { width: "100%" },
-                    handleSendCvApply // Gắn sự kiện onClick cho nút gửi CV
-                  )}
+                  <RenderButton
+                    text="Send my cv"
+                    color="#ed1b2f"
+                    variant="contained"
+                    sxOverrides={{ width: "100%" }} 
+                    onClick={handleSendCvApply} 
+                  />
                 </div>
               </Box>
             </div>

@@ -11,12 +11,12 @@ import { PostCVs } from "../Services/CVService/PostCV";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import { fetchCVs } from "../Services/CVService/GetCV";
-import { renderButton } from "../components/RenderButton";
+import RenderButton from "../components/RenderButton.tsx";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { DeleteCV } from "../Services/CVService/DeleteCV";
-import { storage} from '../firebase/config.ts'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { v4 as uuidv4 } from 'uuid';
+import { storage } from "../firebase/config.ts";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 export default function ManageCV() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -65,12 +65,12 @@ export default function ManageCV() {
     },
   });
 
-  const handleUploadClick =async () => {
+  const handleUploadClick = async () => {
     if (selectedFile) {
       const fileRef = ref(storage, `${uuidv4()}-${selectedFile.name}`);
       await uploadBytes(fileRef, selectedFile);
       const fileUrl = await getDownloadURL(fileRef);
-      mutate({ data: { url: fileUrl ,name:selectedFile.name} });
+      mutate({ data: { url: fileUrl, name: selectedFile.name } });
       console.log("File to upload:", selectedFile);
     } else {
       console.log("No file selected");
@@ -195,7 +195,10 @@ export default function ManageCV() {
                           Uploaded CVs:
                         </Typography>
                         {dataCVS.map(
-                          (cv: { url: string; id: number ;name:string }, index: number) => (
+                          (
+                            cv: { url: string; id: number; name: string },
+                            index: number
+                          ) => (
                             <div className={classes.main1}>
                               <Typography
                                 key={index}
@@ -275,22 +278,20 @@ export default function ManageCV() {
                 style={{ height: "166px" }}
               />
               <div className={classes.modal3}>
-                {renderButton(
-                  "Cancel",
-                  "white",
-                  "outlined",
-                  {},
-                  handleCancelClick
-                )}
-                {renderButton(
-                  "Save",
-                  "#ed1b2f",
-                  "contained",
-                  {
-                    minWidth: "180px",
-                  },
-                  handleSaveClick
-                )}
+                <RenderButton
+                  text="Cancel"
+                  color="white"
+                  variant="outlined"
+                  onClick={handleCancelClick}
+                />
+
+                <RenderButton
+                  text="Save"
+                  color="#ed1b2f"
+                  variant="contained"
+                  sxOverrides={{ minWidth: "180px" }}
+                  onClick={handleSaveClick}
+                />
               </div>
             </div>
           ) : (

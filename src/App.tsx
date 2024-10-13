@@ -65,6 +65,7 @@ import RootCVtemplate from "./pages/RootCVtemplate";
 import ElegantTemplate from "./pages/ElegantTemplate";
 import MinimalTemplate from "./pages/MinimalTemplate";
 import ProfileSystem from "./pages/Employer/ProfileSystem";
+import ChangePassword from "./pages/Employer/ChangePassword";
 
 const router = createBrowserRouter([
   {
@@ -212,9 +213,9 @@ const router = createBrowserRouter([
         element: <ElegantTemplate />,
       },
       {
-        path:"Minimal-template",
-        element:<MinimalTemplate/>
-      }
+        path: "Minimal-template",
+        element: <MinimalTemplate />,
+      },
     ],
   },
   {
@@ -335,6 +336,10 @@ const router = createBrowserRouter([
             element: <Profile />,
           },
           {
+            path: "ChangePassword",
+            element: <ChangePassword />,
+          },
+          {
             path: "company",
             element: (
               <ProtectedRouteCompany>
@@ -378,9 +383,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path:'userProfileSystem/:ProfileId',
-    element:<ProfileSystem/>
-
+    path: "userProfileSystem/:ProfileId",
+    element: <ProfileSystem />,
   },
   {
     path: "Admin",

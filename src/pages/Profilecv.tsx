@@ -3,7 +3,8 @@ import classes from "./Profilecv.module.css";
 import { Typography } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { AnimatePresence, motion } from "framer-motion";
-import { renderButton } from "../components/RenderButton";
+// import { renderButton } from "../components/RenderButton";
+import RenderButton from "../components/RenderButton";
 import Image from "./../assets/image/minh.jpg";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
@@ -388,13 +389,14 @@ export default function Profilecv() {
                 </Typography>
               </div>
               <div className={classes.btnform}>
-                {renderButton(
-                  "Preview & Download CV",
-                  "#ed1b2f",
-                  "contained",
-                  { minWidth: "300px" },
-                  handleNavigate
-                )}
+                <RenderButton
+                  
+                  text="Preview & Download CV"
+                  color="#ed1b2f"
+                  variant="contained"
+                  sxOverrides={{ minWidth: "300px" }}
+                  onClick={handleNavigate}
+                />
               </div>
             </div>
           </div>

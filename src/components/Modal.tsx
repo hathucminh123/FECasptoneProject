@@ -2,7 +2,8 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import classes from "./Modal.module.css";
 import Typography from "@mui/material/Typography";
-import { renderButton } from "./RenderButton";
+
+import RenderButton from "./RenderButton";
 
 interface ModalProps {
   title?: string;
@@ -53,24 +54,24 @@ export default function Modal({
           </div>
           <div className={classes.modal2}>{children}</div>
           <div className={classes.modal3}>
-            {renderButton("Cancel", "white", "outlined")}
-            {isPending
-              ? renderButton(
-                  "Wait a minute",
-                  "white",
-                  "outlined",
-                  {},
-                  undefined,
-                  true
-                )
-              : renderButton(
-                  "Save",
-                  "#ed1b2f",
-                  "contained",
-                  { minWidth: "180px" },
-                  onClickSubmit,
-                  false
-                )}
+            <RenderButton text="Cancel" color="white" variant="outlined" />
+
+            {isPending ? (
+              <RenderButton
+                text="Wait a minute"
+                color="white"
+                variant="outlined"
+                disabled={true} // disabled when pending
+              />
+            ) : (
+              <RenderButton
+                text="Save"
+                color="#ed1b2f"
+                variant="contained"
+                sxOverrides={{ minWidth: "180px" }}
+                onClick={onClickSubmit}
+              />
+            )}
           </div>
         </div>
       </motion.dialog>

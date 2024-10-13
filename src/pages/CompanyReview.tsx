@@ -1,18 +1,16 @@
 import React from "react";
 import classes from "./CompanyReview.module.css";
 import Typography from "@mui/material/Typography";
-import { renderButton } from "../components/RenderButton";
+import RenderButton from "../components/RenderButton";
 import { Rate } from "antd";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 
-import 'react-circular-progressbar/dist/styles.css';
+import "react-circular-progressbar/dist/styles.css";
 import CircularProgress from "../components/CircularProgress ";
 
 export default function CompanyReview() {
   // const location = useLocation();
   // const companyData: Company | null = location.state || null;
-
-
 
   return (
     <>
@@ -56,25 +54,21 @@ export default function CompanyReview() {
                   >
                     268 reviews
                   </Typography>
-             
                 </div>
               </div>
               <div className={classes.line}></div>
             </div>
-       
           </div>
           <div className={classes.percentRight}>
-    
             <div className={classes.percentRight1}>
-            <CircularProgress/>
-            <Typography
-                    variant="body1"
-                    sx={{ fontSize: "16px", fontWeight: 400 ,paddingLeft:'12px'}}
-                  >
-        Recommend working here to a friend
-                  </Typography>
+              <CircularProgress />
+              <Typography
+                variant="body1"
+                sx={{ fontSize: "16px", fontWeight: 400, paddingLeft: "12px" }}
+              >
+                Recommend working here to a friend
+              </Typography>
             </div>
-       
           </div>
         </div>
       </div>
@@ -92,9 +86,12 @@ export default function CompanyReview() {
           Let your voice be heard.
         </Typography>
         <div className={classes.buttonreview}>
-          {renderButton("Write review", "#ed1b2f", "contained", {
-            width: "100%",
-          })}
+          <RenderButton
+            text="Write review"
+            color="#ed1b2f"
+            variant="contained"
+            sxOverrides={{ width: "100%" }}
+          />
         </div>
       </div>
       <div className={classes.overview}>

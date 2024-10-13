@@ -28,7 +28,7 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 
 const Data = ["Show All Cv", "Show only unseen CVs"];
-const headers = ["fullName", "Email", "Phone Number", "CV file", "Action"];
+const headers = ["fullName", "Email", "Phone Number", "CV file","Status", "Action"];
 
 const AppliedCV: React.FC = () => {
   const [selectedValue, setSelectedValue] = useState<string>("");
@@ -93,6 +93,7 @@ const AppliedCV: React.FC = () => {
       Email: seeker.email,
       "Phone Number": seeker.phoneNumber || "Not provided",
       "CV file": `${seeker.cvPath}`,
+      Status:  seeker.status,
       Action: "View Details",
       jobPostActivityId: seeker.jobPostActivityId,
     })) || [];
@@ -146,6 +147,7 @@ const AppliedCV: React.FC = () => {
                         Download CV
                       </a>
                     </TableCell>
+                    <TableCell>{row.Status}</TableCell>
                     <TableCell>
                       <IconButton
                         onClick={() => handleEditClick(row.jobPostActivityId)}

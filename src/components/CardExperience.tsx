@@ -5,6 +5,10 @@ import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ExperienceEdit from "./ExperienceEdit";
+import { useMutation } from "@tanstack/react-query";
+import { DeleteExperienceDetail } from "../Services/ExperienceDetailService/DeleteExperienceDetail";
+import { queryClient } from "../Services/mainService";
+import { message } from "antd";
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -35,7 +39,9 @@ export default function CardExperience({
   data,
 }: form) {
   const [openExperience, setOpenExperience] = useState<boolean>(false);
-  const [selectExperience, setSelectExperience] = useState<ExperienceDetail | null>(null);
+  const [deletingId, setDeletingId] = useState<number | null>(null);
+  const [selectExperience, setSelectExperience] =
+    useState<ExperienceDetail | null>(null);
   const handleOnEdit = (item: ExperienceDetail) => {
     setOpenExperience(true);
     setSelectExperience(item);
@@ -43,6 +49,26 @@ export default function CardExperience({
   function handleDone2() {
     setOpenExperience(false);
   }
+  const { mutate } = useMutation({
+    mutationFn: DeleteExperienceDetail,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["ExperienceDetails"],
+        refetchType: "active",
+      });
+      message.success("Experience Details Deleted Successfully");
+      setDeletingId(null);
+    },
+    onError: () => {
+      message.error("Failed to delete the skill set");
+      setDeletingId(null);
+    },
+  });
+
+  const handleDelete = (id: number) => {
+    setDeletingId(id);
+    mutate({ id: id });
+  };
 
   return (
     <div className={classes.main}>
@@ -89,14 +115,26 @@ export default function CardExperience({
                       Position: {item?.position}
                     </Typography>
                     <div className={classes.edit}>
-                      <div style={{cursor:'pointer'}} onClick={() => handleOnEdit(item)}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleOnEdit(item)}
+                      >
                         <EditOutlinedIcon
                           sx={{
                             color: "#ed1b2f",
                           }}
                         />
                       </div>
-                      <DeleteIcon />
+                      {deletingId === item.id ? (
+                        <>Please wait a second...</>
+                      ) : (
+                        <div
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <DeleteIcon />
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className={classes.main6}>
@@ -125,7 +163,7 @@ export default function CardExperience({
                       mb: 0,
                     }}
                   >
-                    Project
+                  Achievements:
                   </Typography>
 
                   <div
@@ -151,7 +189,9 @@ export default function CardExperience({
         </span>
       </div>
       <AnimatePresence>
-        {openExperience && <ExperienceEdit onDone={handleDone2} data={selectExperience}  />}
+        {openExperience && (
+          <ExperienceEdit onDone={handleDone2} data={selectExperience} />
+        )}
       </AnimatePresence>
     </div>
   );

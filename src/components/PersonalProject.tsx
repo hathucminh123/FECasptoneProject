@@ -15,7 +15,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 
 import CardSkillModal from "./CardSkillModal";
-import { renderButton } from "./RenderButton";
+// import { renderButton } from "./RenderButton";
+import RenderButton from "./RenderButton";
 import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
 
 interface Props {
@@ -221,23 +222,24 @@ export default function PersonalProject({ onDone }: Props) {
               {/* <button type="button" onClick={handleSubmit}>
                 Submit
               </button> */}
-              {isPending
-                ? renderButton(
-                    "Wait a minute",
-                    "white",
-                    "outlined",
-                    {},
-                    undefined,
-                    true
-                  )
-                : renderButton(
-                    "Add Skill Set",
-                    "#ed1b2f",
-                    "contained",
-                    { minWidth: "180px" },
-                    handleSubmit,
-                    false
-                  )}
+             {isPending ? (
+  <RenderButton
+    text="Wait a minute"
+    color="white"
+    variant="outlined"
+    disabled={true}  // Disabled when pending
+  />
+) : (
+  <RenderButton
+    text="Add Skill Set"
+    color="#ed1b2f"
+    variant="contained"
+    sxOverrides={{ minWidth: "180px" }}
+    onClick={handleSubmit}  // Action when button is clicked
+    disabled={false}  // Enabled by default when not pending
+  />
+)}
+
             </div>
             <CardSkillModal
               title="Skills"
