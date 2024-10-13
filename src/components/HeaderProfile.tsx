@@ -30,7 +30,7 @@ export default function HeaderProfile() {
                 Manage CVs
               </NavLink>
             </li>
-            <li className={classes.menuItem}>
+            {/* <li className={classes.menuItem}>
               <NavLink
                 to="/"
                 className={({ isActive }) =>
@@ -40,7 +40,7 @@ export default function HeaderProfile() {
               >
                 Job Preferences
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

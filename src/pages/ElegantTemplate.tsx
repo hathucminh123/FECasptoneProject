@@ -120,7 +120,11 @@ export default function ElegantTemplate() {
                           <div className={classes.skill4}>Description</div>
                           <div className={classes.skill5}>
                             <p className={classes.education5}>
-                              {skill.description}
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: skill.description,
+                                }}
+                              />
                             </p>
                           </div>
                         </div>

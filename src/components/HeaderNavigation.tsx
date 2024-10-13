@@ -20,6 +20,8 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import InboxIcon from "@mui/icons-material/Inbox";
+import { useQuery } from "@tanstack/react-query";
+import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 // import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
@@ -38,7 +40,7 @@ export default function HeaderNavigation({ token }: props) {
   const [selectedMenu, setSelectedMenu] = useState<null | string>(null);
   const name = localStorage.getItem("name");
   const location = useLocation();
-
+  const userId = localStorage.getItem("userId");
   const handleSavePath = () => {
     localStorage.setItem("redirectPath", location.pathname);
   };
@@ -116,6 +118,15 @@ export default function HeaderNavigation({ token }: props) {
     };
   }, []);
 
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
+
   // const auth = localStorage.getItem("auth");
 
   return (
@@ -129,7 +140,7 @@ export default function HeaderNavigation({ token }: props) {
       >
         <div className={classes.container}>
           <div className={classes.containerleft}>
-            <Link to="/" style={{textDecoration:'none'}}>
+            <Link to="/" style={{ textDecoration: "none" }}>
               {" "}
               {/* <img
                 src={Imagee}
@@ -145,21 +156,21 @@ export default function HeaderNavigation({ token }: props) {
                   borderRadius: "50%",
                 }}
               /> */}
-               <Typography
-                    variant="h2"
-                    sx={{
-                      lineHeight: 1.5,
-                      fontSize: "22px",
-                      fontWeight: 700,
-                      marginTop: 0,
-                      marginBottom: 0,
-                      boxSizing: "border-box",
-                      display: "block",
-                      color:'#fff'
-                    }}
-                  >
-                   Amazing Job
-                  </Typography>
+              <Typography
+                variant="h2"
+                sx={{
+                  lineHeight: 1.5,
+                  fontSize: "22px",
+                  fontWeight: 700,
+                  marginTop: 0,
+                  marginBottom: 0,
+                  boxSizing: "border-box",
+                  display: "block",
+                  color: "#fff",
+                }}
+              >
+                Amazing Job
+              </Typography>
             </Link>
           </div>
           <div className={classes.containerright}>
@@ -251,7 +262,8 @@ export default function HeaderNavigation({ token }: props) {
                           cursor: "pointer",
                         }}
                       >
-                        {name}
+                        {/* {name} */}
+                        {UserProfileData?.firstName} {UserProfileData?.lastName}
                       </Typography>
                       <ArrowDropDownIcon
                         sx={{

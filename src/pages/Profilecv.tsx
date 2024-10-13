@@ -8,10 +8,10 @@ import RenderButton from "../components/RenderButton";
 import Image from "./../assets/image/minh.jpg";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
-import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
+// import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
+// import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+// import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+// import LanguageOutlinedIcon from "@mui/icons-material/LanguageOutlined";
 import EditNoteOutlinedIcon from "@mui/icons-material/EditNoteOutlined";
 import CardProfile from "../components/CardProfile";
 import ModalChildren from "../components/ModalChildren";
@@ -102,14 +102,14 @@ export default function Profilecv() {
     text: string | number;
   }
 
-  const dummydata: data[] = [
-    { icon: MailOutlinedIcon, text: "Your Email" },
-    { icon: LocalPhoneOutlinedIcon, text: "Your phone number" },
-    { icon: CardGiftcardOutlinedIcon, text: "Your date of birth" },
-    { icon: PersonOutlineOutlinedIcon, text: "Your gender" },
-    { icon: LocationOnOutlinedIcon, text: "Your current address" },
-    { icon: LanguageOutlinedIcon, text: "Your personal link" },
-  ];
+  // const dummydata: data[] = [
+  //   { icon: MailOutlinedIcon, text: "Your Email" },
+  //   { icon: LocalPhoneOutlinedIcon, text: "Your phone number" },
+  //   { icon: CardGiftcardOutlinedIcon, text: "Your date of birth" },
+  //   { icon: PersonOutlineOutlinedIcon, text: "Your gender" },
+  //   { icon: LocationOnOutlinedIcon, text: "Your current address" },
+  //   { icon: LanguageOutlinedIcon, text: "Your personal link" },
+  // ];
   const navigate = useNavigate();
 
   const handleNavigate = () => {
@@ -146,6 +146,17 @@ export default function Profilecv() {
   const EducationData = data?.EducationDetails;
   // console.log('meme',data?.EducationDetails)
   const ExperienceDatas = ExperienceData?.ExperienceDetails;
+  const dummydata: data[] = [
+    {
+      icon: MailOutlinedIcon,
+      text: UserProfileData?.email ? UserProfileData?.email : "Your Email",
+    },
+    { icon: LocalPhoneOutlinedIcon, text: UserProfileData?.phoneNumber ? UserProfileData?.phoneNumber :"Your phone number" },
+    // { icon: CardGiftcardOutlinedIcon, text: "Your date of birth" },
+    // { icon: PersonOutlineOutlinedIcon, text: "Your gender" },
+    // { icon: LocationOnOutlinedIcon, text: "Your current address" },
+    // { icon: LanguageOutlinedIcon, text: "Your personal link" },
+  ];
   // const navigate= useNavigate()
 
   // const handleNavigate =()=>{
@@ -390,7 +401,6 @@ export default function Profilecv() {
               </div>
               <div className={classes.btnform}>
                 <RenderButton
-                  
                   text="Preview & Download CV"
                   color="#ed1b2f"
                   variant="contained"
@@ -428,7 +438,7 @@ export default function Profilecv() {
                       fontWeight: 700,
                     }}
                   >
-                    Ha Thuc Minh
+                    {UserProfileData?.firstName} {UserProfileData?.lastName}
                   </Typography>
                   <Typography
                     sx={{
