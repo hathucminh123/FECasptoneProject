@@ -60,7 +60,7 @@ export default function CardExperience({
       setDeletingId(null);
     },
     onError: () => {
-      message.error("Failed to delete the skill set");
+      message.error("Failed to delete the Experience");
       setDeletingId(null);
     },
   });

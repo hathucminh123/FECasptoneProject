@@ -30,11 +30,12 @@ export default function SignInPageJobSeekers() {
   const [isConfirmPasswordShowRegister, setConfirmIsPasswordShowRegister] =
     useState<boolean>(false);
   const [check, setCheck] = useState<boolean>(false);
+
   // const [showAlert, setShowAlert] = useState<boolean>(false);
   // const navigate = useNavigate();
   // Error state management for registration form
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-
+// const [errorsMessage,setErrorsMessage]=useState<string>("")
   const location = useLocation();
   const navigate = useNavigate();
   // const auth = localStorage.getItem("Auth");
@@ -64,13 +65,13 @@ export default function SignInPageJobSeekers() {
     role: 0,
   });
   const [islogin, setIsLogin] = useState({
-    userName: "",
+    userEmail: "",
     password: "",
   });
 
   const { mutate, error, isError, isPending, isSuccess, reset } = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: (data) => {
       // queryClient.invalidateQueries({ queryKey: ["Jobs"] });
       setFormData({
         userName: "",
@@ -81,6 +82,10 @@ export default function SignInPageJobSeekers() {
         confirmPassword: "",
         role: 0,
       });
+      console.log(data)
+      localStorage.setItem("userIdRegister",data.result)
+      navigate("/Auth/Veritication")
+         
       setTimeout(() => {
         reset();
       }, 3000);
@@ -142,7 +147,7 @@ export default function SignInPageJobSeekers() {
       }
 
       setIsLogin({
-        userName: "",
+        userEmail: "",
         password: "",
       });
 
@@ -152,9 +157,11 @@ export default function SignInPageJobSeekers() {
     },
     onError: () => {
       setIsLogin({
-        userName: "",
+        userEmail: "",
         password: "",
       });
+    //  console.log("error",data)
+    //   setErrorsMessage(data.message)
       setTimeout(() => {
         LoginReset();
       }, 5000);
@@ -183,7 +190,7 @@ export default function SignInPageJobSeekers() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: string } = {};
-    if (!islogin.userName) newErrors.userName = "Username is required";
+    if (!islogin.userEmail) newErrors.userEmail = "Username is required";
     if (!islogin.password) newErrors.password = "Password is required";
     setErrors(newErrors);
 
@@ -351,7 +358,7 @@ export default function SignInPageJobSeekers() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    failed to Login Job Seeker Account
+                      failed to Login Job Seeker Account
                   </Typography>
                 </div>
               </div>
@@ -537,15 +544,15 @@ export default function SignInPageJobSeekers() {
                           <TextField
                             id="outlined-username-input-login" // Updated the id for login username input
                             label="Email | Username"
-                            name="userName"
+                            name="userEmail"
                             type="text"
                             required
                             autoComplete="name"
                             variant="outlined"
-                            value={islogin.userName}
+                            value={islogin.userEmail}
                             onChange={handleLoginChange}
-                            error={Boolean(errors.userName)}
-                            helperText={errors.userName}
+                            error={Boolean(errors.userEmail)}
+                            helperText={errors.userEmail}
                             sx={{
                               flex: 1,
                               "& .MuiOutlinedInput-root": {

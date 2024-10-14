@@ -119,7 +119,7 @@ export default function CardApply({ company, job, activity }: props) {
           </Typography>
           <div className={classes.main4}>
             <Link to="" className={classes.link1}>
-              <img src="" alt="" className={classes.link1} />
+              <img src={company?.imageUrl} alt="" className={classes.link1} />
             </Link>
             <span className={classes.span1}>
               <Link

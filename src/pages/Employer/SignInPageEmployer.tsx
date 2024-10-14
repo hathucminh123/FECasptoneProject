@@ -31,6 +31,7 @@ export default function SignInPageEmployer() {
   const [isConfirmPasswordShowRegister, setConfirmIsPasswordShowRegister] =
     useState<boolean>(false);
   const [check, setCheck] = useState<boolean>(false);
+  // const [errorsMessage,setErrorsMessage]=useState<string>("")
   // const [showAlert, setShowAlert] = useState<boolean>(false);
   // const navigate = useNavigate();
   // Error state management for registration form
@@ -54,13 +55,13 @@ export default function SignInPageEmployer() {
     role: 1,
   });
   const [islogin, setIsLogin] = useState({
-    userName: "",
+    userEmail: "",
     password: "",
   });
 
   const { mutate, error, isError, isPending, isSuccess, reset } = useMutation({
     mutationFn: register,
-    onSuccess: () => {
+    onSuccess: (data) => {
       // queryClient.invalidateQueries({ queryKey: ["Jobs"] });
       setFormData({
         userName: "",
@@ -71,6 +72,9 @@ export default function SignInPageEmployer() {
         confirmPassword: "",
         role: 0,
       });
+      console.log(data)
+      localStorage.setItem("userIdRegister",data.result)
+      navigate("/Auth/Veritication")
       setTimeout(() => {
         reset();
       }, 3000);
@@ -117,7 +121,7 @@ export default function SignInPageEmployer() {
       }
 
       setIsLogin({
-        userName: "",
+        userEmail: "",
         password: "",
       });
 
@@ -127,9 +131,11 @@ export default function SignInPageEmployer() {
     },
     onError: () => {
       setIsLogin({
-        userName: "",
+        userEmail: "",
         password: "",
       });
+      // console.log("error",data.name)
+      // setErrorsMessage(data.message)
       setTimeout(() => {
         LoginReset();
       }, 5000);
@@ -158,7 +164,7 @@ export default function SignInPageEmployer() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: string } = {};
-    if (!islogin.userName) newErrors.userName = "Username is required";
+    if (!islogin.userEmail) newErrors.userEmail = "Username is required";
     if (!islogin.password) newErrors.password = "Password is required";
     setErrors(newErrors);
 
@@ -326,7 +332,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    failed to Login Employer Account
+                  failed to Login Empoloyer Account
                   </Typography>
                 </div>
               </div>
@@ -511,15 +517,15 @@ export default function SignInPageEmployer() {
                           <TextField
                             id="outlined-username-input"
                             label="Email | Username"
-                            name="userName"
+                            name="userEmail"
                             type="text"
                             required
                             autoComplete="name"
                             variant="outlined"
-                            value={islogin.userName}
+                            value={islogin.userEmail}
                             onChange={handleLoginChange}
-                            error={Boolean(errors.userName)}
-                            helperText={errors.userName}
+                            error={Boolean(errors.userEmail)}
+                            helperText={errors.userEmail}
                             sx={{
                               flex: 1,
                               "& .MuiOutlinedInput-root": {

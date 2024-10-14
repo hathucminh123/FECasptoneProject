@@ -52,7 +52,7 @@ export default function CompanyDetailRoot() {
   const navigate = useNavigate();
   const { CompanyId } = useParams();
   console.log("id", CompanyId);
-
+const Auth =localStorage.getItem("Auth")
   // Lấy chi tiết công ty bằng React Query
   const {
     data: CompanyDa,
@@ -160,6 +160,12 @@ export default function CompanyDetailRoot() {
   });
 
   const handleFollow = () => {
+    if(!Auth){
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    }
+    
     mutate({
       data: {
         companyId: Number(CompanyId),
@@ -168,6 +174,11 @@ export default function CompanyDetailRoot() {
   };
 
  const  handleUnFollow =()=>{
+  if(!Auth){
+    navigate("/JobSeekers/login", {
+      state: { from: window.location.pathname },
+    });
+  }
   Unfollow({id:Number(haveFollow?.id)})
  }
 

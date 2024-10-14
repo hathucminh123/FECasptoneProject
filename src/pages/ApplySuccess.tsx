@@ -182,7 +182,7 @@ export default function ApplySuccess() {
               </div>
               <div className={classes.main18}>
                 <button className={classes.button}>
-                  <Link to={`jobs/detail/${job?.id}`} className={classes.link1}>
+                  <Link to={`/`} className={classes.link1}>
                     Back to Home
                   </Link>
                 </button>

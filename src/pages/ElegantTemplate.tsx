@@ -43,7 +43,7 @@ export default function ElegantTemplate() {
               </div>
               <div className={classes.main5}>
                 <div className={classes.main6}>
-                  <div className={classes.main7}>Thúc Minh</div>
+                  <div className={classes.main7}>{UserProfileData?.firstName}{UserProfileData?.lastName}</div>
                 </div>
                 <div className={classes.main8}>
                   <div className={classes.main9}>

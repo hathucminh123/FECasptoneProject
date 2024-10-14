@@ -66,6 +66,9 @@ import ElegantTemplate from "./pages/ElegantTemplate";
 import MinimalTemplate from "./pages/MinimalTemplate";
 import ProfileSystem from "./pages/Employer/ProfileSystem";
 import ChangePassword from "./pages/Employer/ChangePassword";
+import AuthVeritication from "./pages/Employer/AuthVeritication";
+import PutEmailVeritication from "./pages/Employer/PutEmailVeritication";
+
 
 const router = createBrowserRouter([
   {
@@ -258,6 +261,14 @@ const router = createBrowserRouter([
     path: "/JobSeekers/login",
     element: <SignInPageJobSeekers />,
   },
+  {
+    path: "/Auth/Veritication",
+    element:<AuthVeritication/>,
+   },
+   {
+    path: "/Auth/PutVeritication",
+    element:<PutEmailVeritication/>,
+   },
   {
     path: "auth/Admin",
     element: <SignInPage />,

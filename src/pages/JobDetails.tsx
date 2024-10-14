@@ -915,7 +915,14 @@ export default function JobDetails() {
                   sx={{ fontSize: "16px", color: "#414042" }}
                 >
                   {" "}
-                  {detailsCompany?.companyDescription}
+                  {detailsCompany?.companyDescription && (
+                    <div
+                    className={classes.main7}
+                    dangerouslySetInnerHTML={{ __html: detailsCompany.companyDescription }}
+                  />
+                  )}
+                
+                  {/* {detailsCompany?.companyDescription} */}
                 </Typography>
               </div>
               <div className={classes.main}>
