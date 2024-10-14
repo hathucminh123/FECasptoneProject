@@ -74,7 +74,7 @@ export default function PutEmailVeritication() {
 
     // Simulating successful verification
     setAlertMessage(true);
-    navigate("/Auth/Veritication");
+    // navigate("/Auth/Veritication");
   };
 
   return (
