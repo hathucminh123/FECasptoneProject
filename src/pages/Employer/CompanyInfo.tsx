@@ -393,7 +393,15 @@ export default function CompanyInfo() {
                             Company Description:
                           </div>
                           <div className={classes.div32}>
-                            {CompanyEmployer?.companyDescription}
+                            {CompanyEmployer?.companyDescription && (
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: CompanyEmployer?.companyDescription,
+                                }}
+                              />
+                            )}
+
+                            {/* {CompanyEmployer?.companyDescription} */}
                           </div>
                         </div>
                       </div>

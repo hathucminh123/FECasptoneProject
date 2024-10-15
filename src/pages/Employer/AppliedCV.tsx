@@ -48,10 +48,10 @@ const AppliedCV: React.FC = () => {
   const { mutate } = useMutation({
     mutationFn: PutJobPostActivityStatus,
     onSuccess: () => {
-      // Invalidate and refetch the cache to ensure the UI is updated immediately
+    
       queryClient.invalidateQueries({
-        queryKey: ["JobPostActivity"],
-        refetchType: "active", // Ensure an active refetch
+        queryKey: ["SeekerApply"],
+        refetchType: "active", 
       });
       message.success("Status Details Update Successfully");
     },

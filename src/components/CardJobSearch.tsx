@@ -178,7 +178,7 @@ export default function CardJobSearch({
                 }}
               >
                 {" "}
-                1000$
+                {data?.salary}
               </span>
             </div>
           </div>

@@ -125,104 +125,124 @@ export default function CardJob({
 
   return (
     <Link to={`jobs/detail/${data?.id}`} className={classes.link2}>
-    <div
-      className={classes.card_main}
-      onClick={onclick}
-      style={{ cursor: "pointer" }}
-    >
       <div
-        className={`${className ? className : classes.card_item}`}
-        style={Maxwidth ? { maxWidth: Maxwidth } : {}}
+        className={classes.card_main}
+        onClick={onclick}
+        style={{ cursor: "pointer" }}
       >
-        <div className={formButton ? classes.card_itemm1 : classes.card_itemm}>
-          <div style={{ display: "block" }}>
-            <div className={classes.time}>
-              <Typography
-                variant="body1"
-                gutterBottom
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  color: "#a6a6a6 !important",
-                }}
-              >
-                From: {data?.postingDate.slice(0, 10)} - To:{" "}
-                {data?.expiryDate.slice(0, 10)}
-              </Typography>
-            </div>
-            <Link to={`jobs/detail/${data?.id}`} className={classes.link}>
-              <Typography
-                variant="h5"
-                gutterBottom
-                sx={{
-                  lineHeight: "1.5",
-                  fontWeight: "bold",
-                  color: "#121212",
-                  marginTop: "12px !important",
-                }}
-              >
-                {data?.jobTitle}
-              </Typography>
-            </Link>
-            <div className={classes.logo}>
-              <img
-                className={classes.image}
-                src={
-                  data?.imageURL === null || data?.imageURL === "string"
-                    ? Image
-                    : data?.imageURL
-                }
-                alt="image-job"
-              />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  color: "#414042 !important",
-                }}
-              >
-                {company?.companyName}
-              </Typography>
-            </div>
-            <div className={classes.money}>
-              <MonetizationOnOutlinedIcon
-                sx={{ color: "#0ab305 !important" }}
-              />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  alignItems: "start",
-                  fontWeight: "bold",
-                  mt: "7px",
-                  color: "#0ab305 !important",
-                }}
-              >
-                {data?.salary}
-              </Typography>
-            </div>
-            <div className={classes.separator}></div>
+        <div
+          className={`${className ? className : classes.card_item}`}
+          style={Maxwidth ? { maxWidth: Maxwidth } : {}}
+        >
+          <div
+            className={formButton ? classes.card_itemm1 : classes.card_itemm}
+          >
+            <div style={{ display: "block" }}>
+              <div className={classes.time}>
+                <Typography
+                  variant="body1"
+                  gutterBottom
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 400,
+                    color: "#a6a6a6 !important",
+                  }}
+                >
+                  From: {data?.postingDate.slice(0, 10)} - To:{" "}
+                  {data?.expiryDate.slice(0, 10)}
+                </Typography>
+              </div>
+              <Link to={`jobs/detail/${data?.id}`} className={classes.link}>
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  sx={{
+                    lineHeight: "1.5",
+                    fontWeight: "bold",
+                    color: "#121212",
+                    marginTop: "12px !important",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    width: "100%",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  {data?.jobTitle}
+                </Typography>
+              </Link>
+              <div className={classes.logo}>
+                <img
+                  className={classes.image}
+                  src={
+                    data?.imageURL === null || data?.imageURL === "string"
+                      ? Image
+                      : data?.imageURL
+                  }
+                  alt="image-job"
+                />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    color: "#414042 !important",
+                  }}
+                >
+                  {company?.companyName}
+                </Typography>
+              </div>
+              <div className={classes.money}>
+                <MonetizationOnOutlinedIcon
+                  sx={{ color: "#0ab305 !important" }}
+                />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    alignItems: "start",
+                    fontWeight: "bold",
+                    mt: "7px",
+                    color: "#0ab305 !important",
+                  }}
+                >
+                  {data?.salary}
+                </Typography>
+              </div>
+              <div className={classes.separator}></div>
 
-            <div className={classes.location}>
-              <LocationOnOutlinedIcon />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  alignItems: "start",
-                  fontWeight: 400,
-                  mt: "7px",
-                  color: " #414042 !important",
-                  fontSize: "14px",
-                }}
-              >
-                {data?.jobLocationCities &&
-                data?.jobLocationCities?.length > 0 ? (
-                  data?.jobLocationCities.map((item, index) => (
+              <div className={classes.location}>
+                <LocationOnOutlinedIcon />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    alignItems: "start",
+                    fontWeight: 400,
+                    mt: "7px",
+                    color: " #414042 !important",
+                    fontSize: "14px",
+                  }}
+                >
+                  {data?.jobLocationCities &&
+                  data?.jobLocationCities?.length > 0 ? (
+                    data?.jobLocationCities.map((item, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          gap: 2,
+                        }}
+                      >
+                        {item}
+                        {index < data.jobLocationCities.length - 1 && ", "}
+                      </div>
+                    ))
+                  ) : (
                     <div
-                      key={index}
                       style={{
                         display: "flex",
                         flexDirection: "row",
@@ -230,107 +250,93 @@ export default function CardJob({
                         gap: 2,
                       }}
                     >
-                      {item}
-                      {index < data.jobLocationCities.length - 1 && ", "}
+                      No Location yet
                     </div>
-                  ))
-                ) : (
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      gap: 2,
-                    }}
-                  >
-                    No Location yet
-                  </div>
-                )}
-              </Typography>
-            </div>
+                  )}
+                </Typography>
+              </div>
 
-            <div className={classes.location}>
-              <BusinessCenterOutlinedIcon />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  alignItems: "start",
-                  fontWeight: 400,
-                  mt: "7px",
-                  color: " #414042 !important",
-                  fontSize: "14px",
-                }}
-              >
-
-                {data?.jobType?.name}
-              </Typography>
-            </div>
-
-            <div className={classes.job}>
-              {data?.skillSets.map((tag, index) => (
-                <button key={index} className={classes.button}>
-                  {tag}
-                </button>
-              ))}
-            </div>
-          </div>
-          {formButton ? (
-            <div className={classes.formbutton}>
-              <div className={classes.button_icon}>
-                <Button
+              <div className={classes.location}>
+                <BusinessCenterOutlinedIcon />
+                <Typography
+                  variant="h6"
+                  gutterBottom
                   sx={{
-                    minWidth: "140px",
-                    backgroundColor: "#ed1b2f",
-                    borderColor: "#ed1b2f",
-                    color: "#fff",
-                    borderRadius: "4px",
-                    fontSize: "16px",
-                    fontWeight: "bold",
-                    padding: "7px 20px",
-                    display: "inline-flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    lineHeight: 1.5,
-                    gap: "8px",
-                    border: "1px solid transparent",
-                    whiteSpace: "nowrap",
-                    "&:hover": {
-                      backgroundColor: "#C82222",
-                      color: "white",
-                    },
+                    alignItems: "start",
+                    fontWeight: 400,
+                    mt: "7px",
+                    color: " #414042 !important",
+                    fontSize: "14px",
                   }}
                 >
-                  Apply now
-                </Button>
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={handleFavoriteClick}
-                >
-                  {favorite ? (
-                    <FavoriteIcon
-                      fontSize="large"
-                      sx={{
-                        color: "#ed1b2f !important",
-                        mr: 2,
-                      }}
-                    />
-                  ) : (
-                    <FavoriteBorderOutlinedIcon
-                      fontSize="large"
-                      sx={{
-                        color: "#ed1b2f !important",
-                        mr: 2,
-                      }}
-                    />
-                  )}
-                </div>
+                  {data?.jobType?.name}
+                </Typography>
+              </div>
+
+              <div className={classes.job}>
+                {data?.skillSets.map((tag, index) => (
+                  <button key={index} className={classes.button}>
+                    {tag}
+                  </button>
+                ))}
               </div>
             </div>
-          ) : undefined}
+            {formButton ? (
+              <div className={classes.formbutton}>
+                <div className={classes.button_icon}>
+                  <Button
+                    sx={{
+                      minWidth: "140px",
+                      backgroundColor: "#ed1b2f",
+                      borderColor: "#ed1b2f",
+                      color: "#fff",
+                      borderRadius: "4px",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                      padding: "7px 20px",
+                      display: "inline-flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      lineHeight: 1.5,
+                      gap: "8px",
+                      border: "1px solid transparent",
+                      whiteSpace: "nowrap",
+                      "&:hover": {
+                        backgroundColor: "#C82222",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Apply now
+                  </Button>
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={handleFavoriteClick}
+                  >
+                    {favorite ? (
+                      <FavoriteIcon
+                        fontSize="large"
+                        sx={{
+                          color: "#ed1b2f !important",
+                          mr: 2,
+                        }}
+                      />
+                    ) : (
+                      <FavoriteBorderOutlinedIcon
+                        fontSize="large"
+                        sx={{
+                          color: "#ed1b2f !important",
+                          mr: 2,
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ) : undefined}
+          </div>
         </div>
       </div>
-    </div>
     </Link>
   );
 }
