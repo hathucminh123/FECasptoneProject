@@ -107,7 +107,22 @@ export default function Apply() {
                 </div>
               </div>
               <div className={classes.logo}>
-                <img
+              <Typography
+                variant="h2"
+                sx={{
+                  lineHeight: 1.5,
+                  fontSize: "22px",
+                  fontWeight: 700,
+                  marginTop: 0,
+                  marginBottom: 0,
+                  boxSizing: "border-box",
+                  display: "block",
+                  color: "#fff",
+                }}
+              >
+                Amazing Job
+              </Typography>
+                {/* <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShDXOd1EUVLnkgF9P9P9ZAGyBSv6f_lmq6CA&s"
                   alt="logo"
                   style={{
@@ -116,7 +131,7 @@ export default function Apply() {
                     aspectRatio: "auto 81/82",
                     textAlign: "center",
                   }}
-                />
+                /> */}
               </div>
             </div>
             <div className={classes.form}>

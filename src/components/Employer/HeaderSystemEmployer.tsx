@@ -1,15 +1,15 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import classes from "./HeaderSystemEmployer.module.css";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import Image from "./../../assets/image/logo.jpg.webp";
+// import Image from "./../../assets/image/logo.jpg.webp";
 import CreateIcon from "@mui/icons-material/Create";
 import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
-
+import Typography from "@mui/material/Typography";
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
@@ -50,6 +50,13 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
   const [readOpen, setReadOpen] = useState<{ [key: number]: boolean }>({});
   const [openModalNotification, setOpenModalNotification] =
     useState<boolean>(false);
+  const [companyId, setCompanyId] = useState<string | null>(
+    localStorage.getItem("CompanyId")
+  );
+  useEffect(() => {
+    const storedCompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(storedCompanyId);
+  }, []);
   console.log("quao", readOpen);
 
   // Handle clicking "More" to toggle the "Mark as read" option
@@ -72,13 +79,21 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
   const handleOpenProfile = () => {
     setOpenProfile(!openProfile);
   };
-const navigate =useNavigate()
-  const handleLogout =()=>{
+  const navigate = useNavigate();
+  const handleLogout = () => {
     // localStorage.removeItem('token');
     // localStorage.removeItem('expiration');
     localStorage.clear();
-    navigate('/employers/login')
-  }
+    navigate("/employers/login");
+  };
+
+  const handleNavigate = () => {
+    if (companyId === "null") {
+      navigate("/employer-verify/jobs/InfoVerification");
+      return;
+    }
+    navigate("create-jobs");
+  };
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
@@ -86,12 +101,27 @@ const navigate =useNavigate()
           <MenuIcon className={classes.iconMenu} />
         </button>
         <Link to={"/"} className={classes.link}>
-          <img src={Image} alt="logo" className={classes.img} />
+        <Typography
+                variant="h2"
+                sx={{
+                  lineHeight: 1.5,
+                  fontSize: "22px",
+                  fontWeight: 700,
+                  marginTop: 0,
+                  marginBottom: 0,
+                  boxSizing: "border-box",
+                  display: "block",
+                  color: "#fff",
+                }}
+              >
+                Amazing Job
+              </Typography>
+          {/* <img src={Image} alt="logo" className={classes.img} /> */}
         </Link>
         <div className={classes.div}>
           <ul className={classes.ul}>
-            <li className={classes.li}>
-              <NavLink className={classes.navlink} to="create-jobs">
+            <li className={classes.li} onClick={handleNavigate}>
+              <NavLink className={classes.navlink} to="#">
                 <CreateIcon className={classes.icon} />
                 Job Posts
               </NavLink>

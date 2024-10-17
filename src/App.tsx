@@ -68,7 +68,8 @@ import ProfileSystem from "./pages/Employer/ProfileSystem";
 import ChangePassword from "./pages/Employer/ChangePassword";
 import AuthVeritication from "./pages/Employer/AuthVeritication";
 import PutEmailVeritication from "./pages/Employer/PutEmailVeritication";
-
+import ProtectedRouteVerifi from "./components/Employer/ProtectedRouteVerifi";
+import VerifiInfomation from "./pages/Employer/VerifiInfomation";
 
 const router = createBrowserRouter([
   {
@@ -263,12 +264,12 @@ const router = createBrowserRouter([
   },
   {
     path: "/Auth/Veritication",
-    element:<AuthVeritication/>,
-   },
-   {
+    element: <AuthVeritication />,
+  },
+  {
     path: "/Auth/PutVeritication",
-    element:<PutEmailVeritication/>,
-   },
+    element: <PutEmailVeritication />,
+  },
   {
     path: "auth/Admin",
     element: <SignInPage />,
@@ -302,7 +303,16 @@ const router = createBrowserRouter([
 
       {
         index: true,
-        element: <JobPage />,
+        element: (
+          <ProtectedRouteVerifi>
+            <JobPage />,
+          </ProtectedRouteVerifi>
+        ),
+      },
+
+      {
+        path:'InfoVerification',
+        element:<VerifiInfomation/>
       },
       // {
       //   path: "account",

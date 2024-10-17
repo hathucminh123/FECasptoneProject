@@ -467,8 +467,7 @@ export default function FilterJobbySkill() {
                               <div className={classes.jobapply1}>
                                 {applied?.status === "Pending" ? (
                                   <HourglassEmptyIcon />
-                                ) : applied?.status ===
-                                  "Rejected" ? (
+                                ) : applied?.status === "Rejected" ? (
                                   <CancelIcon />
                                 ) : (
                                   <CheckCircleOutlineOutlinedIcon />
@@ -678,23 +677,112 @@ export default function FilterJobbySkill() {
                             ]}
                           />
                           <div className={classes.line}></div>
-                          <Content
+                          <div className={classes.morecontent1}>
+                            <Typography
+                              variant="h2"
+                              sx={{
+                                color: "#121212",
+                                lineHeight: 1.5,
+                                fontSize: "22px",
+                                fontWeight: 700,
+                                mt: 0,
+                                mb: 0,
+                              }}
+                            >
+                              Job Description
+                            </Typography>
+                            <div
+                              style={{
+                                fontSize: "16px",
+                                fontWeight: 400,
+                                lineHeight: 1.8,
+                                marginTop: ".5rem",
+                                marginBottom: ".5rem",
+                                paddingLeft: "18px",
+                              }}
+                            >
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: jobDetails.jobDescription,
+                                }}
+                              />
+                            </div>
+                          </div>
+                          {/* <Content
                             title="Job description"
                             arraylist={[jobDetails?.jobDescription]}
-                          />
+                          /> */}
                           <div className={classes.line}></div>
-                          <Content
+                          {/* <Content
                             title="Your skills and experience"
                             arraylist={[
                               `Yêu cầu kinh nghiệm  ${jobDetails?.experienceRequired}`,
                               jobDetails?.jobDescription,
                             ]}
-                          />
+                          /> */}
+                          <div className={classes.morecontent1}>
+                            <Typography
+                              variant="h2"
+                              sx={{
+                                color: "#121212",
+                                lineHeight: 1.5,
+                                fontSize: "22px",
+                                fontWeight: 700,
+                                mt: 0,
+                                mb: 0,
+                              }}
+                            >
+                              Your Skill and Experience
+                            </Typography>
+                            <div
+                              style={{
+                                fontSize: "16px",
+                                fontWeight: 400,
+                                lineHeight: 1.8,
+                                marginTop: ".5rem",
+                                marginBottom: ".5rem",
+                                paddingLeft: "18px",
+                              }}
+                            >
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: jobDetails.qualificationRequired,
+                                }}
+                              />
+                            </div>
+                          </div>
                           <div className={classes.line}></div>
-                          <Content
-                            title="Why you'll love working here"
-                            arraylist={[jobDetails?.benefits]}
-                          />
+                          <div className={classes.morecontent1}>
+                            <Typography
+                              variant="h2"
+                              sx={{
+                                color: "#121212",
+                                lineHeight: 1.5,
+                                fontSize: "22px",
+                                fontWeight: 700,
+                                mt: 0,
+                                mb: 0,
+                              }}
+                            >
+                              Benefits
+                            </Typography>
+                            <div
+                              style={{
+                                fontSize: "16px",
+                                fontWeight: 400,
+                                lineHeight: 1.8,
+                                marginTop: ".5rem",
+                                marginBottom: ".5rem",
+                                paddingLeft: "18px",
+                              }}
+                            >
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: jobDetails.benefits,
+                                }}
+                              />
+                            </div>
+                          </div>
                           <hr
                             style={{
                               height: "1px",

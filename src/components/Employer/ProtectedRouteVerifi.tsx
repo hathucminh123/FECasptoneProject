@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 
-const ProtectedRouteCompany = ({ children }: { children: ReactNode }) => {
+const ProtectedRouteVerifi = ({ children }: { children: ReactNode }) => {
   const [companyId, setCompanyId] = useState<string | null>(localStorage.getItem("CompanyId"));
   const location = useLocation();
 
@@ -19,4 +19,4 @@ const ProtectedRouteCompany = ({ children }: { children: ReactNode }) => {
   return companyId && companyId !== "null" ? children : <Navigate to="/employer-verify/jobs/InfoVerification" replace />;
 };
 
-export default ProtectedRouteCompany;
+export default ProtectedRouteVerifi;
