@@ -247,3 +247,13 @@ ul > li ::marker {
   box-sizing: border-box;
   color: #121212 !important;
 }
+
+.link {
+  text-decoration: none;
+  color: black; 
+  box-sizing: border-box;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

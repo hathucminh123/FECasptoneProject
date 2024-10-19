@@ -21,15 +21,15 @@ import useScrollToTop from "../hook/useScrollToTop";
 
 import Image1 from "./../assets/image/abbank-0621-min.webp";
 import Image2 from "./../assets/image/rsz-2jun-0497copy.webp";
-import { Image } from "antd";
+import { Image, message } from "antd";
 import CardJobDetails from "../components/CardJobDetails";
-import { add, remove } from "../redux/slices/favoriteJob";
+// import { add, remove } from "../redux/slices/favoriteJob";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import { view } from "../redux/slices/viewJob";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPostById } from "../Services/JobsPost/GetJobPostById";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -37,6 +37,15 @@ import WorkIcon from "@mui/icons-material/Work";
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import moment from "moment";
+import { PostFavoriteJobs } from "../Services/FavoriteJobs/PostFavoriteJobs";
+import { queryClient } from "../Services/mainService";
+import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
+import { DeleteFavoriteJobs } from "../Services/FavoriteJobs/DeleteFavoriteJobs";
+import { Comment } from "@mui/icons-material";
+import { IconButton } from "@mui/material";
+import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
+import { AnimatePresence } from "framer-motion";
+import FeedbackModal from "../components/FeedbackModal";
 // import HourglassFullIcon from '@mui/icons-material/HourglassFull';
 // import VerifiedIcon from '@mui/icons-material/Verified';
 const StyledLink = styled(Link)`
@@ -87,15 +96,26 @@ interface JobPost {
 }
 export default function JobDetails() {
   useScrollToTop();
-  const [favorite, setFavorite] = useState<boolean>(false);
+  // const [favorite, setFavorite] = useState<boolean>(false);
   const containerLeftRef = useRef<HTMLDivElement | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const applyRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
+  const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
+    useState<boolean>(false);
+
+  function handleStartAddNewChallenge() {
+    setIsCreatingNewChallenge(true);
+  }
+
+  function handleDone() {
+    setIsCreatingNewChallenge(false);
+  }
   // const location = useLocation();
 
   // const { company } = location.state || {};
   const auth = localStorage.getItem("Auth");
+  const userId = localStorage.getItem("userId");
   const dispatch = useAppDispatch();
   const { JobId } = useParams();
   console.log("id", JobId);
@@ -104,7 +124,57 @@ export default function JobDetails() {
     queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }), // Convert JobId to number
     enabled: !!JobId, // Chỉ chạy query khi JobId có giá trị
   });
+  const job = jobData?.JobPosts;
 
+  const { mutate } = useMutation({
+    mutationFn: PostFavoriteJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FavoriteJob"],
+        refetchType: "active",
+      });
+      // setFavorite(true)
+      setShowAlert(true);
+      message.success(`Save ${job?.jobTitle} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to Follow ${job?.jobTitle} `);
+    },
+  });
+  const { mutate: Unfollow } = useMutation({
+    mutationFn: DeleteFavoriteJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FavoriteJob"],
+        refetchType: "active",
+      });
+      // setFavorite(false)
+      message.success(`Unfollow ${job?.jobTitle} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to UnFollow ${job?.jobTitle} `);
+    },
+  });
+
+  const { data: FavoriteJob } = useQuery({
+    queryKey: ["FavoriteJob"],
+    queryFn: ({ signal }) => GetFavoriteJobs({ signal }),
+    staleTime: 5000,
+  });
+  const FavoriteJobs = FavoriteJob?.JobPost;
+  console.log("hehe", FavoriteJobs);
+
+  const haveFavorite = FavoriteJobs?.find(
+    (item) => item.id === Number(job?.id)
+  );
+
+  // useEffect(() => {
+  //   if (haveFavorite) {
+  //     setFavorite(true);
+  //   } else {
+  //     setFavorite(false);
+  //   }
+  // }, [haveFavorite]);
   const {
     data: Company,
     // isLoading: isCompanyLoading,
@@ -136,7 +206,6 @@ export default function JobDetails() {
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
   const Companiesdata = Company?.Companies;
 
-  const job = jobData?.JobPosts;
   const JobPostsdata = JobPosts?.JobPosts;
   // const job: Job | null = location.state ?? null;
 
@@ -165,19 +234,19 @@ export default function JobDetails() {
     }
   }, [dispatch, job]);
 
-  useEffect(() => {
-    if (favorite && job) {
-      dispatch(add(job));
-      setShowAlert(true);
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, 3000);
+  // useEffect(() => {
+  //   if (favorite && job) {
+  //     dispatch(add(job));
+  //     setShowAlert(true);
+  //     const timer = setTimeout(() => {
+  //       setShowAlert(false);
+  //     }, 3000);
 
-      return () => clearTimeout(timer);
-    } else if (!favorite && job) {
-      dispatch(remove(job.id));
-    }
-  }, [favorite, job, dispatch]);
+  //     return () => clearTimeout(timer);
+  //   } else if (!favorite && job) {
+  //     dispatch(remove(job.id));
+  //   }
+  // }, [favorite, job, dispatch]);
 
   const handleNavigateApply = () => {
     if (!auth) {
@@ -195,9 +264,34 @@ export default function JobDetails() {
         state: { from: window.location.pathname },
       });
     } else {
-      setFavorite((prev) => !prev);
+      mutate({
+        data: {
+          jobPostId: Number(job?.id),
+        },
+      });
     }
   };
+  const { data: SeekerApply } = useQuery({
+    queryKey: ["SeekerApply", JobId],
+    queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(JobId), signal }),
+    enabled: !!JobId,
+  });
+
+  const dataSeeker = SeekerApply?.GetSeekers;
+
+  const feedBackUserJob = dataSeeker?.find(
+    (item) => item.id === Number(userId)
+  );
+
+  const handleUnFollow = () => {
+    if (!auth) {
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    }
+    Unfollow({ id: Number(haveFavorite?.id) });
+  };
+
   const detailsCompany = Companiesdata?.find(
     (item) => item.id === job?.companyId
   );
@@ -246,6 +340,14 @@ export default function JobDetails() {
   }
   return (
     <div className={classes.main}>
+      <AnimatePresence>
+        {isCreatingNewChallenge && (
+          <FeedbackModal
+            onDone={handleDone}
+            data={feedBackUserJob?.jobPostActivityComments}
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.alert}></div>
       <div className={classes.container}></div>
       {showAlert && (
@@ -388,6 +490,15 @@ export default function JobDetails() {
                           "YYYY/MM/DD HH:mm"
                         )}
                       </span>
+
+                      {feedBackUserJob?.status === "Rejected" ||
+                      feedBackUserJob?.status === "Passed" ? (
+                        <span className={classes.span1}>
+                          <IconButton onClick={handleStartAddNewChallenge}>
+                            <Comment />
+                          </IconButton>
+                        </span>
+                      ) : undefined}
                     </div>
                   </div>
                 ) : (
@@ -414,8 +525,12 @@ export default function JobDetails() {
                     >
                       Apply now
                     </Button>
-                    <div style={{ cursor: "pointer" }} onClick={handleSaveJob}>
-                      {favorite ? (
+
+                    {haveFavorite ? (
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={handleUnFollow}
+                      >
                         <FavoriteIcon
                           fontSize="large"
                           sx={{
@@ -424,7 +539,12 @@ export default function JobDetails() {
                             mr: 2,
                           }}
                         />
-                      ) : (
+                      </div>
+                    ) : (
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={handleSaveJob}
+                      >
                         <FavoriteBorderOutlinedIcon
                           fontSize="large"
                           sx={{
@@ -434,8 +554,8 @@ export default function JobDetails() {
                             mr: 2,
                           }}
                         />
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -917,11 +1037,12 @@ export default function JobDetails() {
                   {" "}
                   {detailsCompany?.companyDescription && (
                     <div
-                    className={classes.main7}
-                    dangerouslySetInnerHTML={{ __html: detailsCompany.companyDescription }}
-                  />
+                      className={classes.main7}
+                      dangerouslySetInnerHTML={{
+                        __html: detailsCompany.companyDescription,
+                      }}
+                    />
                   )}
-                
                   {/* {detailsCompany?.companyDescription} */}
                 </Typography>
               </div>

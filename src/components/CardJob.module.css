@@ -12,7 +12,7 @@
   max-width:100%;
   width: 320px;
   height: 300px;
- min-height: 400px;
+ min-height: 350px;
   padding-top: 16px !important;
   border-radius: 8px;
   /* border: 1px solid #dedede; */
@@ -105,7 +105,7 @@
 .location {
   display: flex;
   align-items: center;
-
+  flex-wrap: nowrap;
   box-sizing: border-box;
   font-weight: 5500 !important;
   gap: 5px;

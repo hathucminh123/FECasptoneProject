@@ -1,16 +1,19 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
-import { add, remove } from "../redux/slices/favoriteJob";
+import React, { Dispatch, SetStateAction } from "react";
 import Typography from "@mui/material/Typography";
 import classes from "./CardJob.module.css";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
-import Button from "@mui/material/Button";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Image from "./../assets/image/download.png";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
+import { DeleteFavoriteJobs } from "../Services/FavoriteJobs/DeleteFavoriteJobs";
+import { queryClient } from "../Services/mainService";
+import { message } from "antd";
+import Button from "@mui/material/Button";
 
 interface JobType {
   id: number;
@@ -78,53 +81,53 @@ export default function CardJob({
   className,
   formButton,
   data,
-  setShowAlert,
-  setShowAlertt,
-  setUndoData,
   company,
   onclick,
 }: MyComponentProps) {
-  const [favorite, setFavorite] = useState<boolean>(false);
-  const dataa = useAppSelector((state) => state.favorite.item);
-  const dispatch = useAppDispatch();
+  const auth = localStorage.getItem("Auth");
+  const { data: FavoriteJob } = useQuery({
+    queryKey: ["FavoriteJob"],
+    queryFn: ({ signal }) => GetFavoriteJobs({ signal }),
+    staleTime: 5000,
+  });
 
-  useEffect(() => {
-    if (data && dataa.find((item) => item.id === data.id)) {
-      setFavorite(true);
-    } else {
-      setFavorite(false);
-    }
-  }, [dataa, data]);
+  const FavoriteJobs = FavoriteJob?.JobPost;
+  const haveFavorite = FavoriteJobs?.find(
+    (item) => item.id === Number(data?.id)
+  );
+
+  const { mutate: Unfollow } = useMutation({
+    mutationFn: DeleteFavoriteJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FavoriteJob"],
+        refetchType: "active",
+      });
+      message.success(`Unfollow ${data?.jobTitle} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to UnFollow ${data?.jobTitle}`);
+    },
+  });
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (data) {
-      if (favorite) {
-        dispatch(remove(data.id));
-        setShowAlert?.(true);
-        setUndoData?.(data);
-      } else {
-        dispatch(add(data));
-        setShowAlertt?.(true);
-      }
-      setFavorite((prev) => !prev);
+    Unfollow({ id: Number(haveFavorite?.id) });
+  };
+  console.log('haha',company)
+  const navigate=useNavigate()
+  const handleNavigateApply = () => {
+    if (!auth) {
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    } else {
+      navigate(`/job/Apply/${data?.id}`);
     }
   };
 
-  // const getJobLocation = (
-  //   jobLocation: JobLocation | string | null | undefined
-  // ): string => {
-  //   if (typeof jobLocation === "string") {
-  //     return jobLocation;
-  //   } else if (jobLocation === null) {
-  //     return "Location not specified";
-  //   } else {
-  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-  //   }
-  // };
-
   return (
-    <Link to={`jobs/detail/${data?.id}`} className={classes.link2}>
+    // <Link to={`jobs/detail/${data?.id}`} className={classes.link2}>
       <div
         className={classes.card_main}
         onClick={onclick}
@@ -134,10 +137,9 @@ export default function CardJob({
           className={`${className ? className : classes.card_item}`}
           style={Maxwidth ? { maxWidth: Maxwidth } : {}}
         >
-          <div
-            className={formButton ? classes.card_itemm1 : classes.card_itemm}
-          >
+          <div className={formButton ? classes.card_itemm1 : classes.card_itemm}>
             <div style={{ display: "block" }}>
+              {/* Posting Date */}
               <div className={classes.time}>
                 <Typography
                   variant="body1"
@@ -152,6 +154,8 @@ export default function CardJob({
                   {data?.expiryDate.slice(0, 10)}
                 </Typography>
               </div>
+
+              {/* Job Title */}
               <Link to={`jobs/detail/${data?.id}`} className={classes.link}>
                 <Typography
                   variant="h5"
@@ -171,6 +175,8 @@ export default function CardJob({
                   {data?.jobTitle}
                 </Typography>
               </Link>
+
+              {/* Company Logo and Name */}
               <div className={classes.logo}>
                 <img
                   className={classes.image}
@@ -193,6 +199,8 @@ export default function CardJob({
                   {company?.companyName}
                 </Typography>
               </div>
+
+              {/* Salary */}
               <div className={classes.money}>
                 <MonetizationOnOutlinedIcon
                   sx={{ color: "#0ab305 !important" }}
@@ -207,11 +215,13 @@ export default function CardJob({
                     color: "#0ab305 !important",
                   }}
                 >
-                  {data?.salary}
+                  {data?.salary} USD
                 </Typography>
               </div>
+
               <div className={classes.separator}></div>
 
+              {/* Job Location */}
               <div className={classes.location}>
                 <LocationOnOutlinedIcon />
                 <Typography
@@ -221,41 +231,35 @@ export default function CardJob({
                     alignItems: "start",
                     fontWeight: 400,
                     mt: "7px",
-                    color: " #414042 !important",
+                    color: "#414042 !important",
                     fontSize: "14px",
+                    display: "flex",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                    flexShrink: 1,
                   }}
                 >
-                  {data?.jobLocationCities &&
-                  data?.jobLocationCities?.length > 0 ? (
-                    data?.jobLocationCities.map((item, index) => (
-                      <div
-                        key={index}
-                        style={{
-                          display: "flex",
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          gap: 2,
-                        }}
-                      >
-                        {item}
-                        {index < data.jobLocationCities.length - 1 && ", "}
-                      </div>
-                    ))
-                  ) : (
-                    <div
+                  {data?.jobLocationCities?.length ? (
+                    <span
                       style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        gap: 2,
+                        display: "inline-block",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
                       }}
                     >
-                      No Location yet
-                    </div>
+                      {data.jobLocationCities.join(", ")}
+                    </span>
+                  ) : (
+                    <span>No Location yet</span>
                   )}
                 </Typography>
               </div>
 
+              {/* Job Type */}
               <div className={classes.location}>
                 <BusinessCenterOutlinedIcon />
                 <Typography
@@ -273,6 +277,7 @@ export default function CardJob({
                 </Typography>
               </div>
 
+              {/* Skills */}
               <div className={classes.job}>
                 {data?.skillSets.map((tag, index) => (
                   <button key={index} className={classes.button}>
@@ -281,10 +286,13 @@ export default function CardJob({
                 ))}
               </div>
             </div>
-            {formButton ? (
+
+            {/* Action Button (Apply Now and Favorite) */}
+            {formButton && (
               <div className={classes.formbutton}>
                 <div className={classes.button_icon}>
                   <Button
+                     onClick={handleNavigateApply}
                     sx={{
                       minWidth: "140px",
                       backgroundColor: "#ed1b2f",
@@ -309,11 +317,8 @@ export default function CardJob({
                   >
                     Apply now
                   </Button>
-                  <div
-                    style={{ cursor: "pointer" }}
-                    onClick={handleFavoriteClick}
-                  >
-                    {favorite ? (
+                  {haveFavorite ? (
+                    <div style={{ cursor: "pointer" }} onClick={handleFavoriteClick}>
                       <FavoriteIcon
                         fontSize="large"
                         sx={{
@@ -321,22 +326,22 @@ export default function CardJob({
                           mr: 2,
                         }}
                       />
-                    ) : (
-                      <FavoriteBorderOutlinedIcon
-                        fontSize="large"
-                        sx={{
-                          color: "#ed1b2f !important",
-                          mr: 2,
-                        }}
-                      />
-                    )}
-                  </div>
+                    </div>
+                  ) : (
+                    <FavoriteBorderOutlinedIcon
+                      fontSize="large"
+                      sx={{
+                        color: "#ed1b2f !important",
+                        mr: 2,
+                      }}
+                    />
+                  )}
                 </div>
               </div>
-            ) : undefined}
+            )}
           </div>
         </div>
       </div>
-    </Link>
+    // </Link>
   );
 }

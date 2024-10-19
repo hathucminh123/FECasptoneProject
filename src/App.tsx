@@ -70,6 +70,7 @@ import AuthVeritication from "./pages/Employer/AuthVeritication";
 import PutEmailVeritication from "./pages/Employer/PutEmailVeritication";
 import ProtectedRouteVerifi from "./components/Employer/ProtectedRouteVerifi";
 import VerifiInfomation from "./pages/Employer/VerifiInfomation";
+import Comment from "./pages/Employer/Comment";
 
 const router = createBrowserRouter([
   {
@@ -391,6 +392,10 @@ const router = createBrowserRouter([
       {
         path: "manageCVs",
         element: <ManageCVs />,
+      },
+      {
+        path: "system-Comment/:commentId",
+        element: <Comment/>,
       },
       {
         path: "system-notification",

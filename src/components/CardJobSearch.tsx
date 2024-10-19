@@ -1,6 +1,7 @@
 import React from "react";
 import classes from "./CardJobSearch.module.css";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+// import LocationOnIcon from "@mui/icons-material/LocationOn";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import Typography from "@mui/material/Typography";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
 import { Link } from "react-router-dom";
@@ -185,57 +186,41 @@ export default function CardJobSearch({
           <div className={classes.line}></div>
           <div style={{ marginTop: "8px" }}></div>
           <div className={classes.location}>
-            <LocationOnIcon
-              sx={{
-                width: "16px",
-                height: "16px",
-                stroke: "currentcolor",
-                strokeWidth: 2,
-                strokeLinecap: "round",
-                strokeLinejoin: "round",
-                verticalAlign: "baseline",
-                fill: "none",
-                color: "#a6a6a6",
-              }}
-            />
-            <span
-              style={{
-                paddingLeft: "8px",
-                color: "#414042",
-                fontSize: "14px",
-                fontWeight: 400,
-              }}
-            >
-              {data?.jobLocationCities &&
-              data?.jobLocationCities?.length > 0 ? (
-                data?.jobLocationCities.map((item, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      flexWrap: "wrap",
-                      gap: 2,
-                    }}
-                  >
-                    {item}
-                    {index < data.jobLocationCities.length - 1 && ", "}
-                  </div>
-                ))
-              ) : (
-                <div
-                  style={{
+                <LocationOnOutlinedIcon />
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    alignItems: "start",
+                    fontWeight: 400,
+                    mt: "7px",
+                    color: "#414042 !important",
+                    fontSize: "14px",
                     display: "flex",
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    gap: 2,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                    flexShrink: 1,
                   }}
                 >
-                  No Location yet
-                </div>
-              )}
-            </span>
-          </div>
+                  {data?.jobLocationCities?.length ? (
+                    <span
+                      style={{
+                        display: "inline-block",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        maxWidth: "100%",
+                      }}
+                    >
+                      {data.jobLocationCities.join(", ")}
+                    </span>
+                  ) : (
+                    <span>No Location yet</span>
+                  )}
+                </Typography>
+              </div>
           <div className={classes.location}>
             <BusinessCenterOutlinedIcon />
             <Typography

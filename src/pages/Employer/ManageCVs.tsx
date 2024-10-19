@@ -3,6 +3,8 @@ import classes from "./ManageCVs.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FormSelect from "../../components/Employer/FormSelect";
+import CommentIcon from "@mui/icons-material/Comment";
+
 import {
   Table as MuiTable,
   TableBody,
@@ -19,6 +21,7 @@ import {
   Button,
   Typography,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import Edit from "@mui/icons-material/Edit";
@@ -30,9 +33,29 @@ import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJob
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepButton from "@mui/material/StepButton";
+import Rating from "@mui/material/Rating";
+import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 
-const headers = ["Full Name", "Email", "Phone Number", "CV File","Status", "Action"];
-const stateData = ["Available data", "Meeting", "Accept a Job", "Rejected", "Pending"];
+const steps = ["Select Status", "Input Comment"];
+
+const headers = [
+  "Full Name",
+  "Email",
+  "Phone Number",
+  "CV File",
+  "Status",
+  "Action",
+];
+const stateData = [
+  "Available data",
+  "Meeting",
+  "Accept a Job",
+  "Rejected",
+  "Pending",
+];
 const CVOptions = ["Show All CVs", "Show only unseen CVs"];
 
 interface JobType {
@@ -68,16 +91,100 @@ export default function ManageCVs() {
   const [selectedCV, setSelectedCV] = useState<string>("");
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectedStatus, setSelectedStatus] = useState<string>("1");
-  const [searchTerm, setSearchTerm] = useState<string>(""); // State for search term
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [currentJobPostId, setCurrentJobPostId] = useState<number | null>(null);
-  const CompanyId = localStorage.getItem("CompanyId");
+  const [commentText, setCommentText] = useState<string>("");
+  const [value, setValue] = React.useState<number | null>(2);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
+    {}
+  );
+
+  const totalSteps = () => steps.length;
+  const completedSteps = () => Object.keys(completed).length;
+  const isLastStep = () => activeStep === totalSteps() - 1;
+  const allStepsCompleted = () => completedSteps() === totalSteps();
+
+  const handleNext = () => {
+    const newActiveStep =
+      isLastStep() && !allStepsCompleted()
+        ? steps.findIndex((step, i) => !(i in completed))
+        : activeStep + 1;
+    setActiveStep(newActiveStep);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleStep = (step: number) => () => {
+    setActiveStep(step);
+  };
+
+  const handleModalClose = () => {
+    setOpenModal(false);
+    setActiveStep(0);
+    setCompleted({});
+    setCommentText("");
+    setValue(null);
+  };
+
+  const { mutate: PostComment } = useMutation({
+    mutationFn: PostJobActivityComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["Comment"],
+        refetchType: "active",
+      });
+      message.success("Comment and rating added successfully!");
+    },
+    onError: () => {
+      message.error("Failed to Update the status set");
+    },
+  });
+
+  const handleComplete = () => {
+    if (!currentJobPostId) return;
+
+    if (activeStep === 0) {
+      mutate({
+        data: {
+          jobPostActivityId: currentJobPostId,
+          status: Number(selectedStatus),
+        },
+      });
+      // message.success("Status updated successfully!");
+    }
+
+    if (activeStep === 1) {
+      if (commentText || value) {
+        PostComment({
+          data: {
+            commentText: commentText,
+            commentDate: new Date().toISOString(),
+            rating: value,
+            jobPostActivityId: currentJobPostId,
+          },
+        });
+      } else {
+        message.warning(
+          "Please provide a comment or rating before completing the step."
+        );
+        return;
+      }
+    }
+
+    setCompleted({ ...completed, [activeStep]: true });
+    handleNext();
+  };
+
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
     mutationFn: PutJobPostActivityStatus,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["JobPostActivity"],
+        queryKey: ["SeekerApply"],
         refetchType: "active",
       });
       message.success("Status Details Update Successfully");
@@ -86,18 +193,6 @@ export default function ManageCVs() {
       message.error("Failed to Update the status set");
     },
   });
-
-  const handleSave = () => {
-    if (currentJobPostId) {
-      mutate({
-        data: {
-          jobPostActivityId: currentJobPostId,
-          status: Number(selectedStatus),
-        },
-      });
-    }
-    setOpenModal(false);
-  };
 
   const {
     data: JobPosts,
@@ -110,6 +205,7 @@ export default function ManageCVs() {
   });
 
   const JobPostsdata = JobPosts?.JobPosts;
+  const CompanyId = localStorage.getItem("CompanyId");
   const JobinCompany = JobPostsdata?.filter(
     (item) => item.companyId === Number(CompanyId)
   );
@@ -128,16 +224,15 @@ export default function ManageCVs() {
   const dataSeekerApply =
     SeekerApply?.GetSeekers?.map((seeker) => ({
       id: seeker.id,
-      fullName: `${seeker.firstName} ${seeker.lastName}`.trim() || seeker.userName,
+      fullName:
+        `${seeker.firstName} ${seeker.lastName}`.trim() || seeker.userName,
       Email: seeker.email,
       "Phone Number": seeker.phoneNumber || "Not provided",
-      "CV file": `${seeker.cvPath}`,
-      Status:  seeker.status,
+      "CV file": seeker.cvPath,
+      Status: seeker.status,
       Action: "View Details",
       jobPostActivityId: seeker.jobPostActivityId,
-
     })) || [];
-
 
   const filteredData = searchTerm
     ? dataSeekerApply.filter((row) => {
@@ -162,6 +257,9 @@ export default function ManageCVs() {
     setCurrentJobPostId(id);
     setOpenModal(true);
   };
+  const handleViewComments =(id:number) =>{
+    navigate(`/employer-verify/jobs/system-Comment/${id}`)
+  }
 
   if (isJobLoading || isSeekerLoading) {
     return <div>Loading...</div>;
@@ -185,8 +283,8 @@ export default function ManageCVs() {
                   type="text"
                   className={classes.input}
                   placeholder="Input name, email, phone number"
-                  value={searchTerm} // Bind search input to state
-                  onChange={(e) => setSearchTerm(e.target.value)} // Update state on change
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
                 <button className={classes.button}>
                   <SearchOutlinedIcon fontSize="small" />
@@ -219,7 +317,9 @@ export default function ManageCVs() {
           <div className={classes.main8}>
             <div className={classes.main9}>
               <div className={classes.main10}>
-                Found <span className={classes.span}>{filteredData.length}</span> Candidate(s)
+                Found{" "}
+                <span className={classes.span}>{filteredData.length}</span>{" "}
+                Candidate(s)
               </div>
             </div>
             <div className={classes.main11}>
@@ -250,7 +350,11 @@ export default function ManageCVs() {
                       <TableCell>{row.Email}</TableCell>
                       <TableCell>{row["Phone Number"]}</TableCell>
                       <TableCell>
-                        <a href={row["CV file"]} download className={classes.cvLink}>
+                        <a
+                          href={row["CV file"]}
+                          download
+                          className={classes.cvLink}
+                        >
                           Download CV
                         </a>
                       </TableCell>
@@ -259,8 +363,22 @@ export default function ManageCVs() {
                         <IconButton onClick={() => handleViewDetail(row.id)}>
                           <Visibility />
                         </IconButton>
-                        <IconButton onClick={() => handleEditClick(row.jobPostActivityId)}>
-                          <Edit />
+                        {row.Status !== "Rejected" &&
+                          row.Status !== "Passed" && (
+                            <IconButton
+                              onClick={() =>
+                                handleEditClick(row.jobPostActivityId)
+                              }
+                            >
+                              <Edit />
+                            </IconButton>
+                          )}
+                        <IconButton
+                          onClick={() =>
+                            handleViewComments(row.jobPostActivityId)
+                          }
+                        >
+                          <CommentIcon />
                         </IconButton>
                       </TableCell>
                     </TableRow>
@@ -271,30 +389,84 @@ export default function ManageCVs() {
           </div>
         </div>
       </div>
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+      <Modal open={openModal} onClose={handleModalClose}>
         <Box className={classes.modalBox}>
-          <Typography variant="h6" component="h2">
-            Update Status
-          </Typography>
-          <Select
-            value={selectedStatus}
-            onChange={handleStatusChange}
-            fullWidth
-          >
-            <MenuItem value="1">Pending</MenuItem>
-            <MenuItem value="2">Rejected</MenuItem>
-            <MenuItem value="3">Passed</MenuItem>
-          </Select>
-          <Button variant="contained" onClick={handleSave} style={{ marginTop: 16 }}>
-            Save
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={() => setOpenModal(false)}
-            style={{ marginTop: 16 }}
-          >
-            Cancel
-          </Button>
+          <Stepper nonLinear activeStep={activeStep}>
+            {steps.map((label, index) => (
+              <Step key={label} completed={completed[index]}>
+                <StepButton color="inherit" onClick={handleStep(index)}>
+                  {label}
+                </StepButton>
+              </Step>
+            ))}
+          </Stepper>
+          {allStepsCompleted() ? (
+            <React.Fragment>
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                All steps completed - you're finished
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                <Box sx={{ flex: "1 1 auto" }} />
+                <Button onClick={handleModalClose}>Close</Button>
+              </Box>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {activeStep !== 0 ? (
+                <React.Fragment>
+                  <TextField
+                    fullWidth
+                    sx={{ marginTop: 2 }}
+                    label="Comment"
+                    placeholder="Input your comment"
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                  />
+                  <Rating
+                    name="simple-controlled"
+                    value={value}
+                    onChange={(event, newValue) => setValue(newValue)}
+                  />
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <Typography variant="h6" component="h2">
+                    Update Status
+                  </Typography>
+                  <Select
+                    value={selectedStatus}
+                    onChange={handleStatusChange}
+                    fullWidth
+                  >
+                    <MenuItem value="1">Pending</MenuItem>
+                    <MenuItem value="2">Rejected</MenuItem>
+                    <MenuItem value="3">Passed</MenuItem>
+                  </Select>
+                </React.Fragment>
+              )}
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                <Button
+                  color="inherit"
+                  disabled={activeStep === 0}
+                  onClick={handleBack}
+                  sx={{ mr: 1 }}
+                >
+                  Back
+                </Button>
+                <Box sx={{ flex: "1 1 auto" }} />
+                <Button onClick={handleNext} sx={{ mr: 1 }}>
+                  Next
+                </Button>
+                {activeStep !== steps.length && !completed[activeStep] && (
+                  <Button onClick={handleComplete}>
+                    {completedSteps() === totalSteps() - 1
+                      ? "Finish"
+                      : "Complete Step"}
+                  </Button>
+                )}
+              </Box>
+            </React.Fragment>
+          )}
         </Box>
       </Modal>
     </div>

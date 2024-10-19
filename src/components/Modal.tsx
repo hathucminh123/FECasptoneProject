@@ -11,6 +11,7 @@ interface ModalProps {
   onClose?: () => void;
   onClickSubmit?: () => void;
   isPending?: unknown;
+  disappear?: boolean;
 }
 
 export default function Modal({
@@ -19,6 +20,7 @@ export default function Modal({
   onClose,
   onClickSubmit,
   isPending,
+  disappear,
 }: ModalProps) {
   const modalRoot = document.getElementById("modal");
 
@@ -55,13 +57,14 @@ export default function Modal({
           <div className={classes.modal2}>{children}</div>
           <div className={classes.modal3}>
             <RenderButton text="Cancel" color="white" variant="outlined" />
-
-            {isPending ? (
+            {disappear ? (
+              <></>
+            ) : isPending ? (
               <RenderButton
                 text="Wait a minute"
                 color="white"
                 variant="outlined"
-                disabled={true} // disabled when pending
+                disabled={true}
               />
             ) : (
               <RenderButton

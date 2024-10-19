@@ -100,7 +100,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
         <button className={classes.logo} onClick={handleOpen}>
           <MenuIcon className={classes.iconMenu} />
         </button>
-        <Link to={"/"} className={classes.link}>
+        <Link to={"#"} className={classes.link}>
         <Typography
                 variant="h2"
                 sx={{

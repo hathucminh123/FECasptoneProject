@@ -1,7 +1,7 @@
 import React from "react";
 import { useSearchParams, Link, NavLink } from "react-router-dom";
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
-import classes from "./NotificationSystem.module.css";
+import classes from "./../../components/Employer/NotificationSystem.module.css";
 import HeaderSystem from "./HeaderSystem";
 
 // Giả sử đây là dữ liệu danh sách thông báo

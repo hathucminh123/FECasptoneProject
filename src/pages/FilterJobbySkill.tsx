@@ -14,14 +14,14 @@ import { TodoListSelector } from "../redux/selectorLogic/logicseacrh";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 // import { companyData } from "../assets/data/CompanyData";
 import CardJobSearch from "../components/CardJobSearch";
-import { add, remove } from "../redux/slices/favoriteJob";
+// import { add, remove } from "../redux/slices/favoriteJob";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import { RootState } from "../redux/store";
 // import { useCompanyAndJobData } from "../redux/selectorLogic/data";
 // import { setCompanies } from "../redux/slices/companyJobslice";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import moment from "moment";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -33,7 +33,16 @@ import Image from "./../assets/image/download.png";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 
 import CancelIcon from "@mui/icons-material/Cancel";
-
+import { PostFavoriteJobs } from "../Services/FavoriteJobs/PostFavoriteJobs";
+import { queryClient } from "../Services/mainService";
+import { message } from "antd";
+import { DeleteFavoriteJobs } from "../Services/FavoriteJobs/DeleteFavoriteJobs";
+import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
+import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
+import { AnimatePresence } from "framer-motion";
+import FeedbackModal from "../components/FeedbackModal";
+import { IconButton } from "@mui/material";
+import { Comment } from "@mui/icons-material";
 interface JobType {
   id: number;
   name: string;
@@ -92,10 +101,21 @@ interface UserJobActivity {
 }
 
 export default function FilterJobbySkill() {
-  const [favorite, setFavorite] = useState<boolean>(false);
+  // const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
+  const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const auth = localStorage.getItem("Auth");
+  const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
+    useState<boolean>(false);
+
+  function handleStartAddNewChallenge() {
+    setIsCreatingNewChallenge(true);
+  }
+
+  function handleDone() {
+    setIsCreatingNewChallenge(false);
+  }
 
   const filteredJobs = useAppSelector(TodoListSelector);
 
@@ -207,29 +227,105 @@ export default function FilterJobbySkill() {
     setApplied(hasAppliedJobActivity);
   };
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  // const handleSaveJob = () => {
+  //   if (!auth) {
+  //     navigate("/JobSeekers/login", {
+  //       state: { from: window.location.pathname },
+  //     });
+  //   } else {
+  //     setFavorite((prev) => !prev);
+  //   }
+  // };
+
+  const { mutate } = useMutation({
+    mutationFn: PostFavoriteJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FavoriteJob"],
+        refetchType: "active",
+      });
+      // setFavorite(true)
+      setShowAlert(true);
+      message.success(`Save ${jobDetails?.jobTitle} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to Follow ${jobDetails?.jobTitle} `);
+    },
+  });
+  const { mutate: Unfollow } = useMutation({
+    mutationFn: DeleteFavoriteJobs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["FavoriteJob"],
+        refetchType: "active",
+      });
+      // setFavorite(false)
+      message.success(`Unfollow ${jobDetails?.jobTitle} Successfully`);
+    },
+    onError: () => {
+      message.error(`Failed to UnFollow ${jobDetails?.jobTitle} `);
+    },
+  });
+  const handleUnFollow = () => {
+    if (!auth) {
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    }
+    Unfollow({ id: Number(haveFavorite?.id) });
+  };
+
+  const { data: SeekerApply } = useQuery({
+    queryKey: ["SeekerApply", jobDetails?.id],
+    queryFn: ({ signal }) =>
+      GetSeekerJobPost({ id: Number(jobDetails?.id), signal }),
+    enabled: !!jobDetails?.id,
+  });
+
+  const dataSeeker = SeekerApply?.GetSeekers;
+
+  const feedBackUserJob = dataSeeker?.find(
+    (item) => item.id === Number(userId)
+  );
+
   const handleSaveJob = () => {
     if (!auth) {
       navigate("/JobSeekers/login", {
         state: { from: window.location.pathname },
       });
     } else {
-      setFavorite((prev) => !prev);
+      mutate({
+        data: {
+          jobPostId: Number(jobDetails?.id),
+        },
+      });
     }
   };
 
-  useEffect(() => {
-    if (favorite && jobDetails) {
-      dispatch(add(jobDetails));
-      setShowAlert(true);
-      const timer = setTimeout(() => {
-        setShowAlert(false);
-      }, 3000);
+  const { data: FavoriteJob } = useQuery({
+    queryKey: ["FavoriteJob"],
+    queryFn: ({ signal }) => GetFavoriteJobs({ signal }),
+    staleTime: 5000,
+  });
+  const FavoriteJobs = FavoriteJob?.JobPost;
+  console.log("hehe", FavoriteJobs);
 
-      return () => clearTimeout(timer);
-    } else if (!favorite && jobDetails) {
-      dispatch(remove(jobDetails.id));
-    }
-  }, [favorite, jobDetails, dispatch]);
+  const haveFavorite = FavoriteJobs?.find(
+    (item) => item.id === Number(jobDetails?.id)
+  );
+  // useEffect(() => {
+  //   if (favorite && jobDetails) {
+  //     dispatch(add(jobDetails));
+  //     setShowAlert(true);
+  //     const timer = setTimeout(() => {
+  //       setShowAlert(false);
+  //     }, 3000);
+
+  //     return () => clearTimeout(timer);
+  //   } else if (!favorite && jobDetails) {
+  //     dispatch(remove(jobDetails.id));
+  //   }
+  // }, [favorite, jobDetails, dispatch]);
 
   // const getJobLocation = (
   //   jobLocation: JobLocation | string | null | undefined
@@ -395,6 +491,14 @@ export default function FilterJobbySkill() {
                   </div>
                   {filteredJobs.length > 0 && jobDetails && detailsCompany ? (
                     <div className={classes.detailRight}>
+                      <AnimatePresence>
+                        {isCreatingNewChallenge && (
+                          <FeedbackModal
+                            onDone={handleDone}
+                            data={feedBackUserJob?.jobPostActivityComments}
+                          />
+                        )}
+                      </AnimatePresence>
                       <div className={classes.apply}>
                         <div className={classes.apply1}>
                           <div className={classes.apply2}>
@@ -409,7 +513,9 @@ export default function FilterJobbySkill() {
                               style={{ width: "100px", height: "100px" }}
                             />
                             <div className={classes.apply3}>
+                            <Link to={`/jobs/detail/${jobDetails?.id}`} className={classes.link}>
                               <Typography
+                              
                                 variant="h2"
                                 sx={{
                                   color: "#121212",
@@ -421,7 +527,9 @@ export default function FilterJobbySkill() {
                                 }}
                               >
                                 {jobDetails?.jobTitle}
+
                               </Typography>
+                              </Link>
                               <Typography
                                 variant="body1"
                                 sx={{
@@ -479,6 +587,16 @@ export default function FilterJobbySkill() {
                                     "YYYY-MM-DD"
                                   )}
                                 </div>
+                                {feedBackUserJob?.status === "Rejected" ||
+                                feedBackUserJob?.status === "Passed" ? (
+                                  <span className={classes.span1}>
+                                    <IconButton
+                                      onClick={handleStartAddNewChallenge}
+                                    >
+                                      <Comment />
+                                    </IconButton>
+                                  </span>
+                                ) : undefined}
                               </div>
                             </div>
                           ) : (
@@ -504,11 +622,11 @@ export default function FilterJobbySkill() {
                               >
                                 Apply now
                               </Button>
-                              <div
-                                style={{ cursor: "pointer" }}
-                                onClick={handleSaveJob}
-                              >
-                                {favorite ? (
+                              {haveFavorite ? (
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={handleUnFollow}
+                                >
                                   <FavoriteIcon
                                     fontSize="large"
                                     sx={{
@@ -517,17 +635,23 @@ export default function FilterJobbySkill() {
                                       mr: 2,
                                     }}
                                   />
-                                ) : (
+                                </div>
+                              ) : (
+                                <div
+                                  style={{ cursor: "pointer" }}
+                                  onClick={handleSaveJob}
+                                >
                                   <FavoriteBorderOutlinedIcon
                                     fontSize="large"
                                     sx={{
                                       color: "#ed1b2f !important",
+
                                       marginTop: "20px",
                                       mr: 2,
                                     }}
                                   />
-                                )}
-                              </div>
+                                </div>
+                              )}
                             </div>
                           )}
                         </div>

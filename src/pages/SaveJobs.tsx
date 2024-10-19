@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./SaveJobs.module.css";
 import {
-  Button,
+
   FormControl,
   MenuItem,
   Select,
@@ -9,34 +9,58 @@ import {
   Typography,
 } from "@mui/material";
 import CardJob from "../components/CardJob";
-import { useAppSelector, useAppDispatch } from "../redux/hooks/hooks";
-import { companyData } from "../assets/data/CompanyData";
-import { add } from "../redux/slices/favoriteJob";
+// import { useAppSelector, useAppDispatch } from "../redux/hooks/hooks";
+
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
+import { useQuery } from "@tanstack/react-query";
+import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 
 
 
-interface Job {
-  id: number;
-  title: string;
-  location: string;
-  salary: string;
-  tags: string[];
-  postDate: string;
-  hotTag: boolean;
-  companyId?: number;
-  companyImage?: string; 
-}
+// interface Job {
+//   id: number;
+//   title: string;
+//   location: string;
+//   salary: string;
+//   tags: string[];
+//   postDate: string;
+//   hotTag: boolean;
+//   companyId?: number;
+//   companyImage?: string; 
+// }
 
 export default function SaveJobs() {
-  const data = useAppSelector((state) => state.favorite.item);
-  const dispatch = useAppDispatch();
+  // const data = useAppSelector((state) => state.favorite.item);
+  // const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
-  const [undoData, setUndoData] = useState<Job | null>(null); 
+  // const [undoData, setUndoData] = useState<Job | null>(null); 
   const [age, setAge] = useState<string>("");
 
+
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const JobPostsdata = JobPosts?.JobPosts;
+  const Companiesdata = Company?.Companies;
   // Tự động tắt thông báo sau 3 giây
   useEffect(() => {
     if (showAlert) {
@@ -48,17 +72,24 @@ export default function SaveJobs() {
   }, [showAlert]);
 
   // Xử lý khi người dùng nhấn "Undo"
-  const handleUndo = () => {
-    if (undoData) {
-      dispatch(add(undoData)); 
-      setUndoData(null); 
-    }
-  };
+  // const handleUndo = () => {
+  //   if (undoData) {
+  //     dispatch(add(undoData)); 
+  //     setUndoData(null); 
+  //   }
+  // };
 
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string);
   };
 
+  const { data: FavoriteJob } = useQuery({
+    queryKey: ["FavoriteJob"],
+    queryFn: ({ signal }) => GetFavoriteJobs({ signal }),
+    staleTime: 5000,
+  });
+  const FavoriteJobs = FavoriteJob?.JobPost;
+  console.log('job',FavoriteJobs)
   return (
     <div className={classes.tab}>
       {showAlert && (
@@ -88,11 +119,11 @@ export default function SaveJobs() {
         >
           <Alert variant="outlined" severity="info">
             <AlertTitle>You unsaved a job.</AlertTitle>
-            <div style={{ display: 'flex', gap: '20px', color: '#0e2eed', marginTop: '12px' }}>
+            {/* <div style={{ display: 'flex', gap: '20px', color: '#0e2eed', marginTop: '12px' }}>
               <Button color="inherit" size="small" onClick={handleUndo}>
                 Undo
               </Button>
-            </div>
+            </div> */}
           </Alert>
         </Stack>
       )}
@@ -113,7 +144,7 @@ export default function SaveJobs() {
                     mb: 0,
                   }}
                 >
-                  Saved Jobs ({data.length})
+                  Saved Jobs ({FavoriteJobs?.length})
                 </Typography>
                 <div className={classes.sort}>
                   <Typography
@@ -147,16 +178,17 @@ export default function SaveJobs() {
             </div>
             <div className={classes.job}>
               <div className={classes.job1}>
-                {data.map((job) => {
-                  const companys = companyData.find(
+                {FavoriteJobs?.map((job) => {
+                  const companys = Companiesdata?.find(
                     (item) => item.id === job.companyId
                   );
+                  const jobsfavorite= JobPostsdata?.find((item)=> item.id === job.id)
                   return (
                     <CardJob
                       setShowAlert={setShowAlert}
-                      setUndoData={setUndoData} 
+                      // setUndoData={setUndoData} 
                       className={classes.carditem}
-                      data={job}
+                      data={jobsfavorite}
                       key={job.id}
                       company={companys}
                       formButton={true}

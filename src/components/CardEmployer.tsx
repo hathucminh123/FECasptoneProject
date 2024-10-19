@@ -3,18 +3,17 @@ import classes from "./CardEmployer.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import ArrowRightIcon from "@mui/icons-material/ArrowRight";
-import Image from './../assets/image/download.png'
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import Image from "./../assets/image/download.png";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { useQuery } from "@tanstack/react-query";
+import Badge from "@mui/material/Badge";
 
 interface JobType {
   id: number;
   name: string;
   description: string;
 }
-
-
 
 interface JobPost {
   id: number;
@@ -32,8 +31,8 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType | string | null;
-  jobLocationCities:string[] ;
-  jobLocationAddressDetail:string[]
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
   skillSets: string[];
 }
 
@@ -55,33 +54,29 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
-  imageUrl:string
+  imageUrl: string;
 }
 
 interface CardEmployerProps {
   data: Company;
+  jobs: JobPost[] | undefined;
 }
 
-const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
+const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
   const navigate = useNavigate();
-
-  const handleNavigate = (data: Company) => {
-    console.log("Navigating with data:", data);
-    navigate(`/company/detail/${data.id}`);
+  console.log("quaone", jobs);
+  const handleNavigate = (company: Company) => {
+    if (!company) return;
+    navigate(`/company/detail/${company.id}`);
   };
 
-  const {
-    data: JobPosts,
-    // isLoading: isJobLoading,
-    // isError: isJobError,
-  } = useQuery({
+  const { data: JobPosts } = useQuery({
     queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    queryFn: ({ signal }) => GetJobPost({ signal }),
     staleTime: 5000,
   });
   const JobPostsdata = JobPosts?.JobPosts;
 
-  console.log('haha',data.imageUrl)
   return (
     <div className={classes.card_item} onClick={() => handleNavigate(data)}>
       <div style={{ textAlign: "center", display: "block" }}>
@@ -101,13 +96,13 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
       </div>
       <div className={classes.image}>
         <img
-         src={data?.imageUrl === null || data?.imageUrl === "string" ? Image : data?.imageUrl}
+          src={data?.imageUrl ? data.imageUrl : Image}
           alt={`${data.companyName} logo`}
           style={{ textAlign: "center" }}
-          // className={classes.image}
+          onError={(e) => (e.currentTarget.src = Image)}
         />
       </div>
-      
+
       <div className={classes.content}>
         <div
           style={{ display: "block", textAlign: "center", cursor: "pointer" }}
@@ -127,46 +122,72 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
               mb: 0,
             }}
           >
-            {data.companyName} {/* Hiển thị tên công ty từ dữ liệu */}
+            {data.companyName}
           </Typography>
 
           <div className={classes.skillsContainer}>
             <div className={classes.skill1}>
-              {data.jobPosts.map((job) =>{ 
-                const jobs = JobPostsdata?.find((item)=> item.id === job.id)
-                console.log('thiet khong',jobs)
-                return(
-                <React.Fragment key={job.id}>
-                  
-                  {jobs?.skillSets.map((tag, index) => (
-                    <Button
-                      key={index}
-                      sx={{
-                        color: "#414042",
-                        backgroundColor: "#f7f7f7",
-                        fontSize: "10px",
-                        padding: "4px 12px",
-                        fontWeight: "bold",
-                        borderRadius: "20px",
-                        textAlign: "center",
-                        margin: "4px",
-                      }}
-                    >
-                      {tag}
-                    </Button>
-                  ))}
-                </React.Fragment>
-              )})}
+              {data.jobPosts.map((job) => {
+                const jobs = JobPostsdata?.find((item) => item.id === job.id);
+                console.log("quáo", jobs);
+                return jobs ? (
+                  <>
+                    {jobs.skillSets.map((tag, index) => (
+                      <Button
+                        key={index}
+                        sx={{
+                          color: "#414042",
+                          backgroundColor: "#f7f7f7",
+                          fontSize: "10px",
+                          padding: "4px 12px",
+                          fontWeight: "bold",
+                          borderRadius: "20px",
+                          textAlign: "center",
+                          margin: "4px",
+                        }}
+                      >
+                        {tag}
+                      </Button>
+                    ))}
+                  </>
+                ) : null;
+              })}
             </div>
           </div>
         </div>
       </div>
+
       <div className={classes.location}>
-        <div className={classes.divlocation}>{data.address}, in {data.city} city</div>
+        <div className={classes.divlocation}>
+          {jobs?.map((job) =>
+            job.jobLocationCities.map((item, index) => (
+              <div key={index}>{item}-</div>
+            ))
+          )}
+        </div>
         <div className={classes.divjob}>
-          <span></span>
+          <Badge
+            overlap="circular"
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            variant="dot"
+            color="success"
+            sx={{
+              boxSizing: "border-box",
+              whiteSpace: "nowrap",
+              color: "#121212",
+              fontSize: "16px",
+              fontWeight: 400,
+              textAlign: "center",
+              marginRight: "10px",
+
+              alignItems: "center",
+            }}
+          />
           {data.jobPosts.length} jobs
-          <ArrowRightIcon
+          <NavigateNextIcon
             sx={{
               width: "20px",
               height: "20px",
@@ -176,12 +197,11 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data }) => {
               strokeLinejoin: "round",
               verticalAlign: "baseline",
               fill: "none",
-              paddingLeft:'4px',
-              whiteSpace:'none-wrap'
+              paddingLeft: "4px",
+              whiteSpace: "none-wrap",
             }}
           />
         </div>
-       
       </div>
     </div>
   );

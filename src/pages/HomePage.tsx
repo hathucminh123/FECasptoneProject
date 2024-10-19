@@ -60,9 +60,9 @@ export default function HomePage() {
   const JobPostsdata = JobPosts?.JobPosts;
   const Companiesdata = Company?.Companies;
 
-  const handleNavigate =()=>{
-    navigate('/cv-templates')
-  }
+  const handleNavigate = () => {
+    navigate("/cv-templates");
+  };
 
   // Handle loading state
   if (isJobLoading || isCompanyLoading) {
@@ -86,7 +86,7 @@ export default function HomePage() {
                 textAlign: "start",
                 fontWeight: "bold",
                 mb: 3,
-                
+
                 color: "#fff",
               }}
             >
@@ -224,9 +224,12 @@ export default function HomePage() {
             </div>
 
             <div className={classes.card1}>
-              {Companiesdata?.map((company) => (
-                <CardEmployer key={company.id} data={company} />
-              ))}
+              {Companiesdata?.map((company) => {
+                const jobsInCompany = JobPostsdata?.filter(
+                  (item) => item.companyId === company.id
+                );
+                return <CardEmployer key={company.id} data={company} jobs={jobsInCompany} />;
+              })}
             </div>
           </section>
         </div>
@@ -259,17 +262,11 @@ export default function HomePage() {
                 const company = Companiesdata?.find(
                   (item) => item.id === job.companyId
                 );
-                console.log('ccccc',company)
+                console.log("ccccc", company);
                 if (!company) {
                   return null;
                 }
-                return (
-                  <CardJob
-                    key={job.id}
-                    data={job}
-                    company={company} 
-                  />
-                );
+                return <CardJob key={job.id} data={job} company={company} />;
               })}
             </div>
           </section>

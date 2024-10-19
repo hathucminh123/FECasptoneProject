@@ -18,7 +18,7 @@ import { PostFollowCompany } from "../Services/FollowCompany/PostFollowCompany";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompany";
 interface JobType {
   id: number;
@@ -52,7 +52,7 @@ export default function CompanyDetailRoot() {
   const navigate = useNavigate();
   const { CompanyId } = useParams();
   console.log("id", CompanyId);
-const Auth =localStorage.getItem("Auth")
+  const Auth = localStorage.getItem("Auth");
   // Lấy chi tiết công ty bằng React Query
   const {
     data: CompanyDa,
@@ -145,7 +145,7 @@ const Auth =localStorage.getItem("Auth")
       message.error(`Failed to Follow ${companyDataa?.companyName} `);
     },
   });
-  const { mutate:Unfollow } = useMutation({
+  const { mutate: Unfollow } = useMutation({
     mutationFn: DeleteFollowCompany,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -160,12 +160,12 @@ const Auth =localStorage.getItem("Auth")
   });
 
   const handleFollow = () => {
-    if(!Auth){
+    if (!Auth) {
       navigate("/JobSeekers/login", {
         state: { from: window.location.pathname },
       });
     }
-    
+
     mutate({
       data: {
         companyId: Number(CompanyId),
@@ -173,14 +173,14 @@ const Auth =localStorage.getItem("Auth")
     });
   };
 
- const  handleUnFollow =()=>{
-  if(!Auth){
-    navigate("/JobSeekers/login", {
-      state: { from: window.location.pathname },
-    });
-  }
-  Unfollow({id:Number(haveFollow?.id)})
- }
+  const handleUnFollow = () => {
+    if (!Auth) {
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+    }
+    Unfollow({ id: Number(haveFollow?.id) });
+  };
 
   const { data: FollowCompany } = useQuery({
     queryKey: ["FollowCompany"],
@@ -272,12 +272,26 @@ const Auth =localStorage.getItem("Auth")
                 <div className={classes.locationjob}>
                   <div className={classes.location}>
                     <LocationOnOutlinedIcon sx={{ color: "#fff" }} />
-                    <Typography
+                    {/* <Typography
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
-                    >
-                      {companyDataa.address}, {companyDataa.city}
-                    </Typography>
+                    > */}
+                    {jobincompanyData?.map((job) =>
+                      job.jobLocationCities.map((item, index) => (
+                        <Typography
+                          variant="body2"
+                          key={index}
+                          sx={{
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            color: "white",
+                          }}
+                        >
+                          {item}{" - "}
+                        </Typography>
+                      ))
+                    )}
+                    {/* </Typography> */}
                   </div>
                   <div className={classes.job}>
                     <WorkOutlineOutlinedIcon sx={{ color: "#fff" }} />
@@ -296,7 +310,6 @@ const Auth =localStorage.getItem("Auth")
                   </div>
                 </div>
                 <div className={classes.button}>
-                  
                   <RenderButton
                     // icon={<CheckIcon />}
                     text="Write review"
@@ -307,7 +320,7 @@ const Auth =localStorage.getItem("Auth")
                   {haveFollow ? (
                     <RenderButton
                       icon={<CheckIcon />}
-                      iconHovered={<CloseIcon/>}
+                      iconHovered={<CloseIcon />}
                       text="Following"
                       textHover="Unfollow"
                       color="#fff"
@@ -316,7 +329,6 @@ const Auth =localStorage.getItem("Auth")
                     />
                   ) : (
                     <RenderButton
-                    
                       text="Follow"
                       color="#fff"
                       variant="outlined"

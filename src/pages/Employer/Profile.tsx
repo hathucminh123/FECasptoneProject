@@ -1,12 +1,13 @@
 import React, { useRef, useState } from "react";
 import classes from "./Profile.module.css";
-import FormSelect from "../../components/Employer/FormSelect";
+// import FormSelect from "../../components/Employer/FormSelect";
 import Button from "../../components/Employer/Button";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { message } from "antd"; // for notifications
 import { PutUser } from "../../Services/UserJobPostActivity/PutUser";
+import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 
-const Gender: string[] = ["Man", "Female"];
+// const Gender: string[] = ["Man", "Female"];
 
 // const updateUserDetails = async (userDetails: any) => {
 //   const response = await fetch('/api/User', {
@@ -28,7 +29,7 @@ export default function Profile() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null); // State để lưu URL hình ảnh
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectGender, setSelectGender] = useState("");
+  // const [selectGender, setSelectGender] = useState("");
   const [disabled, setDisabled] = useState<boolean>(true);
   const [formData, setFormData] = useState({
     userName: "currentUserName", 
@@ -37,6 +38,15 @@ export default function Profile() {
     email: "hathucminh456@gmail.com", 
     phoneNumber: "0123123",
   });
+  const userId =localStorage.getItem('userId')
+  const { data: UserProfile, } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -137,7 +147,8 @@ export default function Profile() {
             </div>
             <div className={classes.div7}>
               <label htmlFor="email" className={classes.label1}>
-                Email: {formData.email}
+                {/* Email: {formData.email} */}
+                Email: {UserProfileData?.email}
               </label>
             </div>
           </div>
@@ -178,7 +189,7 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-            <div className={classes.div3}>
+            {/* <div className={classes.div3}>
               <label htmlFor="gender" className={classes.label2}>
                 Gender
               </label>
@@ -192,7 +203,7 @@ export default function Profile() {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className={classes.div2}>
             <div className={classes.div3}>
@@ -216,7 +227,8 @@ export default function Profile() {
                     className={classes.input}
                     placeholder="Phone Number"
                     name="phoneNumber"
-                    value={formData.phoneNumber}
+                    // value={formData.phoneNumber}
+                    value ={UserProfileData?.phoneNumber ||""}
                     onChange={handleChange}
                     autoComplete="on"
                     disabled={disabled}
