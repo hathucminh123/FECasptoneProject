@@ -3,6 +3,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
 const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
+const baseSignalURL = "https://finalcapstonebe-aib5.onrender.com";
 
 export const queryClient = new QueryClient();
 
@@ -57,9 +58,9 @@ export const apiLinks = {
   JobPostActivity: {
     POST: `${baseURL}/JobPostActivity`,
     PUT: `${baseURL}/JobPostActivity`,
-    GetNotifications: `http://localhost:5021/api/JobPostActivity/notifications`,
-    ReadNotification: `http://localhost:5021/api/JobPostActivity/notification/read?notificationId=`,
-    ReadAllNotifications: `http://localhost:5021/api/JobPostActivity/notification/read-all`
+    GetNotifications: `${baseURL}/JobPostActivity/notifications`,
+    ReadNotification: `${baseURL}/JobPostActivity/notification/read?notificationId=`,
+    ReadAllNotifications: `${baseURL}/JobPostActivity/notification/read-all`
   },
   JobType: {
     POST: `${baseURL}/JobType`,
@@ -106,6 +107,6 @@ export const apiLinks = {
 export const signalR = {
   employer: {
     groupNotificationsKey: `GroupReceiveMessage`,
-    getNotificationsURL: `http://localhost:5021/signalrHub`,
+    getNotificationsURL: `${baseSignalURL}/signalrHub`,
   }
 }
