@@ -4,7 +4,7 @@ import { apiLinks } from "../mainService";
 
 export const GetNotifications = async () => {
   try {
-    var token = localStorage.getItem("token") ?? undefined;
+    const token = localStorage.getItem("token") ?? undefined;
     const response = await httpClient.get({
       url: apiLinks.JobPostActivity.GetNotifications,
       authorization: `bearer ${token}`
@@ -22,7 +22,7 @@ export const GetNotifications = async () => {
 
 export const ReadNotification = async (id: number | string) => {
   try {
-    var token = localStorage.getItem("token") ?? undefined;
+    const token = localStorage.getItem("token") ?? undefined;
     const response = await httpClient.put({
       url: apiLinks.JobPostActivity.ReadNotification + id,
       authorization: `bearer ${token}`
@@ -40,7 +40,7 @@ export const ReadNotification = async (id: number | string) => {
 
 export const ReadAllNotifications = async () => {
   try {
-    var token = localStorage.getItem("token") ?? undefined;
+    const token = localStorage.getItem("token") ?? undefined;
     const response = await httpClient.put({
       url: apiLinks.JobPostActivity.ReadAllNotifications,
       authorization: `bearer ${token}`

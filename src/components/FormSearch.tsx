@@ -17,9 +17,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 export default function FormSearch() {
   const locationcolumn = useLocation();
   const locationcolumn1: string | null = locationcolumn?.state ?? null;
-
+  console.log("location", locationcolumn1);
   // If locationcolumn1 is present, use it; otherwise, initialize to null
-  const [location, setLocation] = useState<string | null>(locationcolumn1 || null);
+  const [location, setLocation] = useState<string | null>(
+    locationcolumn1 || null
+  );
   const [text, setText] = useState<string>("");
 
   const navigate = useNavigate();
@@ -37,14 +39,18 @@ export default function FormSearch() {
   useEffect(() => {
     if (locationcolumn1) {
       const majorCities = ["Hồ Chí Minh", "Hà Nội", "Đà Nẵng"];
+      
       if (majorCities.includes(locationcolumn1)) {
         setLocation(locationcolumn1);
       } else {
         setLocation(null);
-        setText(locationcolumn1);
+  
+        setText(
+          typeof locationcolumn1 === "object" ? "" : locationcolumn1
+        );
       }
     }
-  }, [locationcolumn1, dispatch]);
+  }, [locationcolumn1]);
 
   const handleChange = (event: SelectChangeEvent) => {
     setLocation(event.target.value as string);
@@ -69,9 +75,9 @@ export default function FormSearch() {
   return (
     <Box
       sx={{
-        display:'block',
-        marginTop:'0em',
-        unicodeBidi:'isolate'
+        display: "block",
+        marginTop: "0em",
+        unicodeBidi: "isolate",
       }}
     >
       <Box
@@ -118,17 +124,17 @@ export default function FormSearch() {
             fontSize: "16px",
             border: "none",
             borderRadius: "5px",
-       
+
             "& .MuiOutlinedInput-root": {
-              backgroundColor: "white", 
-              transition: "box-shadow 0.3s ease-in-out", 
+              backgroundColor: "white",
+              transition: "box-shadow 0.3s ease-in-out",
               "&:hover": {
-                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)", 
+                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
               },
             },
           }}
           onChange={handleText}
-          onKeyDown={handleKeyDown} 
+          onKeyDown={handleKeyDown}
         />
 
         <Button
@@ -142,12 +148,12 @@ export default function FormSearch() {
             border: "none",
             borderRadius: "5px",
             padding: "10px 20px",
-            height:'56px',
-            mb:'2px',
+            height: "56px",
+            mb: "2px",
             fontSize: "16px",
             width: { xs: "100%", sm: "25%" },
-            marginTop: { xs: "10px", sm: "0" }, 
-            transition: "background-color 0.3s ease", 
+            marginTop: { xs: "10px", sm: "0" },
+            transition: "background-color 0.3s ease",
             "&:hover": {
               backgroundColor: "#ff5c4f",
             },
