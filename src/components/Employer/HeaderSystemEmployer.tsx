@@ -10,7 +10,7 @@ import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { HttpTransportType, HubConnectionBuilder, IHttpConnectionOptions } from '@microsoft/signalr';
-import { GetNotifications } from "../../Services/JobsPostActivity/GetNotifications";
+import { GetNotifications, ReadAllNotifications, ReadNotification } from "../../Services/JobsPostActivity/GetNotifications";
 import { AxiosResponse } from "axios";
 import { signalR } from "../../Services/mainService";
 import moment from "moment";
@@ -136,7 +136,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
 
       connection.on(signalR.employer.groupNotificationsKey, async (receivedMessage) => {
         await fetchNotifications();
-        console.log( `Notify: ${receivedMessage}`);
+        console.log(`Notify: ${receivedMessage}`);
       });
 
       connection.onclose(() => {
@@ -168,6 +168,36 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
       console.log(error);
     }
   }
+
+  const readNotifications = async (id: number | string) => {
+    try {
+      var response: AxiosResponse = await ReadNotification(id);
+      if (response?.status === 200) {
+        await fetchNotifications();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const readAllNotifications = async () => {
+    try {
+      var response: AxiosResponse = await ReadAllNotifications();
+      if (response?.status === 200) {
+        await fetchNotifications();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const readNotify = (id: string | number) => {
+    readNotifications(id);
+  }
+
+  const readAllNotify = () => {
+    readAllNotifications();
+  }
   //-end notification
 
   return (
@@ -177,21 +207,21 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
           <MenuIcon className={classes.iconMenu} />
         </button>
         <Link to={"#"} className={classes.link}>
-        <Typography
-                variant="h2"
-                sx={{
-                  lineHeight: 1.5,
-                  fontSize: "22px",
-                  fontWeight: 700,
-                  marginTop: 0,
-                  marginBottom: 0,
-                  boxSizing: "border-box",
-                  display: "block",
-                  color: "#fff",
-                }}
-              >
-                Amazing Job
-              </Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              lineHeight: 1.5,
+              fontSize: "22px",
+              fontWeight: 700,
+              marginTop: 0,
+              marginBottom: 0,
+              boxSizing: "border-box",
+              display: "block",
+              color: "#fff",
+            }}
+          >
+            Amazing Job
+          </Typography>
           {/* <img src={Image} alt="logo" className={classes.img} /> */}
         </Link>
         <div className={classes.div}>
@@ -212,8 +242,8 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
               <NavLink className={classes.navlink1} to={"#"}>
                 <CircleNotificationsIcon className={classes.iconNotification} />
                 {
-                  notifications && notifications?.length > 0 &&
-                  <span className={classes.span5}>{notifications?.length}</span>
+                  notifications && notifications.some(notify => !notify.isRead)  &&
+                  <span className={classes.span5}>{notifications.filter(notify => !notify.isRead)?.length}</span>
                 }
               </NavLink>
               {openModalNotification && (
@@ -224,7 +254,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
                   <li className={classes.li1}>
                     <span className={classes.span}>Notification</span>
                     <div className={classes.div3}>
-                      <a href="#" role="button" className={classes.a}>
+                      <a href="#" role="button" className={classes.a} onClick={() => readAllNotify()}>
                         Mark all as read
                       </a>
                     </div>
@@ -263,7 +293,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
                                 </span>
                                 {readOpen[notification.id] && (
                                   <div className={classes.div11}>
-                                    <Link to="#" className={classes.link2}>
+                                    <Link to="#" className={classes.link2} onClick={() => readNotify(notification.id)}>
                                       Mark as read
                                     </Link>
                                   </div>

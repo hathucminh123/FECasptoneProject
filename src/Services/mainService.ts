@@ -57,7 +57,9 @@ export const apiLinks = {
   JobPostActivity: {
     POST: `${baseURL}/JobPostActivity`,
     PUT: `${baseURL}/JobPostActivity`,
-    GetNotifications: `http://localhost:5021/api/JobPostActivity/notifications/employer`,
+    GetNotifications: `http://localhost:5021/api/JobPostActivity/notifications`,
+    ReadNotification: `http://localhost:5021/api/JobPostActivity/notification/read?notificationId=`,
+    ReadAllNotifications: `http://localhost:5021/api/JobPostActivity/notification/read-all`
   },
   JobType: {
     POST: `${baseURL}/JobType`,
