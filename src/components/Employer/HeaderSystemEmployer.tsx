@@ -9,11 +9,32 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
 import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { HttpTransportType, HubConnectionBuilder, IHttpConnectionOptions } from '@microsoft/signalr';
+import { GetNotifications } from "../../Services/JobsPostActivity/GetNotifications";
+import { AxiosResponse } from "axios";
+import { signalR } from "../../Services/mainService";
+import moment from "moment";
 import Typography from "@mui/material/Typography";
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
   token: unknown;
+}
+
+export interface Notification {
+  id: number
+  title: string
+  description: string
+  receiverId: number
+  isRead: boolean
+  jobPostActivityId: number
+  jobPostActivity: any
+  userAccount: any
+  createdDate: string
+  modifiedDate: any
+  createdBy: any
+  modifiedBy: any
+  isDeleted: boolean
 }
 
 const notifications = [
@@ -69,6 +90,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
   const handleOpenNotification = (event: React.MouseEvent) => {
     event.stopPropagation();
     setOpenModalNotification(!openModalNotification);
+    fetchNotifications();
   };
 
   // Close the modal when clicking outside of it
@@ -94,6 +116,60 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
     }
     navigate("create-jobs");
   };
+
+  //notification
+  const [notifications, setNotifications] = useState<Notification[]>([]);
+
+  const startConnection = async () => {
+    try {
+      const options: IHttpConnectionOptions = {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets,
+        accessTokenFactory: () => {
+          return `${token}`
+        },
+      }
+
+      const connection = new HubConnectionBuilder()
+        .withUrl(signalR.employer.getNotificationsURL, options)
+        .build();
+
+      connection.on(signalR.employer.groupNotificationsKey, async (receivedMessage) => {
+        await fetchNotifications();
+        console.log( `Notify: ${receivedMessage}`);
+      });
+
+      connection.onclose(() => {
+        console.log("closed");
+      });
+
+      await connection.start();
+      return () => {
+        connection.stop();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    startConnection();
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      var response: AxiosResponse = await GetNotifications();
+      if (response?.status === 200) {
+        const notifications = response.data as Notification[];
+        setNotifications(notifications);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  //-end notification
+
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
@@ -135,7 +211,10 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
             <li className={classes.li} onClick={handleOpenNotification}>
               <NavLink className={classes.navlink1} to={"#"}>
                 <CircleNotificationsIcon className={classes.iconNotification} />
-                <span className={classes.span5}>{notifications.length}</span>
+                {
+                  notifications && notifications?.length > 0 &&
+                  <span className={classes.span5}>{notifications?.length}</span>
+                }
               </NavLink>
               {openModalNotification && (
                 <div
@@ -152,7 +231,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
                   </li>
                   <li className={classes.li2}>
                     <ul className={classes.ul1}>
-                      {notifications.map((notification) => (
+                      {notifications?.map((notification) => (
                         <li key={notification.id} className={classes.li3}>
                           <div className={classes.div4}>
                             <Link to="#" className={classes.link4}>
@@ -168,7 +247,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
                                   </span>
                                 </div>
                                 <div className={classes.div8}>
-                                  {notification.message}
+                                  {notification.description}
                                 </div>
                               </div>
                             </Link>
@@ -195,7 +274,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
                           <div className={classes.div12}>
                             <div className={classes.div13}>
                               <span className={classes.span4}>
-                                {notification.date}
+                                {moment(notification.createdDate).format('YYYY-MM-DD HH:mm:ss')}
                               </span>
                             </div>
                           </div>

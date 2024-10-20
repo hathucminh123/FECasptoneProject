@@ -57,6 +57,7 @@ export const apiLinks = {
   JobPostActivity: {
     POST: `${baseURL}/JobPostActivity`,
     PUT: `${baseURL}/JobPostActivity`,
+    GetNotifications: `http://localhost:5021/api/JobPostActivity/notifications/employer`,
   },
   JobType: {
     POST: `${baseURL}/JobType`,
@@ -99,3 +100,10 @@ export const apiLinks = {
     GETBYID:`${baseURL}/JobPostActivityComment/Id`,
   }
 };
+
+export const signalR = {
+  employer: {
+    groupNotificationsKey: `GroupReceiveMessage`,
+    getNotificationsURL: `http://localhost:5021/signalrHub`,
+  }
+}

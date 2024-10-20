@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams, Link, NavLink } from "react-router-dom";
 import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
 import classes from "./../../components/Employer/NotificationSystem.module.css";
 import HeaderSystem from "./HeaderSystem";
+import { AxiosResponse } from "axios";
+import { GetNotifications } from "../../Services/JobsPostActivity/GetNotifications";
+import { Notification } from "./HeaderSystemEmployer";
+import moment from "moment";
 
 // Giả sử đây là dữ liệu danh sách thông báo
 const notificationsData = [
@@ -26,9 +30,10 @@ export default function NotificationSystem() {
   const [searchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1"); // Lấy giá trị page từ query string, mặc định là 1
   const notificationsPerPage = 10; // Số lượng thông báo trên mỗi trang
+  const [notification, setNotifications] = useState<Notification[]>([]);
 
   // Tính toán tổng số trang
-  const totalPages = Math.ceil(notificationsData.length / notificationsPerPage);
+  const totalPages = Math.ceil(notification?.length / notificationsPerPage);
 
   // Lấy ra danh sách thông báo thuộc trang hiện tại
   const currentNotifications = notificationsData.slice(
@@ -36,17 +41,40 @@ export default function NotificationSystem() {
     currentPage * notificationsPerPage
   );
 
+  const pagingNotifications = (listNotify: Notification[]): Notification[] => {
+    return listNotify.slice(
+      (currentPage - 1) * notificationsPerPage,
+      currentPage * notificationsPerPage
+    );
+  }
+
+  const fetchNotifications = async () => {
+    try {
+      var response: AxiosResponse = await GetNotifications();
+      if (response?.status === 200) {
+        const notifications = response.data as Notification[];
+        setNotifications(pagingNotifications(notifications));
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
   // Hàm để render thông báo dựa trên trang hiện tại
   const renderNotifications = () => {
-    return currentNotifications.map((notification, index) => (
+    return notification?.map((notification, index) => (
       <div key={index} className={classes.main3}>
         <div className={classes.main4}>
           <div className={classes.main5}>
             <span className={classes.span}>Notification</span>
           </div>
-          <div className={classes.main6}>{notification.date}</div>
+          <div className={classes.main6}>{moment(notification.createdDate).format('YY-MM-DD')}</div>
           <Link to="" className={classes.link}>
-            {notification.message}
+            {notification.title}
           </Link>
         </div>
         <hr className={classes.hr} />
