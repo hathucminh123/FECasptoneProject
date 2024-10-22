@@ -151,7 +151,12 @@ export default function Profilecv() {
       icon: MailOutlinedIcon,
       text: UserProfileData?.email ? UserProfileData?.email : "Your Email",
     },
-    { icon: LocalPhoneOutlinedIcon, text: UserProfileData?.phoneNumber ? UserProfileData?.phoneNumber :"Your phone number" },
+    {
+      icon: LocalPhoneOutlinedIcon,
+      text: UserProfileData?.phoneNumber
+        ? UserProfileData?.phoneNumber
+        : "Your phone number",
+    },
     // { icon: CardGiftcardOutlinedIcon, text: "Your date of birth" },
     // { icon: PersonOutlineOutlinedIcon, text: "Your gender" },
     // { icon: LocationOnOutlinedIcon, text: "Your current address" },
@@ -186,7 +191,10 @@ export default function Profilecv() {
                   <div className={classes.updateul}>
                     <div className={classes.button1}>
                       <div className={classes.button2}>
-                        <div className={classes.button3}>
+                        <div
+                          className={classes.button3}
+                          onClick={() => setIsCreatingNewChallenge(true)}
+                        >
                           <div className={classes.iconadd}>
                             <AddCircleOutlineOutlinedIcon
                               sx={{

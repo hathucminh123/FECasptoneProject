@@ -121,8 +121,8 @@ export default function JobDetails() {
   console.log("id", JobId);
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", JobId],
-    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }), // Convert JobId to number
-    enabled: !!JobId, // Chỉ chạy query khi JobId có giá trị
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }), 
+    enabled: !!JobId, 
   });
   const job = jobData?.JobPosts;
 

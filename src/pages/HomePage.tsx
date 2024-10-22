@@ -7,20 +7,52 @@ import CardEmployer from "../components/CardEmployer";
 import CardJob from "../components/CardJob";
 
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import { useState } from "react";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import { queryClient } from "../Services/mainService";
+import { message } from "antd";
 
-const skillsColumns = [
-  "Java",
-  "PHP",
-  "JavaScript",
-  "HTML5",
-  "Manager",
-  "SQL",
-  "Android",
-  "iOS",
-];
+// const skillsColumns = [
+//   "Java",
+//   "PHP",
+//   "JavaScript",
+//   "HTML5",
+//   "Manager",
+//   "SQL",
+//   "Android",
+//   "iOS",
+// ];
+
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
+}
+
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
+  skillSets: string[];
+}
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -34,6 +66,69 @@ export default function HomePage() {
       navigate("/profile-cv");
     }
   };
+  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+  console.log('thietko',jobSearch)
+  const [text, setText] = useState<string>("");
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      console.log("Search result:", data);
+
+      if (data && data.result && data.result.items.length > 0) {
+        const jobSearchResults = data.result.items;
+        setJobSearch(data.result.items);
+        navigate("/it-jobs", { state: { jobSearch: jobSearchResults ,text:text} });
+      }
+    
+
+      queryClient.invalidateQueries({
+        queryKey: ["JobSearch"],
+        refetchType: "active",
+      });
+
+      // navigate("/it-jobs",{state : text});
+  
+    },
+    onError: () => {
+      message.error("Failed to Search");
+    },
+  });
+  const handleNavigateJob = async () => {
+    // Define the shape of job data returned by the mutation
+    interface JobSearchResponse {
+      result: {
+        items: JobPost[];
+      };
+    }
+
+    const searchDataArray = [
+      { companyName: text ,pageSize: 9},
+      { skillSet: text,pageSize: 9 },
+      { location: text ,pageSize: 9 },
+      { experience: text ,pageSize: 9},
+      { jobType: text ,pageSize: 9},
+    ];
+
+    for (let i = 0; i < searchDataArray.length; i++) {
+      try {
+        console.log("Searching with:", searchDataArray[i]);
+
+        const result: JobSearchResponse = await mutateAsync({
+          data: searchDataArray[i],
+        });
+        console.log("chan", result.result.items);
+
+        if (result && result.result && result.result.items.length > 0) {
+          setJobSearch(result.result.items);
+       
+          break;
+        }
+      } catch (error) {
+        console.error("Error during job search:", error);
+      }
+    }
+  
+  };
 
   // Fetching Job Posts using React Query
   const {
@@ -45,6 +140,9 @@ export default function HomePage() {
     queryFn: ({ signal }) => GetJobPost({ signal: signal }),
     staleTime: 5000,
   });
+
+
+
 
   // Fetching Companies using React Query
   const {
@@ -58,6 +156,13 @@ export default function HomePage() {
   });
 
   const JobPostsdata = JobPosts?.JobPosts;
+  const skills = JobPostsdata?.map((skill) => skill.skillSets);
+  const flattenedArray = skills?.flat();
+  const uniqueArray = [...new Set(flattenedArray)];
+
+
+
+
   const Companiesdata = Company?.Companies;
 
   const handleNavigate = () => {
@@ -94,7 +199,13 @@ export default function HomePage() {
             </Typography>
 
             <div style={{ display: "block" }}>
-              <FormSearch />
+            <FormSearch
+              setJobSearch={setJobSearch}
+              jobSearch={jobSearch}
+              text={text}
+              setText={setText}
+              onClick={handleNavigateJob}
+            />
             </div>
             <div
               style={{
@@ -120,7 +231,7 @@ export default function HomePage() {
                 Suggestions for you:
               </Typography>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                {skillsColumns.map((item) => (
+                {uniqueArray.map((item) => (
                   <Button
                     key={item}
                     sx={{
@@ -228,6 +339,8 @@ export default function HomePage() {
                 const jobsInCompany = JobPostsdata?.filter(
                   (item) => item.companyId === company.id
                 );
+
+
                 return <CardEmployer key={company.id} data={company} jobs={jobsInCompany} />;
               })}
             </div>

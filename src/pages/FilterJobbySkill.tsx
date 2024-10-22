@@ -9,8 +9,8 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import { Link, useNavigate } from "react-router-dom";
-import { TodoListSelector } from "../redux/selectorLogic/logicseacrh";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+// import { TodoListSelector } from "../redux/selectorLogic/logicseacrh";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 // import { companyData } from "../assets/data/CompanyData";
 import CardJobSearch from "../components/CardJobSearch";
@@ -43,6 +43,7 @@ import { AnimatePresence } from "framer-motion";
 import FeedbackModal from "../components/FeedbackModal";
 import { IconButton } from "@mui/material";
 import { Comment } from "@mui/icons-material";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 interface JobType {
   id: number;
   name: string;
@@ -105,10 +106,23 @@ export default function FilterJobbySkill() {
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
+  const location = useLocation();
+  const jobSearchPass = location.state?.jobSearch || [];
+  const TextPass = location.state?.text || [];
+console.log('passko',jobSearchPass)
+console.log('text',TextPass)
+
+const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
   const auth = localStorage.getItem("Auth");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
 
+
+      useEffect(() => {
+    if (location.state?.jobSearch) {
+      setJobSearch(location.state.jobSearch);
+    }
+  }, [location.state?.jobSearch]);
   function handleStartAddNewChallenge() {
     setIsCreatingNewChallenge(true);
   }
@@ -117,7 +131,8 @@ export default function FilterJobbySkill() {
     setIsCreatingNewChallenge(false);
   }
 
-  const filteredJobs = useAppSelector(TodoListSelector);
+  // const filteredJobs = useAppSelector(TodoListSelector);
+  const filteredJobs = jobSearch;
 
   console.log("dasd", filteredJobs);
 
@@ -194,7 +209,6 @@ export default function FilterJobbySkill() {
         setDetailsCompany(foundCompany);
       }
     } else {
-      // Reset states if there are no filtered jobs.
       setSelectedJob(null);
       setJobDetails(null);
       setDetailsCompany(undefined);
@@ -338,6 +352,62 @@ export default function FilterJobbySkill() {
   //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
   //   }
   // };
+  const [text, setText] = useState<string>(TextPass);
+  console.log('duockoni',text)
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      console.log("Search result:", data);
+
+      if (data && data.result && data.result.items.length > 0) {
+        setJobSearch(data.result.items);
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["JobSearch"],
+        refetchType: "active",
+      });
+
+      navigate("/it-jobs");
+    },
+    onError: () => {
+      message.error("Failed to Search");
+    },
+  });
+  const handleNavigate = async () => {
+    // Define the shape of job data returned by the mutation
+    interface JobSearchResponse {
+      result: {
+        items: JobPost[];
+      };
+    }
+
+    const searchDataArray = [
+      { companyName: text ,pageSize: 9},
+      { skillSet: text,pageSize: 9 },
+      { location: text ,pageSize: 9 },
+      { experience: text ,pageSize: 9},
+      { jobType: text ,pageSize: 9},
+    ];
+
+    for (let i = 0; i < searchDataArray.length; i++) {
+      try {
+        console.log("Searching with:", searchDataArray[i]);
+
+        const result: JobSearchResponse = await mutateAsync({
+          data: searchDataArray[i],
+        });
+        console.log("chan", result.result.items);
+
+        if (result && result.result && result.result.items.length > 0) {
+          setJobSearch(result.result.items);
+          break;
+        }
+      } catch (error) {
+        console.error("Error during job search:", error);
+      }
+    }
+  };
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -404,7 +474,13 @@ export default function FilterJobbySkill() {
         )}
         <div className={classes.container}>
           <div className={classes.container1}>
-            <FormSearch />
+            <FormSearch
+              setJobSearch={setJobSearch}
+              jobSearch={jobSearch}
+              text={text}
+              setText={setText}
+              onClick={handleNavigate}
+            />
           </div>
         </div>
         <div className={classes.content}>
@@ -463,6 +539,9 @@ export default function FilterJobbySkill() {
                       const companys = Companiesdata?.find(
                         (item) => item.id === job.companyId
                       );
+
+
+                      const jobs = JobPostsdata?.find((item)=> item.id ===job.id)
                       // const hasAppliedJobActivity = filteredJobs?.some((job) =>
                       //   JobPostActivitydata?.some(
                       //     (activity) => job.id === activity.jobPostId
@@ -476,7 +555,7 @@ export default function FilterJobbySkill() {
                         <CardJobSearch
                           selectedJob={selectedJob}
                           key={job.id}
-                          data={job}
+                          data={jobs}
                           applied={hasAppliedJobActivity}
                           img={
                             job?.imageURL === null || job?.imageURL === "string"
@@ -513,22 +592,23 @@ export default function FilterJobbySkill() {
                               style={{ width: "100px", height: "100px" }}
                             />
                             <div className={classes.apply3}>
-                            <Link to={`/jobs/detail/${jobDetails?.id}`} className={classes.link}>
-                              <Typography
-                              
-                                variant="h2"
-                                sx={{
-                                  color: "#121212",
-                                  lineHeight: 1.5,
-                                  fontSize: "22px",
-                                  fontWeight: 700,
-                                  mt: 0,
-                                  mb: 0,
-                                }}
+                              <Link
+                                to={`/jobs/detail/${jobDetails?.id}`}
+                                className={classes.link}
                               >
-                                {jobDetails?.jobTitle}
-
-                              </Typography>
+                                <Typography
+                                  variant="h2"
+                                  sx={{
+                                    color: "#121212",
+                                    lineHeight: 1.5,
+                                    fontSize: "22px",
+                                    fontWeight: 700,
+                                    mt: 0,
+                                    mb: 0,
+                                  }}
+                                >
+                                  {jobDetails?.jobTitle}
+                                </Typography>
                               </Link>
                               <Typography
                                 variant="body1"

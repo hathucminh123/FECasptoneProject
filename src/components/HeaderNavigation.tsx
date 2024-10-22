@@ -20,14 +20,43 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import InboxIcon from "@mui/icons-material/Inbox";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import { queryClient } from "../Services/mainService";
+import { message } from "antd";
 // import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
 
 interface props {
   token: unknown;
+}
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
+  skillSets: string[];
+}
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
 }
 
 export default function HeaderNavigation({ token }: props) {
@@ -353,46 +382,92 @@ const SkillsMenu = ({
 }) => {
   const leftMenuItems = [
     "Jobs by Skill",
-    "Jobs by Title",
+
     "Jobs by Company",
     "Jobs by City",
+    "Jobs by JobType",
   ];
 
-  const skillsColumns = [
-    "Java",
-    "PHP",
-    "JavaScript",
-    "HTML5",
-    "Manager",
-    "SQL",
-    "Android",
-    "iOS",
-  ];
-  const CompanyColums = [
-    "MB Bank",
-    "Viet Tin Bank",
-    "Fsoft",
-    "Công ty 4 thành viên",
-    "VNG Corporation",
-    "PV COMbank",
-    "Android",
-    "iOS",
-  ];
-  const titlejobColumns = [
-    "Java Developer",
-    "PHP Developer",
-    "Javascript Developer",
-    "HTML5 Developer",
-    "SQL Developer",
-    "Mobile Developer",
-    "NodeJS Developer",
-    ".NET Developer",
-    "Project Manager",
-    "Project Manager",
-    "Project Manager",
-  ];
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
 
-  const cityColumn = ["Hồ Chí Minh", "Hà Nội", "Đà Nẵng", "Vũng Tàu"];
+  const JobPostsdata = JobPosts?.JobPosts;
+
+  const skills = JobPostsdata?.map((skill) => skill.skillSets);
+  const flattenedArray = skills?.flat();
+  const uniqueArray = [...new Set(flattenedArray)];
+  console.log("realy", uniqueArray);
+
+  const skillsColumns = uniqueArray;
+
+  const CompanyName = JobPostsdata?.map((name) => name.companyName);
+  const flattenedArrayCompanyName = CompanyName?.flat();
+  const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
+  console.log("realy1", CompanyName);
+
+  const CompanyColums = uniqueArrayCompanyName;
+
+  // const titlejobColumns = [
+  //   "Java Developer",
+  //   "PHP Developer",
+  //   "Javascript Developer",
+  //   "HTML5 Developer",
+  //   "SQL Developer",
+  //   "Mobile Developer",
+  //   "NodeJS Developer",
+  //   ".NET Developer",
+  //   "Project Manager",
+  //   "Project Manager",
+  //   "Project Manager",
+  // ];
+
+  const city = JobPostsdata?.map((city) => city.jobLocationCities);
+  const flattenedArrayCity = city?.flat();
+  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+
+  const cityColumn = uniqueArrayCity;
+
+  const jobType = JobPostsdata?.map((type) => type.jobType.name);
+  const flattenedArrayJobType = jobType?.flat();
+  const uniqueArrayJobType = [...new Set(flattenedArrayJobType)];
+  console.log("realy2", uniqueArrayJobType);
+
+  const JobTypeColumn = uniqueArrayJobType;
+  // const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+
+  const [text, setText] = useState<string>("");
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      console.log("Search result:", data);
+
+      if (data && data.result && data.result.items.length > 0) {
+        const jobSearchResults = data.result.items;
+        // setJobSearch(data.result.items);
+
+        navigate("/it-jobs", {
+          state: { jobSearch: jobSearchResults, text: text },
+        });
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["JobSearch"],
+        refetchType: "active",
+      });
+
+      // navigate("/it-jobs",{state : text});
+    },
+    onError: () => {
+      message.error("Failed to Search");
+    },
+  });
 
   const content =
     selectedMenu === "Jobs by Skill"
@@ -401,14 +476,45 @@ const SkillsMenu = ({
       ? cityColumn
       : selectedMenu === "Jobs by Company"
       ? CompanyColums
-      : selectedMenu === "Jobs by Title"
-      ? titlejobColumns
+      : selectedMenu === "Jobs by JobType"
+      ? JobTypeColumn
       : undefined;
   const navigate = useNavigate();
-  const handleOnclick = (column: string) => {
-    console.log(column);
-    navigate("/it-jobs", { state: column });
-    // window.location.href = "/it-jobs";
+  const handleOnclick = async (column: string) => {
+    setText(column);
+    interface JobSearchResponse {
+      result: {
+        items: JobPost[];
+      };
+    }
+
+    const searchDataArray = [
+      { companyName: column, pageSize: 9 },
+      { skillSet: column, pageSize: 9 },
+      { location: column, pageSize: 9 },
+      { experience: column, pageSize: 9 },
+      { jobType: column, pageSize: 9 },
+    ];
+
+    for (let i = 0; i < searchDataArray.length; i++) {
+      try {
+        console.log("Searching with:", searchDataArray[i]);
+
+        const result: JobSearchResponse = await mutateAsync({
+          data: searchDataArray[i],
+        });
+        console.log("chan", result.result.items);
+
+        if (result && result.result && result.result.items.length > 0) {
+          // setJobSearch(result.result.items);
+
+          break;
+        }
+      } catch (error) {
+        console.error("Error during job search:", error);
+      }
+    }
+    // navigate("/it-jobs", { state: column });
   };
   return (
     <Menu

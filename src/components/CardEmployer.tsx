@@ -3,10 +3,10 @@ import classes from "./CardEmployer.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Image from "./../assets/image/download.png";
-import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
-import { useQuery } from "@tanstack/react-query";
+// import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+// import { useQuery } from "@tanstack/react-query";
 import Badge from "@mui/material/Badge";
 
 interface JobType {
@@ -69,14 +69,16 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
     if (!company) return;
     navigate(`/company/detail/${company.id}`);
   };
+  const skills = jobs?.map((skill) => skill.skillSets);
+  const flattenedArray = skills?.flat();
+  const uniqueArray = [...new Set(flattenedArray)];
 
-  const { data: JobPosts } = useQuery({
-    queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal }),
-    staleTime: 5000,
-  });
-  const JobPostsdata = JobPosts?.JobPosts;
+  const city = jobs?.map((city) => city.jobLocationCities);
+  const flattenedArrayCity = city?.flat();
+  console.log("aduphong1", city);
+  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
+  const cityColumn = uniqueArrayCity;
   return (
     <div className={classes.card_item} onClick={() => handleNavigate(data)}>
       <div style={{ textAlign: "center", display: "block" }}>
@@ -127,31 +129,23 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
 
           <div className={classes.skillsContainer}>
             <div className={classes.skill1}>
-              {data.jobPosts.map((job) => {
-                const jobs = JobPostsdata?.find((item) => item.id === job.id);
-                console.log("quáo", jobs);
-                return jobs ? (
-                  <>
-                    {jobs.skillSets.map((tag, index) => (
-                      <Button
-                        key={index}
-                        sx={{
-                          color: "#414042",
-                          backgroundColor: "#f7f7f7",
-                          fontSize: "10px",
-                          padding: "4px 12px",
-                          fontWeight: "bold",
-                          borderRadius: "20px",
-                          textAlign: "center",
-                          margin: "4px",
-                        }}
-                      >
-                        {tag}
-                      </Button>
-                    ))}
-                  </>
-                ) : null;
-              })}
+              {uniqueArray.map((tag, index) => (
+                <Button
+                  key={index}
+                  sx={{
+                    color: "#414042",
+                    backgroundColor: "#f7f7f7",
+                    fontSize: "10px",
+                    padding: "4px 12px",
+                    fontWeight: "bold",
+                    borderRadius: "20px",
+                    textAlign: "center",
+                    margin: "4px",
+                  }}
+                >
+                  {tag}
+                </Button>
+              ))}
             </div>
           </div>
         </div>
@@ -159,11 +153,11 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
 
       <div className={classes.location}>
         <div className={classes.divlocation}>
-          {jobs?.map((job) =>
-            job.jobLocationCities.map((item, index) => (
-              <div key={index}>{item}-</div>
-            ))
-          )}
+          {cityColumn?.map((city, index) => (
+            <div key={index}>
+              {city} {"-"}
+            </div>
+          ))}
         </div>
         <div className={classes.divjob}>
           <Badge

@@ -56,7 +56,7 @@ export default function Modal({
           </div>
           <div className={classes.modal2}>{children}</div>
           <div className={classes.modal3}>
-            <RenderButton text="Cancel" color="white" variant="outlined" />
+            <RenderButton text="Cancel" color="white" variant="outlined"  onClick={onClose} />
             {disappear ? (
               <></>
             ) : isPending ? (
