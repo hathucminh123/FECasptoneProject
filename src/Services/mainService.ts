@@ -14,6 +14,8 @@ export const apiLinks = {
     password:`${baseURL}/Auth/UpdatePassword`,
     AUTH:`${baseURL}/Auth/Verification`,
     Email:`${baseURL}/Auth/Email`,
+    EMPLOYEE:`${baseURL}/Auth/register-for-employee`,
+    Verifi:`${baseURL}/Auth/Verification-for-employee`,
   },
   Company: {
     POST: `${baseURL}/Company`,

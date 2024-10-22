@@ -71,6 +71,7 @@ import PutEmailVeritication from "./pages/Employer/PutEmailVeritication";
 import ProtectedRouteVerifi from "./components/Employer/ProtectedRouteVerifi";
 import VerifiInfomation from "./pages/Employer/VerifiInfomation";
 import Comment from "./pages/Employer/Comment";
+import VerifiEmployee from "./pages/Employer/VerifiEmployee";
 
 const router = createBrowserRouter([
   {
@@ -368,6 +369,11 @@ const router = createBrowserRouter([
                 <CompanyInfo />
               </ProtectedRouteCompany>
             ),
+          },
+
+          {
+            path:'VerifiEmployee',
+            element:<VerifiEmployee/>
           },
           {
             path: "Choosecompany",

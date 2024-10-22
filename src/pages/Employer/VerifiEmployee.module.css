@@ -1,0 +1,46 @@
+.main {
+    width: calc(100% - 230px);
+    border-radius: 0.214rem !important;
+    background-color: #fff !important;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .main1 {
+    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    font-weight: 500 !important;
+    border: 0 !important;
+    background-color: #fff !important;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 0;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .main2 {
+    min-height: 1px;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    display: block;
+  }
+
+  .ul {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+    margin-top: 0;
+    box-sizing: border-box;
+  }
+  
+  .ul a {
+    width: 50% !important;
+    cursor: pointer;
+    box-sizing: border-box;
+    display: list-item;
+    text-align: -webkit-match-parent;
+    unicode-bidi: isolate;
+    text-decoration: none;
+  }
+  

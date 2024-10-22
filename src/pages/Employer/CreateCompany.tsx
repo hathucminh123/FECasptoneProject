@@ -94,7 +94,7 @@ export default function CreateCompany() {
                         </b>
                       </p>
                       <span className={classes.span}>
-                        For businesses already on our system.
+                        For Company Owner
                       </span>
                     </div>
                     {isActive && (

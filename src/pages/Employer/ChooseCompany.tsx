@@ -1,61 +1,65 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./ChooseCompany.module.css";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import CompanyCard from "../../components/Employer/CompanyCard";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
-import { message } from "antd";
+import { message, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { queryClient } from "../../Services/mainService";
+import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
+
+// Import Material-UI components for the modal
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 
 export default function ChooseCompany() {
+  const userId = localStorage.getItem("userId");
+  const [verificationCode, setVerificationCode] = useState<string>("");
+  const [open, setOpen] = useState(false); 
+  const [selectedCompanyId, setSelectedCompanyId] = useState<number | null>(null);
   const navigate = useNavigate();
+
   const { data: Company } = useQuery({
     queryKey: ["Company"],
     queryFn: ({ signal }) => fetchCompanies({ signal }),
     staleTime: 5000,
   });
   const Companiesdata = Company?.Companies;
-  // const { mutate } = useMutation({
-  //   mutationFn: PostUserCompanyService,
-  //   onSuccess: () => {
-  //     message.success("Choose Company Successfully");
-  //     const redirectPath = localStorage.getItem("redirectAfterLogin") || "/employer-verify/jobs/account/company";
-  //     navigate(redirectPath);
-  //     localStorage.removeItem("redirectAfterLogin");
-  //   },
-  //   onError: () => {
-  //     message.error("Failed to Choose the Company");
-  //   },
-  // });
+
   const { mutate } = useMutation({
-    mutationFn: PostUserCompanyService,
+    mutationFn: SelectCompany,
     onSuccess: () => {
       message.success("Choose Company Successfully");
-      const redirectPath =
-        // localStorage.getItem("redirectAfterLogin") ||
-        "/employer-verify/jobs/account/company";
-      // localStorage.removeItem("redirectAfterLogin");
+      const redirectPath = "/employer-verify/jobs/account/company";
 
-      // Invalidate and refetch the company data
-      // queryClient.invalidateQueries({"Company"});
       queryClient.invalidateQueries({
         queryKey: ["Company"],
-        refetchType: "active", // Ensure an active refetch
+        refetchType: "active",
       });
-       
+
       navigate(redirectPath);
-      window.location.reload()
+      window.location.reload();
     },
     onError: () => {
       message.error("Failed to Choose the Company");
     },
   });
 
+
   const handleOnChooseCompanyUser = (id: number) => {
-    mutate({ data: { companyId: id } });
-    localStorage.setItem("CompanyId", id.toString());
+    setSelectedCompanyId(id); 
+    setOpen(true); 
+  };
+
+
+  const handleSubmitVerification = () => {
+    if (selectedCompanyId) {
+      mutate({
+        data: { companyId: selectedCompanyId, employeeId: Number(userId), verificationCode:verificationCode },
+      });
+      localStorage.setItem("CompanyId", selectedCompanyId.toString());
+      setOpen(false); 
+    }
   };
 
   return (
@@ -95,6 +99,31 @@ export default function ChooseCompany() {
           </div>
         </div>
       </div>
+
+   
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Enter Verification Code</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            label="Verification Code"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={verificationCode}
+            onChange={(e) => setVerificationCode(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)} type="default">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmitVerification} type="primary">
+            Confirm
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

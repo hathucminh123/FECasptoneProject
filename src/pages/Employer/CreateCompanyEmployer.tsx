@@ -17,6 +17,7 @@ import FormSelectBusinessStream from "../../components/Employer/FormSelectBusine
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
 
 interface BusinessStreamprops {
   id: number;
@@ -52,12 +53,35 @@ export default function CreateCompanyEmployer() {
 
   const navigate = useNavigate();
 
+  const { mutate: PutIdCompany } = useMutation({
+    mutationFn: PostUserCompanyService,
+    onSuccess: () => {
+      message.success("Choose Company Successfully");
+      const redirectPath = "/employer-verify/jobs/account/company";
+
+      queryClient.invalidateQueries({
+        queryKey: ["Company"],
+        refetchType: "active",
+      });
+
+      navigate(redirectPath);
+      window.location.reload();
+    },
+    onError: () => {
+      message.error("Failed to Choose the Company");
+    },
+  });
+
   const { mutate, isPending } = useMutation({
     mutationFn: PostCompanies,
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["Company"] });
-      navigate("/employer-verify/jobs/account/Choosecompany");
-      message.success("Company details updated successfully.");
+      localStorage.setItem("CompanyId", data.result.toString());
+      PutIdCompany({
+        data: {
+          companyId: Number(data.result),
+        },
+      });
     },
     onError: () => {
       message.error("Failed to update company details.");
@@ -149,7 +173,6 @@ export default function CreateCompanyEmployer() {
           imageUrl: fileUrl,
         };
 
-     
         mutate({ data: formData });
 
         console.log("Form submitted successfully");

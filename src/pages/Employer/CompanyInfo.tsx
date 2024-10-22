@@ -1,27 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./CompanyInfo.module.css";
-import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+// import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import Input from "../../components/Employer/Input";
-import FormSelect from "../../components/Employer/FormSelect";
+// import FormSelect from "../../components/Employer/FormSelect";
 import RequiredText from "../../components/Employer/RequiredText";
-import MultipleSelect from "../../components/Employer/MultipleSelect";
-import { jobSkills } from "../../assets/data/SkillData";
-import ReactQuill from "react-quill";
+// import MultipleSelect from "../../components/Employer/MultipleSelect";
+// import { jobSkills } from "../../assets/data/SkillData";
+// import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { EmailEmployees } from "../../Services/AuthService/EmailEmployeesService";
 
-const dataCompanySize: string[] = [
-  "100-500",
-  "500-1000",
-  "1000+",
-  "3000+",
-  "5000+",
-];
+import { message } from "antd";
+
+// const dataCompanySize: string[] = [
+//   "100-500",
+//   "500-1000",
+//   "1000+",
+//   "3000+",
+//   "5000+",
+// ];
 
 export default function CompanyInfo() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  // const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectSize, setSelectSize] = useState<string>("");
   const [skills, setSkills] = useState<string[]>([]);
   const [description, setDescription] = useState<string>("");
@@ -56,16 +59,26 @@ export default function CompanyInfo() {
     setUpdate(!update);
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    setSelectedFile(file);
-  };
+  const { mutate, isPending } = useMutation({
+    mutationFn: EmailEmployees,
+    onSuccess: () => {
+      message.success("Mail sent successfully");
+    },
+    onError: () => {
+      message.error("Failed to update company details.");
+    },
+  });
 
-  const handleUploadClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0] || null;
+  //   setSelectedFile(file);
+  // };
+
+  // const handleUploadClick = () => {
+  //   if (fileInputRef.current) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
 
   useEffect(() => {
     // Sync companyId from localStorage if it changes
@@ -75,21 +88,25 @@ export default function CompanyInfo() {
   }, [companyId, refetchCompanies]);
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!companyName) newErrors.companyName = "Company Name is required";
-    if (!email || !email.includes("@"))
-      newErrors.email = "A valid email is required";
-    if (!selectSize) newErrors.selectSize = "Company Size is required";
-    if (!phoneNumber) newErrors.phoneNumber = "Phone Number is required";
-    if (!address) newErrors.address = "Address is required";
-    if (!description) newErrors.description = "Description is required";
+    if (!companyName) newErrors.companyName = "Email is required";
+    // if (!email || !email.includes("@"))
+    //   newErrors.email = "A valid email is required";
+    // if (!selectSize) newErrors.selectSize = "Company Size is required";
+    // if (!phoneNumber) newErrors.phoneNumber = "Phone Number is required";
+    // if (!address) newErrors.address = "Address is required";
+    // if (!description) newErrors.description = "Description is required";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Returns true if no errors
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Submit form or trigger update logic
+      mutate({
+        email: {
+          email: companyName,
+        },
+      });
       console.log({
         companyName,
         email,
@@ -101,8 +118,8 @@ export default function CompanyInfo() {
         description,
         selectedFile,
       });
-      // Simulate a save, then close edit mode
-      setUpdate(false);
+     
+      // setUpdate(false);
     }
   };
 
@@ -126,12 +143,12 @@ export default function CompanyInfo() {
       <form onSubmit={handleSubmit} className={classes.form}>
         {update ? (
           <div className={classes.div}>
-            <div className={classes.div1}>Update Company Info</div>
+            <div className={classes.div1}>Add employees</div>
             <div className={classes.div2}>
               <div className={classes.div3}>
-                <div className={classes.div4}>
+                {/* <div className={classes.div4}>
                   <div className={classes.img}>
-                    {/* Display preview of selected file if available */}
+                  
                     {selectedFile && (
                       <img
                         src={URL.createObjectURL(selectedFile)}
@@ -156,12 +173,12 @@ export default function CompanyInfo() {
                       />
                     </button>
                   </div>
-                </div>
-                <div className={classes.div5}>
+                </div> */}
+                {/* <div className={classes.div5}>
                   <p className={classes.p}>Logo Company</p>
-                </div>
+                </div> */}
                 <div className={classes.div6}>
-                  <div className={classes.div7}>
+                  {/* <div className={classes.div7}>
                     <div className={classes.div8}>
                       <label htmlFor="" className={classes.label}>
                         Website Company
@@ -278,20 +295,21 @@ export default function CompanyInfo() {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className={classes.div11}>
                     <div className={classes.div8}>
                       <RequiredText text="Company Description" />
                       <div className={classes.div9}>
                         <div className={classes.div10}>
-                          <ReactQuill
-                            value={description}
-                            onChange={setDescription}
-                            placeholder="Enter your summary"
+                          <Input
+                            placeholder="Input email"
+                            type="email"
+                            value={companyName}
+                            onChange={(e) => setCompanyName(e.target.value)}
                           />
-                          {errors.description && (
+                          {errors.companyName && (
                             <p className={classes.error}>
-                              {errors.description}
+                              {errors.companyName}
                             </p>
                           )}
                         </div>
@@ -306,9 +324,18 @@ export default function CompanyInfo() {
                     >
                       Cancel
                     </button>
-                    <button type="submit" className={classes.button2}>
+                    {isPending ? (
+                      <button type="submit" className={classes.button2}>
+                        wait a seconds
+                      </button>
+                    ) : (
+                      <button type="submit" className={classes.button2}>
+                        Send
+                      </button>
+                    )}
+                    {/* <button type="submit" className={classes.button2}>
                       Save
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>
@@ -327,7 +354,7 @@ export default function CompanyInfo() {
                     </div>
                   </div>
                   <div className={classes.div17} onClick={handleOpenUpdate}>
-                    Update
+                    Add employees
                   </div>
                 </div>
                 <div className={classes.div18}>
@@ -390,7 +417,7 @@ export default function CompanyInfo() {
                         </div>
                         <div className={classes.div30}>
                           <div className={classes.div31}>
-                            Company Description:
+                            Email:
                           </div>
                           <div className={classes.div32}>
                             {CompanyEmployer?.companyDescription && (
