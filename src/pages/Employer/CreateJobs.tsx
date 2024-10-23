@@ -87,7 +87,13 @@ export default function CreateJobs() {
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
   const [skillId, setSkillId] = useState<number[]>([]);
   const [fileUrl, setFileUrl] = useState<string>();
-
+ 
+  const adjustTimezone = (date:Date) => {
+    const offsetInMs = date.getTimezoneOffset() * 60 * 1000;
+    return new Date(date.getTime() - offsetInMs).toISOString();
+  };
+   const date=  selectedDate ? adjustTimezone(selectedDate) : ""
+  console.log('coko',date)
   const companyId = localStorage.getItem("CompanyId");
   const userId = localStorage.getItem("userId");
   const onChange = (value: number) => {
@@ -155,6 +161,7 @@ export default function CreateJobs() {
         imageURL: fileUrl, 
         userID: Number(userId),
         skillSetIds: skillId,
+        expiryDate: selectedDate ? adjustTimezone(selectedDate) : ""
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị

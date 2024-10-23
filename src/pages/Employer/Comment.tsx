@@ -25,7 +25,6 @@ export default function Comment() {
   const [searchParams] = useSearchParams();
   const { commentId } = useParams();
   const currentPage = parseInt(searchParams.get("page") || "1");
-  const notificationsPerPage = 10;
 
   // State to track editing comment
   const [editingCommentId, setEditingCommentId] = useState<number | null>(null);
@@ -89,7 +88,11 @@ export default function Comment() {
     return <div>Error loading comments. Please try again later.</div>;
   }
 
-  const CommentsData = Comment?.Comments || [];
+  const CommentsData = Comment?.pagination.items || [];
+  const Navigate = Comment?.pagination.pageSize;
+
+  const notificationsPerPage = Navigate;
+  console.log('nav',notificationsPerPage)
   const totalPages = Math.ceil(CommentsData.length / notificationsPerPage);
   const currentNotifications = CommentsData.slice(
     (currentPage - 1) * notificationsPerPage,

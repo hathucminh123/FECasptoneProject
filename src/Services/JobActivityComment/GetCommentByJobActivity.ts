@@ -8,6 +8,14 @@ interface Comment {
   rating: number;
 }
 
+interface PaginationInfo {
+  pageIndex: number;
+  pageSize: number;
+  totalCount: number;
+  totalPages: number;
+  items: Comment[];  // Array of comments
+}
+
 interface signal {
   signal?: AbortSignal;
   id: number;
@@ -22,7 +30,7 @@ export const GetCommentByJobActivity = async ({
   id,
   signal,
 }: signal): Promise<{
-  Comments: Comment[];
+  pagination: PaginationInfo;
 }> => {
   try {
     const response = await httpClient.get({
@@ -40,11 +48,18 @@ export const GetCommentByJobActivity = async ({
     }
 
     const Seeker = response.data;
+    
     return {
-      Comments: Seeker.result as Comment[],
+      pagination: {
+        pageIndex: Seeker.result.pageIndex,
+        pageSize: Seeker.result.pageSize,
+        totalCount: Seeker.result.totalCount,
+        totalPages: Seeker.result.totalPages,
+        items: Seeker.result.items as Comment[],
+      },
     };
   } catch (error) {
-    console.error("Fetching Seekfer by JobPost failed", error);
+    console.error("Fetching Seeker by JobPost failed", error);
     throw error;
   }
 };

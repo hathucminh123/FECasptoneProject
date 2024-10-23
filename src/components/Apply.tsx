@@ -17,11 +17,48 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { message } from "antd";
 import { PostJobPostActivity } from "../Services/JobsPostActivity/PostJobPostActivity";
 import { queryClient } from "../Services/mainService";
+import Button from "@mui/material/Button";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
+import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
+import { PostCVs } from "../Services/CVService/PostCV";
+import { storage } from "../firebase/config.ts";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuidv4 } from "uuid";
 
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState("");
   const { JobId } = useParams();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0] || null;
+    setSelectedFile(file);
+  };
+
+  const { mutate:postcv } = useMutation({
+    mutationFn: PostCVs,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["CVs"] });
+      message.success("CV uploaded successfully!");
+    },
+    onError: () => {
+      message.error("Failed to upload CV.");
+    },
+  });
+
+  const handleUploadClick = async () => {
+    if (selectedFile) {
+      const fileRef = ref(storage, `${uuidv4()}-${selectedFile.name}`);
+      await uploadBytes(fileRef, selectedFile);
+      const fileUrl = await getDownloadURL(fileRef);
+      postcv({ data: { url: fileUrl, name: selectedFile.name } });
+      console.log("File to upload:", selectedFile);
+    } else {
+      console.log("No file selected");
+      message.warning("Please select a file to upload.");
+    }
+  };
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", JobId],
     queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }),
@@ -192,6 +229,121 @@ export default function Apply() {
                     </span>
                   </Typography>
                 </div>
+                <div className={classes.upload}>
+          <div className={classes.upload1}>
+            <div className={classes.upload2}>
+              <ContactPageOutlinedIcon
+                sx={{
+                  marginTop: ".25rem",
+                  verticalAlign: "middle",
+                  height: "40px",
+                  width: "40px",
+                }}
+              />
+              <div className={classes.upload3}>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    fontWeight: 500,
+                    color: "#121212",
+                    marginTop: 0,
+                    fontSize: "1rem",
+                    marginBottom: ".25rem",
+                    lineHeight: "1.5",
+                  }}
+                  gutterBottom
+                >
+                  Your own CV
+                </Typography>
+                <div className={classes.upload4}>
+                  <Box sx={{ textAlign: "start" }}>
+                    <Button
+                      variant="text"
+                      component="label"
+                      startIcon={<CloudUploadOutlinedIcon />}
+                      sx={{
+                        color: "blue",
+                        textTransform: "none",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Upload
+                      <input type="file" hidden onChange={handleFileChange} />
+                    </Button>
+
+                    {/* Show selected file before upload */}
+                    {selectedFile && (
+                      <Typography variant="body1" sx={{ marginTop: "10px" }}>
+                        Selected file: {selectedFile.name}
+                      </Typography>
+                    )}
+                    {selectedFile && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleUploadClick}
+                        sx={{ marginTop: "1rem" }}
+                      >
+                        Upload CV
+                      </Button>
+                    )}
+
+                    {/* Uploaded CVs list */}
+                    {/* {dataCVS.length > 0 && (
+                      <div style={{ marginTop: "1rem" }}>
+                        <Typography
+                          variant="h6"
+                          sx={{ fontWeight: 500, fontSize: "1rem" }}
+                        >
+                          Uploaded CVs:
+                        </Typography>
+                        {dataCVS.map(
+                          (
+                            cv: { url: string; id: number; name: string },
+                            index: number
+                          ) => (
+                            <div className={classes.main1}>
+                              <Typography
+                                key={index}
+                                variant="body1"
+                                sx={{ marginTop: ".5rem", fontSize: "14px" }}
+                              >
+                                <a
+                                  href={cv.url}
+                                  download
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    textDecoration: "none",
+                                    color: "blue",
+                                  }}
+                                >
+                                  {cv.name}
+                                </a>
+                              </Typography>
+                              {deletingId === cv.id ? (
+                                <>Please wait a second...</>
+                              ) : (
+                                <div
+                                  onClick={() => handleDeleteCV(cv.id)}
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <DeleteOutlineOutlinedIcon
+                                    sx={{ color: "blue" }}
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )} */}
+                  </Box>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
                 {dataCVS.map((cv) => (
                   <div

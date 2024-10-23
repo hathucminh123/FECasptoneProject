@@ -29,6 +29,7 @@ export const apiLinks = {
     PostJobPostsSkillset: `${baseURL}/JobPosts/SkillSet`,
     // GetJobbyId:`${baseURL}/JobPosts`,
     GetSeekerByJobPosts: `${baseURL}/JobPosts/Id`,
+    PUT:`${baseURL}/JobPosts/update`,
   },
   CV: {
     POST: `${baseURL}/CV`,
