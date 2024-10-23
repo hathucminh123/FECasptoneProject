@@ -121,8 +121,8 @@ export default function JobDetails() {
   console.log("id", JobId);
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", JobId],
-    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }), 
-    enabled: !!JobId, 
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }),
+    enabled: !!JobId,
   });
   const job = jobData?.JobPosts;
 
@@ -291,6 +291,12 @@ export default function JobDetails() {
     }
     Unfollow({ id: Number(haveFavorite?.id) });
   };
+
+  // const postingDate = job?.postingDate ? new Date(job?.postingDate) : null;
+  const expiryDate = job?.expiryDate ? new Date(job?.expiryDate) : null;
+  const today = new Date();
+
+  const isExpired = expiryDate ? expiryDate < today : undefined;
 
   const detailsCompany = Companiesdata?.find(
     (item) => item.id === job?.companyId
@@ -503,28 +509,54 @@ export default function JobDetails() {
                   </div>
                 ) : (
                   <div className={classes.button_icon}>
-                    <Button
-                      onClick={handleNavigateApply}
-                      sx={{
-                        mt: 3,
-                        width: "90%",
-                        backgroundColor: "#ed1b2f",
-                        borderColor: "#ed1b2f",
-                        color: "#fff",
-                        borderRadius: "4px",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        padding: "11px 24px",
+                    {isExpired ? (
+                      <Button
+                        // onClick={handleNavigateApply}
+                        disabled={true}
+                        sx={{
+                          mt: 3,
+                          width: "90%",
+                          backgroundColor: "#ed1b2f",
+                          borderColor: "#ed1b2f",
+                          color: "#fff",
+                          borderRadius: "4px",
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          padding: "11px 24px",
 
-                        "&:hover": {
-                          backgroundColor: "#C82222",
+                          "&:hover": {
+                            backgroundColor: "#C82222",
 
-                          color: "white",
-                        },
-                      }}
-                    >
-                      Apply now
-                    </Button>
+                            color: "white",
+                          },
+                        }}
+                      >
+                        application deadline
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleNavigateApply}
+                        sx={{
+                          mt: 3,
+                          width: "90%",
+                          backgroundColor: "#ed1b2f",
+                          borderColor: "#ed1b2f",
+                          color: "#fff",
+                          borderRadius: "4px",
+                          fontSize: "16px",
+                          fontWeight: "bold",
+                          padding: "11px 24px",
+
+                          "&:hover": {
+                            backgroundColor: "#C82222",
+
+                            color: "white",
+                          },
+                        }}
+                      >
+                        Apply now
+                      </Button>
+                    )}
 
                     {haveFavorite ? (
                       <div

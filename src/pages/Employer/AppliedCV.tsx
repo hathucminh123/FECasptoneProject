@@ -35,7 +35,14 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const steps = ["Select Status", "Input Comment"];
 const Data = ["Show All Cv", "Show only unseen CVs"];
-const headers = ["fullName", "Email", "Phone Number", "CV file", "Status", "Action"];
+const headers = [
+  "fullName",
+  "Email",
+  "Phone Number",
+  "CV file",
+  "Status",
+  "Action",
+];
 
 const AppliedCV: React.FC = () => {
   const [selectedValue, setSelectedValue] = useState<string>("");
@@ -45,7 +52,9 @@ const AppliedCV: React.FC = () => {
   const [commentText, setCommentText] = useState<string>("");
   const [value, setValue] = React.useState<number | null>(2);
   const [activeStep, setActiveStep] = React.useState(0);
-  const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>({});
+  const [completed, setCompleted] = React.useState<{ [k: number]: boolean }>(
+    {}
+  );
   const navigate = useNavigate();
   const { JobId } = useParams();
 
@@ -119,7 +128,9 @@ const AppliedCV: React.FC = () => {
           },
         });
       } else {
-        message.warning("Please provide a comment or rating before completing the step.");
+        message.warning(
+          "Please provide a comment or rating before completing the step."
+        );
         return;
       }
     }
@@ -157,14 +168,15 @@ const AppliedCV: React.FC = () => {
     setSelectedStatus(event.target.value as string);
   };
 
-  const handleViewComments =(id:number) =>{
-    navigate(`/employer-verify/jobs/system-Comment/${id}`)
-  }
+  const handleViewComments = (id: number) => {
+    navigate(`/employer-verify/jobs/system-Comment/${id}`);
+  };
 
   const dataSeekerApply =
     SeekerApply?.GetSeekers?.map((seeker) => ({
       id: seeker.id,
-      fullName: `${seeker.firstName} ${seeker.lastName}`.trim() || seeker.userName,
+      fullName:
+        `${seeker.firstName} ${seeker.lastName}`.trim() || seeker.userName,
       Email: seeker.email,
       "Phone Number": seeker.phoneNumber || "Not provided",
       "CV file": `${seeker.cvPath}`,
@@ -210,21 +222,32 @@ const AppliedCV: React.FC = () => {
                     <TableCell>{row.Email}</TableCell>
                     <TableCell>{row["Phone Number"]}</TableCell>
                     <TableCell>
-                      <a href={row["CV file"]} download className={classes.cvLink}>
+                      <a
+                        href={row["CV file"]}
+                        download
+                        className={classes.cvLink}
+                      >
                         Download CV
                       </a>
                     </TableCell>
                     <TableCell>{row.Status}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleEditClick(row.jobPostActivityId)}>
+                      <IconButton
+                        onClick={() => handleEditClick(row.jobPostActivityId)}
+                      >
                         <Edit />
                       </IconButton>
-                      <IconButton component={Link} to={`/userProfileSystem/${row.id}`}>
+                      <IconButton
+                        component={Link}
+                        to={`/userProfileSystem/${row.id}`}
+                      >
                         <Visibility />
                       </IconButton>
-                      <IconButton onClick={() =>
-                            handleViewComments(row.jobPostActivityId)
-                          }>
+                      <IconButton
+                        onClick={() =>
+                          handleViewComments(row.jobPostActivityId)
+                        }
+                      >
                         <Comment />
                       </IconButton>
                     </TableCell>
@@ -248,7 +271,9 @@ const AppliedCV: React.FC = () => {
           </Stepper>
           {allStepsCompleted() ? (
             <React.Fragment>
-              <Typography sx={{ mt: 2, mb: 1 }}>All steps completed - you're finished</Typography>
+              <Typography sx={{ mt: 2, mb: 1 }}>
+                All steps completed - you're finished
+              </Typography>
               <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Box sx={{ flex: "1 1 auto" }} />
                 <Button onClick={handleModalClose}>Close</Button>
@@ -277,10 +302,17 @@ const AppliedCV: React.FC = () => {
                   <Typography variant="h6" component="h2">
                     Update Status
                   </Typography>
-                  <Select value={selectedStatus} onChange={handleStatusChange} fullWidth>
-                    <MenuItem value="1">Pending</MenuItem>
+                  <Select
+                    value={selectedStatus}
+                    onChange={handleStatusChange}
+                    fullWidth
+                  >
+                    {/* <MenuItem value="1">Pending</MenuItem> */}
+
                     <MenuItem value="2">Rejected</MenuItem>
                     <MenuItem value="3">Passed</MenuItem>
+                    <MenuItem value="4">CVScreeningPassed</MenuItem>
+                    <MenuItem value="5">InterviewStage</MenuItem>
                   </Select>
                 </React.Fragment>
               )}
@@ -299,7 +331,9 @@ const AppliedCV: React.FC = () => {
                 </Button>
                 {activeStep !== steps.length && !completed[activeStep] && (
                   <Button onClick={handleComplete}>
-                    {completedSteps() === totalSteps() - 1 ? "Finish" : "Complete Step"}
+                    {completedSteps() === totalSteps() - 1
+                      ? "Finish"
+                      : "Complete Step"}
                   </Button>
                 )}
               </Box>

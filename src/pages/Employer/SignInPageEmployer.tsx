@@ -48,7 +48,7 @@ export default function SignInPageEmployer() {
   const [formData, setFormData] = useState({
     userName: "",
     email: "",
-    firstName: "",
+    fistName: "",
     lastName: "",
     password: "",
     confirmPassword: "",
@@ -66,7 +66,7 @@ export default function SignInPageEmployer() {
       setFormData({
         userName: "",
         email: "",
-        firstName: "",
+        fistName: "",
         lastName: "",
         password: "",
         confirmPassword: "",
@@ -182,7 +182,7 @@ export default function SignInPageEmployer() {
 
     if (!formData.userName) newErrors.userName = "Username is required";
     if (!formData.email) newErrors.email = "Email is required";
-    if (!formData.firstName) newErrors.firstName = "First name is required";
+    if (!formData.fistName) newErrors.fistName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.password) newErrors.password = "Password is required";
     if (formData.password.length < 6)
@@ -689,19 +689,19 @@ export default function SignInPageEmployer() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="firstName" className={classes.label}>
+                      <label htmlFor="fistName" className={classes.label}>
                         First Name
                       </label>
                       <TextField
-                        id="outlined-firstname-input"
-                        name="firstName"
+                        id="outlined-fistName-input"
+                        name="fistName"
                         label="First Name"
                         type="text"
                         required
-                        value={formData.firstName}
+                        value={formData.fistName}
                         onChange={handleInputChange}
-                        error={Boolean(errors.firstName)}
-                        helperText={errors.firstName}
+                        error={Boolean(errors.fistName)}
+                        helperText={errors.fistName}
                         autoComplete="given-name"
                         variant="outlined"
                         sx={{ width: "100%" }}

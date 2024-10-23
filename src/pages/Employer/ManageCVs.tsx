@@ -438,9 +438,11 @@ export default function ManageCVs() {
                     onChange={handleStatusChange}
                     fullWidth
                   >
-                    <MenuItem value="1">Pending</MenuItem>
+                    {/* <MenuItem value="1">Pending</MenuItem> */}
                     <MenuItem value="2">Rejected</MenuItem>
                     <MenuItem value="3">Passed</MenuItem>
+                    <MenuItem value="4">CVScreeningPassed</MenuItem>
+                    <MenuItem value="5">InterviewStage</MenuItem>
                   </Select>
                 </React.Fragment>
               )}
