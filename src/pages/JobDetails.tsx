@@ -516,8 +516,8 @@ export default function JobDetails() {
                         sx={{
                           mt: 3,
                           width: "90%",
-                          backgroundColor: "#ed1b2f",
-                          borderColor: "#ed1b2f",
+                          backgroundColor: "#b0b0b0",
+                          borderColor: "#b0b0b0",
                           color: "#fff",
                           borderRadius: "4px",
                           fontSize: "16px",
@@ -525,7 +525,8 @@ export default function JobDetails() {
                           padding: "11px 24px",
 
                           "&:hover": {
-                            backgroundColor: "#C82222",
+                            // backgroundColor: "#C82222",
+                            backgroundColor: "#b0b0b0",
 
                             color: "white",
                           },
@@ -1037,7 +1038,7 @@ export default function JobDetails() {
               <div className={classes.company1}>
                 <img
                   style={{ width: "200px" }}
-                  src={job?.imageURL}
+                  src={detailsCompany?.imageUrl}
                   alt="company image"
                 />
                 <div style={{ display: "block", paddingLeft: "12px " }}>

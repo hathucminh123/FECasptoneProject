@@ -83,7 +83,7 @@ interface MyComponentProps {
 export default function CardJobSearch({
   data,
   onclick,
-  img,
+  // img,
   company,
   selectedJob,
   applied,
@@ -132,7 +132,7 @@ export default function CardJobSearch({
           </Typography>
           <div className={classes.logo}>
             <img
-              src={img}
+              src={company?.imageUrl}
               alt="companylogo"
               style={{
                 height: "48px",

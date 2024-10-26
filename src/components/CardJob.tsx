@@ -67,7 +67,7 @@ interface MyComponentProps {
   Maxwidth?: string;
   className?: string;
   formButton?: boolean;
-  img?: string;
+  // img?: string;
   data?: JobPost;
   company?: Company;
   onclick?: () => void;
@@ -181,10 +181,11 @@ export default function CardJob({
                 <img
                   className={classes.image}
                   src={
-                    data?.imageURL === null || data?.imageURL === "string"
+                    company?.imageUrl === null ||  company?.imageUrl === "string"
                       ? Image
-                      : data?.imageURL
+                      :  company?.imageUrl
                   }
+                  // src={company?.imageUrl}
                   alt="image-job"
                 />
                 <Typography

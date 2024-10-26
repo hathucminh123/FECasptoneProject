@@ -167,7 +167,7 @@ export default function CardJobDetails({
             <div className={classes.logo}>
               <img
                 className={classes.image}
-                src={data?.imageURL}
+                src={company?.imageUrl}
                 alt="image-job"
               />
               <Typography

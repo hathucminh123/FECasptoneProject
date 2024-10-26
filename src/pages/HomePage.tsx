@@ -73,12 +73,15 @@ export default function HomePage() {
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       console.log("Search result:", data);
-
+       
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
         setJobSearch(data.result.items);
         navigate("/it-jobs", { state: { jobSearch: jobSearchResults ,text:text} });
+      }else{
+        navigate("/it-jobs", { state: {  text:text} });
       }
+      
     
 
       queryClient.invalidateQueries({
@@ -129,6 +132,43 @@ export default function HomePage() {
     }
   
   };
+
+  const handleNavigateSkill =async(item:string)=>{
+    console.log('alo')
+    interface JobSearchResponse {
+      result: {
+        items: JobPost[];
+      };
+    }
+
+    const searchDataArray = [
+      // { companyName: text ,pageSize: 9},
+      { skillSet: item,pageSize: 9 },
+      // { location: text ,pageSize: 9 },
+      // { experience: text ,pageSize: 9},
+      // { jobType: text ,pageSize: 9},
+    ];
+
+    for (let i = 0; i < searchDataArray.length; i++) {
+      try {
+        console.log("Searching with:", searchDataArray[i]);
+
+        const result: JobSearchResponse = await mutateAsync({
+          data: searchDataArray[i],
+        });
+        console.log("chan", result.result.items);
+
+        if (result && result.result && result.result.items.length > 0) {
+          setJobSearch(result.result.items);
+       
+          break;
+        }
+      } catch (error) {
+        console.error("Error during job search:", error);
+      }
+    }
+  
+  }
 
   // Fetching Job Posts using React Query
   const {
@@ -233,6 +273,7 @@ export default function HomePage() {
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 {uniqueArray.map((item) => (
                   <Button
+                    onClick={()=>handleNavigateSkill(item)}  
                     key={item}
                     sx={{
                       borderRadius: "5px",

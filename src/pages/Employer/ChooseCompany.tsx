@@ -11,6 +11,7 @@ import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
 
 // Import Material-UI components for the modal
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 
 export default function ChooseCompany() {
   const userId = localStorage.getItem("userId");
@@ -24,6 +25,17 @@ export default function ChooseCompany() {
     queryFn: ({ signal }) => fetchCompanies({ signal }),
     staleTime: 5000,
   });
+
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const JobPostsdata = JobPosts?.JobPosts;
   const Companiesdata = Company?.Companies;
 
   const { mutate } = useMutation({
@@ -88,14 +100,20 @@ export default function ChooseCompany() {
         <p className={classes.p}>New company created</p>
         <div style={{ display: "block", boxSizing: "border-box" }}>
           <div className={classes.main4}>
-            {Companiesdata?.map((item) => (
-              <div className={classes.main5} key={item.id}>
+            {Companiesdata?.map((company) => { 
+                 const jobsInCompany = JobPostsdata?.filter(
+                  (item) => item.companyId === company.id
+                );
+
+              return(
+              <div className={classes.main5} key={company.id}>
                 <CompanyCard
-                  company={item}
-                  onChoose={() => handleOnChooseCompanyUser(item?.id)}
+                  company={company}
+                  jobs={jobsInCompany}
+                  onChoose={() => handleOnChooseCompanyUser(company?.id)}
                 />
               </div>
-            ))}
+            )})}
           </div>
         </div>
       </div>

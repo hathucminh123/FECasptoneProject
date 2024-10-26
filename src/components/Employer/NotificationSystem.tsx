@@ -9,37 +9,37 @@ import { Notification } from "./HeaderSystemEmployer";
 import moment from "moment";
 
 // Giả sử đây là dữ liệu danh sách thông báo
-const notificationsData = [
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  // Thêm nhiều thông báo khác ở đây...
-  // Giả sử chúng ta có nhiều hơn 10 thông báo để test phân trang
-];
+// const notificationsData = [
+//   { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
+//   { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+//   { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
+//   { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+//   { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
+//   { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+//   { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
+//   { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+//   { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
+//   { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+//   { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
+//   { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+//   // Thêm nhiều thông báo khác ở đây...
+//   // Giả sử chúng ta có nhiều hơn 10 thông báo để test phân trang
+// ];
 
 export default function NotificationSystem() {
   const [searchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1"); // Lấy giá trị page từ query string, mặc định là 1
   const notificationsPerPage = 10; // Số lượng thông báo trên mỗi trang
   const [notification, setNotifications] = useState<Notification[]>([]);
-
+console.log('thietko',notification)
   // Tính toán tổng số trang
   const totalPages = Math.ceil(notification?.length / notificationsPerPage);
 
   // Lấy ra danh sách thông báo thuộc trang hiện tại
-  const currentNotifications = notificationsData.slice(
-    (currentPage - 1) * notificationsPerPage,
-    currentPage * notificationsPerPage
-  );
+  // const currentNotifications = notificationsData.slice(
+  //   (currentPage - 1) * notificationsPerPage,
+  //   currentPage * notificationsPerPage
+  // );
 
   const pagingNotifications = (listNotify: Notification[]): Notification[] => {
     return listNotify.slice(
@@ -50,7 +50,7 @@ export default function NotificationSystem() {
 
   const fetchNotifications = async () => {
     try {
-      var response: AxiosResponse = await GetNotifications();
+      const response: AxiosResponse = await GetNotifications();
       if (response?.status === 200) {
         const notifications = response.data as Notification[];
         setNotifications(pagingNotifications(notifications));
@@ -92,7 +92,6 @@ export default function NotificationSystem() {
           {renderNotifications()}
         </div>
 
-        {/* Điều hướng trang */}
         <nav className={classes.nav}>
           <ul className={classes.ul}>
             {/* Các nút điều hướng trang */}

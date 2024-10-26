@@ -12,7 +12,7 @@
   .footer {
     color: var(--i-silver-grey);
     /* background: linear-gradient(180deg, #ff8243, #ffd194); */
-    background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
+    /* background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%); */
     padding-top: 48px;
     box-sizing: border-box;
     margin: 0;

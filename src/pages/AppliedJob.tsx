@@ -8,13 +8,13 @@ import classes from "./SaveJobs.module.css";
 // import AlertTitle from "@mui/material/AlertTitle";
 // import Stack from "@mui/material/Stack";
 import {
-    // FormControl,
-    //   InputLabel,
-    // MenuItem,
-    // Select,
-    // SelectChangeEvent,
-    Typography,
-  } from "@mui/material";
+  // FormControl,
+  //   InputLabel,
+  // MenuItem,
+  // Select,
+  // SelectChangeEvent,
+  Typography,
+} from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
@@ -58,12 +58,12 @@ export default function AppliedJob() {
   const JobPostsdata = JobPosts?.JobPosts;
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
 
-  const JobPending = JobPostActivitydata?.filter(
-    (item) => item.status === "Applied"
-  );
+  // const JobPending = JobPostActivitydata?.filter(
+  //   (item) => item.status === "Applied"
+  // );
 
   const PendingJobApplied = JobPostsdata?.find((job) =>
-    JobPending?.some((activity) => job.id === activity.jobPostId)
+    JobPostActivitydata?.some((activity) => job.id === activity.jobPostId)
   );
 
   console.log("quao", PendingJobApplied);
@@ -144,18 +144,15 @@ export default function AppliedJob() {
                     mb: 0,
                   }}
                 >
-                  Passed Job ({JobPending?.length})
+                  Passed Job ({JobPostActivitydata?.length})
                 </Typography>
-             
               </div>
             </div>
             <div className={classes.job}>
               <div className={classes.job1}>
-                {JobPending?.map((activity) => {
-               
-
-                  const PendingJobApplied = JobPostsdata?.find((job) =>
-                    job.id === activity.jobPostId
+                {JobPostActivitydata?.map((activity) => {
+                  const PendingJobApplied = JobPostsdata?.find(
+                    (job) => job.id === activity.jobPostId
                   );
                   const companys = Companiesdata?.find(
                     (item) => item.id === PendingJobApplied?.companyId

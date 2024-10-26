@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { EmailEmployees } from "../../Services/AuthService/EmailEmployeesService";
 
 import { message } from "antd";
+import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 
 // const dataCompanySize: string[] = [
 //   "100-500",
@@ -50,10 +51,31 @@ export default function CompanyInfo() {
     queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
     staleTime: 5000,
   });
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const JobPostsdata = JobPosts?.JobPosts;
+
   const Companiesdata = Company?.Companies;
   const CompanyEmployer = Companiesdata?.find(
     (company) => company.id === Number(companyId)
   );
+
+  const jobsInCompany = JobPostsdata?.filter(
+    (item) => item.companyId === CompanyEmployer?.id
+  );
+
+  const skillss = jobsInCompany?.map((skill) => skill.skillSets);
+  const flattenedArray = skillss?.flat();
+  const uniqueArray = [...new Set(flattenedArray)];
+
   console.log("quao", CompanyEmployer);
   const handleOpenUpdate = () => {
     setUpdate(!update);
@@ -118,7 +140,7 @@ export default function CompanyInfo() {
         description,
         selectedFile,
       });
-     
+
       // setUpdate(false);
     }
   };
@@ -298,7 +320,7 @@ export default function CompanyInfo() {
                   </div> */}
                   <div className={classes.div11}>
                     <div className={classes.div8}>
-                      <RequiredText text="Company Description" />
+                      <RequiredText text="Email" />
                       <div className={classes.div9}>
                         <div className={classes.div10}>
                           <Input
@@ -360,7 +382,14 @@ export default function CompanyInfo() {
                 <div className={classes.div18}>
                   <div className={classes.div19}>
                     <div className={classes.div20}>
-                      <div className={classes.img2}></div>
+                      <div className={classes.img2}>
+                        <img
+                          src={CompanyEmployer?.imageUrl}
+                          alt="Company"
+                          className={classes.img2}
+                        />
+                        {/* <img src="" alt="" /> */}
+                      </div>
                       <div className={classes.div21}>
                         <p className={classes.p1}>
                           {CompanyEmployer?.companyName}
@@ -379,14 +408,21 @@ export default function CompanyInfo() {
                           <div className={classes.div26}>
                             Field of operation:
                           </div>
-                          <div className={classes.div27}>reactjs/.net/AI</div>
+                          <div className={classes.div27}>
+                          {uniqueArray.map((item, index) => (
+                    <React.Fragment key={index}>
+                      {item}
+                      {index < uniqueArray.length - 1 && " / "}
+                    </React.Fragment>
+                  ))}
+                          </div>
                         </div>
-                        <div className={classes.div25}>
+                        {/* <div className={classes.div25}>
                           <div className={classes.div26}>Email Company:</div>
                           <div className={classes.div27}>
                             hathucminh456@gmail.com
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                       <div className={classes.div24}>
                         <div className={classes.div25}>
@@ -416,9 +452,7 @@ export default function CompanyInfo() {
                           </div>
                         </div>
                         <div className={classes.div30}>
-                          <div className={classes.div31}>
-                            Email:
-                          </div>
+                          <div className={classes.div31}>Email:</div>
                           <div className={classes.div32}>
                             {CompanyEmployer?.companyDescription && (
                               <div

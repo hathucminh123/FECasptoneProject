@@ -13,10 +13,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useAppDispatch } from "../redux/hooks/hooks";
 import { filter } from "../redux/slices/searchSlice";
 import { useLocation } from "react-router-dom";
-// import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
-// import { useMutation } from "@tanstack/react-query";
-// import { queryClient } from "../Services/mainService";
-// import { message } from "antd";
 
 interface JobType {
   id: number;
@@ -50,73 +46,32 @@ interface FormSearchProps {
   jobSearch: JobPost[];
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
-  onClick:()=>void
+  onClick: () => void;
 }
 
 export default function FormSearch({
   text,
   setText,
-  // setJobSearch,
-  onClick
+  onClick,
 }: FormSearchProps) {
-  const locationcolumn = useLocation();
-  const locationcolumn1: string | null = locationcolumn?.state ?? null;
- const locationPass= useLocation();
- const locationText = locationPass.state?.text || "";
-  const [location, setLocation] = useState<string | null>(
-    locationcolumn1 || null
-  );
-  // const [text, setText] = useState<string>("");
-  // const navigate = useNavigate();
+  const locationPass = useLocation();
+  const locationText = locationPass.state?.text || "";
+  const [location, setLocation] = useState<string | null>(null);
   const dispatch = useAppDispatch();
 
-  // Effect to update search filters
+  
   useEffect(() => {
     if (location || text) {
       dispatch(filter({ location, text }));
     }
   }, [location, text, dispatch]);
 
-  // Effect to set the location based on location column
-  useEffect(() => {
-    if (locationcolumn1) {
-      const majorCities = ["Hồ Chí Minh", "Hà Nội", "Đà Nẵng"];
-      const parsedLocation =
-        typeof locationcolumn1 === "string" ? locationcolumn1 : null;
 
-      setLocation(
-        majorCities.includes(parsedLocation || "") ? parsedLocation : null
-      );
-      setText(parsedLocation || "");
-    }
-  }, [locationcolumn1]);
   useEffect(() => {
     if (locationText) {
       setText(locationText); 
     }
   }, [locationText, setText]);
-
-  // React Query Mutation for job search
-  // const { mutateAsync } = useMutation({
-  //   mutationFn: GetJobSearch,
-  //   onSuccess: (data) => {
-  //     console.log("Search result:", data);
-
-  //     if (data && data.result && data.result.items.length > 0) {
-  //       setJobSearch(data.result.items);
-  //     }
-
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["JobSearch"],
-  //       refetchType: "active",
-  //     });
-
-  //     navigate("/it-jobs");
-  //   },
-  //   onError: () => {
-  //     message.error("Failed to Search");
-  //   },
-  // });
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setLocation(event.target.value as string);
@@ -126,51 +81,13 @@ export default function FormSearch({
     setText(e.target.value);
   };
 
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      onClick()
+      onClick(); 
     }
   };
-
-  // Main search function
-  // const handleNavigate = async () => {
- 
-  //   interface JobSearchResponse {
-  //     result: {
-  //       items: JobPost[];
-  //     };
-  //   }
-
-  //   const searchDataArray = [
-  //     { companyName: text },
-  //     { skillSet: text },
-  //     { location: text },
-  //     { experience: text },
-  //     { jobType: text },
-  //   ];
-
-  //   for (let i = 0; i < searchDataArray.length; i++) {
-  //     try {
-      
-  //       console.log("Searching with:", searchDataArray[i]);
-
-  
-  //       const result: JobSearchResponse = await mutateAsync({
-  //         data: searchDataArray[i],
-  //       });
-  //       console.log("chan", result.result.items);
-
- 
-  //       if (result && result.result && result.result.items.length > 0) {
-  //         setJobSearch(result.result.items); 
-  //         break; 
-  //       }
-  //     } catch (error) {
-  //       console.error("Error during job search:", error);
-  //     }
-  //   }
-  // };
 
   return (
     <Box sx={{ display: "block", marginTop: "0em", unicodeBidi: "isolate" }}>
@@ -203,7 +120,7 @@ export default function FormSearch({
         </FormControl>
 
         <TextField
-          value={ text}
+          value={text}
           id="keyword-input"
           label="Enter keyword"
           placeholder="Skill (Java, iOS), Job title, Company"

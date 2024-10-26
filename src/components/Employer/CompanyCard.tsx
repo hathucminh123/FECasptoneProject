@@ -50,9 +50,13 @@ interface Company {
 interface props {
   company?: Company;
   onChoose?: () => void;
+  jobs: JobPost[] | undefined;
 }
 
-export default function CompanyCard({ company, onChoose }: props) {
+export default function CompanyCard({ company, onChoose, jobs }: props) {
+  const skills = jobs?.map((skill) => skill.skillSets);
+  const flattenedArray = skills?.flat();
+  const uniqueArray = [...new Set(flattenedArray)];
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -84,7 +88,11 @@ export default function CompanyCard({ company, onChoose }: props) {
           </span>
         </div>
         <p className={classes.p1}>
-          <span className={classes.span4}>Reactjs/.Net/React Native</span>
+          {uniqueArray.map((tag, index) => (
+            <span key={index} className={classes.span4}>
+              {tag}
+            </span>
+          ))}
         </p>
       </div>
       <div className={classes.main4}>

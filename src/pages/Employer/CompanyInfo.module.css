@@ -429,6 +429,19 @@
     box-sizing: border-box;
     display: block;
 }
+.div272{
+  flex: 0 0 58.3333333333%;
+  max-width: 58.3333333333%;
+  position: relative;
+
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  box-sizing: border-box;
+  display: flex;
+  /* display: block; */
+}
+
 
 .div28{
     display: flex;

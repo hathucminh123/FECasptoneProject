@@ -68,7 +68,9 @@ export default function CreateJobs() {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [isSelectOpenSkill, setIsSelectOpenSkill] = useState<boolean>(false);
   const [count, setCount] = useState<number>(1);
-  const [skills, setSkills] = useState<string[]>([]);
+
+  const [skills, setSkills] = useState<SkillSet[]>([]);
+  console.log('thiệt khong',skills)
   const [inputSkill, setInputSkill] = useState<string>("");
   const [salary, setSalary] = useState<number>();
   const [skillLevel, setSkillLevel] = useState<number>();
@@ -86,6 +88,7 @@ export default function CreateJobs() {
   const [shorthand, setShorthand] = useState("");
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
   const [skillId, setSkillId] = useState<number[]>([]);
+  console.log('thiệt khongid',skillId)
   const [fileUrl, setFileUrl] = useState<string>();
  
   const adjustTimezone = (date:Date) => {
@@ -174,18 +177,30 @@ export default function CreateJobs() {
     }
   };
 
+  // const handleSkill = (selectedSkill: SkillSet) => {
+  //   if (!skills.includes(selectedSkill)) {
+  //     setSkills([...skills, selectedSkill]);
+  //   }
+  //   setIsSelectOpenSkill(false);
+  //   setInputSkill("");
+  //   setSkillId([...skillId, selectedSkill.id]);
+  // };
+
   const handleSkill = (selectedSkill: SkillSet) => {
-    if (!skills.includes(selectedSkill.name)) {
-      setSkills([...skills, selectedSkill.name]);
+    if (!skills.includes(selectedSkill) && !skillId.includes(selectedSkill.id)) {
+      setSkills([...skills, selectedSkill]);
+      setSkillId([...skillId, selectedSkill.id]);
     }
     setIsSelectOpenSkill(false);
     setInputSkill("");
-    setSkillId([...skillId, selectedSkill.id]);
   };
 
-  const handleRemoveSkill = (skillToRemove: string) => {
+  const handleRemoveSkill = (skillToRemove: SkillSet) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
+    setSkillId(skillId.filter((skill)=> skill !== skillToRemove.id ));
   };
+
+
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -770,7 +785,7 @@ export default function CreateJobs() {
                             {skills.map((skill, index) => (
                               <div key={index} className={classes.div39}>
                                 <span className={classes.spanskill1}>
-                                  {skill}
+                                  {skill.name}
                                 </span>
                                 <span
                                   className={classes.spanskillicon}
