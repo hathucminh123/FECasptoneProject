@@ -4,26 +4,40 @@ import SideBarEmployer from "../../components/Employer/SideBarEmployer";
 import React, { useEffect, useState } from "react";
 import classes from "./RootSystem.module.css";
 import { getTokenDuration } from "../../utils/Auth";
+export interface Notification {
+  id: number;
+  title: string;
+  description: string;
+  receiverId: number;
+  isRead: boolean;
+  jobPostActivityId: number;
+  jobPostActivity: any;
+  userAccount: any;
+  createdDate: string;
+  modifiedDate: any;
+  createdBy: any;
+  modifiedBy: any;
+  isDeleted: boolean;
+}
 
 export default function RootSystem() {
   const [open, setOpen] = useState<boolean>(true);
   // const userRole = localStorage.getItem('role')
   // const navigate =useNavigate();
 
-
   const token = useRouteLoaderData("root1");
-  console.log('token',token)
+  console.log("token", token);
   const submit = useSubmit();
 
   const tokenDuration = getTokenDuration();
 
-//   useEffect(()=>{
-//     if(userRole ==="jobseeker"){
-//       navigate('/')
-//     }else if(userRole ==="employer"){
-//       navigate('/employer-verify/jobs')
-//     }
-//  },[userRole,navigate])
+  //   useEffect(()=>{
+  //     if(userRole ==="jobseeker"){
+  //       navigate('/')
+  //     }else if(userRole ==="employer"){
+  //       navigate('/employer-verify/jobs')
+  //     }
+  //  },[userRole,navigate])
 
   useEffect(() => {
     if (!token) {
@@ -34,13 +48,28 @@ export default function RootSystem() {
       submit(null, { action: "/logout", method: "post" });
     }, tokenDuration);
   }, [token, tokenDuration, submit]);
+
+  const [notifications, setNotifications] = useState<Notification[]>([]);
   return (
     <>
-      <HeaderSystemEmployer open={open} setOpen={setOpen} token={token} />
-      <SideBarEmployer open={open} />
+      <HeaderSystemEmployer
+        open={open}
+        setOpen={setOpen}
+        token={token}
+        notifications={notifications}
+        setNotifications={setNotifications}
+      />
+      <SideBarEmployer
+        open={open}
+        token={token}
+        notifications={notifications}
+        setNotifications={setNotifications}
+      />
       <div className={`${open ? classes.main : classes.main1}`}>
         <div className={classes.div}>
-          <Outlet />
+          <Outlet
+          context={{ notifications, setNotifications }}
+          />
         </div>
       </div>
     </>

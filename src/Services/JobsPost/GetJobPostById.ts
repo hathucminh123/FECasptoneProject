@@ -53,9 +53,9 @@ export const GetJobPostById = async ({signal ,id}:signal): Promise<{
 }> => {
   try {
     const response = await httpClient.get({
-      url: `${apiLinks.JobPosts.GET}/Id/${id}`,
+      url: `${apiLinks.JobPosts.GetJobbyId}/Id/${id}`,
       signal:signal,
-      params:{id}
+      // params:{id}
     });
 
     if (response.status !== 200) {

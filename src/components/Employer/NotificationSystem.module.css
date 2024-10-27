@@ -162,3 +162,80 @@
     background-color: #FF6F61;
     color: white;
 }
+
+.div9 {
+    margin-left: auto !important;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .div10 {
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .span3 {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    padding: 1px;
+    font-size: 0.857rem;
+    background-color: #d0dae4;
+    border-color: #c7d4e0;
+    text-decoration: none;
+    background: #f5f8fa;
+    white-space: nowrap;
+    color: #5e6368 !important;
+    border-radius: 50% !important;
+    display: inline-block;
+    font-weight: 400;
+  
+    text-align: center;
+    vertical-align: middle;
+    line-height: 1.5;
+    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    box-sizing: border-box;
+  }
+  
+  .div11 {
+    left: auto;
+    right: 0;
+    width: 150px;
+    min-width: unset;
+    position: absolute;
+    padding: 0;
+    text-align: left !important;
+    font-size: 0.85rem;
+    float: none;
+    display: block;
+    border: none;
+    top: 100%;
+    z-index: 1000;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    box-sizing: border-box;
+  }
+
+  .link2 {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.5rem;
+    clear: both;
+    font-weight: 400;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    color: #212f3f;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-size: 0.85rem;
+    list-style: none;
+  }
+  

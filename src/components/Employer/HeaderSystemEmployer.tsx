@@ -19,7 +19,10 @@ interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
   token: unknown;
+  notifications: Notification[];
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
 }
+
 
 export interface Notification {
   id: number
@@ -37,31 +40,32 @@ export interface Notification {
   isDeleted: boolean
 }
 
-const notifications = [
-  {
-    id: 1,
-    title: "Thông báo từ hệ thống",
-    message: "Bạn quá giỏi nên không có gì thông báo",
-    date: "26/9/2024",
-    isRead: false, // track whether the notification is read or unread
-  },
-  {
-    id: 2,
-    title: "Cập nhật hệ thống",
-    message: "Phiên bản mới đã được phát hành.",
-    date: "27/9/2024",
-    isRead: false,
-  },
-  {
-    id: 3,
-    title: "Lịch bảo trì",
-    message: "Hệ thống sẽ bảo trì vào cuối tuần.",
-    date: "28/9/2024",
-    isRead: true,
-  },
-];
+// const notifications = [
+//   {
+//     id: 1,
+//     title: "Thông báo từ hệ thống",
+//     message: "Bạn quá giỏi nên không có gì thông báo",
+//     date: "26/9/2024",
+//     isRead: false, // track whether the notification is read or unread
+//   },
+//   {
+//     id: 2,
+//     title: "Cập nhật hệ thống",
+//     message: "Phiên bản mới đã được phát hành.",
+//     date: "27/9/2024",
+//     isRead: false,
+//   },
+//   {
+//     id: 3,
+//     title: "Lịch bảo trì",
+//     message: "Hệ thống sẽ bảo trì vào cuối tuần.",
+//     date: "28/9/2024",
+//     isRead: true,
+//   },
+// ];
 
-export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
+
+export default function HeaderSystemEmployer({ setOpen, open, token,notifications,setNotifications }: props) {
   const handleOpen = () => {
     if (setOpen) {
       setOpen(!open);
@@ -118,7 +122,8 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
   };
 
   //notification
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  // const [notifications, setNotifications] = useState<Notification[]>([]);
+
 
   const startConnection = async () => {
     try {
@@ -159,7 +164,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
 
   const fetchNotifications = async () => {
     try {
-      var response: AxiosResponse = await GetNotifications();
+      const response: AxiosResponse = await GetNotifications();
       if (response?.status === 200) {
         const notifications = response.data as Notification[];
         setNotifications(notifications);
@@ -171,7 +176,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
 
   const readNotifications = async (id: number | string) => {
     try {
-      var response: AxiosResponse = await ReadNotification(id);
+      const response: AxiosResponse = await ReadNotification(id);
       if (response?.status === 200) {
         await fetchNotifications();
       }
@@ -182,7 +187,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token }: props) {
 
   const readAllNotifications = async () => {
     try {
-      var response: AxiosResponse = await ReadAllNotifications();
+      const response: AxiosResponse = await ReadAllNotifications();
       if (response?.status === 200) {
         await fetchNotifications();
       }
