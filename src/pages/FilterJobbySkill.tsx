@@ -109,16 +109,18 @@ export default function FilterJobbySkill() {
   const location = useLocation();
   const jobSearchPass = location.state?.jobSearch || [];
   const TextPass = location.state?.text || [];
-console.log('passko',jobSearchPass)
-console.log('text',TextPass)
+  const LocationPass = location.state?.location || [];
+  console.log("passko", jobSearchPass);
+  console.log("text", TextPass);
 
-const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
+  const [jobSearch, setJobSearch] = useState<JobPost[]>(
+    location.state?.jobSearch || []
+  );
   const auth = localStorage.getItem("Auth");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
 
-
-      useEffect(() => {
+  useEffect(() => {
     if (location.state?.jobSearch) {
       setJobSearch(location.state.jobSearch);
     }
@@ -133,6 +135,7 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
 
   // const filteredJobs = useAppSelector(TodoListSelector);
   const filteredJobs = jobSearch;
+  console.log("dasdne", jobSearch);
 
   console.log("dasd", filteredJobs);
 
@@ -353,14 +356,48 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
   //   }
   // };
   const [text, setText] = useState<string>(TextPass);
-  console.log('duockoni',text)
+  const [locationne, setLocation] = useState<string>(LocationPass);
+  console.log("duockoni", text);
+  // const { mutateAsync } = useMutation({
+
+  //   mutationFn: GetJobSearch,
+  //   onSuccess: (data) => {
+  //     console.log("Search result:", data);
+
+  //     if (data && data.result && data.result.items.length > 0) {
+  //       setJobSearch(data.result.items);
+  //     }
+
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["JobSearch"],
+  //       refetchType: "active",
+  //     });
+
+  //     // navigate("/it-jobs");
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Search");
+  //   },
+  // });
+
   const { mutateAsync } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       console.log("Search result:", data);
 
       if (data && data.result && data.result.items.length > 0) {
+        const jobSearchResults = data.result.items;
         setJobSearch(data.result.items);
+        navigate("/it-jobs", {
+          state: {
+            jobSearch: jobSearchResults,
+            text: text,
+            location: location,
+          },
+        });
+      } else {
+        setJobSearch([]);
+        navigate("/it-jobs", { state: { text: text, location: location } });
       }
 
       queryClient.invalidateQueries({
@@ -368,13 +405,13 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
         refetchType: "active",
       });
 
-      navigate("/it-jobs");
+      // navigate("/it-jobs",{state : text});
     },
     onError: () => {
       message.error("Failed to Search");
     },
   });
-  const handleNavigate = async () => {
+  const handleNavigateJob = async () => {
     // Define the shape of job data returned by the mutation
     interface JobSearchResponse {
       result: {
@@ -382,14 +419,57 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
       };
     }
 
-    const searchDataArray = [
-      { companyName: text ,pageSize: 9},
-      { skillSet: text,pageSize: 9 },
-      { location: text ,pageSize: 9 },
-      { experience: text ,pageSize: 9},
-      { jobType: text ,pageSize: 9},
-    ];
+    // Define the shape of each search data object
+    interface SearchData {
+      companyName?: string;
+      skillSet?: string;
+      city?: string;
+      location?: string;
+      // experience?: number;
+      jobType?: string;
+      pageSize: number;
+    }
 
+    // Define searchDataArray with the SearchData[] type
+    let searchDataArray: SearchData[];
+
+    if (locationne === "All" && text === "") {
+      searchDataArray = [
+        { companyName: text, pageSize: 9 },
+        { skillSet: text, pageSize: 9 },
+        { city: text, pageSize: 9 },
+        { location: text, pageSize: 9 },
+        // { experience: Number(text), pageSize: 9 },
+        { jobType: text, pageSize: 9 },
+      ];
+    } else if (locationne !== "All" && text === "") {
+      searchDataArray = [
+        { city: locationne, pageSize: 9 },
+        { location: locationne, pageSize: 9 },
+      ];
+    } else if (locationne !== "All" && text !== "") {
+      searchDataArray = [
+        { companyName: text, city: locationne, pageSize: 9 },
+        { skillSet: text, city: locationne, pageSize: 9 },
+        { city: text, pageSize: 9 },
+        { location: text, city: locationne, pageSize: 9 },
+        // { experience: Number(text), city: locationne, pageSize: 9 },
+        { jobType: text, city: locationne, pageSize: 9 },
+      ];
+    } else if (locationne == "All" && text !== "") {
+      searchDataArray = [
+        { companyName: text, pageSize: 9 },
+        { skillSet: text, pageSize: 9 },
+        { city: text, pageSize: 9 },
+        { location: text, pageSize: 9 },
+        // { experience: Number(text), pageSize: 9 },
+        { jobType: text, pageSize: 9 },
+      ];
+    } else {
+      searchDataArray = []; // Default to an empty array if no conditions are met
+    }
+
+    // Loop through searchDataArray and attempt a job search with each item
     for (let i = 0; i < searchDataArray.length; i++) {
       try {
         console.log("Searching with:", searchDataArray[i]);
@@ -397,10 +477,13 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
         const result: JobSearchResponse = await mutateAsync({
           data: searchDataArray[i],
         });
-        console.log("chan", result.result.items);
 
+        console.log("Search results:", result.result.items);
+
+        // If there are results, set them and exit the loop
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
+
           break;
         }
       } catch (error) {
@@ -478,8 +561,10 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
               setJobSearch={setJobSearch}
               jobSearch={jobSearch}
               text={text}
+              location={locationne}
+              setLocation={setLocation}
               setText={setText}
-              onClick={handleNavigate}
+              onClick={handleNavigateJob}
             />
           </div>
         </div>
@@ -540,8 +625,9 @@ const [jobSearch, setJobSearch] = useState<JobPost[]>(jobSearchPass);
                         (item) => item.id === job.companyId
                       );
 
-
-                      const jobs = JobPostsdata?.find((item)=> item.id ===job.id)
+                      const jobs = JobPostsdata?.find(
+                        (item) => item.id === job.id
+                      );
                       // const hasAppliedJobActivity = filteredJobs?.some((job) =>
                       //   JobPostActivitydata?.some(
                       //     (activity) => job.id === activity.jobPostId

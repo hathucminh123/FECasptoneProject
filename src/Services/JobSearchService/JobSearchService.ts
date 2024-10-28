@@ -1,9 +1,18 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
-
+interface SearchData {
+  companyName?: string;
+  skillSet?: string;
+  city?: string;
+  location?: string;
+  experience?: number;
+  jobType?: string;
+  pageSize: number;
+}
 
 interface JobSearch{
-    data: { [key: string]: string|number|undefined };
+    // data: { [key: string]: string|number|undefined };
+    data:SearchData
 }
 
 export const GetJobSearch = async ({ data }: JobSearch) => {

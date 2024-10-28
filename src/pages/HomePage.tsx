@@ -32,7 +32,6 @@ interface JobType {
   description: string;
 }
 
-
 interface JobPost {
   id: number;
   jobTitle: string;
@@ -67,22 +66,27 @@ export default function HomePage() {
     }
   };
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
-  console.log('thietko',jobSearch)
+  console.log("thietko", jobSearch);
   const [text, setText] = useState<string>("");
+  const [location, setLocation] = useState<string>("All");
   const { mutateAsync } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       console.log("Search result:", data);
-       
+
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
         setJobSearch(data.result.items);
-        navigate("/it-jobs", { state: { jobSearch: jobSearchResults ,text:text} });
-      }else{
-        navigate("/it-jobs", { state: {  text:text} });
+        navigate("/it-jobs", {
+          state: {
+            jobSearch: jobSearchResults,
+            text: text,
+            location: location,
+          },
+        });
+      } else {
+        navigate("/it-jobs", { state: { text: text, location: location } });
       }
-      
-    
 
       queryClient.invalidateQueries({
         queryKey: ["JobSearch"],
@@ -90,7 +94,6 @@ export default function HomePage() {
       });
 
       // navigate("/it-jobs",{state : text});
-  
     },
     onError: () => {
       message.error("Failed to Search");
@@ -104,13 +107,55 @@ export default function HomePage() {
       };
     }
 
-    const searchDataArray = [
-      { companyName: text ,pageSize: 9},
-      { skillSet: text,pageSize: 9 },
-      { location: text ,pageSize: 9 },
-      { experience: text ,pageSize: 9},
-      { jobType: text ,pageSize: 9},
-    ];
+    // Define the shape of each search data object
+    interface SearchData {
+      companyName?: string;
+      skillSet?: string;
+      city?: string;
+      location?: string;
+      // experience?: number;
+      jobType?: string;
+      pageSize: number;
+    }
+
+    // Define searchDataArray with the SearchData[] type
+    let searchDataArray: SearchData[];
+
+    if (location === "All" && text === "") {
+      searchDataArray = [
+        { companyName: text, pageSize: 9 },
+        { skillSet: text, pageSize: 9 },
+        { city: text, pageSize: 9 },
+        { location: text, pageSize: 9 },
+        // { experience: Number(text), pageSize: 9 },
+        { jobType: text, pageSize: 9 },
+      ];
+    } else if (location !== "All" && text === "") {
+      searchDataArray = [
+        { city: location, pageSize: 9 },
+        { location: location, pageSize: 9 },
+      ];
+    } else if (location !== "All" && text !== "") {
+      searchDataArray = [
+        { companyName: text, city: location, pageSize: 9 },
+        { skillSet: text, city: location, pageSize: 9 },
+        { city: text, pageSize: 9 },
+        { location: text, city: location, pageSize: 9 },
+        // { experience: Number(text), city: location, pageSize: 9 },
+        { jobType: text, city: location, pageSize: 9 },
+      ];
+    } else if (location == "All" && text !== "") {
+      searchDataArray = [
+        { companyName: text, pageSize: 9 },
+        { skillSet: text, pageSize: 9 },
+        { city: text, pageSize: 9 },
+        { location: text, pageSize: 9 },
+        // { experience: Number(text), pageSize: 9 },
+        { jobType: text, pageSize: 9 },
+      ];
+    } else {
+      searchDataArray = [];
+    }
 
     for (let i = 0; i < searchDataArray.length; i++) {
       try {
@@ -119,22 +164,22 @@ export default function HomePage() {
         const result: JobSearchResponse = await mutateAsync({
           data: searchDataArray[i],
         });
-        console.log("chan", result.result.items);
 
+        console.log("Search results:", result.result.items);
+
+        // If there are results, set them and exit the loop
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
-       
           break;
         }
       } catch (error) {
         console.error("Error during job search:", error);
       }
     }
-  
   };
 
-  const handleNavigateSkill =async(item:string)=>{
-    console.log('alo')
+  const handleNavigateSkill = async (item: string) => {
+    console.log("alo");
     interface JobSearchResponse {
       result: {
         items: JobPost[];
@@ -143,7 +188,7 @@ export default function HomePage() {
 
     const searchDataArray = [
       // { companyName: text ,pageSize: 9},
-      { skillSet: item,pageSize: 9 },
+      { skillSet: item, pageSize: 9 },
       // { location: text ,pageSize: 9 },
       // { experience: text ,pageSize: 9},
       // { jobType: text ,pageSize: 9},
@@ -160,15 +205,14 @@ export default function HomePage() {
 
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
-       
+
           break;
         }
       } catch (error) {
         console.error("Error during job search:", error);
       }
     }
-  
-  }
+  };
 
   // Fetching Job Posts using React Query
   const {
@@ -180,9 +224,6 @@ export default function HomePage() {
     queryFn: ({ signal }) => GetJobPost({ signal: signal }),
     staleTime: 5000,
   });
-
-
-
 
   // Fetching Companies using React Query
   const {
@@ -199,9 +240,6 @@ export default function HomePage() {
   const skills = JobPostsdata?.map((skill) => skill.skillSets);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
-
-
-
 
   const Companiesdata = Company?.Companies;
 
@@ -239,13 +277,15 @@ export default function HomePage() {
             </Typography>
 
             <div style={{ display: "block" }}>
-            <FormSearch
-              setJobSearch={setJobSearch}
-              jobSearch={jobSearch}
-              text={text}
-              setText={setText}
-              onClick={handleNavigateJob}
-            />
+              <FormSearch
+                setJobSearch={setJobSearch}
+                jobSearch={jobSearch}
+                text={text}
+                location={location}
+                setLocation={setLocation}
+                setText={setText}
+                onClick={handleNavigateJob}
+              />
             </div>
             <div
               style={{
@@ -273,7 +313,7 @@ export default function HomePage() {
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 {uniqueArray.map((item) => (
                   <Button
-                    onClick={()=>handleNavigateSkill(item)}  
+                    onClick={() => handleNavigateSkill(item)}
                     key={item}
                     sx={{
                       borderRadius: "5px",
@@ -381,8 +421,13 @@ export default function HomePage() {
                   (item) => item.companyId === company.id
                 );
 
-
-                return <CardEmployer key={company.id} data={company} jobs={jobsInCompany} />;
+                return (
+                  <CardEmployer
+                    key={company.id}
+                    data={company}
+                    jobs={jobsInCompany}
+                  />
+                );
               })}
             </div>
           </section>
