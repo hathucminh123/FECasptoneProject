@@ -152,13 +152,34 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
       </div>
 
       <div className={classes.location}>
-        <div className={classes.divlocation}>
+        {/* <div className={classes.divlocation}>
           {cityColumn?.map((city, index) => (
             <div key={index}>
               {city} {"-"}
             </div>
           ))}
-        </div>
+        </div> */}
+        {cityColumn.length && cityColumn.length > 0 ? (
+          <div className={classes.divlocation}>
+            {cityColumn?.slice(0, 2).map((city, index) => (
+              <div key={index}>
+                {city} {"-"}
+              </div>
+            ))}
+            {cityColumn?.length > 3 && <div>OTHER </div>}
+          </div>
+        ) : (
+          <div className={classes.divlocation}>
+            {/* {cityColumn?.slice(0, 2).map((city, index) => (
+              <div key={index}>
+                {city} {"-"}
+              </div>
+            ))}
+            {cityColumn?.length > 3 && <div>OTHER </div>} */}
+            {data.address}{" in "}{data.city}
+          </div>
+        )}
+
         <div className={classes.divjob}>
           <Badge
             overlap="circular"

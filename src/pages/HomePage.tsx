@@ -420,7 +420,7 @@ export default function HomePage() {
                 const jobsInCompany = JobPostsdata?.filter(
                   (item) => item.companyId === company.id
                 );
-
+          
                 return (
                   <CardEmployer
                     key={company.id}

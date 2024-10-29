@@ -179,10 +179,11 @@ export default function SaveJobs() {
             <div className={classes.job}>
               <div className={classes.job1}>
                 {FavoriteJobs?.map((job) => {
-                  const companys = Companiesdata?.find(
-                    (item) => item.id === job.companyId
-                  );
+              console.log('jaha',FavoriteJobs)
                   const jobsfavorite= JobPostsdata?.find((item)=> item.id === job.id)
+                  const companys = Companiesdata?.find(
+                    (item) => item.id === jobsfavorite?.companyId
+                  );
                   return (
                     <CardJob
                       setShowAlert={setShowAlert}

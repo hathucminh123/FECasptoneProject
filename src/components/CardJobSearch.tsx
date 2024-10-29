@@ -217,7 +217,7 @@ export default function CardJobSearch({
                       {data.jobLocationCities.join(", ")}
                     </span>
                   ) : (
-                    <span>No Location yet</span>
+                    <span>{company?.address} {" in "} {company?.city} </span>
                   )}
                 </Typography>
               </div>

@@ -58,6 +58,7 @@
     transition: box-shadow 300ms;
     border-radius: 8px;
     margin-bottom: 0px !important;
+    width: 400px;
     padding-bottom: 20px !important;
     padding-top: 16px !important;
     background-color: white;

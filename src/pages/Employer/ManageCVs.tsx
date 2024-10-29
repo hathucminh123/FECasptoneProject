@@ -373,6 +373,13 @@ export default function ManageCVs() {
                               <Edit />
                             </IconButton>
                           )}
+                           {/* <IconButton
+                              onClick={() =>
+                                handleEditClick(row.jobPostActivityId)
+                              }
+                            >
+                              <Edit />
+                            </IconButton> */}
                         <IconButton
                           onClick={() =>
                             handleViewComments(row.jobPostActivityId)

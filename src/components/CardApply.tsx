@@ -73,18 +73,28 @@ interface props {
 }
 
 export default function CardApply({ company, job, activity }: props) {
+  const pendingJobsArray = [];
+  pendingJobsArray.push(job);
+  const city = pendingJobsArray?.map(
+    (city) => city?.jobLocationCities
+  );
+  const flattenedArrayCity = city?.flat();
+  console.log("aduphong1", city);
+  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+
+  const cityColumn = uniqueArrayCity;
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
         <div className={classes.main2}>
           {activity.status === "Pending" ? (
             <div className={classes.Pending}>
-             <HourglassEmptyIcon />
+              <HourglassEmptyIcon />
               {activity.status}
             </div>
           ) : activity.status === "Rejected" ? (
             <div className={classes.Rejected}>
-                  <CancelIcon />
+              <CancelIcon />
               {activity.status}
             </div>
           ) : (
@@ -140,7 +150,7 @@ export default function CardApply({ company, job, activity }: props) {
           <div className={classes.main7}></div>
           <div className={classes.main8}>
             <LocationOnIcon />
-            <span className={classes.span3}>
+            {/* <span className={classes.span3}>
               {job?.jobLocationCities && job?.jobLocationCities?.length > 0 ? (
                 job?.jobLocationCities.map((item, index) => (
                   <div
@@ -165,10 +175,54 @@ export default function CardApply({ company, job, activity }: props) {
                     gap: 2,
                   }}
                 >
-                  No Location yet
+                
+            {company?.address} {" in "} {company?.city}
                 </div>
               )}
-            </span>
+            </span> */}
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                alignItems: "start",
+                fontWeight: 400,
+                mt: "7px",
+                color: "#414042 !important",
+                fontSize: "14px",
+                display: "flex",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "100%",
+                flexShrink: 1,
+              }}
+            >
+              {cityColumn.length && cityColumn.length>0 ? (
+                <span
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {cityColumn.join(", ")}
+                </span>
+              ) : (
+                <span
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {company?.address} {" in "} {company?.city}
+                </span>
+              )}
+            </Typography>
           </div>
           <div className={classes.button}>
             {job?.skillSets.map((tag, index) => (

@@ -498,7 +498,7 @@ export default function JobDetails() {
                       </span>
 
                       {feedBackUserJob?.status === "Rejected" ||
-                      feedBackUserJob?.status === "Passed" ? (
+                      feedBackUserJob?.status === "Passed"||  feedBackUserJob?.status ==="InterviewStage" ||feedBackUserJob?.status ==="CVScreeningPassed"? (
                         <span className={classes.span1}>
                           <IconButton onClick={handleStartAddNewChallenge}>
                             <Comment />
@@ -673,7 +673,7 @@ export default function JobDetails() {
                           fontSize: "16px",
                         }}
                       >
-                        No location yet
+                      {detailsCompany?.address} {" in "} {detailsCompany?.city}
                       </Typography>
                     </div>
                   )}

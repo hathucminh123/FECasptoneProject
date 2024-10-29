@@ -1,28 +1,74 @@
 import React, { useEffect, useState } from "react";
-import classes from "./RecentViewJob.module.css";
+import classes from "./SaveJobs.module.css";
+
+// import { useAppSelector, useAppDispatch } from "../redux/hooks/hooks";
+// import { companyData } from "../assets/data/CompanyData";
+// import { add } from "../redux/slices/favoriteJob";
+// import Alert from "@mui/material/Alert";
+// import AlertTitle from "@mui/material/AlertTitle";
+// import Stack from "@mui/material/Stack";
 import {
-  FormControl,
+  // FormControl,
   //   InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
+  // MenuItem,
+  // Select,
+  // SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import CardJob from "../components/CardJob";
-import { useAppSelector } from "../redux/hooks/hooks";
-import { companyData } from "../assets/data/CompanyData";
-import Alert from "@mui/material/Alert";
-import AlertTitle from "@mui/material/AlertTitle";
-import Stack from "@mui/material/Stack";
-import { Link } from "react-router-dom";
-export default function RecentViewJob() {
-  const [age, setAge] = React.useState("");
-  const data = useAppSelector((state) => state.view.item);
-  const [showAlert, setShowAlert] = useState<boolean>(false);
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
-  };
+import { useQuery } from "@tanstack/react-query";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import CardApply from "../components/CardApply";
 
+export default function RecentViewJob() {
+  //   const data = useAppSelector((state) => state.favorite.item);
+  //   const dispatch = useAppDispatch();
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  //   const [undoData, setUndoData] = useState<Job | null>(null);
+  //   const [age, setAge] = useState<string>("");
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: JobPostActivity,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPostActivity"],
+    queryFn: ({ signal }) => GetJobActivity({ signal: signal }),
+    staleTime: 5000,
+  });
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const Companiesdata = Company?.Companies;
+  const JobPostsdata = JobPosts?.JobPosts;
+  const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
+
+  const JobPending = JobPostActivitydata?.filter(
+    (item) => item.status === "InterviewStage"
+  );
+
+  // const PendingJobApplied = JobPostsdata?.find((job) =>
+  //   JobPostActivitydata?.some((activity) => job.id === activity.jobPostId)
+  // );
+
+  // console.log("quao", PendingJobApplied);
+
+  // Tự động tắt thông báo sau 3 giây
   useEffect(() => {
     if (showAlert) {
       const timer = setTimeout(() => {
@@ -31,69 +77,57 @@ export default function RecentViewJob() {
       return () => clearTimeout(timer);
     }
   }, [showAlert]);
+
+  // Xử lý khi người dùng nhấn "Undo"
+  //   const handleUndo = () => {
+  //     if (undoData) {
+  //       dispatch(add(undoData));
+  //       setUndoData(null);
+  //     }
+  //   };
+
+  //   const handleChange = (event: SelectChangeEvent) => {
+  //     setAge(event.target.value as string);
+  //   };
+
   return (
     <div className={classes.tab}>
-      {showAlert && (
+      {/* {showAlert && (
         <Stack
           sx={{
-            left: "inherit",
+            left: 'inherit',
             right: 0,
-            top: "120px",
-            bottom: "inherit",
-            marginRight: "48px",
-            width: "400px",
-            opacity: showAlert ? 1 : 0,
+            top: '120px',
+            bottom: 'inherit',
+            marginRight: '48px',
+            width: '400px',
+            opacity: showAlert ? 1 : 0, 
             zIndex: 11,
-            backgroundColor: "#eaf9e9",
-            padding: "16px 16px 16px 24px",
-            border: "none",
-            borderRadius: "8px",
-            maxWidth: "400px",
-            position: "fixed",
-            boxShadow: "0px 6px 32px rgba(0, 0, 0, 0.08)",
-            display: showAlert ? "block" : "none",
-            fontSize: "0.875rem",
-            pointerEvents: "auto",
-            transition: "opacity 0.15s linear",
-            boxSizing: "border-box",
+            backgroundColor: '#eaf0fa',
+            padding: '16px 16px 16px 24px',
+            border: 'none',
+            borderRadius: '8px',
+            maxWidth: '400px',
+            position: 'fixed',
+            boxShadow: '0px 6px 32px rgba(0, 0, 0, 0.08)',
+            display: showAlert ? 'block' : 'none',
+            fontSize: '0.875rem',
+            pointerEvents: 'auto',
+            transition: 'opacity 0.15s linear',
+            boxSizing: 'border-box',
           }}
         >
-          <Alert severity="success">
-            <AlertTitle>Success</AlertTitle>
-            <div style={{ display: "block" }}>
-              <div
-                style={{
-                  color: "#121212",
-                  marginRight: "18px",
-                  display: "block",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
-                >
-                  This job has been added to your <strong> Saved jobs</strong>
-                </Typography>
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "20px",
-                  color: "#0e2eed",
-                  marginTop: "12px",
-                }}
-              >
-                <Link
-                  style={{ color: "#0e2eed", textDecoration: "none" }}
-                  to={"/my-jobs"}
-                >
-                  View list
-                </Link>
-              </div>
+          <Alert variant="outlined" severity="info">
+            <AlertTitle>You unsaved a job.</AlertTitle>
+            <div style={{ display: 'flex', gap: '20px', color: '#0e2eed', marginTop: '12px' }}>
+              <Button color="inherit" size="small" onClick={handleUndo}>
+                Undo
+              </Button>
             </div>
           </Alert>
         </Stack>
-      )}
+      )} */}
+
       <div className={classes.icontainer}>
         <div className={classes.container}>
           <div className={classes.container1}>
@@ -110,56 +144,26 @@ export default function RecentViewJob() {
                     mb: 0,
                   }}
                 >
-                  Recent Viewed Jobs
+                  Passed Job ({JobPending?.length})
                 </Typography>
-                <div className={classes.sort}>
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      color: "#4e4c4d",
-                      whiteSpace: "nowrap",
-                      marginRight: "16px",
-                    }}
-                  >
-                    Sort by:
-                  </Typography>
-                  <FormControl fullWidth sx={{ width: "100%" }}>
-                    {/* <InputLabel id="demo-simple-select-label">Location</InputLabel> */}
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={age}
-                      // label="Location"
-                      onChange={handleChange}
-                      sx={{
-                        background: "white",
-                        width: "200px",
-                      }}
-                    >
-                      <MenuItem value="Nearest expiration time">
-                        Nearest expiration time
-                      </MenuItem>
-                      <MenuItem value="Newest jobs">Newest jobs</MenuItem>
-                      {/* <MenuItem value={30}>Đà Nẵng</MenuItem> */}
-                    </Select>
-                  </FormControl>
-                </div>
               </div>
             </div>
             <div className={classes.job}>
               <div className={classes.job1}>
-                {data.map((job) => {
-                  const companys = companyData.find(
-                    (item) => item.id === job.companyId
+                {JobPending?.map((activity) => {
+                  const PendingJobApplied = JobPostsdata?.find(
+                    (job) => job.id === activity.jobPostId
                   );
+                  const companys = Companiesdata?.find(
+                    (item) => item.id === PendingJobApplied?.companyId
+                  );
+
                   return (
-                    <CardJob
-                      setShowAlertt={setShowAlert}
-                      className={classes.carditem}
-                      data={job}
-                      key={job.id}
+                    <CardApply
                       company={companys}
-                      formButton={true}
+                      job={PendingJobApplied}
+                      activity={activity}
+                      key={activity.id}
                     />
                   );
                 })}

@@ -892,7 +892,7 @@ export default function FilterJobbySkill() {
                                       fontSize: "16px",
                                     }}
                                   >
-                                    No location yet
+                               {detailsCompany.address}{" in "}{detailsCompany.city}
                                   </Typography>
                                 </div>
                               )}

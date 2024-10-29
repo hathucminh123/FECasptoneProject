@@ -91,6 +91,17 @@ export default function CardJob({
     staleTime: 5000,
   });
 
+  const pendingJobsArray = [];
+  pendingJobsArray.push(data);
+  const city = pendingJobsArray?.map(
+    (city) => city?.jobLocationCities
+  );
+  const flattenedArrayCity = city?.flat();
+  console.log("aduphong1", city);
+  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+
+  const cityColumn = uniqueArrayCity;
+
   const FavoriteJobs = FavoriteJob?.JobPost;
   const haveFavorite = FavoriteJobs?.find(
     (item) => item.id === Number(data?.id)
@@ -242,7 +253,7 @@ export default function CardJob({
                     flexShrink: 1,
                   }}
                 >
-                  {data?.jobLocationCities?.length ? (
+                  {cityColumn.length && cityColumn.length>0 ? (
                     <span
                       style={{
                         display: "inline-block",
@@ -252,10 +263,18 @@ export default function CardJob({
                         maxWidth: "100%",
                       }}
                     >
-                      {data.jobLocationCities.join(", ")}
+                      {cityColumn.join(", ")}
                     </span>
                   ) : (
-                    <span>No Location yet</span>
+                    <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >{company?.address} {" in "} {company?.city}</span>
                   )}
                 </Typography>
               </div>

@@ -20,17 +20,7 @@ export default function HeaderJobsApply() {
                 Save Jobs
               </NavLink>
             </li>
-            <li className={classes.menuItem}>
-              <NavLink
-                to="recent-viewed"
-                className={({ isActive }) =>
-                  isActive ? classes.active : undefined
-                }
-                end
-              >
-              Recent Viewed Jobs
-              </NavLink>
-            </li>
+       
             <li className={classes.menuItem}>
               <NavLink
                 to="applied"
@@ -40,6 +30,17 @@ export default function HeaderJobsApply() {
                 end
               >
                 Applied Job
+              </NavLink>
+            </li>
+            <li className={classes.menuItem}>
+              <NavLink
+                to="recent-viewed"
+                className={({ isActive }) =>
+                  isActive ? classes.active : undefined
+                }
+                end
+              >
+              Interview
               </NavLink>
             </li>
           </ul>

@@ -124,6 +124,16 @@ export default function CompanyDetailRoot() {
   const jobincompanyData = JobPostsdata?.filter(
     (item) => item.companyId === companyDataa?.id
   );
+  // const skills = jobincompanyData?.map((skill) => skill.skillSets);
+  // const flattenedArray = skills?.flat();
+  // const uniqueArray = [...new Set(flattenedArray)];
+
+  const city = jobincompanyData?.map((city) => city.jobLocationCities);
+  const flattenedArrayCity = city?.flat();
+  console.log("aduphong1", city);
+  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+
+  const cityColumn = uniqueArrayCity;
 
   const { data: Company } = useQuery({
     queryKey: ["Companies"],
@@ -276,7 +286,54 @@ export default function CompanyDetailRoot() {
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
                     > */}
-                    {jobincompanyData?.map((job) =>
+                    {cityColumn.length && cityColumn.length > 0 ? (
+                      <>
+                        {cityColumn?.slice(0, 3).map((city, index) => (
+                          <Typography
+                            variant="body2"
+                            key={index}
+                            sx={{
+                              fontSize: "14px",
+                              fontWeight: 400,
+                              color: "white",
+                            }}
+                          >
+                            {city}
+                            {" - "}
+                          </Typography>
+                        ))}
+                        {cityColumn?.length > 3 && (
+                          <Typography
+                            variant="body2"
+                            // key={index}
+                            sx={{
+                              fontSize: "14px",
+                              fontWeight: 400,
+                              color: "white",
+                            }}
+                          >
+                            OTHER{" "}
+                          </Typography>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <Typography
+                          variant="body2"
+                          // key={index}
+                          sx={{
+                            fontSize: "14px",
+                            fontWeight: 400,
+                            color: "white",
+                          }}
+                        >
+                          {companyDataa.address}
+                          {" in "}
+                          {companyDataa.city}
+                        </Typography>
+                      </>
+                    )}
+                    {/* {jobincompanyData?.map((job) =>
                       job.jobLocationCities.map((item, index) => (
                         <Typography
                           variant="body2"
@@ -290,7 +347,7 @@ export default function CompanyDetailRoot() {
                           {item}{" - "}
                         </Typography>
                       ))
-                    )}
+                    )} */}
                     {/* </Typography> */}
                   </div>
                   <div className={classes.job}>
