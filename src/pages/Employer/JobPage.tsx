@@ -223,14 +223,14 @@ export default function JobPage() {
                     Jobs title
                   </Typography>
                 </div>
-                <div className={classes.left1}>
+                {/* <div className={classes.left1}>
                   <Typography
                     variant="h1"
                     sx={{ fontSize: "16px", fontWeight: 500, color: "#303235" }}
                   >
                     Status
                   </Typography>
-                </div>
+                </div> */}
                 <div className={classes.right}>
                   <Typography
                     variant="h1"
@@ -239,14 +239,14 @@ export default function JobPage() {
                     System-generated CVs
                   </Typography>
                 </div>
-                <div className={classes.right}>
+                {/* <div className={classes.right}>
                   <Typography
                     variant="h1"
                     sx={{ fontSize: "16px", fontWeight: 500, color: "#303235" }}
                   >
                     Filter CVs
                   </Typography>
-                </div>
+                </div> */}
                 <div className={classes.right1}>
                   <div className={classes.icon1}>
                     <SettingsOutlinedIcon />
@@ -311,7 +311,7 @@ export default function JobPage() {
                       </div>
                     </div>
 
-                    <div className={classes.left1}>
+                    {/* <div className={classes.left1}>
                       <Typography
                         variant="h1"
                         sx={{
@@ -330,7 +330,7 @@ export default function JobPage() {
                       >
                         Approved
                       </Typography>
-                    </div>
+                    </div> */}
 
                     <div className={classes.right}>
                       <div className={classes.div7}>
@@ -348,7 +348,7 @@ export default function JobPage() {
                         </div>
                       </div>
                     </div>
-                    <div className={classes.right}>
+                    {/* <div className={classes.right}>
                       <div className={classes.div7}>
                         <div className={classes.div9}>
                           <Link
@@ -359,7 +359,7 @@ export default function JobPage() {
                           </Link>
                         </div>
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className={classes.right1}>
                       <div

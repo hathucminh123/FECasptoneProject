@@ -87,8 +87,8 @@ export default function ElegantTemplate() {
                         <div className={classes.education4}>
                           <p className={classes.p1}>
                             From:{""}
-                            {moment(edu.startDate).format("YYYY-MM-DD")} - To:{" "}
-                            {moment(edu.endDate).format("YYYY-MM-DD")}
+                            {moment(edu.startDate).format("DD-MM-YYYY")} - To:{" "}
+                            {moment(edu.endDate).format("DD-MM-YYYY")}
                           </p>
                           <div className={classes.line}></div>
                           <p className={classes.education5}>
@@ -141,8 +141,8 @@ export default function ElegantTemplate() {
                         <div className={classes.experience4}>
                           {" "}
                           From:{""}
-                          {moment(exp.startDate).format("YYYY-MM-DD")} - To:{" "}
-                          {moment(exp.endDate).format("YYYY-MM-DD")}
+                          {moment(exp.startDate).format("DD-MM-YYYY")} - To:{" "}
+                          {moment(exp.endDate).format("DD-MM-YYYY")}
                         </div>
                         <div className={classes.experience5}>
                           <p className={classes.pex}>

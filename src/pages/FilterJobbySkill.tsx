@@ -243,6 +243,13 @@ export default function FilterJobbySkill() {
     );
     setApplied(hasAppliedJobActivity);
   };
+
+  const expiryDate = jobDetails?.expiryDate
+    ? new Date(jobDetails?.expiryDate)
+    : null;
+  const today = new Date();
+
+  const isExpired = expiryDate ? expiryDate < today : undefined;
   const [showAlert, setShowAlert] = useState<boolean>(false);
   // const handleSaveJob = () => {
   //   if (!auth) {
@@ -380,7 +387,7 @@ export default function FilterJobbySkill() {
   //   },
   // });
 
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       console.log("Search result:", data);
@@ -561,6 +568,7 @@ export default function FilterJobbySkill() {
               setJobSearch={setJobSearch}
               jobSearch={jobSearch}
               text={text}
+              isPending={isPending}
               location={locationne}
               setLocation={setLocation}
               setText={setText}
@@ -750,7 +758,7 @@ export default function FilterJobbySkill() {
                                 <div style={{ marginLeft: "auto" }}>
                                   Applied Date: {""}
                                   {moment(applied?.applicationDate).format(
-                                    "YYYY-MM-DD"
+                                    "DD-MM-YYYY"
                                   )}
                                 </div>
                                 {feedBackUserJob?.status === "Rejected" ||
@@ -764,6 +772,33 @@ export default function FilterJobbySkill() {
                                   </span>
                                 ) : undefined}
                               </div>
+                            </div>
+                          ) : isExpired ? (
+                            <div className={classes.button_icon}>
+                              <Button
+                                // onClick={handleNavigateApply}
+                                disabled={true}
+                                sx={{
+                                  mt: 3,
+                                  width: "90%",
+                                  backgroundColor: "#b0b0b0",
+                                  borderColor: "#b0b0b0",
+                                  color: "#fff",
+                                  borderRadius: "4px",
+                                  fontSize: "16px",
+                                  fontWeight: "bold",
+                                  padding: "11px 24px",
+
+                                  "&:hover": {
+                                    // backgroundColor: "#C82222",
+                                    backgroundColor: "#b0b0b0",
+
+                                    color: "white",
+                                  },
+                                }}
+                              >
+                                application deadline
+                              </Button>
                             </div>
                           ) : (
                             <div className={classes.button_icon}>
@@ -782,6 +817,7 @@ export default function FilterJobbySkill() {
 
                                   "&:hover": {
                                     backgroundColor: "#C82222",
+
                                     color: "white",
                                   },
                                 }}
@@ -892,7 +928,9 @@ export default function FilterJobbySkill() {
                                       fontSize: "16px",
                                     }}
                                   >
-                               {detailsCompany.address}{" in "}{detailsCompany.city}
+                                    {detailsCompany.address}
+                                    {" in "}
+                                    {detailsCompany.city}
                                   </Typography>
                                 </div>
                               )}
@@ -919,11 +957,11 @@ export default function FilterJobbySkill() {
                                 >
                                   From{" "}
                                   {moment(jobDetails?.postingDate).format(
-                                    "YYYY-MM-DD"
+                                    "DD-MM-YYYY"
                                   )}{" "}
                                   To{" "}
                                   {moment(jobDetails?.expiryDate).format(
-                                    "YYYY-MM-DD"
+                                    "DD-MM-YYYY"
                                   )}
                                 </Typography>
                               </div>

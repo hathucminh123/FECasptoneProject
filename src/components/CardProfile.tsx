@@ -9,6 +9,7 @@ import { DeleteEducationDetails } from "../Services/EducationDetails/DeleteEduca
 import { queryClient } from "../Services/mainService";
 import { useMutation } from "@tanstack/react-query";
 import { message } from "antd";
+import moment from "moment";
 interface EducationDetail {
   id: number;
   name: string;
@@ -40,7 +41,8 @@ export default function CardProfile({
   data,
 }: form) {
   const [openEducation, setOpenEducation] = useState<boolean>(false);
-  const [selectEducation, setSelectEducation] = useState<EducationDetail | null>(null);
+  const [selectEducation, setSelectEducation] =
+    useState<EducationDetail | null>(null);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const handleOnEdit = (item: EducationDetail) => {
     setOpenEducation(true);
@@ -53,13 +55,12 @@ export default function CardProfile({
   const { mutate } = useMutation({
     mutationFn: DeleteEducationDetails,
     onSuccess: () => {
-
       queryClient.invalidateQueries({
         queryKey: ["EducationDetails"],
-        refetchType: "active", 
+        refetchType: "active",
       });
       message.success("Education Details Deleted Successfully");
-      setDeletingId(null); 
+      setDeletingId(null);
     },
     onError: () => {
       message.error("Failed to delete the skill set");
@@ -69,9 +70,8 @@ export default function CardProfile({
 
   const handleDelete = (id: number) => {
     setDeletingId(id);
-    mutate({id:id})
+    mutate({ id: id });
   };
-
 
   return (
     <div className={classes.main}>
@@ -116,7 +116,10 @@ export default function CardProfile({
                       School name: {item?.name}
                     </Typography>
                     <div className={classes.edit}>
-                      <div style={{cursor:'pointer'}} onClick={() => handleOnEdit(item)}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleOnEdit(item)}
+                      >
                         <EditOutlinedIcon
                           sx={{
                             color: "#ed1b2f",
@@ -124,12 +127,15 @@ export default function CardProfile({
                         />
                       </div>
                       {deletingId === item.id ? (
-                      <>Please wait a second...</> 
-                    ) : (
-                      <div style={{cursor:'pointer'}} onClick={() => handleDelete(item.id)}>
-                        <DeleteIcon />
-                      </div>
-                    )}
+                        <>Please wait a second...</>
+                      ) : (
+                        <div
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handleDelete(item.id)}
+                        >
+                          <DeleteIcon />
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className={classes.main6}>
@@ -139,8 +145,9 @@ export default function CardProfile({
 
                   {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
                   <div className={classes.main7}>
-                    From: {item.startDate.slice(0, 10)} - To:{" "}
-                    {item.endDate.slice(0, 10)}
+                    From:{" "}
+                    {moment(item.startDate.slice(0, 10)).format("DD/MM/YYYY")} -
+                    To: {moment(item.endDate.slice(0, 10)).format("DD/MM/YYYY")}
                   </div>
                   <div className={classes.main7}>Degree: {item.degree}</div>
                   <div className={classes.main7}>GPA: {item.gpa}</div>
@@ -163,7 +170,9 @@ export default function CardProfile({
         </span>
       </div>
       <AnimatePresence>
-        {openEducation && <EducationEdit onDone={handleDone2} data={selectEducation}  />}
+        {openEducation && (
+          <EducationEdit onDone={handleDone2} data={selectEducation} />
+        )}
       </AnimatePresence>
     </div>
   );

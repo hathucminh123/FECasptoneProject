@@ -14,6 +14,7 @@ import { DeleteFavoriteJobs } from "../Services/FavoriteJobs/DeleteFavoriteJobs"
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import Button from "@mui/material/Button";
+import moment from "moment";
 
 interface JobType {
   id: number;
@@ -161,8 +162,8 @@ export default function CardJob({
                     color: "#a6a6a6 !important",
                   }}
                 >
-                  From: {data?.postingDate.slice(0, 10)} - To:{" "}
-                  {data?.expiryDate.slice(0, 10)}
+                  From: {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} - To:{" "}
+                  {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
                 </Typography>
               </div>
 

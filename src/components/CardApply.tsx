@@ -107,7 +107,7 @@ export default function CardApply({ company, job, activity }: props) {
           <div className={classes.main3}>
             <span className={classes.span}>
               Applied Date:{" "}
-              {moment(activity.applicationDate).format("YYYY-MM-DD")}
+              {moment(activity.applicationDate).format("DD-MM-YYYY")}
             </span>
           </div>
           <Typography

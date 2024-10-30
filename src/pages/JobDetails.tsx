@@ -493,12 +493,14 @@ export default function JobDetails() {
                       <span className={classes.span1}>
                         Applied Date:{" "}
                         {moment(hasAppliedJobActivity.applicationDate).format(
-                          "YYYY/MM/DD HH:mm"
+                          "DD/MM/YYYY HH:mm"
                         )}
                       </span>
 
                       {feedBackUserJob?.status === "Rejected" ||
-                      feedBackUserJob?.status === "Passed"||  feedBackUserJob?.status ==="InterviewStage" ||feedBackUserJob?.status ==="CVScreeningPassed"? (
+                      feedBackUserJob?.status === "Passed" ||
+                      feedBackUserJob?.status === "InterviewStage" ||
+                      feedBackUserJob?.status === "CVScreeningPassed" ? (
                         <span className={classes.span1}>
                           <IconButton onClick={handleStartAddNewChallenge}>
                             <Comment />
@@ -507,58 +509,57 @@ export default function JobDetails() {
                       ) : undefined}
                     </div>
                   </div>
+                ) : isExpired ? (
+                  <div className={classes.button_icon}>
+                    <Button
+                      // onClick={handleNavigateApply}
+                      disabled={true}
+                      sx={{
+                        mt: 3,
+                        width: "90%",
+                        backgroundColor: "#b0b0b0",
+                        borderColor: "#b0b0b0",
+                        color: "#fff",
+                        borderRadius: "4px",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        padding: "11px 24px",
+
+                        "&:hover": {
+                          // backgroundColor: "#C82222",
+                          backgroundColor: "#b0b0b0",
+
+                          color: "white",
+                        },
+                      }}
+                    >
+                      application deadline
+                    </Button>
+                  </div>
                 ) : (
                   <div className={classes.button_icon}>
-                    {isExpired ? (
-                      <Button
-                        // onClick={handleNavigateApply}
-                        disabled={true}
-                        sx={{
-                          mt: 3,
-                          width: "90%",
-                          backgroundColor: "#b0b0b0",
-                          borderColor: "#b0b0b0",
-                          color: "#fff",
-                          borderRadius: "4px",
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                          padding: "11px 24px",
+                    <Button
+                      onClick={handleNavigateApply}
+                      sx={{
+                        mt: 3,
+                        width: "90%",
+                        backgroundColor: "#ed1b2f",
+                        borderColor: "#ed1b2f",
+                        color: "#fff",
+                        borderRadius: "4px",
+                        fontSize: "16px",
+                        fontWeight: "bold",
+                        padding: "11px 24px",
 
-                          "&:hover": {
-                            // backgroundColor: "#C82222",
-                            backgroundColor: "#b0b0b0",
+                        "&:hover": {
+                          backgroundColor: "#C82222",
 
-                            color: "white",
-                          },
-                        }}
-                      >
-                        application deadline
-                      </Button>
-                    ) : (
-                      <Button
-                        onClick={handleNavigateApply}
-                        sx={{
-                          mt: 3,
-                          width: "90%",
-                          backgroundColor: "#ed1b2f",
-                          borderColor: "#ed1b2f",
-                          color: "#fff",
-                          borderRadius: "4px",
-                          fontSize: "16px",
-                          fontWeight: "bold",
-                          padding: "11px 24px",
-
-                          "&:hover": {
-                            backgroundColor: "#C82222",
-
-                            color: "white",
-                          },
-                        }}
-                      >
-                        Apply now
-                      </Button>
-                    )}
-
+                          color: "white",
+                        },
+                      }}
+                    >
+                      Apply now
+                    </Button>
                     {haveFavorite ? (
                       <div
                         style={{ cursor: "pointer" }}
@@ -673,7 +674,8 @@ export default function JobDetails() {
                           fontSize: "16px",
                         }}
                       >
-                      {detailsCompany?.address} {" in "} {detailsCompany?.city}
+                        {detailsCompany?.address} {" in "}{" "}
+                        {detailsCompany?.city}
                       </Typography>
                     </div>
                   )}

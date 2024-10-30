@@ -96,6 +96,11 @@ export default function WorkExperience({ onDone }: Props) {
       return;
     }
 
+    if (Number(formData.endYear) < Number(formData.startYear)) {
+      message.error("End year cannot be less than the start year");
+      return;
+    }
+
     // Convert month and year into ISO date format
     const startMonthNumber = monthMap[formData.startMonth];
     const endMonthNumber = monthMap[formData.endMonth];

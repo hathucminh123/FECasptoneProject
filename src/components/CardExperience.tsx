@@ -9,6 +9,7 @@ import { useMutation } from "@tanstack/react-query";
 import { DeleteExperienceDetail } from "../Services/ExperienceDetailService/DeleteExperienceDetail";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
+import moment from "moment";
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -143,15 +144,12 @@ export default function CardExperience({
 
                   {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
                   <div className={classes.main7}>
-                    From: {item.startDate.slice(0, 10)} - To:{" "}
-                    {item.endDate.slice(0, 10)}
+                    From:{" "}
+                    {moment(item.startDate.slice(0, 10)).format("DD/MM/YYYY")} -
+                    To: {moment(item.endDate.slice(0, 10)).format("DD/MM/YYYY")}
                   </div>
                   {/* <div className={classes.main7}>{item.responsibilities}</div> */}
                   {/* <div className={classes.main7}>{item.achievements}</div> */}
-                  <div
-                    className={classes.main7}
-                    dangerouslySetInnerHTML={{ __html: item.responsibilities }}
-                  />
                   <Typography
                     variant="h3"
                     sx={{
@@ -163,7 +161,25 @@ export default function CardExperience({
                       mb: 0,
                     }}
                   >
-                  Achievements:
+                    Responsibilities:
+                  </Typography>
+                  <div
+                    className={classes.main7}
+                    dangerouslySetInnerHTML={{ __html: item.responsibilities }}
+                  />
+
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      lineHeight: 1.5,
+                      fontSize: "18px",
+                      color: "#121212",
+                      fontWeight: 700,
+                      mt: 0,
+                      mb: 0,
+                    }}
+                  >
+                    Achievements:
                   </Typography>
 
                   <div

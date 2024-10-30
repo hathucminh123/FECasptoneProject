@@ -45,7 +45,7 @@ const monthMap: { [key: string]: number } = {
   December: 12,
 };
 
-const years = Array.from(new Array(50), (val, index) => index + 1970).map(
+const years = Array.from(new Array(70), (val, index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
@@ -89,26 +89,29 @@ export default function Education({ onDone }: Props) {
   });
 
   const handleSubmit = () => {
-
     if (!formData.startYear || !formData.startMonth || !formData.endYear || !formData.endMonth) {
       message.error("Please fill in all date fields");
       return;
     }
-
-
+  
+   
+    if (Number(formData.endYear) < Number(formData.startYear)) {
+      message.error("End year cannot be less than the start year");
+      return;
+    }
+  
     const startMonthNumber = monthMap[formData.startMonth];
     const endMonthNumber = monthMap[formData.endMonth];
-
+  
     if (!startMonthNumber || !endMonthNumber) {
       message.error("Invalid month value");
       return;
     }
-
-
+  
     const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
     const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
-
-    // Gọi API mutation để gửi dữ liệu
+  
+  
     mutate({
       data: {
         name: formData.name,
@@ -118,10 +121,10 @@ export default function Education({ onDone }: Props) {
         startDate,
         endDate,
         gpa: formData.gpa,
-      }
+      },
     });
   };
-
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({

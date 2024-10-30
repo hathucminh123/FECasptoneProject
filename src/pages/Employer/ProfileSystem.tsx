@@ -113,8 +113,8 @@ export default function ProfileSystem() {
                             <div>
                               <strong>
                                 School Name: {edu.name} | From:{""}
-                                {moment(edu.startDate).format("YYYY-MM-DD")} -
-                                To: {moment(edu.endDate).format("YYYY-MM-DD")}
+                                {moment(edu.startDate).format("DD-MM-YYYY")} -
+                                To: {moment(edu.endDate).format("DD-MM-YYYY")}
                               </strong>
                             </div>
                             <div>
@@ -136,8 +136,8 @@ export default function ProfileSystem() {
                             <div className={classes.exp2}>
                               {" "}
                               From:{""}
-                              {moment(exp.startDate).format("YYYY-MM-DD")} - To:{" "}
-                              {moment(exp.endDate).format("YYYY-MM-DD")}
+                              {moment(exp.startDate).format("DD-MM-YYYY")} - To:{" "}
+                              {moment(exp.endDate).format("DD-MM-YYYY")}
                             </div>
                             <div>
                               <strong>

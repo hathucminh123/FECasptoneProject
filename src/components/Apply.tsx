@@ -24,19 +24,29 @@ import { PostCVs } from "../Services/CVService/PostCV";
 import { storage } from "../firebase/config.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import { GetUserProfile } from "../Services/UserProfileService/UserProfile.ts";
 
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState("");
+  const userId = localStorage.getItem("userId");
   const { JobId } = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setSelectedFile(file);
   };
 
-  const { mutate:postcv } = useMutation({
+  const { mutate: postcv } = useMutation({
     mutationFn: PostCVs,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["CVs"] });
@@ -144,21 +154,21 @@ export default function Apply() {
                 </div>
               </div>
               <div className={classes.logo}>
-              <Typography
-                variant="h2"
-                sx={{
-                  lineHeight: 1.5,
-                  fontSize: "22px",
-                  fontWeight: 700,
-                  marginTop: 0,
-                  marginBottom: 0,
-                  boxSizing: "border-box",
-                  display: "block",
-                  color: "#fff",
-                }}
-              >
-                Amazing Job
-              </Typography>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    lineHeight: 1.5,
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    boxSizing: "border-box",
+                    display: "block",
+                    color: "#fff",
+                  }}
+                >
+                  Amazing Job
+                </Typography>
                 {/* <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShDXOd1EUVLnkgF9P9P9ZAGyBSv6f_lmq6CA&s"
                   alt="logo"
@@ -197,8 +207,10 @@ export default function Apply() {
                   <TextField
                     id="name"
                     variant="outlined"
+                    value={`${UserProfileData?.firstName} ${UserProfileData?.lastName}`}
                     label="Your name"
                     required
+                    disabled
                     sx={{ width: "100%" }}
                   />
                 </div>
@@ -230,66 +242,73 @@ export default function Apply() {
                   </Typography>
                 </div>
                 <div className={classes.upload}>
-          <div className={classes.upload1}>
-            <div className={classes.upload2}>
-              <ContactPageOutlinedIcon
-                sx={{
-                  marginTop: ".25rem",
-                  verticalAlign: "middle",
-                  height: "40px",
-                  width: "40px",
-                }}
-              />
-              <div className={classes.upload3}>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    fontWeight: 500,
-                    color: "#121212",
-                    marginTop: 0,
-                    fontSize: "1rem",
-                    marginBottom: ".25rem",
-                    lineHeight: "1.5",
-                  }}
-                  gutterBottom
-                >
-                  Your own CV
-                </Typography>
-                <div className={classes.upload4}>
-                  <Box sx={{ textAlign: "start" }}>
-                    <Button
-                      variant="text"
-                      component="label"
-                      startIcon={<CloudUploadOutlinedIcon />}
-                      sx={{
-                        color: "blue",
-                        textTransform: "none",
-                        fontSize: "16px",
-                      }}
-                    >
-                      Upload
-                      <input type="file" hidden onChange={handleFileChange} />
-                    </Button>
+                  <div className={classes.upload1}>
+                    <div className={classes.upload2}>
+                      <ContactPageOutlinedIcon
+                        sx={{
+                          marginTop: ".25rem",
+                          verticalAlign: "middle",
+                          height: "40px",
+                          width: "40px",
+                        }}
+                      />
+                      <div className={classes.upload3}>
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            fontWeight: 500,
+                            color: "#121212",
+                            marginTop: 0,
+                            fontSize: "1rem",
+                            marginBottom: ".25rem",
+                            lineHeight: "1.5",
+                          }}
+                          gutterBottom
+                        >
+                          Your own CV
+                        </Typography>
+                        <div className={classes.upload4}>
+                          <Box sx={{ textAlign: "start" }}>
+                            <Button
+                              variant="text"
+                              component="label"
+                              startIcon={<CloudUploadOutlinedIcon />}
+                              sx={{
+                                color: "blue",
+                                textTransform: "none",
+                                fontSize: "16px",
+                              }}
+                            >
+                              Upload
+                              <input
+                                type="file"
+                                hidden
+                                onChange={handleFileChange}
+                              />
+                            </Button>
 
-                    {/* Show selected file before upload */}
-                    {selectedFile && (
-                      <Typography variant="body1" sx={{ marginTop: "10px" }}>
-                        Selected file: {selectedFile.name}
-                      </Typography>
-                    )}
-                    {selectedFile && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleUploadClick}
-                        sx={{ marginTop: "1rem" }}
-                      >
-                        Upload CV
-                      </Button>
-                    )}
+                            {/* Show selected file before upload */}
+                            {selectedFile && (
+                              <Typography
+                                variant="body1"
+                                sx={{ marginTop: "10px" }}
+                              >
+                                Selected file: {selectedFile.name}
+                              </Typography>
+                            )}
+                            {selectedFile && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleUploadClick}
+                                sx={{ marginTop: "1rem" }}
+                              >
+                                Upload CV
+                              </Button>
+                            )}
 
-                    {/* Uploaded CVs list */}
-                    {/* {dataCVS.length > 0 && (
+                            {/* Uploaded CVs list */}
+                            {/* {dataCVS.length > 0 && (
                       <div style={{ marginTop: "1rem" }}>
                         <Typography
                           variant="h6"
@@ -338,12 +357,12 @@ export default function Apply() {
                         )}
                       </div>
                     )} */}
-                  </Box>
+                          </Box>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
                 {dataCVS.map((cv) => (
                   <div
@@ -466,8 +485,8 @@ export default function Apply() {
                     text="Send my cv"
                     color="#ed1b2f"
                     variant="contained"
-                    sxOverrides={{ width: "100%" }} 
-                    onClick={handleSendCvApply} 
+                    sxOverrides={{ width: "100%" }}
+                    onClick={handleSendCvApply}
                   />
                 </div>
               </Box>

@@ -115,7 +115,8 @@ export default function CardJobSearch({
             <span
               style={{ color: "#a6a6a6", fontSize: "14px", fontWeight: 400 }}
             >
-              Post 11 min ago
+             From: {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} - To:{" "}
+             {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
             </span>
           </div>
           <Typography
@@ -266,7 +267,7 @@ export default function CardJobSearch({
           {applied?.status}
           <div style={{ marginLeft: "auto" }}>
             Applied Date: {""}
-            {moment(applied.applicationDate).format("YYYY-MM-DD")}
+            {moment(applied.applicationDate).format("DD-MM-YYYY")}
           </div>
         </div>
       ) : undefined}

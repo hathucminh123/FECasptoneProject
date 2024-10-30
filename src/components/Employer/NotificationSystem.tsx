@@ -163,7 +163,7 @@ export default function NotificationSystem() {
             <span className={classes.span}>Notification</span>
           </div>
           <div className={classes.main6}>
-            {moment(notification.createdDate).format("YY-MM-DD")}
+            {moment(notification.createdDate).format("DD-MM-YYYY")}
           </div>
           <Link to="" className={classes.link}>
             {notification.title}

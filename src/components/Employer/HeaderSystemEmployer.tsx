@@ -309,7 +309,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token,notification
                           <div className={classes.div12}>
                             <div className={classes.div13}>
                               <span className={classes.span4}>
-                                {moment(notification.createdDate).format('YYYY-MM-DD HH:mm:ss')}
+                                {moment(notification.createdDate).format('DD-MM-YYYY HH:mm:ss')}
                               </span>
                             </div>
                           </div>

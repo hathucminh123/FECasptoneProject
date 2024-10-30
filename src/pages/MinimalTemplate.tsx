@@ -139,8 +139,8 @@ export default function MinimalTemplate() {
                           <div className={classes.education3}>
                             {" "}
                             From:{""}
-                            {moment(edu.startDate).format("YYYY-MM-DD")} - To:{" "}
-                            {moment(edu.endDate).format("YYYY-MM-DD")}
+                            {moment(edu.startDate).format("DD-MM-YYYY")} - To:{" "}
+                            {moment(edu.endDate).format("DD-MM-YYYY")}
                           </div>
                           <div className={classes.education3}>
                             Degree: {edu.degree}
@@ -230,8 +230,8 @@ export default function MinimalTemplate() {
                             <div className={classes.exp3}>
                               {" "}
                               From:{""}
-                              {moment(exp.startDate).format("YYYY-MM-DD")} - To:{" "}
-                              {moment(exp.endDate).format("YYYY-MM-DD")}
+                              {moment(exp.startDate).format("DD-MM-YYYY")} - To:{" "}
+                              {moment(exp.endDate).format("DD-MM-YYYY")}
                             </div>
                           </div>
                           <div className={classes.exp4}>

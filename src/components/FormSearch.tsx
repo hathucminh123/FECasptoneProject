@@ -49,6 +49,7 @@ interface FormSearchProps {
   onClick: () => void;
   location: string;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
+  isPending?: unknown;
 }
 
 export default function FormSearch({
@@ -57,6 +58,7 @@ export default function FormSearch({
   onClick,
   location,
   setLocation,
+  isPending,
 }: FormSearchProps) {
   const locationPass = useLocation();
   const locationText = locationPass.state?.textt || "";
@@ -79,15 +81,14 @@ export default function FormSearch({
       "CAN THO",
       "NHA TRANG",
     ];
-  
+
     if (allowedLocations.includes(locationText)) {
       setLocation(locationText);
     } else {
       setText(locationText);
       setLocation("All");
     }
-  }, [locationText,setLocation,setText]);
-  
+  }, [locationText, setLocation, setText]);
 
   const handleChangeLocation = (event: SelectChangeEvent) => {
     setLocation(event.target.value as string);
@@ -163,31 +164,57 @@ export default function FormSearch({
             },
           }}
         />
-
-        <Button
-          onClick={onClick}
-          startIcon={<SearchIcon />}
-          variant="contained"
-          size="large"
-          sx={{
-            backgroundColor: "#FF6F61",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-            padding: "10px 20px",
-            height: "56px",
-            mb: "2px",
-            fontSize: "16px",
-            width: { xs: "100%", sm: "25%" },
-            marginTop: { xs: "10px", sm: "0" },
-            transition: "background-color 0.3s ease",
-            "&:hover": {
-              backgroundColor: "#ff5c4f",
-            },
-          }}
-        >
-          Search
-        </Button>
+        {isPending ? (
+          <Button
+            // onClick={onClick}
+            startIcon={<SearchIcon />}
+            variant="contained"
+            size="large"
+            sx={{
+              backgroundColor: "#FF6F61",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              padding: "10px 20px",
+              height: "56px",
+              mb: "2px",
+              fontSize: "16px",
+              width: { xs: "100%", sm: "25%" },
+              marginTop: { xs: "10px", sm: "0" },
+              transition: "background-color 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#ff5c4f",
+              },
+            }}
+          >
+            Searching...
+          </Button>
+        ) : (
+          <Button
+            onClick={onClick}
+            startIcon={<SearchIcon />}
+            variant="contained"
+            size="large"
+            sx={{
+              backgroundColor: "#FF6F61",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              padding: "10px 20px",
+              height: "56px",
+              mb: "2px",
+              fontSize: "16px",
+              width: { xs: "100%", sm: "25%" },
+              marginTop: { xs: "10px", sm: "0" },
+              transition: "background-color 0.3s ease",
+              "&:hover": {
+                backgroundColor: "#ff5c4f",
+              },
+            }}
+          >
+            Search
+          </Button>
+        )}
       </Box>
     </Box>
   );

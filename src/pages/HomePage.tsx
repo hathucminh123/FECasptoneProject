@@ -69,7 +69,7 @@ export default function HomePage() {
   console.log("thietko", jobSearch);
   const [text, setText] = useState<string>("");
   const [location, setLocation] = useState<string>("All");
-  const { mutateAsync } = useMutation({
+  const { mutateAsync ,isPending } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       console.log("Search result:", data);
@@ -280,6 +280,7 @@ export default function HomePage() {
               <FormSearch
                 setJobSearch={setJobSearch}
                 jobSearch={jobSearch}
+                isPending={isPending}
                 text={text}
                 location={location}
                 setLocation={setLocation}
