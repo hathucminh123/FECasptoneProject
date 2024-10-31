@@ -1,0 +1,83 @@
+.body{
+    margin: 0;
+    padding: 0; 
+    background-color: #fff;
+    font-family: Graphik, Helvetica Neue, arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #050c26;
+    overflow-y: scroll;
+    box-sizing: border-box;
+
+    border-width: 0;
+    border-style: solid;
+}
+
+.main{
+    min-height: 100vh;
+    box-sizing: border-box;
+
+    border-width: 0;
+    border-style: solid;
+}
+
+.main1{
+    position: fixed;
+    width: 252px;
+    padding: 32px 24px;
+    background-color: #0e1111;
+    color: #fff;
+    height: 100vh;
+    z-index: 2;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+
+.main2{
+    padding-top: 8px;
+    box-sizing: border-box;
+
+    border-width: 0;
+    border-style: solid;
+}
+.main2 a{
+    padding: 8px 0;
+    --tw-text-opacity: 1;
+    color: rgb(155 157 168 / var(--tw-text-opacity));
+    font-weight: 500;
+    display: block;
+    box-sizing: border-box;
+
+    border-width: 0;
+    border-style: solid;
+    text-decoration: none;
+}
+
+.main2 a.active{
+    padding: 8px 0;
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+    font-weight: 500;
+    display: block;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.svg{
+    vertical-align: middle;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.span{
+    margin-left: 8px;
+    vertical-align: middle;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+

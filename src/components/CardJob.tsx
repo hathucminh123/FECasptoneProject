@@ -168,7 +168,7 @@ export default function CardJob({
               </div>
 
               {/* Job Title */}
-              <Link to={`jobs/detail/${data?.id}`} className={classes.link}>
+              <Link to={`/jobs/detail/${data?.id}`} className={classes.link}>
                 <Typography
                   variant="h5"
                   gutterBottom

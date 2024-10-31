@@ -72,6 +72,10 @@ import ProtectedRouteVerifi from "./components/Employer/ProtectedRouteVerifi";
 import VerifiInfomation from "./pages/Employer/VerifiInfomation";
 import Comment from "./pages/Employer/Comment";
 import VerifiEmployee from "./pages/Employer/VerifiEmployee";
+import StepComppanyVerification from "./pages/Employer/StepComppanyVerification";
+import VerifiCompany from "./pages/Employer/verifiCompany";
+import Invite from "./pages/Employer/Invite";
+import Complete from "./pages/Employer/Complete";
 
 const router = createBrowserRouter([
   {
@@ -278,6 +282,30 @@ const router = createBrowserRouter([
   },
 
   {
+    path: "onboarding/recruit",
+    element: <StepComppanyVerification />,
+    errorElement: <ErrorPage />,
+    loader: tokenLoader,
+    children: [
+      {
+        index: true,
+        element: <VerifiCompany />,
+      },
+
+      {
+        path:"inviteYourTeam",
+        element:<Invite/>
+      },
+      {
+        path:"Complete",
+        element:<Complete/>
+
+      }
+
+    ],
+  },
+
+  {
     path: "/employer-verify/jobs",
     element: (
       <EmployerProtectedRoute>
@@ -313,8 +341,8 @@ const router = createBrowserRouter([
       },
 
       {
-        path:'InfoVerification',
-        element:<VerifiInfomation/>
+        path: "InfoVerification",
+        element: <VerifiInfomation />,
       },
       // {
       //   path: "account",
@@ -372,8 +400,8 @@ const router = createBrowserRouter([
           },
 
           {
-            path:'VerifiEmployee',
-            element:<VerifiEmployee/>
+            path: "VerifiEmployee",
+            element: <VerifiEmployee />,
           },
           {
             path: "Choosecompany",
@@ -401,7 +429,7 @@ const router = createBrowserRouter([
       },
       {
         path: "system-Comment/:commentId",
-        element: <Comment/>,
+        element: <Comment />,
       },
       {
         path: "system-notification",
