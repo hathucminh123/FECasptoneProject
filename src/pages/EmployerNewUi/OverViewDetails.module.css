@@ -1,0 +1,222 @@
+.main {
+  max-width: 860px;
+  padding: 0 24px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.section {
+  border-radius: 4px;
+  border: solid #e0e0e0;
+  border-width: 1px 1px 3px;
+  padding: 16px;
+  margin-bottom: 48px;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 8px 16px 24px;
+  box-sizing: border-box;
+  /* border-width: 0; */
+  /* border-style: solid; */
+}
+
+.main1 {
+  display: flex;
+  flex-direction: row;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+.link1 {
+  text-align: center;
+  cursor: pointer;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 8px 16px;
+  color: rgba(14, 17, 17, 1);
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid rgba(14, 17, 17, 1);
+  border-radius: 4px;
+  white-space: nowrap;
+  gap: 8px; /* Use 'gap' instead of 'column-gap' */
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.main2 {
+  padding: 24px 16px 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.p {
+  color: #717584;
+  font-size: 20px;
+  line-height: 24px;
+  margin-bottom: 16px;
+  padding: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main3 {
+  flex-direction: row;
+  max-width: 1136px;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  display: flex;
+  justify-content: flex-start;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main4 {
+  margin-right: 16px;
+  flex-basis: 752px;
+  width: 752px;
+  flex-shrink: 1.5;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.p1 {
+  font-size: 16px;
+  line-height: 24px;
+  margin-bottom: 16px;
+  padding: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main5 {
+  width: 224px;
+  margin-right: 0;
+  flex-basis: 368px;
+  flex-shrink: 3;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main6 {
+  font-size: 16px;
+  line-height: 24px;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main7 {
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main8 {
+  --tw-text-opacity: 1;
+  color: rgb(5 12 38 / var(--tw-text-opacity));
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.main9 {
+  margin-bottom: 12px;
+  --tw-text-opacity: 1;
+  color: rgb(82 87 105 / var(--tw-text-opacity));
+  font-weight: 400;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+.link2 {
+  color: #143fcd;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+  cursor: pointer;
+  gap:10px;
+
+  text-decoration: none;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+}
+
+
+.modalBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: white;
+    padding: 16px;
+    box-shadow: 24px;
+    border-radius: 8px;
+  }
+
+  .span{
+
+    --tw-text-opacity: 1;
+    color: rgb(117 117 117 / var(--tw-text-opacity));
+    font-size: 12px;
+    line-height: 18px;
+    vertical-align: middle;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(245 245 245 / var(--tw-bg-opacity));
+    border-radius: 9999px;
+    gap: 8px;
+    align-items: center;
+    flex-direction: row;
+    display: inline-flex;
+    margin-right: 8px;
+    margin-bottom: 4px;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+  }

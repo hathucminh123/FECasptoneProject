@@ -76,6 +76,15 @@ import StepComppanyVerification from "./pages/Employer/StepComppanyVerification"
 import VerifiCompany from "./pages/Employer/verifiCompany";
 import Invite from "./pages/Employer/Invite";
 import Complete from "./pages/Employer/Complete";
+import RootSystemEmployer from "./pages/EmployerNewUi/RootSystemEmployer";
+import JobPageNew from "./pages/EmployerNewUi/JobPageNew";
+import FormCreateEmployer from "./pages/EmployerNewUi/FormCreateEmployer";
+import JobPageNoJob from "./pages/EmployerNewUi/JobPageNoJob";
+import ListJobDetails from "./pages/EmployerNewUi/ListJobDetails";
+import OverViewJob from "./pages/EmployerNewUi/OverViewJob";
+import OverViewDetails from "./pages/EmployerNewUi/OverViewDetails";
+import ProtectedRouteNewCompany from "./components/NewUiEmployer/ProtectedRouteCompany";
+import ProtectedRouteJob from "./components/NewUiEmployer/ProtectedRouteJob";
 
 const router = createBrowserRouter([
   {
@@ -293,15 +302,68 @@ const router = createBrowserRouter([
       },
 
       {
-        path:"inviteYourTeam",
-        element:<Invite/>
+        path: "inviteYourTeam",
+        element: <Invite />,
       },
       {
-        path:"Complete",
-        element:<Complete/>
+        path: "Complete",
+        element: <Complete />,
+      },
+    ],
+  },
 
-      }
+  {
+    path: "EmployerJob",
+    element: (
+      <EmployerProtectedRoute>
+        <ProtectedRouteNewCompany>
+          <RootSystemEmployer />
+        </ProtectedRouteNewCompany>
+      </EmployerProtectedRoute>
+    ),
 
+    errorElement: <ErrorPage />,
+    loader: tokenLoader,
+    id: "root3",
+    children: [
+      {
+        index: true,
+        element: (
+          <ProtectedRouteJob>
+            <JobPageNoJob />
+          </ProtectedRouteJob>
+        ),
+      },
+      {
+        path: "listjobs",
+        element: <ListJobDetails />,
+        children: [
+          {
+            path: "OverView/:id",
+            element: <OverViewJob />,
+            children: [
+              {
+                index: true,
+                element: <OverViewDetails />,
+              },
+            ],
+          },
+          {
+            path: "create",
+            element: <FormCreateEmployer />,
+          },
+        ],
+      },
+      {
+        path: "jobs/create",
+        element: <JobPageNew />,
+        children: [
+          {
+            index: true,
+            element: <FormCreateEmployer />,
+          },
+        ],
+      },
     ],
   },
 

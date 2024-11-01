@@ -115,6 +115,13 @@ export default function SignInPageEmployer() {
         localStorage.setItem("CompanyId",CompanyId)
 
         localStorage.setItem("expiration", expiration.toISOString());
+        // if(CompanyId && CompanyId !== "null") {
+        //   navigate("/EmployerJob");
+        // } else{
+        //   navigate("/onboarding/recruit");
+        // }
+
+         
         navigate("/employer-verify/jobs");
       } else {
         setAlertMessage(true);

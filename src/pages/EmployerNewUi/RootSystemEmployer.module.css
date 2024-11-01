@@ -1,0 +1,8 @@
+.main{
+    min-height: 100vh;
+    position: relative;
+    background-color: #fafafa;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}

@@ -2,7 +2,7 @@ import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
 interface JobPosts {
-  data: { [key: string]: string | number | number[] };
+  data: { [key: string]: string | number | number[]|null|undefined };
 }
 
 export const PostJobPosts = async ({ data }: JobPosts) => {
