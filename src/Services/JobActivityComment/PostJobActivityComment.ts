@@ -2,7 +2,7 @@ import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
 interface Comment {
-  data: { [key: string]:  number|string|null };
+  data: { [key: string]:  number|string|null|undefined };
 }
 
 export const PostJobActivityComment = async ({ data }: Comment) => {

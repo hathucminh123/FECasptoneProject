@@ -23,7 +23,7 @@ export default function NoJob() {
             </svg>
             Find Talent
           </Link>
-          <Link to="" className={classes.link2}>
+          <Link to="/EmployerJob/jobs/create" className={classes.link2}>
           <WorkIcon/>
           Post Jobs
           </Link>

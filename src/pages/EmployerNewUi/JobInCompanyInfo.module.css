@@ -1,0 +1,221 @@
+.main{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 560px;
+    transition: height .3s ease;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.main1{
+    opacity: 1;
+    flex: 1 1;
+    box-sizing: border-box;
+
+    border-width: 0;
+    border-style: solid;
+}
+
+
+.main2{
+    padding: 48px 32px 32px;
+    position: relative;
+    transition: padding .3s ease;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+.main3{
+    display: block;
+    position: absolute;
+    top: 48px;
+    right: 32px;
+    width: 176px;
+    height: 24px;
+    text-align: right;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+
+}
+
+.link1{
+    text-align: center;
+    cursor: pointer;
+    transition-duration: .2s;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    -webkit-font-smoothing: antialiased;
+    text-decoration-line: none;
+    --tw-text-opacity: 1;
+    color: rgb(14 17 17 / var(--tw-text-opacity));
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgb(14 17 17 / var(--tw-border-opacity));
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-decoration: none;
+    box-sizing: border-box;
+
+}
+
+
+.main4{
+    margin-bottom: 48px;
+    font-size: 16px;
+    line-height: 24px;
+    color: #050c26;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+
+.main5{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex: 1 1;
+    min-width: 0;
+    min-height: 0;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.main6{
+    position: relative;
+    overflow: hidden;
+    flex: 1 1;
+    min-width: 0;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.main7{
+    padding: 24px 4px;
+    min-width: 0;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.link2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-width: 0;
+    min-height: 0;
+    margin-bottom: 8px;
+    color: #143fcd;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+
+.main8{
+    color: red;
+    text-align: right;
+    padding-left: 16px;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+
+}
+
+.main9{
+    font-size: 14px;    
+    color: #5a5e70;
+    line-height: 1.5;
+    margin-bottom: 1em;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.p{
+    padding-left: 0;
+    display: list-item;
+    list-style-type: disc;
+    list-style-position: outside;
+    margin-left: 16px;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+
+.p::marker{
+    unicode-bidi: isolate;
+    font-variant-numeric: tabular-nums;
+    text-transform: none;
+    text-indent: 0px !important;
+    text-align: start !important;
+    text-align-last: start !important;
+    list-style-type: disc;
+    list-style-position: outside;
+}
+
+.main10{
+    font-size: 14px;
+    line-height: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
+    min-width: 0;
+    min-height: 0;
+    color: #9194a0;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.main11{
+    min-width: 0;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.main12{
+    padding-right: 16px;
+    margin-bottom: 0;
+    max-width: 380px;
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+
+.span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+    -webkit-box-orient: horizontal;
+    -webkit-line-clamp: none;
+    box-sizing: border-box;
+}

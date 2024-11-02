@@ -20,7 +20,7 @@ interface CustomJwtPayload extends JwtPayload {
   Role: string;
   UserId: string;
   name: string;
-  CompanyId:string
+  CompanyId: string;
 }
 
 export default function SignInPageEmployer() {
@@ -72,9 +72,9 @@ export default function SignInPageEmployer() {
         confirmPassword: "",
         role: 0,
       });
-      console.log(data)
-      localStorage.setItem("userIdRegister",data.result)
-      navigate("/Auth/Veritication")
+      console.log(data);
+      localStorage.setItem("userIdRegister", data.result);
+      navigate("/Auth/Veritication");
       setTimeout(() => {
         reset();
       }, 3000);
@@ -103,7 +103,7 @@ export default function SignInPageEmployer() {
       const userId = userInfo.UserId.toLowerCase();
       const expiration = new Date();
       const userName = userInfo.name;
-      const CompanyId=userInfo.CompanyId
+      const CompanyId = userInfo.CompanyId;
       expiration.setHours(expiration.getHours() + 1);
       const token = data.result;
       if (userRole === "employer") {
@@ -112,7 +112,7 @@ export default function SignInPageEmployer() {
         localStorage.setItem("role", userRole);
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
-        localStorage.setItem("CompanyId",CompanyId)
+        localStorage.setItem("CompanyId", CompanyId);
 
         localStorage.setItem("expiration", expiration.toISOString());
         // if(CompanyId && CompanyId !== "null") {
@@ -121,7 +121,6 @@ export default function SignInPageEmployer() {
         //   navigate("/onboarding/recruit");
         // }
 
-         
         navigate("/employer-verify/jobs");
       } else {
         setAlertMessage(true);
@@ -339,7 +338,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                  failed to Login Empoloyer Account
+                    failed to Login Empoloyer Account
                   </Typography>
                 </div>
               </div>
@@ -430,7 +429,7 @@ export default function SignInPageEmployer() {
                     fontSize: "18px",
                     margin: "8px 0 0 0",
                     textAlign: "center",
-                    color:'#fff'
+                    color: "#fff",
                   }}
                 >
                   Link your account to continue using our system services.

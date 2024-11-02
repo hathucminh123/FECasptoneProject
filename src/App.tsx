@@ -85,6 +85,17 @@ import OverViewJob from "./pages/EmployerNewUi/OverViewJob";
 import OverViewDetails from "./pages/EmployerNewUi/OverViewDetails";
 import ProtectedRouteNewCompany from "./components/NewUiEmployer/ProtectedRouteCompany";
 import ProtectedRouteJob from "./components/NewUiEmployer/ProtectedRouteJob";
+import EditJobPage from "./pages/EmployerNewUi/EditJobPage";
+import ListJobDetailsApplicants from "./pages/EmployerNewUi/ListJobDetailsApplicants";
+import ApplicantView from "./pages/EmployerNewUi/ApplicantView";
+import AllApplicants from "./pages/EmployerNewUi/AllApplicants";
+import PassedApplicants from "./pages/EmployerNewUi/PassedApplicants";
+import RejectedApplicants from "./pages/EmployerNewUi/RejectedApplicants";
+import InterViewApplicants from "./pages/EmployerNewUi/InterViewApplicants";
+import ProtectedRouteApplicants from "./components/NewUiEmployer/ProtectedRouteApplicants";
+import CompanyInfoNew from "./pages/EmployerNewUi/CompanyInfoNew";
+import OverViewCompany from "./pages/EmployerNewUi/OverViewCompany";
+import JobInCompanyInfo from "./pages/EmployerNewUi/JobInCompanyInfo";
 
 const router = createBrowserRouter([
   {
@@ -346,6 +357,51 @@ const router = createBrowserRouter([
                 index: true,
                 element: <OverViewDetails />,
               },
+              {
+                path: "Edit",
+                element: <EditJobPage />,
+              },
+            ],
+          },
+          {
+            path: "create",
+            element: <FormCreateEmployer />,
+          },
+        ],
+      },
+      {
+        path: "applicants",
+        element: (
+          <ProtectedRouteApplicants>
+            <ListJobDetailsApplicants />
+          </ProtectedRouteApplicants>
+        ),
+
+        children: [
+          {
+            path: "jobs/:id",
+            element: <ApplicantView />,
+            children: [
+              {
+                index: true,
+                element: <AllApplicants />,
+              },
+              {
+                path: "Passed",
+                element: <PassedApplicants />,
+              },
+              {
+                path: "Rejected",
+                element: <RejectedApplicants />,
+              },
+              {
+                path: "InterView",
+                element: <InterViewApplicants />,
+              },
+              // {
+              //   path:"Edit",
+              //   element:<EditJobPage/>
+              // }
             ],
           },
           {
@@ -361,6 +417,20 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <FormCreateEmployer />,
+          },
+        ],
+      },
+      {
+        path: "company",
+        element: <CompanyInfoNew />,
+        children: [
+          {
+            index: true,
+            element: <OverViewCompany />,
+          },
+          {
+            path: "jobs",
+            element: <JobInCompanyInfo />,
           },
         ],
       },

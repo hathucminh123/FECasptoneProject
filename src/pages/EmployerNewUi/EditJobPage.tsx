@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import classes from "./FormCreateEmployer.module.css";
-import { NavLink, useNavigate } from "react-router-dom";
+import classes from "./EditJobPage.module.css";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -24,8 +24,11 @@ import { GetJobType } from "../../Services/JobTypeService/GetJobType";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { PostJobPosts } from "../../Services/JobsPost/PostJobPosts";
+
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
+import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
+
+import { PutJobPost } from "../../Services/JobsPost/PutJobPost";
 // type JobContextType = {
 //   selectJobId: number | null;
 //   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
@@ -67,8 +70,18 @@ interface JobType {
   description: string;
 }
 
-export default function FormCreateEmployer() {
+export default function EditJobPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const JobId = Number(id);
+
+  const { data: jobData } = useQuery({
+    queryKey: ["Job-details", JobId],
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }),
+    enabled: !!JobId,
+  });
+  const job = jobData?.JobPosts;
+
   const [jobDescription, setJobDescription] = useState<string>("");
   const [jobTitle, setJobTitle] = useState<string>("");
   const [benefits, setBenefits] = useState<string>("");
@@ -118,6 +131,28 @@ export default function FormCreateEmployer() {
   //date
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  //dataEdit
+  useEffect(() => {
+    if (job) {
+      setJobTitle(job.jobTitle || "");
+      setJobDescription(job.jobDescription || "");
+      setSalary(job.salary.toString() || "0");
+      setSelectExpString(job.experienceRequired.toString() || "1");
+      setQualificationRequired(job.qualificationRequired || "");
+      setBenefits(job.benefits || "");
+      //   setSkillLevel(job.skillLevelRequired || 0);
+      setSelectType(job.jobType);
+      setFileUrl(job.imageURL || "");
+
+      // setSkills(job.skillSets || []);
+      console.log("skill", job.skillSets);
+
+      if (job.expiryDate) {
+        setSelectedDate(new Date(job.expiryDate));
+      }
+    }
+  }, [job]);
 
   //Date
 
@@ -282,7 +317,7 @@ export default function FormCreateEmployer() {
   });
   const JobPostsdata = JobPosts?.JobPosts;
   // const { selectJobId, setSelectJobId } = useOutletContext<JobContextType>();
-  const [selectJobId,setSelectJobId]=useState<number|null>()
+  const [selectJobId, setSelectJobId] = useState<number | null>();
   const jobincompanyData = JobPostsdata?.filter(
     (item) => item.companyId === Number(companyId)
   );
@@ -293,7 +328,7 @@ export default function FormCreateEmployer() {
   }, [selectJobId, jobincompanyData, setSelectJobId]);
 
   const { mutate: JobPost, isPending: PostPending } = useMutation({
-    mutationFn: PostJobPosts,
+    mutationFn: PutJobPost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       message.success("Post Job successfully.");
@@ -323,14 +358,15 @@ export default function FormCreateEmployer() {
       setFileUrl(fileUrl);
 
       const data = {
-        jobtitle: jobTitle,
-        jobDescription: jobDescription,
-        salary: parseInt(salary) ?? 0,
-        experienceRequired: selectExp,
-        qualificationRequired: qualificationRequired,
+        jobtitle: jobTitle || job?.jobTitle,
+        jobDescription: jobDescription || job?.jobDescription,
+        salary: parseInt(salary) || job?.salary,
+        experienceRequired: selectExp || job?.experienceRequired,
+        qualificationRequired:
+          qualificationRequired || job?.qualificationRequired,
         benefits,
         // skillLevelRequired:   0,
-        jobTypeId: selectTypeId ?? 0,
+        jobTypeId: selectTypeId || job?.jobType.id,
         companyID: Number(companyId),
         imageURL: fileUrl,
         userID: Number(userId),
@@ -339,7 +375,7 @@ export default function FormCreateEmployer() {
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
-      await JobPost({ data });
+      await JobPost({ data: data, id: Number(id) });
 
       console.log("Job created successfully with image URL:", fileUrl);
     } catch (error) {
@@ -349,7 +385,7 @@ export default function FormCreateEmployer() {
   };
   return (
     <div className={classes.main}>
-      <header className={classes.header}>
+      {/* <header className={classes.header}>
         <div className={classes.main1}>
           <div className={classes.main2}>
             <p className={classes.p}>New Job Posting</p>
@@ -387,7 +423,7 @@ export default function FormCreateEmployer() {
             </div>{" "}
           </NavLink>
         </nav>
-      </header>
+      </header> */}
       <div className={classes.main6}>
         <form action="">
           <div className={classes.main7}>
@@ -405,7 +441,21 @@ export default function FormCreateEmployer() {
                 </div>
                 <div className={classes.input6}>
                   <div className={classes.input7}>
-                    {selectedFile ? (
+                  <div className={classes.img1}>
+                          <img
+                            src={fileUrl}
+                            alt={selectedFile?.name}
+                            className={classes.img2}
+                          />
+                        </div>
+                        <button
+                        className={classes.input8}
+                        onClick={handleUploadClick}
+                      >
+                        <CloudUploadIcon />
+                        Upload Logo/Image
+                      </button>
+                    {/* {selectedFile ? (
                       <>
                         <div className={classes.img1}>
                           <img
@@ -439,14 +489,8 @@ export default function FormCreateEmployer() {
                         </div>
                       </>
                     ) : (
-                      <button
-                        className={classes.input8}
-                        onClick={handleUploadClick}
-                      >
-                        <CloudUploadIcon />
-                        Upload Logo/Image
-                      </button>
-                    )}
+                      
+                    )} */}
                   </div>
                   <input
                     ref={fileInputRef}
@@ -756,7 +800,7 @@ export default function FormCreateEmployer() {
               >
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    Select Your Skills
+                    Select Your Skill
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
@@ -906,6 +950,19 @@ export default function FormCreateEmployer() {
                   <div className={classes.main27}>$</div>
                 </div>
               </label>
+              {PostPending ? (
+                <div className={classes.main1}>
+                  <button className={classes.link} >
+                   Saving
+                  </button>
+                </div>
+              ) : (
+                <div className={classes.main1}>
+                  <button className={classes.link} type="button" onClick={handleOnCreate}>
+                    Save Change
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </form>

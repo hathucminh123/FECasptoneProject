@@ -8,7 +8,7 @@ type JobContextType = {
   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
+const ProtectedRouteApplicants = ({ children }: { children: ReactNode }) => {
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
@@ -57,11 +57,12 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
     }
   }, [companyId, location]);
 
-  return jobincompanyData && jobincompanyData.length > 0 &&  selectJobId  ? (
-    <Navigate to={ `/EmployerJob/listjobs/OverView/${selectJobId}`} replace />
-  ) : (
+  return jobincompanyData && jobincompanyData.length >= 0 &&  selectJobId  ? (
     children
+   
+  ) : (
+    <Navigate to={ `/EmployerJob`} replace />
   );
 };
 
-export default ProtectedRouteJob;
+export default ProtectedRouteApplicants;

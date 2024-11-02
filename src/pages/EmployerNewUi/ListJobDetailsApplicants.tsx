@@ -13,7 +13,7 @@ type JobContextType = {
   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export default function ListJobDetails() {
+export default function ListJobDetailsApplicants() {
   const companyId = localStorage.getItem("CompanyId");
   const { selectJobId, setSelectJobId } = useOutletContext<JobContextType>();
   const { data: JobPosts } = useQuery({
@@ -59,7 +59,7 @@ export default function ListJobDetails() {
             <div className={classes.main4}>
               <div className={classes.main5}>
                 <div className={classes.main6}>
-                  <header className={classes.header}>Jobs</header>
+                  <header className={classes.header}>Applicants</header>
                   <Link to="/EmployerJob/jobs/create" className={classes.link}>
                     {" "}
                     + Post Jobs
@@ -90,7 +90,7 @@ export default function ListJobDetails() {
                 <div className={classes.main10}>
                   {jobincompanyData?.map((job) => (
                     <NavLink
-                      to={`OverView/${job.id}`}
+                      to={`jobs/${job.id}`}
                       className={({ isActive }) =>
                         isActive ? classes.active : undefined
                       }

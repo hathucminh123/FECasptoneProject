@@ -4,16 +4,17 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
-interface props{
-  selectJobId?:number |undefined|null
+interface props {
+  selectJobId?: number | undefined | null;
 }
 
-export default function HeaderEmployerSystem({selectJobId}:props) {
+export default function HeaderEmployerSystem({ selectJobId }: props) {
   const userId = localStorage.getItem("userId");
- const navigate=useNavigate()
+  const navigate = useNavigate();
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
+  console.log("adu ma ", selectJobId);
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("CompanyId");
@@ -57,7 +58,15 @@ export default function HeaderEmployerSystem({selectJobId}:props) {
           </NavLink>
         </div>
         <nav className={classes.header3}>
-          <NavLink to={companyId && companyId !== "null" ?selectJobId ? `/EmployerJob/listjobs/OverView/${selectJobId}`:"/EmployerJob/listjobs"  : "/EmployerJob"} className={classes.link2} end>
+          <NavLink
+            to={
+              companyId && companyId !== "null"
+                ? `/EmployerJob/listjobs/OverView/${selectJobId}`
+                : "/EmployerJob"
+            }
+            className={classes.link2}
+            end
+          >
             {({ isActive }) => (
               <div className={classes.header4}>
                 <div className={classes.header5}>
@@ -72,7 +81,15 @@ export default function HeaderEmployerSystem({selectJobId}:props) {
               </div>
             )}
           </NavLink>
-          <NavLink to="*" className={classes.link2} end>
+          <NavLink
+            to={
+              companyId && companyId !== "null"
+                ? `/EmployerJob/applicants/jobs/${selectJobId}`
+                : "/EmployerJob"
+            }
+            className={classes.link2}
+            end
+          >
             {({ isActive }) => (
               <div className={classes.header4}>
                 <div className={classes.header5}>
@@ -106,7 +123,7 @@ export default function HeaderEmployerSystem({selectJobId}:props) {
         <div className={classes.header6}></div>
         <div className={classes.header7}>
           <div className={classes.header8}>
-            <Link to="" className={classes.link3}>
+            <Link to="/employerJob/company" className={classes.link3}>
               <div className={classes.header9}>
                 <svg
                   fill="none"

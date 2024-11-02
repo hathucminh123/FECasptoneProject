@@ -15,7 +15,7 @@ export default function JobPageNoJob() {
               <div className={classes.main5}>
                 <div className={classes.main6}>
                   <header className={classes.header}>Jobs</header>
-                  <Link to="" className={classes.link}>
+                  <Link to="/EmployerJob/jobs/create" className={classes.link}>
                     {" "}
                     + Post Jobs
                   </Link>

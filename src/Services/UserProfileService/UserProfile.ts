@@ -50,7 +50,7 @@ interface FetchError extends Error {
 }
 interface UserId {
   id: number;
-  signal: AbortSignal;
+  signal?: AbortSignal;
 }
 
 export const GetUserProfile = async ({

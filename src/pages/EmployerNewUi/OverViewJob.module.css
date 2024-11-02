@@ -116,8 +116,8 @@
     max-width: 100%;
     border-bottom: 1px solid #e0e0e0;
     box-sizing: border-box;
-    border-width: 0;
-    border-style: solid;
+
+
 }
 
 .nav a {
@@ -151,4 +151,52 @@
     box-sizing: border-box;
     border-width: 0;
     border-style: solid;
+}
+
+.main5{
+    justify-content: flex-end;
+    align-items: flex-start;
+    flex-direction: row;
+    display: flex;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.main6{
+    display: flex;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.button{
+    white-space: nowrap;
+    align-self: flex-start;
+    text-align: center;
+    transition-duration: .2s;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(.4,0,.2,1);
+    -webkit-font-smoothing: antialiased;
+    text-decoration-line: none;
+    --tw-text-opacity: 1;
+    color: rgb(14 17 17 / var(--tw-text-opacity));
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    --tw-bg-opacity: 1;
+    background-color: rgb(245 245 245 / var(--tw-bg-opacity));
+    --tw-border-opacity: 1;
+    border-color: rgb(14 17 17 / var(--tw-border-opacity));
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 0;
+    font-family: Graphik, Helvetica Neue, arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    box-sizing: border-box;
 }
