@@ -4,11 +4,31 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
+import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
+export interface Notification {
+  id: number;
+  title: string;
+  description: string;
+  receiverId: number;
+  isRead: boolean;
+  jobPostActivityId: number;
+  jobPostActivity: any;
+  userAccount: any;
+  createdDate: string;
+  modifiedDate: any;
+  createdBy: any;
+  modifiedBy: any;
+  isDeleted: boolean;
+}
 interface props {
   selectJobId?: number | undefined | null;
+  notifications: Notification[];
 }
 
-export default function HeaderEmployerSystem({ selectJobId }: props) {
+export default function HeaderEmployerSystem({
+  selectJobId,
+  notifications,
+}: props) {
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const [companyId, setCompanyId] = useState<string | null>(
@@ -20,6 +40,30 @@ export default function HeaderEmployerSystem({ selectJobId }: props) {
     const storedCompanyId = localStorage.getItem("CompanyId");
     setCompanyId(storedCompanyId);
   }, []);
+
+  const {
+    data: Company,
+    refetch: refetchCompanies,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  useEffect(() => {
+    // Sync companyId from localStorage if it changes
+    const storedCompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(storedCompanyId);
+    refetchCompanies();
+  }, [companyId, refetchCompanies]);
+
+  const Companiesdata = Company?.Companies;
+  const CompanyEmployer = Companiesdata?.find(
+    (company) => company.id === Number(companyId)
+  );
+
   const [open, setOpen] = useState<boolean>(false);
   const { data: UserProfile } = useQuery({
     queryKey: ["UserProfile"],
@@ -104,7 +148,14 @@ export default function HeaderEmployerSystem({ selectJobId }: props) {
               </div>
             )}
           </NavLink>
-          <NavLink to="asd" className={classes.link2}>
+          <NavLink
+            to={
+              companyId && companyId !== "null"
+                ? `/EmployerJob/FindTalents/jobs/${selectJobId}`
+                : "/EmployerJob"
+            }
+            className={classes.link2}
+          >
             {({ isActive }) => (
               <div className={classes.header4}>
                 <div className={classes.header5}>
@@ -141,7 +192,13 @@ export default function HeaderEmployerSystem({ selectJobId }: props) {
                   ></path>
                 </svg>
                 <span></span>
-                <div className={classes.header10}></div>
+                {notifications &&
+                notifications.some((notify) => !notify.isRead) ? (
+                  <div className={classes.header10}>
+                    {/* {notifications.filter((notify) => !notify.isRead)?.length} */}
+                  </div>
+                ) : undefined}
+                {/* <div className={classes.header10}></div> */}
               </div>
             </Link>
           </div>
@@ -225,7 +282,9 @@ export default function HeaderEmployerSystem({ selectJobId }: props) {
                             <span className={classes.span2}>Recruit for</span>
                           </li>
                           <li className={classes.li2}>
-                            <span className={classes.span3}>hathucminh</span>
+                            <span className={classes.span3}>
+                              {CompanyEmployer?.companyName}
+                            </span>
                           </li>
                           <li
                             className={classes.li3}
@@ -242,7 +301,10 @@ export default function HeaderEmployerSystem({ selectJobId }: props) {
                             className={classes.li3}
                             style={{ cursor: "pointer" }}
                           >
-                            <Link to="" className={classes.link5}>
+                            <Link
+                              to="Account/setting"
+                              className={classes.link5}
+                            >
                               <span className={classes.span2}>
                                 Account Setting
                               </span>

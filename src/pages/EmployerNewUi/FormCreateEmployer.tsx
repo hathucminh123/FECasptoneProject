@@ -294,10 +294,11 @@ export default function FormCreateEmployer() {
 
   const { mutate: JobPost, isPending: PostPending } = useMutation({
     mutationFn: PostJobPosts,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      const idJob=data.result
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       message.success("Post Job successfully.");
-      navigate(`/EmployerJob/listjobs/OverView/${selectJobId}`);
+      navigate(`/EmployerJob/listjobs/OverView/${idJob}`);
       //   setShowAlert(true);
     },
     onError: () => {

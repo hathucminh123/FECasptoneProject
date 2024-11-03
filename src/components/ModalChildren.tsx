@@ -25,10 +25,10 @@ interface Props {
 export default function ModalChildren({ onDone }: Props) {
   const [formData, setFormData] = useState({
     id: localStorage.getItem("userId") || "0", // Lấy userId từ localStorage
-    userName: "",
+    // userName: "",
     firstName: "",
     lastName: "",
-    email: "",
+    email: localStorage.getItem("Email"),
     phoneNumber: "",
   });
 
@@ -98,10 +98,10 @@ export default function ModalChildren({ onDone }: Props) {
     mutate({
       data: {
         id: Number(formData.id),
-        userName: formData.userName,
+        // userName: formData.userName,
         firstName: formData.firstName,
         lastName: formData.lastName,
-        email: formData.email,
+        email: formData.email || "",
         phoneNumber: formData.phoneNumber,
       },
     });
@@ -143,15 +143,7 @@ export default function ModalChildren({ onDone }: Props) {
         </div>
 
         <div className={classes.formInput}>
-          <TextField
-            label="User Name"
-            name="userName"
-            value={formData.userName}
-            onChange={handleChange}
-            required
-            variant="outlined"
-            className={classes.inputGroup}
-          />
+         
           <TextField
             label="First Name"
             name="firstName"
@@ -175,6 +167,7 @@ export default function ModalChildren({ onDone }: Props) {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            disabled
             type="email"
             variant="outlined"
             required

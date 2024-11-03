@@ -1,16 +1,41 @@
 import React, { useEffect, useState } from "react";
 import classes from "./CompanyInfoNew.module.css";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
+import ModalEmail from "../../components/NewUiEmployer/ModalEmail";
+export interface Notification {
+  id: number;
+  title: string;
+  description: string;
+  receiverId: number;
+  isRead: boolean;
+  jobPostActivityId: number;
+  jobPostActivity: any;
+  userAccount: any;
+  createdDate: string;
+  modifiedDate: any;
+  createdBy: any;
+  modifiedBy: any;
+  isDeleted: boolean;
+}
+
+type OutletContextType = {
+  notifications: Notification[];
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
+};
 export default function CompanyInfoNew() {
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
 
+  const [openModal, setOnenModal] = useState<boolean>(false);
 
+  const handleClose = () => {
+    setOnenModal(false);
+  };
 
   const {
     data: Company,
@@ -45,8 +70,12 @@ export default function CompanyInfoNew() {
   const jobincompanyData = JobPostsdata?.filter(
     (item) => item.companyId === Number(companyId)
   );
+
+  const { notifications, setNotifications } =
+    useOutletContext<OutletContextType>();
   return (
     <div className={classes.main}>
+      <ModalEmail open={openModal} onClose={handleClose} />
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
@@ -56,13 +85,19 @@ export default function CompanyInfoNew() {
                   <div className={classes.main6}>
                     <Link to="" className={classes.main7}>
                       <div className={classes.main8}>
-                        <img src={CompanyEmployer?.imageUrl} alt="" className={classes.img} />
+                        <img
+                          src={CompanyEmployer?.imageUrl}
+                          alt=""
+                          className={classes.img}
+                        />
                       </div>
                     </Link>
                     <div className={classes.main9}>
                       <div className={classes.main10}>
                         <Link to="" className={classes.link2}>
-                          <span className={classes.span}>{CompanyEmployer?.companyName}</span>
+                          <span className={classes.span}>
+                            {CompanyEmployer?.companyName}
+                          </span>
                         </Link>
                         <div className={classes.main11}>
                           <div className={classes.main12}></div>
@@ -70,15 +105,17 @@ export default function CompanyInfoNew() {
                         </div>
                       </div>
                       <span className={classes.main13}>
-                      {CompanyEmployer?.companyDescription && (
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: CompanyEmployer?.companyDescription,
-                                }}
-                              />
-                            )}
+                        {CompanyEmployer?.companyDescription && (
+                          <div
+                            dangerouslySetInnerHTML={{
+                              __html: CompanyEmployer?.companyDescription,
+                            }}
+                          />
+                        )}
                       </span>
-                      <span className={classes.main14}>{CompanyEmployer?.numberOfEmployees}{" "}employees</span>
+                      <span className={classes.main14}>
+                        {CompanyEmployer?.numberOfEmployees} employees
+                      </span>
                     </div>
                   </div>
                   <div className={classes.main15}></div>
@@ -115,29 +152,72 @@ export default function CompanyInfoNew() {
                         >
                           {({ isActive }) => (
                             <>
-                            <div
-                              className={classes.main19}
-                              style={{ marginLeft: 30 }}
-                            >
-                              <span
-                                style={
-                                  isActive ? { color: "#050c26" } : undefined
-                                }
+                              <div
+                                className={classes.main19}
+                                style={{ marginLeft: 30 }}
                               >
-                                Jobs
-                              </span>
-                            </div>
-                            <div className={classes.main37}>
-                              <div className={classes.main38}>
-                                <span> {jobincompanyData?.length}</span>
+                                <span
+                                  style={
+                                    isActive ? { color: "#050c26" } : undefined
+                                  }
+                                >
+                                  Jobs
+                                </span>
                               </div>
-                            </div>
+                              <div className={classes.main37}>
+                                <div className={classes.main38}>
+                                  <span> {jobincompanyData?.length}</span>
+                                </div>
+                              </div>
+                            </>
+                          )}
+                        </NavLink>
+                        <NavLink
+                          to="Notifications"
+                          className={({ isActive }) =>
+                            isActive ? classes.active : undefined
+                          }
+                          end
+                        >
+                          {({ isActive }) => (
+                            <>
+                              <div
+                                className={classes.main19}
+                                style={{ marginLeft: 30 }}
+                              >
+                                <span
+                                  style={
+                                    isActive ? { color: "#050c26" } : undefined
+                                  }
+                                >
+                                  Notifications
+                                </span>
+                              </div>
+                              <div className={classes.main37}>
+                                <div className={classes.main38}>
+                                  <span>
+                                    {" "}
+                                    {notifications &&
+                                      notifications.some(
+                                        (notify) => !notify.isRead
+                                      ) && (
+                                        <span className={classes.span5}>
+                                          {
+                                            notifications.filter(
+                                              (notify) => !notify.isRead
+                                            )?.length
+                                          }
+                                        </span>
+                                      )}
+                                  </span>
+                                </div>
+                              </div>
                             </>
                           )}
                         </NavLink>
                       </nav>
                     </div>
-                    <Outlet />
+                    <Outlet context={{ notifications, setNotifications }} />
                   </div>
                   <aside className={classes.main20}>
                     <div className={classes.main21}>
@@ -157,7 +237,7 @@ export default function CompanyInfoNew() {
                             overflow: "hidden",
                           }}
                         >
-                          Recruit for minh
+                          Recruit for  {CompanyEmployer?.companyName}
                         </Typography>
                         <span className={classes.spanicon}>
                           <svg viewBox="0 0 24 24" className={classes.svg}>
@@ -167,7 +247,10 @@ export default function CompanyInfoNew() {
                           </svg>
                         </span>
                       </div>
-                      <Link to="" className={classes.link3}>
+                      <Link
+                        to="/EmployerJob/jobs/create"
+                        className={classes.link3}
+                      >
                         <div className={classes.main23}>
                           <div className={classes.main24}>
                             <div className={classes.main25}>Post a Job</div>
@@ -184,7 +267,11 @@ export default function CompanyInfoNew() {
                           </svg>
                         </div>
                       </Link>
-                      <Link to="" className={classes.link3}>
+                      <Link
+                        to=""
+                        className={classes.link3}
+                        onClick={() => setOnenModal(true)}
+                      >
                         <div className={classes.main23}>
                           <div className={classes.main24}>
                             <div className={classes.main25}>
@@ -239,15 +326,20 @@ export default function CompanyInfoNew() {
                             >
                               <li className={classes.main36}>
                                 <Link to={""} className={classes.main4}>
-                                 {CompanyEmployer?.address} in {CompanyEmployer?.city}
+                                  {CompanyEmployer?.address} in{" "}
+                                  {CompanyEmployer?.city}
                                 </Link>
                               </li>
                             </ul>
                           </dt>
                           <dd className={classes.main31}>Company Size</dd>
-                          <dt className={classes.main32}>{CompanyEmployer?.numberOfEmployees} employees</dt>
+                          <dt className={classes.main32}>
+                            {CompanyEmployer?.numberOfEmployees} employees
+                          </dt>
                           <dd className={classes.main31}>Company Type</dd>
-                          <dt className={classes.main32}>{CompanyEmployer?.businessStream.businessStreamName}</dt>
+                          <dt className={classes.main32}>
+                            {CompanyEmployer?.businessStream.businessStreamName}
+                          </dt>
                         </dl>
                       </div>
                     </div>

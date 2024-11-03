@@ -109,6 +109,7 @@ export default function HomePage() {
 
     // Define the shape of each search data object
     interface SearchData {
+      jobTitle?:string
       companyName?: string;
       skillSet?: string;
       city?: string;
@@ -123,6 +124,7 @@ export default function HomePage() {
 
     if (location === "All" && text === "") {
       searchDataArray = [
+        { jobTitle: text, pageSize: 9 },
         { companyName: text, pageSize: 9 },
         { skillSet: text, pageSize: 9 },
         { city: text, pageSize: 9 },
@@ -137,6 +139,7 @@ export default function HomePage() {
       ];
     } else if (location !== "All" && text !== "") {
       searchDataArray = [
+        { jobTitle: text, city: location, pageSize: 9 },
         { companyName: text, city: location, pageSize: 9 },
         { skillSet: text, city: location, pageSize: 9 },
         { city: text, pageSize: 9 },
@@ -146,6 +149,7 @@ export default function HomePage() {
       ];
     } else if (location == "All" && text !== "") {
       searchDataArray = [
+        { jobTitle: text, pageSize: 9 },
         { companyName: text, pageSize: 9 },
         { skillSet: text, pageSize: 9 },
         { city: text, pageSize: 9 },

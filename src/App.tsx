@@ -96,6 +96,13 @@ import ProtectedRouteApplicants from "./components/NewUiEmployer/ProtectedRouteA
 import CompanyInfoNew from "./pages/EmployerNewUi/CompanyInfoNew";
 import OverViewCompany from "./pages/EmployerNewUi/OverViewCompany";
 import JobInCompanyInfo from "./pages/EmployerNewUi/JobInCompanyInfo";
+import AccountSetting from "./pages/EmployerNewUi/AccountSetting";
+import General from "./pages/EmployerNewUi/General";
+import Password from "./pages/EmployerNewUi/Password";
+import NotificationSystemNew from "./pages/EmployerNewUi/NotificationSystemNew";
+import RecommendNew from "./pages/EmployerNewUi/RecommendNew";
+import RecommendTalents from "./pages/EmployerNewUi/RecommendTalents";
+import PassiveTalents from "./pages/EmployerNewUi/PassiveTalents";
 
 const router = createBrowserRouter([
   {
@@ -411,6 +418,47 @@ const router = createBrowserRouter([
         ],
       },
       {
+        path: "FindTalents",
+        element: (
+          <ProtectedRouteApplicants>
+            <ListJobDetailsApplicants />
+          </ProtectedRouteApplicants>
+        ),
+
+        children: [
+          {
+            path: "jobs/:id",
+            element: <RecommendNew />,
+            children: [
+              {
+                index: true,
+                element: <RecommendTalents />,
+              },
+              {
+                path: "Passed",
+                element: <PassiveTalents />,
+              },
+              // {
+              //   path: "Rejected",
+              //   element: <RejectedApplicants />,
+              // },
+              // {
+              //   path: "InterView",
+              //   element: <InterViewApplicants />,
+              // },
+              // {
+              //   path:"Edit",
+              //   element:<EditJobPage/>
+              // }
+            ],
+          },
+          {
+            path: "create",
+            element: <FormCreateEmployer />,
+          },
+        ],
+      },
+      {
         path: "jobs/create",
         element: <JobPageNew />,
         children: [
@@ -432,8 +480,27 @@ const router = createBrowserRouter([
             path: "jobs",
             element: <JobInCompanyInfo />,
           },
+          {
+            path:"Notifications",
+            element:<NotificationSystemNew/>
+          },
         ],
       },
+
+      {
+        path:'Account/setting',
+        element:<AccountSetting/>,
+        children:[
+          {
+            index:true,
+            element:<General/>
+          },
+          {
+            path:"Password",
+            element:<Password/>
+          }
+        ]
+      }
     ],
   },
 

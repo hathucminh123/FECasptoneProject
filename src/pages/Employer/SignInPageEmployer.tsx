@@ -21,6 +21,7 @@ interface CustomJwtPayload extends JwtPayload {
   UserId: string;
   name: string;
   CompanyId: string;
+  Email:string
 }
 
 export default function SignInPageEmployer() {
@@ -104,6 +105,7 @@ export default function SignInPageEmployer() {
       const expiration = new Date();
       const userName = userInfo.name;
       const CompanyId = userInfo.CompanyId;
+      const Email =userInfo.Email
       expiration.setHours(expiration.getHours() + 1);
       const token = data.result;
       if (userRole === "employer") {
@@ -113,15 +115,16 @@ export default function SignInPageEmployer() {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("CompanyId", CompanyId);
+        localStorage.setItem("Email", Email);
 
         localStorage.setItem("expiration", expiration.toISOString());
-        // if(CompanyId && CompanyId !== "null") {
-        //   navigate("/EmployerJob");
-        // } else{
-        //   navigate("/onboarding/recruit");
-        // }
+        if(CompanyId && CompanyId !== "null") {
+          navigate("/EmployerJob");
+        } else{
+          navigate("/onboarding/recruit");
+        }
 
-        navigate("/employer-verify/jobs");
+        // navigate("/employer-verify/jobs");
       } else {
         setAlertMessage(true);
       }

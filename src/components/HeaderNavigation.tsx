@@ -382,6 +382,7 @@ const SkillsMenu = ({
 }) => {
   const leftMenuItems = [
     "Jobs by Skill",
+    "Jobs by Title",
 
     "Jobs by Company",
     "Jobs by City",
@@ -407,7 +408,15 @@ const SkillsMenu = ({
 
   const skillsColumns = uniqueArray;
 
+  const JobTitle = JobPostsdata?.map((name) => name.jobTitle);
+
+  const flattenedArrayJobTitle = JobTitle?.flat();
+  const uniqueArrayJobTitle = [...new Set(flattenedArrayJobTitle)];
+
+  const JobTitleColums = uniqueArrayJobTitle;
+
   const CompanyName = JobPostsdata?.map((name) => name.companyName);
+
   const flattenedArrayCompanyName = CompanyName?.flat();
   const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
   console.log("realy1", CompanyName);
@@ -510,6 +519,8 @@ const SkillsMenu = ({
       ? CompanyColums
       : selectedMenu === "Jobs by JobType"
       ? JobTypeColumn
+      : selectedMenu === "Jobs by Title"
+      ? JobTitleColums
       : undefined;
   const navigate = useNavigate();
   const handleOnclick = async (column: string) => {
@@ -520,6 +531,7 @@ const SkillsMenu = ({
       };
     }
     interface SearchData {
+      jobTitle?: string;
       companyName?: string;
       skillSet?: string;
       city?: string;
@@ -557,6 +569,7 @@ const SkillsMenu = ({
 
     if (column === "All") {
       searchDataArray = [
+        { jobTitle: "", pageSize: 9 },
         { companyName: "", pageSize: 9 },
         { skillSet: "", pageSize: 9 },
         { city: "", pageSize: 9 },
@@ -570,6 +583,7 @@ const SkillsMenu = ({
       ];
     } else {
       searchDataArray = [
+        { jobTitle: column, pageSize: 9 },
         { companyName: column, pageSize: 9 },
         { skillSet: column, pageSize: 9 },
         { city: column, pageSize: 9 },
@@ -678,6 +692,9 @@ const SkillsMenu = ({
                     padding: "8px 16px",
                     borderRadius: "5px",
                     transition: "background-color 0.3s ease",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
                   onClick={handleClose}
                   onMouseEnter={(e) =>

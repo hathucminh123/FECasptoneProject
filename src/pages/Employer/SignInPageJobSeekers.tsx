@@ -20,6 +20,7 @@ interface CustomJwtPayload extends JwtPayload {
   Role: string;
   UserId: string;
   name: string;
+  Email:string
 }
 
 export default function SignInPageJobSeekers() {
@@ -112,6 +113,7 @@ export default function SignInPageJobSeekers() {
       const userRole = userInfo.Role.toLowerCase();
       const userId = userInfo.UserId.toLowerCase();
       const userName = userInfo.name;
+      const Email =userInfo.Email
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 1);
       const token = data.result;
@@ -134,6 +136,8 @@ export default function SignInPageJobSeekers() {
         localStorage.setItem("role", userRole);
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
+        localStorage.setItem("Email", Email);
+        
 
         // Combine both redirect states into one object
 

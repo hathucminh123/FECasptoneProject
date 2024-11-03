@@ -1,0 +1,133 @@
+/* Main container styling */
+.main {
+    padding-top: 32px;
+    display: block;
+    box-sizing: border-box;
+}
+
+.maine {
+    overflow-y: auto;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+    padding-bottom: 32px !important;
+    padding: 0 !important;
+    position: relative;
+    flex: 1 1 auto;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Button styling for Working Model (At office, Remote, Hybrid) */
+.modelButton {
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    border-radius: 20px;
+    border: 1px solid #dedede;
+    color: #414042;
+    background-color: #fff;
+    cursor: pointer;
+    margin: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: 8px !important;
+}
+
+/* Filled button when selected */
+.modelButton.contained {
+    background-color: #4CAF50; /* Adjust green as per design */
+    color: #fff;
+    border-color: #4CAF50;
+}
+
+
+.slider {
+    color: #4CAF50; 
+    width: 100%;
+    margin-top: 16px;
+}
+
+/* Salary range display */
+.salaryRange {
+    font-size: 16px;
+    color: #414042;
+    margin-top: 8px;
+}
+
+/* Input styling for Industry search */
+.input {
+    width: 100%;
+    padding: 10px 16px;
+    font-size: 16px;
+    color: #121212;
+    background-color: #fff;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    margin-top: 12px;
+    box-sizing: border-box;
+}
+
+/* Industry list styling */
+.industryList {
+    max-height: 200px;
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    margin-top: 4px !important;
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-bottom: 16px !important;
+    padding-top: 4px !important;
+    background-color: #fff !important;
+    overflow: auto !important;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Checkbox label styling */
+.label {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #414042;
+    margin-top: 12px;
+}
+
+/* Checkbox input styling */
+.inputchecked {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+    cursor: pointer;
+    accent-color: #4CAF50; /* Checkbox tick color to match design */
+}
+
+/* Checkbox label text styling */
+.span2 {
+    font-size: 16px;
+    color: #414042;
+}
+
+/* Section title styling */
+.sectionTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #121212;
+    margin-bottom: 16px;
+}
+
+.main1{
+    display: flex !important;
+    box-sizing: border-box;
+}
+
+.main2{
+    align-items: flex-end !important;
+    justify-content: center !important;
+    width: 100% !important;
+    display: flex !important;
+}
+
+.main3{
+    flex: 0 0 auto;
+    width: 25%;
+}

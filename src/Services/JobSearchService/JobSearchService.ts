@@ -1,6 +1,7 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 interface SearchData {
+  jobTitle?:string;
   companyName?: string;
   skillSet?: string;
   city?: string;

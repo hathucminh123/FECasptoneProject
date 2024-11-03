@@ -44,6 +44,7 @@ import FeedbackModal from "../components/FeedbackModal";
 import { IconButton } from "@mui/material";
 import { Comment } from "@mui/icons-material";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import FilterModal from "../components/FilterModal";
 interface JobType {
   id: number;
   name: string;
@@ -104,6 +105,16 @@ interface UserJobActivity {
 export default function FilterJobbySkill() {
   // const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
+  const [openFilter,setOpenFilter]=useState<boolean>(false)
+
+
+  function OpenhandleFilter (){
+    setOpenFilter(true)
+  }
+  function CloseHandleFilter (){
+    setOpenFilter(false)
+  }
+
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const location = useLocation();
@@ -428,6 +439,7 @@ export default function FilterJobbySkill() {
 
     // Define the shape of each search data object
     interface SearchData {
+      jobTitle?:string
       companyName?: string;
       skillSet?: string;
       city?: string;
@@ -442,6 +454,7 @@ export default function FilterJobbySkill() {
 
     if (locationne === "All" && text === "") {
       searchDataArray = [
+        { jobTitle: text, pageSize: 9 },
         { companyName: text, pageSize: 9 },
         { skillSet: text, pageSize: 9 },
         { city: text, pageSize: 9 },
@@ -456,6 +469,7 @@ export default function FilterJobbySkill() {
       ];
     } else if (locationne !== "All" && text !== "") {
       searchDataArray = [
+        { jobTitle: text, city: locationne, pageSize: 9 },
         { companyName: text, city: locationne, pageSize: 9 },
         { skillSet: text, city: locationne, pageSize: 9 },
         { city: text, pageSize: 9 },
@@ -465,6 +479,7 @@ export default function FilterJobbySkill() {
       ];
     } else if (locationne == "All" && text !== "") {
       searchDataArray = [
+        { jobTitle: text, pageSize: 9 },
         { companyName: text, pageSize: 9 },
         { skillSet: text, pageSize: 9 },
         { city: text, pageSize: 9 },
@@ -500,6 +515,7 @@ export default function FilterJobbySkill() {
   };
   return (
     <div className={classes.main}>
+    {openFilter &&    <FilterModal onDone={CloseHandleFilter}/> }
       <div className={classes.main1}>
         {showAlert && (
           <Stack
@@ -599,6 +615,7 @@ export default function FilterJobbySkill() {
                       <Button
                         variant="outlined"
                         startIcon={<FilterAltOutlinedIcon />}
+                        onClick={OpenhandleFilter}
                         sx={{
                           fontSize: "16px",
                           fontWeight: 500,
