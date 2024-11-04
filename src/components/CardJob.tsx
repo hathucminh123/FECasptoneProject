@@ -6,7 +6,7 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Link, useNavigate } from "react-router-dom";
-import Image from "./../assets/image/download.png";
+// import Image from "./../assets/image/download.png";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
@@ -194,7 +194,7 @@ export default function CardJob({
                   className={classes.image}
                   src={
                     company?.imageUrl === null ||  company?.imageUrl === "string"
-                      ? Image
+                      ? data?.imageURL
                       :  company?.imageUrl
                   }
                   // src={company?.imageUrl}

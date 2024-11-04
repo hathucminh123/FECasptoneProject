@@ -105,14 +105,13 @@ interface UserJobActivity {
 export default function FilterJobbySkill() {
   // const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
-  const [openFilter,setOpenFilter]=useState<boolean>(false)
+  const [openFilter, setOpenFilter] = useState<boolean>(false);
 
-
-  function OpenhandleFilter (){
-    setOpenFilter(true)
+  function OpenhandleFilter() {
+    setOpenFilter(true);
   }
-  function CloseHandleFilter (){
-    setOpenFilter(false)
+  function CloseHandleFilter() {
+    setOpenFilter(false);
   }
 
   const userId = localStorage.getItem("userId");
@@ -415,7 +414,9 @@ export default function FilterJobbySkill() {
         });
       } else {
         setJobSearch([]);
-        navigate("/it-jobs", { state: { text: text, location: location } });
+        navigate("/it-jobs", {
+          state: { text: text, location: location, jobSearch: [] },
+        });
       }
 
       queryClient.invalidateQueries({
@@ -439,7 +440,7 @@ export default function FilterJobbySkill() {
 
     // Define the shape of each search data object
     interface SearchData {
-      jobTitle?:string
+      jobTitle?: string;
       companyName?: string;
       skillSet?: string;
       city?: string;
@@ -515,7 +516,9 @@ export default function FilterJobbySkill() {
   };
   return (
     <div className={classes.main}>
-    {openFilter &&    <FilterModal onDone={CloseHandleFilter}/> }
+      {openFilter && (
+        <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
+      )}
       <div className={classes.main1}>
         {showAlert && (
           <Stack
@@ -610,38 +613,40 @@ export default function FilterJobbySkill() {
                   >
                     Jobs IT in Vietnam{" "}
                   </Typography>
-                  <div className={classes.filter}>
-                    <div className={classes.btn}>
-                      <Button
-                        variant="outlined"
-                        startIcon={<FilterAltOutlinedIcon />}
-                        onClick={OpenhandleFilter}
-                        sx={{
-                          fontSize: "16px",
-                          fontWeight: 500,
-                          padding: "7px 20px",
-                          minWidth: "140px",
-                          borderRadius: "4px",
-                          color: "#ed1b2f",
-                          backgroundColor: "#fff",
-                          borderColor: "#ed1b2f",
-                          display: "inline-flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          lineHeight: 1.5,
-                          border: "1px solid #ed1b2f",
-                          gap: "8px",
-                          "&:hover": {
-                            backgroundColor: "#f60d00",
-                            color: "white",
-                            borderColor: "#f60d00",
-                          },
-                        }}
-                      >
-                        <span style={{ fontWeight: 5000 }}>Filter</span>
-                      </Button>
+                  {filteredJobs.length && filteredJobs.length > 0 ? (
+                    <div className={classes.filter}>
+                      <div className={classes.btn}>
+                        <Button
+                          variant="outlined"
+                          startIcon={<FilterAltOutlinedIcon />}
+                          onClick={OpenhandleFilter}
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: 500,
+                            padding: "7px 20px",
+                            minWidth: "140px",
+                            borderRadius: "4px",
+                            color: "#ed1b2f",
+                            backgroundColor: "#fff",
+                            borderColor: "#ed1b2f",
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            lineHeight: 1.5,
+                            border: "1px solid #ed1b2f",
+                            gap: "8px",
+                            "&:hover": {
+                              backgroundColor: "#f60d00",
+                              color: "white",
+                              borderColor: "#f60d00",
+                            },
+                          }}
+                        >
+                          <span style={{ fontWeight: 5000 }}>Filter</span>
+                        </Button>
+                      </div>
                     </div>
-                  </div>
+                  ) : undefined}
                 </div>
                 <div className={classes.detail}>
                   <div className={classes.detailleft}>

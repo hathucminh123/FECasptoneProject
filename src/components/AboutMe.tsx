@@ -5,7 +5,7 @@ import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 import Typography from "@mui/material/Typography";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
 interface Props {
   onDone?: () => void;
@@ -25,7 +25,7 @@ export default function AboutMe({ onDone }: Props) {
   const remainingChars = maxLength - stripHTML(value).length;
 
   return (
-    <Modal title="About me" onClose={onDone}>
+    <Modal title="About me" text="Save" onClose={onDone}>
       <Box component="form" noValidate autoComplete="off">
         <div className={classes.tipContainer}>
           <div className={classes.iconContainer}>

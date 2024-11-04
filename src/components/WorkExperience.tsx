@@ -122,7 +122,7 @@ export default function WorkExperience({ onDone }: Props) {
   };
 
   return (
-    <Modal title="Work Experience" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
+    <Modal text="Save" title="Work Experience" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>

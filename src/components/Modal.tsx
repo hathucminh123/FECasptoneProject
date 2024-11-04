@@ -12,6 +12,7 @@ interface ModalProps {
   onClickSubmit?: () => void;
   isPending?: unknown;
   disappear?: boolean;
+  text:string
 }
 
 export default function Modal({
@@ -21,6 +22,7 @@ export default function Modal({
   onClickSubmit,
   isPending,
   disappear,
+  text
 }: ModalProps) {
   const modalRoot = document.getElementById("modal");
 
@@ -68,7 +70,7 @@ export default function Modal({
               />
             ) : (
               <RenderButton
-                text="Save"
+                text={text}
                 color="#ed1b2f"
                 variant="contained"
                 sxOverrides={{ minWidth: "180px" }}

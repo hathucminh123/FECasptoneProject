@@ -10,14 +10,11 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Link } from "react-router-dom";
 
-
 interface JobType {
   id: number;
   name: string;
   description: string;
 }
-
-
 
 interface JobPost {
   id: number;
@@ -35,8 +32,8 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType | string | null;
-  jobLocationCities:string[] ;
-  jobLocationAddressDetail:string[]
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
   skillSets: string[];
 }
 
@@ -58,7 +55,7 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
-  imageUrl:string;
+  imageUrl: string;
 }
 
 interface MyComponentProps {
@@ -167,7 +164,11 @@ export default function CardJobDetails({
             <div className={classes.logo}>
               <img
                 className={classes.image}
-                src={company?.imageUrl}
+                src={
+                  company?.imageUrl === null || company?.imageUrl === "string"
+                    ? data?.imageURL
+                    : company?.imageUrl
+                }
                 alt="image-job"
               />
               <Typography
@@ -214,7 +215,7 @@ export default function CardJobDetails({
                   fontSize: "14px",
                 }}
               >
-                {data?.jobLocationCities.map((item)=>(item))}
+                {data?.jobLocationCities.map((item) => item)}
               </Typography>
             </div>
 

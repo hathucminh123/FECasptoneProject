@@ -85,7 +85,7 @@ export default function HomePage() {
           },
         });
       } else {
-        navigate("/it-jobs", { state: { text: text, location: location } });
+        navigate("/it-jobs", { state: { text: text, location: location ,jobSearch:[]} });
       }
 
       queryClient.invalidateQueries({

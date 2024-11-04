@@ -114,6 +114,7 @@ export default function PersonalProject({ onDone }: Props) {
 
   return (
     <Modal
+    text="Save"
       title="Skill Sets"
       onClose={onDone}
       isPending={isSaving}

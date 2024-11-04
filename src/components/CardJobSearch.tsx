@@ -115,8 +115,9 @@ export default function CardJobSearch({
             <span
               style={{ color: "#a6a6a6", fontSize: "14px", fontWeight: 400 }}
             >
-             From: {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} - To:{" "}
-             {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
+              From:{" "}
+              {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} -
+              To: {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
             </span>
           </div>
           <Typography
@@ -133,7 +134,11 @@ export default function CardJobSearch({
           </Typography>
           <div className={classes.logo}>
             <img
-              src={company?.imageUrl}
+              src={
+                company?.imageUrl === null || company?.imageUrl === "string"
+                  ? data?.imageURL
+                  : company?.imageUrl
+              }
               alt="companylogo"
               style={{
                 height: "48px",
@@ -187,41 +192,43 @@ export default function CardJobSearch({
           <div className={classes.line}></div>
           <div style={{ marginTop: "8px" }}></div>
           <div className={classes.location}>
-                <LocationOnOutlinedIcon />
-                <Typography
-                  variant="h6"
-                  gutterBottom
-                  sx={{
-                    alignItems: "start",
-                    fontWeight: 400,
-                    mt: "7px",
-                    color: "#414042 !important",
-                    fontSize: "14px",
-                    display: "flex",
+            <LocationOnOutlinedIcon />
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                alignItems: "start",
+                fontWeight: 400,
+                mt: "7px",
+                color: "#414042 !important",
+                fontSize: "14px",
+                display: "flex",
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                maxWidth: "100%",
+                flexShrink: 1,
+              }}
+            >
+              {data?.jobLocationCities?.length ? (
+                <span
+                  style={{
+                    display: "inline-block",
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: "100%",
-                    flexShrink: 1,
                   }}
                 >
-                  {data?.jobLocationCities?.length ? (
-                    <span
-                      style={{
-                        display: "inline-block",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        maxWidth: "100%",
-                      }}
-                    >
-                      {data.jobLocationCities.join(", ")}
-                    </span>
-                  ) : (
-                    <span>{company?.address} {" in "} {company?.city} </span>
-                  )}
-                </Typography>
-              </div>
+                  {data.jobLocationCities.join(", ")}
+                </span>
+              ) : (
+                <span>
+                  {company?.address} {" in "} {company?.city}{" "}
+                </span>
+              )}
+            </Typography>
+          </div>
           <div className={classes.location}>
             <BusinessCenterOutlinedIcon />
             <Typography

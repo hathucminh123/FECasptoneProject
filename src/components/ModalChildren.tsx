@@ -1,12 +1,6 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
-import {
-  Box,
-
-
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
@@ -20,7 +14,6 @@ import { message } from "antd";
 interface Props {
   onDone?: () => void;
 }
-
 
 export default function ModalChildren({ onDone }: Props) {
   const [formData, setFormData] = useState({
@@ -109,6 +102,7 @@ export default function ModalChildren({ onDone }: Props) {
 
   return (
     <Modal
+      text="Save"
       title="Personal Details"
       onClose={onDone}
       isPending={isPending}
@@ -143,7 +137,6 @@ export default function ModalChildren({ onDone }: Props) {
         </div>
 
         <div className={classes.formInput}>
-         
           <TextField
             label="First Name"
             name="firstName"

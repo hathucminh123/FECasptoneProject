@@ -134,7 +134,7 @@ export default function Education({ onDone }: Props) {
   };
 
   return (
-    <Modal title="Education" onClose={onDone} onClickSubmit={handleSubmit} isPending={isPending}>
+    <Modal text="Save" title="Education" onClose={onDone} onClickSubmit={handleSubmit} isPending={isPending}>
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>

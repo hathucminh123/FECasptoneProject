@@ -484,11 +484,11 @@
   background-color: #f0f0f0;
 }
 
-.dropdownItem:last-child {
+/* .dropdownItem:last-child {
   font-weight: bold;
   color: #143fcd;
   cursor: pointer;
-}
+} */
 
 .select {
   color: rgb(51, 51, 51);
