@@ -5,6 +5,10 @@ import Typography from "@mui/material/Typography";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
+import { HttpTransportType, HubConnectionBuilder, IHttpConnectionOptions } from '@microsoft/signalr';
+import { GetNotifications } from "../../Services/JobsPostActivity/GetNotifications";
+import { signalR } from "../../Services/mainService";
+import { AxiosResponse } from "axios";
 export interface Notification {
   id: number;
   title: string;
@@ -12,22 +16,26 @@ export interface Notification {
   receiverId: number;
   isRead: boolean;
   jobPostActivityId: number;
-  jobPostActivity: any;
-  userAccount: any;
+  // jobPostActivity: any;
+  // userAccount: any;
   createdDate: string;
-  modifiedDate: any;
-  createdBy: any;
-  modifiedBy: any;
+  // modifiedDate: any;
+  // createdBy: any;
+  // modifiedBy: any;
   isDeleted: boolean;
 }
 interface props {
   selectJobId?: number | undefined | null;
   notifications: Notification[];
+  token:unknown
+  setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
 }
 
 export default function HeaderEmployerSystem({
   selectJobId,
+  token,
   notifications,
+  setNotifications,
 }: props) {
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
@@ -77,6 +85,55 @@ export default function HeaderEmployerSystem({
     localStorage.clear();
     navigate("/employers/login");
   };
+
+  const startConnection = async () => {
+    try {
+      const options: IHttpConnectionOptions = {
+        skipNegotiation: true,
+        transport: HttpTransportType.WebSockets,
+        accessTokenFactory: () => {
+          return `${token}`
+        },
+      }
+
+      const connection = new HubConnectionBuilder()
+        .withUrl(signalR.employer.getNotificationsURL, options)
+        .build();
+
+      connection.on(signalR.employer.groupNotificationsKey, async (receivedMessage) => {
+        await fetchNotifications();
+        console.log(`Notify: ${receivedMessage}`);
+      });
+
+      connection.onclose(() => {
+        console.log("closed");
+      });
+
+      await connection.start();
+      return () => {
+        connection.stop();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    startConnection();
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    try {
+      const response: AxiosResponse = await GetNotifications();
+      if (response?.status === 200) {
+        const notifications = response.data as Notification[];
+        setNotifications(notifications);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const UserProfileData = UserProfile?.UserProfiles;
   return (

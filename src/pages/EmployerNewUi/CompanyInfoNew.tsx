@@ -13,12 +13,12 @@ export interface Notification {
   receiverId: number;
   isRead: boolean;
   jobPostActivityId: number;
-  jobPostActivity: any;
-  userAccount: any;
+  // jobPostActivity: any;
+  // userAccount: any;
   createdDate: string;
-  modifiedDate: any;
-  createdBy: any;
-  modifiedBy: any;
+  // modifiedDate: any;
+  // createdBy: any;
+  // modifiedBy: any;
   isDeleted: boolean;
 }
 

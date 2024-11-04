@@ -354,7 +354,12 @@ const router = createBrowserRouter([
       },
       {
         path: "listjobs",
-        element: <ListJobDetails />,
+        element: (
+          <ProtectedRouteApplicants>
+            <ListJobDetails />
+          </ProtectedRouteApplicants>
+        ),
+
         children: [
           {
             path: "OverView/:id",
@@ -481,26 +486,26 @@ const router = createBrowserRouter([
             element: <JobInCompanyInfo />,
           },
           {
-            path:"Notifications",
-            element:<NotificationSystemNew/>
+            path: "Notifications",
+            element: <NotificationSystemNew />,
           },
         ],
       },
 
       {
-        path:'Account/setting',
-        element:<AccountSetting/>,
-        children:[
+        path: "Account/setting",
+        element: <AccountSetting />,
+        children: [
           {
-            index:true,
-            element:<General/>
+            index: true,
+            element: <General />,
           },
           {
-            path:"Password",
-            element:<Password/>
-          }
-        ]
-      }
+            path: "Password",
+            element: <Password />,
+          },
+        ],
+      },
     ],
   },
 

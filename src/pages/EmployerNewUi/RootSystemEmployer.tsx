@@ -10,12 +10,12 @@ export interface Notification {
   receiverId: number;
   isRead: boolean;
   jobPostActivityId: number;
-  jobPostActivity: any;
-  userAccount: any;
+  // jobPostActivity: any;
+  // userAccount: any;
   createdDate: string;
-  modifiedDate: any;
-  createdBy: any;
-  modifiedBy: any;
+  // modifiedDate: any;
+  // createdBy: any;
+  // modifiedBy: any;
   isDeleted: boolean;
 }
 export default function RootSystemEmployer() {
@@ -39,7 +39,7 @@ export default function RootSystemEmployer() {
   }, [token, tokenDuration, submit]);
   return (
     <div className={classes.main}>
-      <HeaderEmployerSystem selectJobId={selectJobId} notifications={notifications} />
+      <HeaderEmployerSystem token={token} selectJobId={selectJobId} notifications={notifications}   setNotifications={setNotifications} />
 
       <Outlet 
         context={{ selectJobId, setSelectJobId,setNotifications ,notifications}}

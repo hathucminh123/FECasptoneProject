@@ -8,20 +8,20 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Invite() {
   const [email, setEmail] = useState<string>("");
 
-  const validateForm = () => {
-    if (!email) {
-      message.error("Email field cannot be empty.");
-      return false;
-    }
+  // const validateForm = () => {
+  //   if (!email) {
+  //     message.error("Email field cannot be empty.");
+  //     return false;
+  //   }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      message.error("Please enter a valid email address.");
-      return false;
-    }
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   if (!emailRegex.test(email)) {
+  //     message.error("Please enter a valid email address.");
+  //     return false;
+  //   }
 
-    return true;
-  };
+  //   return true;
+  // };
   const navigate = useNavigate();
 
   const { mutate, isPending } = useMutation({
@@ -36,7 +36,7 @@ export default function Invite() {
   });
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
+    // if (validateForm()) {
       mutate({
         email: {
           email: email,
@@ -44,7 +44,7 @@ export default function Invite() {
       });
 
       // setUpdate(false);
-    }
+    // }
   };
   return (
     <section className={classes.section}>

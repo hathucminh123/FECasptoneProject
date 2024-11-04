@@ -30,13 +30,13 @@ export default function Complete() {
           job for free. Your journey to discovering standout hires starts here.
         </p>
         <div className={classes.main1}>
-          <Link to="" className={classes.link1}>
+          <Link to="/EmployerJob/applicants" className={classes.link1}>
             <GroupIcon />
             Find Talent
           </Link>
-          <Link to="" className={classes.link2}>
+          <Link to="/EmployerJob/jobs/create" className={classes.link2}>
             <WorkIcon />
-            Find Talent
+           Post Jobs
           </Link>
         </div>
       </div>

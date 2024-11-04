@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import moment from "moment";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
+import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 type JobContextType = {
@@ -88,40 +89,47 @@ export default function ListJobDetails() {
                   </NavLink> */}
                 </nav>
                 <div className={classes.main10}>
-                  {jobincompanyData?.map((job) => (
-                    <NavLink
-                      to={`OverView/${job.id}`}
-                      className={({ isActive }) =>
-                        isActive ? classes.active : undefined
-                      }
-                      onClick={() => setSelectJobId(job.id)}
-                      end
-                    >
-                      <div className={classes.main14}>
-                        <div className={classes.main15}>
-                          <div className={classes.main16}>
-                            {" "}
-                            From:{" "}
-                            {moment(job?.postingDate.slice(0, 10)).format(
-                              "DD-MM-YYYY"
-                            )}{" "}
-                            - To:{" "}
-                            {moment(job?.expiryDate.slice(0, 10)).format(
-                              "DD-MM-YYYY"
-                            )}
+                  {companyId === "null" ? (
+                    <NotifiModal />
+                  ) : (
+                    jobincompanyData?.map((job) => (
+                      <NavLink
+                        to={`OverView/${job.id}`}
+                        className={({ isActive }) =>
+                          isActive ? classes.active : undefined
+                        }
+                        onClick={() => setSelectJobId(job.id)}
+                        end
+                      >
+                        <div className={classes.main14}>
+                          <div className={classes.main15}>
+                            <div className={classes.main16}>
+                              {" "}
+                              From:{" "}
+                              {moment(job?.postingDate.slice(0, 10)).format(
+                                "DD-MM-YYYY"
+                              )}{" "}
+                              - To:{" "}
+                              {moment(job?.expiryDate.slice(0, 10)).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <p className={classes.p}>Job name: {job.jobTitle}</p>
-                      {cityColumn && cityColumn.length > 0 ? (
-                        <p className={classes.p1}>{cityColumn.join(",")}</p>
-                      ) : (
-                        <p className={classes.p1}>
-                          {companyDataa?.address} {" in "} {companyDataa?.city}
-                        </p>
-                      )}
-                    </NavLink>
-                  ))}
+                        <p className={classes.p}>Job name: {job.jobTitle}</p>
+                        {cityColumn && cityColumn.length > 0 ? (
+                          <p className={classes.p1}>{cityColumn.join(",")}</p>
+                        ) : (
+                          <p className={classes.p1}>
+                            {companyDataa?.address} {" in "}{" "}
+                            {companyDataa?.city}
+                          </p>
+                        )}
+                      </NavLink>
+                    ))
+                  )}
+
+                  {/* { } */}
                 </div>
               </div>
             </div>
