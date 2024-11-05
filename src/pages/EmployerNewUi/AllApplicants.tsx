@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./AllApplicants.module.css";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { useParams } from "react-router-dom";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
-import {  useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import moment from "moment";
 import CheckIcon from "@mui/icons-material/Check";
@@ -71,20 +71,21 @@ export default function AllApplicants() {
     Record<number, UserProfile>
   >({});
 
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
+    number | null
+  >(null);
+  //   const [commentText, setCommentText] = useState<string>("");
+  //   const [value, setValue] = React.useState<number | null>(2);
 
-  const [openModal,setOpenModal]=useState<boolean>(false)
-  const [selectedIdJobPostActivity,setSelectedIdJobPostActivity]=useState<number|null>(null)
-//   const [commentText, setCommentText] = useState<string>("");
-//   const [value, setValue] = React.useState<number | null>(2);
+  const handleOpenModal = (id: number) => {
+    setOpenModal(true);
+    setSelectedIdJobPostActivity(id);
+  };
 
-const handleOpenModal=(id:number)=>{
-    setOpenModal(true)
-    setSelectedIdJobPostActivity(id)
-}
-
-const handleCloseModal =()=>{
-    setOpenModal(false)
-}
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   console.log("kkk", jobProfileCounts);
   const {
     data: SeekerApply,
@@ -96,14 +97,19 @@ const handleCloseModal =()=>{
     enabled: !!JobId,
   });
 
-  const dataSeekerApply = SeekerApply?.GetSeekers;
+  // const dataSeekerApply = SeekerApply?.GetSeekers;
+  const PendingDataSeekerApply = useMemo(() => {
+    return (
+      SeekerApply?.GetSeekers?.filter((item) => item.status === "Pending") || []
+    );
+  }, [SeekerApply]);
 
   const fetchProfileApply = useCallback(async () => {
-    if (dataSeekerApply) {
+    if (PendingDataSeekerApply) {
       setIsFetchingProfile(true);
       const ProfileSeeker: Record<number, UserProfile> = {};
       await Promise.all(
-        dataSeekerApply.map(async (item) => {
+        PendingDataSeekerApply.map(async (item) => {
           const seekerData = await GetUserProfile({ id: item.id });
           const data = seekerData?.UserProfiles || {};
           ProfileSeeker[item.id] = data;
@@ -112,12 +118,11 @@ const handleCloseModal =()=>{
       setJobProfileCounts(ProfileSeeker);
       setIsFetchingProfile(false);
     }
-  }, [dataSeekerApply]);
+  }, [PendingDataSeekerApply]);
 
   useEffect(() => {
     fetchProfileApply();
   }, [fetchProfileApply]);
-
 
   const { mutate } = useMutation({
     mutationFn: PutJobPostActivityStatus,
@@ -133,47 +138,45 @@ const handleCloseModal =()=>{
     },
   });
 
-
-  const handlePutStatusPassed =(id:number)=>{
+  const handlePutStatusPassed = (id: number) => {
     mutate({
       data: {
         jobPostActivityId: id,
         status: 3,
       },
     });
-  }
-  const handlePutStatusRejected =(id:number)=>{
+  };
+  const handlePutStatusRejected = (id: number) => {
     mutate({
       data: {
         jobPostActivityId: id,
         status: 2,
       },
     });
-  }
-  const handlePutStatusInterView =(id:number)=>{
+  };
+  const handlePutStatusInterView = (id: number) => {
     mutate({
       data: {
         jobPostActivityId: id,
         status: 5,
       },
     });
-  }
- 
+  };
+
   return (
     <div className={classes.main}>
-        <CommentModal
-          open={openModal}
-          onClose={handleCloseModal}
-          selectedIdJobPostActivity={selectedIdJobPostActivity}
-        
-        />
+      <CommentModal
+        open={openModal}
+        onClose={handleCloseModal}
+        selectedIdJobPostActivity={selectedIdJobPostActivity}
+      />
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
             {isFetchingProfile ? (
               <div>Loading CV data...</div>
             ) : (
-              dataSeekerApply?.map((data) => {
+              PendingDataSeekerApply?.map((data) => {
                 const profile = jobProfileCounts[data.id];
                 if (!profile) return null;
 
@@ -367,7 +370,13 @@ const handleCloseModal =()=>{
                     </div>
                     <div className={classes.main33}>
                       <div>
-                        <button type="button" className={classes.button5} onClick={()=>handleOpenModal(data.jobPostActivityId)}>
+                        <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={() =>
+                            handleOpenModal(data.jobPostActivityId)
+                          }
+                        >
                           <span className={classes.spanicon}>
                             <EditIcon />
                           </span>
@@ -390,15 +399,32 @@ const handleCloseModal =()=>{
 
                     <div className={classes.main30}>
                       <div className={classes.main31}>
-                        <button type="button" className={classes.button2} onClick={()=>handlePutStatusInterView(data.jobPostActivityId)}>
+                        <button
+                          type="button"
+                          className={classes.button2}
+                          onClick={() =>
+                            handlePutStatusInterView(data.jobPostActivityId)
+                          }
+                        >
                           Interview
                         </button>
                         <div className={classes.main32}>
-                          <button className={classes.button3} onClick={()=>handlePutStatusRejected(data.jobPostActivityId)}>
+                          <button
+                            className={classes.button3}
+                            onClick={() =>
+                              handlePutStatusRejected(data.jobPostActivityId)
+                            }
+                          >
                             <CloseIcon />
                             <span>Rejected</span>
                           </button>
-                          <button type="button" className={classes.button4} onClick={()=>handlePutStatusPassed(data.jobPostActivityId)}>
+                          <button
+                            type="button"
+                            className={classes.button4}
+                            onClick={() =>
+                              handlePutStatusPassed(data.jobPostActivityId)
+                            }
+                          >
                             <CheckIcon />
                             <span>Pass</span>
                           </button>

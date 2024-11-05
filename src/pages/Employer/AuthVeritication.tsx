@@ -30,13 +30,14 @@ export default function AuthVerification() {
 
       message.success("Account Verification Complete")
       navigate("/JobSeekers/login");
-
+      setAlertMessage(true)
       setTimeout(() => {
         reset();
       }, 3000);
     },
     onError: () => {
       message.error("Account Verification Failed")
+      setAlertMessage(false)
       setTimeout(() => {
         reset();
       }, 5000);
@@ -73,7 +74,7 @@ export default function AuthVerification() {
     console.log("Verification code submitted: ", verificationCode);
 
     // Simulating successful verification
-    setAlertMessage(true);
+    // setAlertMessage(true);
     // navigate("/JobSeekers/login");
   };
 

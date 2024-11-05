@@ -18,7 +18,7 @@ export default function ApplicantView() {
   });
 
   const dataSeekerApply = SeekerApply?.GetSeekers;
-
+  const PendingDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Pending")
   const PassedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Passed")
   const RejectedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Rejected")
   const InterViewDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="InterviewStage")
@@ -34,7 +34,7 @@ export default function ApplicantView() {
             </div>
           </div>
           <div className={classes.main4}>
-            <Link to="" className={classes.link1}>
+            <Link to={`/EmployerJob/listjobs/OverView/${id}`} className={classes.link1}>
               View Job
             </Link>
           </div>
@@ -65,12 +65,12 @@ export default function ApplicantView() {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                      All
+                      Pending
                     </span>
                   </div>
                   <div className={classes.main7}>
                     <div className={classes.main8}>
-                      <span>{dataSeekerApply?.length}</span>
+                      <span>{PendingDataSeekerApply?.length}</span>
                     </div>
                   </div>
                 </>
