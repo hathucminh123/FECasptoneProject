@@ -44,10 +44,11 @@ export default function CardSkill({
       // Invalidate and refetch the cache to ensure the UI is updated immediately
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
-        refetchType: "active", // Ensure an active refetch
+        refetchType: "active", 
       });
       message.success("SkillSet Details Deleted Successfully");
       setDeletingId(null); 
+  
     },
     onError: () => {
       message.error("Failed to delete the skill set");

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./Profilecv.module.css";
 import { Typography } from "@mui/material";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
@@ -29,6 +29,7 @@ import CardSkill from "../components/CardSkill";
 // import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 import { useNavigate } from "react-router-dom";
+import GradientCircularProgress from "../components/GradientCircularProgress";
 // import { useNavigate } from "react-router-dom";
 export default function Profilecv() {
   const [more, setMore] = useState<boolean>(false);
@@ -44,6 +45,8 @@ export default function Profilecv() {
   const [isCreatingNewChallenge4, setIsCreatingNewChallenge4] =
     useState<boolean>(false);
   const userId = localStorage.getItem("userId");
+
+  const [percent,setPercent]=useState<number>(0)
 
   // const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
   // useState<boolean>(false);
@@ -168,12 +171,48 @@ export default function Profilecv() {
   //   navigate('cv-templates')
   // }
   // const SkillSetDatas = SkillSetData?.SkillSets;
+
+  useEffect(() => {
+    let newPercent = 0;
+  
+    if (UserProfileData) {
+      if (UserProfileData.educationDetails.length > 0) {
+        newPercent += 33.3;
+      }
+      if (UserProfileData.experienceDetails.length > 0) {
+        newPercent += 33.3;
+      }
+      if (UserProfileData.skillSets.length > 0) {
+        newPercent += 33.3;
+      }
+    }
+  
+    setPercent(newPercent);
+  }, [UserProfileData]);
+
+
   return (
     <div className={classes.icontainer}>
       <div className={classes.container}>
         <div className={classes.containerleft}>
           <div className={classes.containerscroll}>
             <div className={classes.content}>
+              <div className={classes.main10}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    color: "#121212",
+                    lineHeight: 1.5,
+                    fontSize: "16px",
+                    fontWeight: 600,
+                    marginBottom: "16px",
+                  }}
+                >
+                  Profile Strength
+                </Typography>
+
+                <GradientCircularProgress percentage={percent}/>
+              </div>
               <div style={{ display: "block" }}>
                 <Typography
                   variant="h4"

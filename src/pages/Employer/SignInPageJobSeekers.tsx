@@ -536,7 +536,7 @@ export default function SignInPageJobSeekers() {
                             marginBottom: ".5rem",
                           }}
                         >
-                          Username
+                        Email
                         </label>
                         <div className={classes.input1}>
                           <div className={classes.logoinput}>
@@ -547,7 +547,7 @@ export default function SignInPageJobSeekers() {
 
                           <TextField
                             id="outlined-username-input-login" // Updated the id for login username input
-                            label="Email | Username"
+                            label="Email"
                             name="userEmail"
                             type="text"
                             required

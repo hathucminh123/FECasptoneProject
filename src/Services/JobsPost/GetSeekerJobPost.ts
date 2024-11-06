@@ -1,12 +1,6 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
-interface Comment {
-  id: number;
-  commentText: string;
-  commentDate: string;
-  rating: number;
-}
 interface SeekersByJobPost {
   id: number;
   userName: string;
@@ -17,8 +11,57 @@ interface SeekersByJobPost {
   cvId: number;
   cvPath: string;
   jobPostActivityId: number;
-  status:string;
-  jobPostActivityComments:Comment[]
+  status: string;
+  jobPostActivityComments: Comment[];
+  analyzedResult: AnalyzedResult; // Integrating AnalyzedResult here
+}
+
+interface Comment {
+  commentId: number;
+  text: string;
+  date: string;
+}
+
+interface AnalyzedResult {
+  success: boolean;
+  processingTime: number;
+  deviceUsed: string;
+  matchDetails: MatchDetails;
+}
+
+interface MatchDetails {
+  jobId: number;
+  jobTitle: string;
+  candidateName: string;
+  candidateEmail: string;
+  scores: Scores;
+  skillAnalysis: SkillAnalysis;
+  experienceAnalysis: ExperienceAnalysis;
+  recommendation: Recommendation;
+}
+
+interface Scores {
+  overallMatch: number;
+  skillMatch: number;
+  experienceMatch: number;
+  contentSimilarity: number;
+}
+
+interface SkillAnalysis {
+  matchingSkills: string[];
+  missingSkills: string[];
+  additionalSkills: string[];
+}
+
+interface ExperienceAnalysis {
+  requiredYears: number;
+  candidateYears: number;
+  meetsRequirement: boolean;
+}
+
+interface Recommendation {
+  category: string;
+  action: string;
 }
 
 interface signal {

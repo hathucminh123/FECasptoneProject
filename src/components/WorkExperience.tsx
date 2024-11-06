@@ -70,7 +70,11 @@ export default function WorkExperience({ onDone }: Props) {
   const { mutate, isPending } = useMutation({
     mutationFn: PostExperienceDetails,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['ExperienceDetails'] });
+      queryClient.invalidateQueries({ queryKey: ['ExperienceDetails'] ,refetchType:"active"});
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active",
+      });
       navigate('#');
       setFormData({
         companyName: "",

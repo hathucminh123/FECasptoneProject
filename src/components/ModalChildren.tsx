@@ -79,6 +79,10 @@ export default function ModalChildren({ onDone }: Props) {
         queryKey: ["Profile"],
         refetchType: "active",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active",
+      });
       message.success("User details updated successfully");
       onDone?.();
     },

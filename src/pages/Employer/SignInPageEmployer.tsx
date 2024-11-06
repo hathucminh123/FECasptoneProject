@@ -514,7 +514,7 @@ export default function SignInPageEmployer() {
                             marginBottom: ".5rem",
                           }}
                         >
-                          Username
+                          Email
                         </label>
                         <div className={classes.input1}>
                           <div className={classes.logoinput}>
@@ -525,7 +525,7 @@ export default function SignInPageEmployer() {
 
                           <TextField
                             id="outlined-username-input"
-                            label="Email | Username"
+                            label="Email "
                             name="userEmail"
                             type="text"
                             required

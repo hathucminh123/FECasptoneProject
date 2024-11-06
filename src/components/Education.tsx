@@ -67,7 +67,11 @@ export default function Education({ onDone }: Props) {
   const { mutate, isPending } = useMutation({
     mutationFn: PostEducationDetails,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['EducationDetails'] });
+      queryClient.invalidateQueries({ queryKey: ['EducationDetails'] ,refetchType:'active'});
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active",
+      });
       navigate('#');
       setFormData({
         name: "",

@@ -15,6 +15,12 @@ import CommentModal from "../../components/NewUiEmployer/ModalComment";
 import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
+import ModalScore from "../../components/NewUiEmployer/ModalScore";
+import { AnimatePresence } from "framer-motion";
+import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+// import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
+// import NoJob from "../../components/NewUiEmployer/NoJob";
+import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -67,11 +73,16 @@ export default function AllApplicants() {
   const JobId = Number(id);
   const [openExp, setOpenExp] = useState<boolean>(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
+  const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [jobProfileCounts, setJobProfileCounts] = useState<
     Record<number, UserProfile>
   >({});
 
   const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
+  const [idApplicants, setIdApplicants] = useState<number | null>(null);
+
   const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
     number | null
   >(null);
@@ -163,6 +174,25 @@ export default function AllApplicants() {
     });
   };
 
+  const handleOpenMdalScore = (id: number, profile: UserProfile) => {
+    setOpenModalScore(true);
+    setProfileScore(profile);
+    setIdApplicants(id);
+  };
+
+  const handleCloseModalScore = () => {
+    setOpenModalScore(false);
+  };
+  // const calculateStrokeDasharray = (percentage:number) => {
+  //   const radius = 40; // Radius of the circle
+  //   const circumference = 2 * Math.PI * radius;
+  //   return `${(percentage / 100) * circumference} ${circumference}`;
+  // };
+
+  if(PendingDataSeekerApply.length === 0){
+    return <NoJobApplicants text="There are no applicants to your job yet." />
+  }
+
   return (
     <div className={classes.main}>
       <CommentModal
@@ -170,6 +200,17 @@ export default function AllApplicants() {
         onClose={handleCloseModal}
         selectedIdJobPostActivity={selectedIdJobPostActivity}
       />
+
+      <AnimatePresence>
+        {openModalScore && (
+          <ModalScore
+            onClose={handleCloseModalScore}
+            profile={profileScore}
+            id={idApplicants}
+            idJob={id}
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
@@ -207,7 +248,7 @@ export default function AllApplicants() {
                         </div>
                       </div>
                       <div className={classes.main9}>
-                        <button type="button" className={classes.button}>
+                        <button type="button" className={classes.button} style={{marginRight:'50px'}}>
                           <span>
                             {" "}
                             {data.status} {" ✦"}
@@ -359,7 +400,7 @@ export default function AllApplicants() {
                           </div>
                         </div>
 
-                        <div className={classes.main28}>
+                        <div className={classes.main28} >
                           {profile.skillSets.map((skill) => (
                             <div className={classes.main29}>
                               <span>{skill.name}</span>
@@ -368,7 +409,7 @@ export default function AllApplicants() {
                         </div>
                       </div>
                     </div>
-                    <div className={classes.main33}>
+                    <div className={classes.main33}  style={{ top: 175}}>
                       <div>
                         <button
                           type="button"
@@ -383,7 +424,19 @@ export default function AllApplicants() {
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 10 }}>
+                    <div className={classes.main33} style={{ top: 0}}>
+                      <div>
+                        <button type="button" className={classes.button6}    onClick={() =>
+                              handleOpenMdalScore(data.id, profile)
+                            }>
+                          {/* <span className={classes.spanicon}> */}
+                             <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/>
+                          
+                          {/* </span> */}
+                        </button>
+                      </div>
+                    </div>
+                    <div className={classes.main33} style={{ top: 125 }}>
                       <div>
                         <a
                           href={data.cvPath || "#"}
@@ -406,6 +459,7 @@ export default function AllApplicants() {
                             handlePutStatusInterView(data.jobPostActivityId)
                           }
                         >
+                          
                           Interview
                         </button>
                         <div className={classes.main32}>
@@ -428,6 +482,7 @@ export default function AllApplicants() {
                             <CheckIcon />
                             <span>Pass</span>
                           </button>
+                        
                         </div>
                       </div>
                     </div>

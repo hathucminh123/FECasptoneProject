@@ -1,0 +1,58 @@
+.percentile-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: #717584;
+}
+
+.chart-title {
+    font-weight: bold;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.chart-bars {
+    display: flex;
+    gap: 16px; /* Spacing between each bar */
+    margin-bottom: 10px;
+}
+
+.chart-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px; 
+    height: 120px; 
+    /* background-color: #f1f5f9; */
+    border-radius: 4px;
+    position: relative;
+}
+
+.ok{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0; /* Rounded top for the bar */
+    bottom: 0;
+    position: absolute;
+}
+
+.bar-label {
+    font-size: 10px;
+    color: #717584;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.bar-value {
+    font-size: 12px;
+    color: #717584;
+    text-align: center;
+    margin-top: 4px;
+}

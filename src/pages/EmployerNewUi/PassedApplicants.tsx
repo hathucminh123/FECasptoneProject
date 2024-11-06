@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import classes from "./PassedApplicants.module.css";
+import classes from "./AllApplicants.module.css";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { useParams } from "react-router-dom";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
-import {  useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import moment from "moment";
 // import CheckIcon from "@mui/icons-material/Check";
@@ -15,6 +15,10 @@ import CommentModal from "../../components/NewUiEmployer/ModalComment";
 import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
+import ModalScore from "../../components/NewUiEmployer/ModalScore";
+import { AnimatePresence } from "framer-motion";
+import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -67,24 +71,30 @@ export default function PassedApplicants() {
   const JobId = Number(id);
   const [openExp, setOpenExp] = useState<boolean>(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
+  const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [jobProfileCounts, setJobProfileCounts] = useState<
     Record<number, UserProfile>
   >({});
 
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const [openModal,setOpenModal]=useState<boolean>(false)
-  const [selectedIdJobPostActivity,setSelectedIdJobPostActivity]=useState<number|null>(null)
-//   const [commentText, setCommentText] = useState<string>("");
-//   const [value, setValue] = React.useState<number | null>(2);
+  const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
+  const [idApplicants, setIdApplicants] = useState<number | null>(null);
 
-const handleOpenModal=(id:number)=>{
-    setOpenModal(true)
-    setSelectedIdJobPostActivity(id)
-}
+  const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
+    number | null
+  >(null);
+  //   const [commentText, setCommentText] = useState<string>("");
+  //   const [value, setValue] = React.useState<number | null>(2);
 
-const handleCloseModal =()=>{
-    setOpenModal(false)
-}
+  const handleOpenModal = (id: number) => {
+    setOpenModal(true);
+    setSelectedIdJobPostActivity(id);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
   console.log("kkk", jobProfileCounts);
   const {
     data: SeekerApply,
@@ -96,19 +106,19 @@ const handleCloseModal =()=>{
     enabled: !!JobId,
   });
 
-//   const dataSeekerApply = SeekerApply?.GetSeekers;
-
-//   const PassedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Passed")
-const PassedDataSeekerApply = useMemo(() => {
-    return SeekerApply?.GetSeekers?.filter((item) => item.status === "Passed") || [];
+  // const dataSeekerApply = SeekerApply?.GetSeekers;
+  const PendingDataSeekerApply = useMemo(() => {
+    return (
+      SeekerApply?.GetSeekers?.filter((item) => item.status === "Passed") || []
+    );
   }, [SeekerApply]);
 
   const fetchProfileApply = useCallback(async () => {
-    if (PassedDataSeekerApply) {
+    if (PendingDataSeekerApply) {
       setIsFetchingProfile(true);
       const ProfileSeeker: Record<number, UserProfile> = {};
       await Promise.all(
-        PassedDataSeekerApply.map(async (item) => {
+        PendingDataSeekerApply.map(async (item) => {
           const seekerData = await GetUserProfile({ id: item.id });
           const data = seekerData?.UserProfiles || {};
           ProfileSeeker[item.id] = data;
@@ -117,9 +127,9 @@ const PassedDataSeekerApply = useMemo(() => {
       setJobProfileCounts(ProfileSeeker);
       setIsFetchingProfile(false);
     }
-  }, [PassedDataSeekerApply]);
+  }, [PendingDataSeekerApply]);
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchProfileApply();
   }, [fetchProfileApply]);
 
@@ -137,46 +147,76 @@ const PassedDataSeekerApply = useMemo(() => {
     },
   });
 
-
-  // const handlePutStatusPassed =(id:number)=>{
+  // const handlePutStatusPassed = (id: number) => {
   //   mutate({
   //     data: {
   //       jobPostActivityId: id,
   //       status: 3,
   //     },
   //   });
-  // }
-  const handlePutStatusRejected =(id:number)=>{
+  // };
+  const handlePutStatusRejected = (id: number) => {
     mutate({
       data: {
         jobPostActivityId: id,
         status: 2,
       },
     });
-  }
-  const handlePutStatusInterView =(id:number)=>{
+  };
+  const handlePutStatusInterView = (id: number) => {
     mutate({
       data: {
         jobPostActivityId: id,
         status: 5,
       },
     });
+  };
+
+  const handleOpenMdalScore = (id: number, profile: UserProfile) => {
+    setOpenModalScore(true);
+    setProfileScore(profile);
+    setIdApplicants(id);
+  };
+
+  const handleCloseModalScore = () => {
+    setOpenModalScore(false);
+  };
+  // const calculateStrokeDasharray = (percentage:number) => {
+  //   const radius = 40; // Radius of the circle
+  //   const circumference = 2 * Math.PI * radius;
+  //   return `${(percentage / 100) * circumference} ${circumference}`;
+  // };
+
+  if(PendingDataSeekerApply.length === 0){
+    return <NoJobApplicants text="There are no  Passed applicants Yet"/>
   }
+
+
   return (
     <div className={classes.main}>
-        <CommentModal
-          open={openModal}
-          onClose={handleCloseModal}
-          selectedIdJobPostActivity={selectedIdJobPostActivity}
-        
-        />
+      <CommentModal
+        open={openModal}
+        onClose={handleCloseModal}
+        selectedIdJobPostActivity={selectedIdJobPostActivity}
+      />
+
+      <AnimatePresence>
+        {openModalScore && (
+          <ModalScore
+            onClose={handleCloseModalScore}
+            profile={profileScore}
+            id={idApplicants}
+            idJob={id}
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
             {isFetchingProfile ? (
               <div>Loading CV data...</div>
             ) : (
-                PassedDataSeekerApply?.map((data) => {
+              PendingDataSeekerApply?.map((data) => {
                 const profile = jobProfileCounts[data.id];
                 if (!profile) return null;
 
@@ -207,7 +247,7 @@ const PassedDataSeekerApply = useMemo(() => {
                         </div>
                       </div>
                       <div className={classes.main9}>
-                        <button type="button" className={classes.button}>
+                        <button type="button" className={classes.button} style={{marginRight:'50px'}}>
                           <span>
                             {" "}
                             {data.status} {" ✦"}
@@ -359,7 +399,7 @@ const PassedDataSeekerApply = useMemo(() => {
                           </div>
                         </div>
 
-                        <div className={classes.main28}>
+                        <div className={classes.main28} >
                           {profile.skillSets.map((skill) => (
                             <div className={classes.main29}>
                               <span>{skill.name}</span>
@@ -368,16 +408,34 @@ const PassedDataSeekerApply = useMemo(() => {
                         </div>
                       </div>
                     </div>
-                    <div className={classes.main33}>
+                    <div className={classes.main33}  style={{ top: 175}}>
                       <div>
-                        <button type="button" className={classes.button5} onClick={()=>handleOpenModal(data.jobPostActivityId)}>
+                        <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={() =>
+                            handleOpenModal(data.jobPostActivityId)
+                          }
+                        >
                           <span className={classes.spanicon}>
                             <EditIcon />
                           </span>
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 10 }}>
+                    <div className={classes.main33} style={{ top: 0}}>
+                      <div>
+                        <button type="button" className={classes.button6}    onClick={() =>
+                              handleOpenMdalScore(data.id, profile)
+                            }>
+                          {/* <span className={classes.spanicon}> */}
+                             <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/>
+                          
+                          {/* </span> */}
+                        </button>
+                      </div>
+                    </div>
+                    <div className={classes.main33} style={{ top: 125 }}>
                       <div>
                         <a
                           href={data.cvPath || "#"}
@@ -393,18 +451,37 @@ const PassedDataSeekerApply = useMemo(() => {
 
                     <div className={classes.main30}>
                       <div className={classes.main31}>
-                        <button type="button" className={classes.button2} onClick={()=>handlePutStatusInterView(data.jobPostActivityId)}>
+                        <button
+                          type="button"
+                          className={classes.button2}
+                          onClick={() =>
+                            handlePutStatusInterView(data.jobPostActivityId)
+                          }
+                        >
+                          
                           Interview
                         </button>
                         <div className={classes.main32}>
-                          <button className={classes.button3} onClick={()=>handlePutStatusRejected(data.jobPostActivityId)}>
+                          <button
+                            className={classes.button3}
+                            onClick={() =>
+                              handlePutStatusRejected(data.jobPostActivityId)
+                            }
+                          >
                             <CloseIcon />
                             <span>Rejected</span>
                           </button>
-                          {/* <button type="button" className={classes.button4} onClick={()=>handlePutStatusPassed(data.jobPostActivityId)}>
+                          {/* <button
+                            type="button"
+                            className={classes.button4}
+                            onClick={() =>
+                              handlePutStatusPassed(data.jobPostActivityId)
+                            }
+                          >
                             <CheckIcon />
                             <span>Pass</span>
-                          </button> */}
+                          </button>
+                         */}
                         </div>
                       </div>
                     </div>

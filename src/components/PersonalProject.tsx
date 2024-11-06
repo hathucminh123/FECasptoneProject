@@ -33,6 +33,7 @@ export default function PersonalProject({ onDone }: Props) {
     staleTime: 1000,
   });
 
+
   const SkillSetDatas = SkillSetData?.SkillSets;
   const [formData, setFormData] = useState({
     name: "",
@@ -42,10 +43,10 @@ export default function PersonalProject({ onDone }: Props) {
   const { mutate: Save, isPending: isSaving } = useMutation({
     mutationFn: PostUserSkill,
     onSuccess: () => {
-      // Invalidate and refetch the cache to ensure the UI is updated immediately
+  
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
-        refetchType: "active", // Ensure an active refetch
+        refetchType: "active", 
       });
         onDone?.();
       message.success("SkillSet Details Save Successfully");

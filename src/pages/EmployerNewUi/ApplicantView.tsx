@@ -4,9 +4,17 @@ import { Link, NavLink, Outlet, useParams } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 export default function ApplicantView() {
   const { id } = useParams();
   const JobId = Number(id);
+
+  const { data: jobData } = useQuery({
+    queryKey: ["Job-details", JobId],
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }),
+    enabled: !!JobId,
+  });
+  const job = jobData?.JobPosts;
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,
@@ -18,23 +26,34 @@ export default function ApplicantView() {
   });
 
   const dataSeekerApply = SeekerApply?.GetSeekers;
-  const PendingDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Pending")
-  const PassedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Passed")
-  const RejectedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Rejected")
-  const InterViewDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="InterviewStage")
+  const PendingDataSeekerApply = dataSeekerApply?.filter(
+    (item) => item.status === "Pending"
+  );
+  const PassedDataSeekerApply = dataSeekerApply?.filter(
+    (item) => item.status === "Passed"
+  );
+  const RejectedDataSeekerApply = dataSeekerApply?.filter(
+    (item) => item.status === "Rejected"
+  );
+  const InterViewDataSeekerApply = dataSeekerApply?.filter(
+    (item) => item.status === "InterviewStage"
+  );
 
   return (
     <div className={classes.main}>
       <header className={classes.header}>
         <div className={classes.main1}>
           <div className={classes.main2}>
-            <p className={classes.p}>Reactjs</p>
+            <p className={classes.p}>{job?.jobTitle}</p>  
             <div className={classes.main3}>
               <span className={classes.span}>Live</span>
             </div>
           </div>
           <div className={classes.main4}>
-            <Link to={`/EmployerJob/listjobs/OverView/${id}`} className={classes.link1}>
+            <Link
+              to={`/EmployerJob/listjobs/OverView/${id}`}
+              className={classes.link1}
+            >
               View Job
             </Link>
           </div>
@@ -148,7 +167,7 @@ export default function ApplicantView() {
           </nav>
         </div>
       </header>
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }

@@ -57,8 +57,13 @@ export default function CardExperience({
         queryKey: ["ExperienceDetails"],
         refetchType: "active",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active",
+      });
       message.success("Experience Details Deleted Successfully");
       setDeletingId(null);
+    
     },
     onError: () => {
       message.error("Failed to delete the Experience");

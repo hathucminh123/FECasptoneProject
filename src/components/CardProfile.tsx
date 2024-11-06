@@ -59,8 +59,13 @@ export default function CardProfile({
         queryKey: ["EducationDetails"],
         refetchType: "active",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active",
+      });
       message.success("Education Details Deleted Successfully");
       setDeletingId(null);
+     
     },
     onError: () => {
       message.error("Failed to delete the skill set");
