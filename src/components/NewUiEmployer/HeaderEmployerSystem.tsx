@@ -137,7 +137,7 @@ export default function HeaderEmployerSystem({
 
   const UserProfileData = UserProfile?.UserProfiles;
   return (
-    <header className={classes.header}>
+    <header className={classes.header} >
       <div className={classes.header1}>
         <div className={classes.header2}>
           <NavLink to="" className={classes.link1}>
@@ -295,6 +295,7 @@ export default function HeaderEmployerSystem({
                 </div>
               </button>
               {open && (
+                <div style={{position:'relative'}}>
                 <div className={classes.header17}>
                   <div className={classes.header18}>
                     <div className={classes.header19}>
@@ -381,6 +382,7 @@ export default function HeaderEmployerSystem({
                     </div>
                   </div>
                 </div>
+                 </div>
               )}
             </div>
           </div>

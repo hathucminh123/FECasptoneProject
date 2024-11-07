@@ -359,10 +359,12 @@
   z-index: 9999;
   visibility: visible;
   position: absolute;
-  inset: 0px auto auto 0px;
+  /* inset: 0px auto auto 0px; */
   margin: 0px;
-  transform: translate3d(1240px, 65px, 0px);
+  /* transform: translate3d(1240px, 65px, 0px); */
   max-width: calc(100vw - 10px);
+  top: 10px;
+  right: 0px;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;

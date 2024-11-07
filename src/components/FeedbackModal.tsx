@@ -11,15 +11,20 @@ interface Comment {
   commentDate: string;
   rating: number;
 }
+// interface Comment {
+//   commentId: number;
+//   text: string;
+//   date: string;
+// }
 
 interface Props {
   onDone?: () => void;
-  data: Comment[] | null | undefined;
+  data: Comment[] | undefined ;
 }
 
 const FeedbackModal: React.FC<Props> = ({ onDone, data }) => {
   return (
-    <Modal disappear={true} title="Comments" onClose={onDone}>
+    <Modal text="" disappear={true} title="Comments" onClose={onDone}>
       <Box component="div" className={classes.commentContainer}>
         {data && data.length > 0 ? (
           data.map((comment) => (

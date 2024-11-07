@@ -265,7 +265,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                             </div>
                             <div>
                               <PercentileChart
-                              profileResult={profileResult}
+                                profileResult={profileResult}
                                 overallMatch={
                                   profileResult?.analyzedResult.matchDetails
                                     .scores.overallMatch

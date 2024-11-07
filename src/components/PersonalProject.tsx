@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
@@ -13,19 +13,39 @@ import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
-
-import CardSkillModal from "./CardSkillModal";
+import CloseIcon from "@mui/icons-material/Close";
+import SearchIcon from "@mui/icons-material/Search";
+// import CardSkillModal from "./CardSkillModal";
 // import { renderButton } from "./RenderButton";
 import RenderButton from "./RenderButton";
 import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
+// import { default as modal } from "@mui/material/Modal"; 
 
+// import Button from "@mui/material/Button";
+
+
+
+interface SkillSet {
+  id: number;
+  name: string;
+  shorthand: string;
+  description: string;
+}
 interface Props {
   onDone?: () => void;
 }
 
 export default function PersonalProject({ onDone }: Props) {
   const userId = localStorage.getItem("userId");
-  const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
+  // const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
+ 
+  const [skills, setSkills] = useState<SkillSet|null>(null);
+
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [skillId, setSkillId] = useState<number|null>(null);
+  // const [open, setOpen] = useState(false);
+  const [inputSkill, setInputSkill] = useState<string>("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
   // const [value, setValue] = useState<string>("");
   const { data: SkillSetData } = useQuery({
     queryKey: ["SkillSetDetails"],
@@ -35,6 +55,55 @@ export default function PersonalProject({ onDone }: Props) {
 
 
   const SkillSetDatas = SkillSetData?.SkillSets;
+  const [filteredSkills, setFilteredSkills] = useState(SkillSetDatas);
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setInputSkill(inputValue);
+    if (inputValue) {
+      setFilteredSkills(
+        SkillSetDatas?.filter((comp) =>
+          comp.name.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+      setDropdownOpen(true);
+    } else {
+      setFilteredSkills([]);
+      setDropdownOpen(false);
+    }
+  };
+
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setDropdownOpen(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSkill = (selectedSkill: SkillSet) => {
+  setSkills(selectedSkill)
+  setSkillId(selectedSkill.id)
+  };
+
+  const handleRemoveSkill = (skillToRemove: SkillSet) => {
+    setSkillId((prev) => prev === skillToRemove.id ? null : skillToRemove.id )
+    setSkills((prev) => prev === skillToRemove ? null : skillToRemove )
+  };
+
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
+
+
   const [formData, setFormData] = useState({
     name: "",
     shorthand: "",
@@ -89,7 +158,7 @@ export default function PersonalProject({ onDone }: Props) {
     Save({
       data: {
         userId: Number(userId),
-        skillSetId: selectedCvId,
+        skillSetId: skillId,
         proficiencyLevel: "",
       },
     });
@@ -243,19 +312,107 @@ export default function PersonalProject({ onDone }: Props) {
 )}
 
             </div>
-            <CardSkillModal
+
+            <label
+                htmlFor=""
+                className={classes.label}
+                style={{ marginTop: "50px" }}
+              >
+                <div className={classes.main9}>
+                  <div className={classes.main10}>
+                    Select Your Skills
+                    <span className={classes.span}>*</span>
+                  </div>
+                </div>
+                {skills   ? (
+                  <div className={classes.main24}>
+                    
+                      <span
+                        className={classes.span2}
+                        onClick={() => handleRemoveSkill(skills)}
+                      >
+                        {skills.name}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                   
+                  </div>
+                ) : undefined}
+
+                <div className={classes.div1} aria-expanded="false">
+                  <div className={inputSkill ? classes.divne : classes.div2}>
+                    <div className={classes.div3}>
+                      <div className={classes.div4}>
+                        <div className={classes.icon}>
+                          <SearchIcon />
+                        </div>
+                        <input
+                          value={inputSkill}
+                          onChange={handleChange}
+                          className={classes.input2}
+                          type="text"
+                          placeholder="e.g. Python,Reactjs"
+                          aria-autocomplete="list"
+                          autoComplete="off"
+                          onFocus={() => setDropdownOpen(true)}
+                        />
+                      </div>
+
+                      {dropdownOpen && (
+                        <div className={classes.dropdown} ref={dropdownRef}>
+                          {filteredSkills?.length &&
+                          filteredSkills?.length > 0 ? (
+                            filteredSkills?.map((comp, index) => (
+                              <div
+                                key={index}
+                                className={classes.dropdownItem}
+                                onClick={() => handleSkill(comp)}
+                              >
+                                {/* <img
+                          src={comp.imageUrl}
+                          alt={comp.companyName}
+                          className={classes.logo}
+                        /> */}
+                                <span className={classes.companyName}>
+                                  {comp.name}
+                                </span>
+                                {/* <span className={classes.companyUrl}>
+                          {comp.websiteURL}
+                        </span> */}
+                              </div>
+                            ))
+                          ) : (
+                            <div
+                              className={classes.createNewCompany}
+                              //   onClick={handleOpenRegister}
+                              // onClick={handleOpen}
+                              // style={{ cursor: "pointer" }}
+                            >
+                              <span>Not Found "{inputSkill}"</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </label>
+            {/* <CardSkillModal
               title="Skills"
               text="Highlight Your skills Set"
-              // icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
-              // icon={<EditNoteOutlinedIcon />}
+              icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+               icon={<EditNoteOutlinedIcon />}
               setSelectedCvId={setSelectedCvId}
               selectedCvId={selectedCvId}
               img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
               data={SkillSetDatas}
-            />
+            /> */}
+
 
             {/* Submit Button */}
             <div style={{ marginTop: "20px" }}></div>
+        
           </div>
         </div>
       </Box>

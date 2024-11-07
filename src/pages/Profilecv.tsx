@@ -185,6 +185,9 @@ export default function Profilecv() {
       if (UserProfileData.skillSets.length > 0) {
         newPercent += 33.3;
       }
+      if(UserProfileData.educationDetails.length > 0 && UserProfileData.experienceDetails.length > 0 &&UserProfileData.skillSets.length > 0){
+        newPercent=100
+      }
     }
   
     setPercent(newPercent);

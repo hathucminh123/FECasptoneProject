@@ -17,9 +17,10 @@ interface SeekersByJobPost {
 }
 
 interface Comment {
-  commentId: number;
-  text: string;
-  date: string;
+  id: number;
+  commentText: string;
+  commentDate: string;
+  rating: number;
 }
 
 interface AnalyzedResult {

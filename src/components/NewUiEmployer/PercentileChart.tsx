@@ -17,9 +17,10 @@ interface SeekersByJobPost {
 }
 
 interface Comment {
-  commentId: number;
-  text: string;
-  date: string;
+  id: number;
+  commentText: string;
+  commentDate: string;
+  rating: number;
 }
 
 interface AnalyzedResult {
@@ -69,7 +70,7 @@ interface PercentileChartProps {
   skillMatch: number | undefined;
   experienceMatch: number | undefined;
   contentSimilarity: number | undefined;
-  profileResult?: SeekersByJobPost;
+  profileResult?: SeekersByJobPost|undefined;
 }
 
 const PercentileChart: React.FC<PercentileChartProps> = ({
