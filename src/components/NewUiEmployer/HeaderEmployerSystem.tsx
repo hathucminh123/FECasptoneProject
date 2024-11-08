@@ -9,6 +9,8 @@ import { HttpTransportType, HubConnectionBuilder, IHttpConnectionOptions } from 
 import { GetNotifications } from "../../Services/JobsPostActivity/GetNotifications";
 import { signalR } from "../../Services/mainService";
 import { AxiosResponse } from "axios";
+import PaymentModal from "./PaymentModal";
+import { AnimatePresence } from "framer-motion";
 export interface Notification {
   id: number;
   title: string;
@@ -42,6 +44,8 @@ export default function HeaderEmployerSystem({
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
+
+  const [openModal,setOpenModal]=useState<boolean>(false)
   console.log("adu ma ", selectJobId);
 
   useEffect(() => {
@@ -135,9 +139,28 @@ export default function HeaderEmployerSystem({
     }
   }
 
+
+
   const UserProfileData = UserProfile?.UserProfiles;
+
+
+  const handleCloseModalPayment =()=>{
+    setOpenModal(false)
+  }
   return (
     <header className={classes.header} >
+
+     <AnimatePresence>
+        {openModal && (
+          <PaymentModal
+            onClose={handleCloseModalPayment}
+            // profile={profileScore}
+            // id={idApplicants}
+            // idJob={id}
+          />
+        )}
+      </AnimatePresence>
+     
       <div className={classes.header1}>
         <div className={classes.header2}>
           <NavLink to="" className={classes.link1}>
@@ -228,6 +251,9 @@ export default function HeaderEmployerSystem({
             )}
           </NavLink>
         </nav>
+        <div className={classes.discover} onClick={()=>(setOpenModal(true))}>
+<span>Payment</span>
+        </div>
         <div className={classes.header6}></div>
         <div className={classes.header7}>
           <div className={classes.header8}>

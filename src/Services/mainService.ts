@@ -108,6 +108,12 @@ export const apiLinks = {
 
   jobSearch:{
     POST:`${baseURL}/JobPosts/search`,
+  },
+  customEmail:{
+    POST:`${baseURL}/Email`,
+  },
+  payment:{
+    POST:`${baseURL}/Payment`
   }
 };
 

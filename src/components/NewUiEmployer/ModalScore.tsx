@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import classes from "./ModalScore.module.css";
@@ -6,9 +6,12 @@ import classes from "./ModalScore.module.css";
 import Typography from "@mui/material/Typography";
 import PercentileChart from "./PercentileChart";
 import { NavLink } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 import moment from "moment";
+import { CustomEmail } from "../../Services/CustomEmail/CustomEmail";
+import { message } from "antd";
+import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
 interface EducationDetail {
   id: number;
   name: string;
@@ -59,6 +62,23 @@ interface props {
   idJob?: string;
 }
 export default function ModalScore({ onClose, profile, id, idJob }: props) {
+  const [emailForm, setEmailForm] = useState<string>("");
+  const companyId = localStorage.getItem("CompanyId");
+
+  const {
+    data: CompanyDa,
+    // isLoading,
+    // error,
+  } = useQuery({
+    queryKey: ["Company-details", companyId], // Sửa lại tên key cho chính xác
+    queryFn: ({ signal }) =>
+      fetchCompaniesById({ id: Number(companyId), signal }),
+    enabled: !!companyId,
+  });
+
+  // Dữ liệu công ty (nếu có)
+  const companyDataa = CompanyDa?.Companies;
+
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,
@@ -79,6 +99,41 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
   //   experienceMatch: 0,
   //   contentSimilarity: 41.73,
   // };
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: CustomEmail,
+    onSuccess: () => {
+      // queryClient.invalidateQueries({
+      //   queryKey: ["JobPostActivity"],
+      //   refetchType: "active", // Ensure an active refetch
+      // });
+      message.success(`Send Email successfully!`);
+      // navigate(`/thankyou/${job?.id}`);
+    },
+    onError: () => {
+      message.error("Failed to Send Email.");
+    },
+  });
+
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!emailForm || emailForm.trim() === "") {
+      console.error("Email content is required");
+      return;
+    }
+
+    const formattedCompanyName = companyDataa?.companyName.replace(/\s{2,}/g, ' ').trim();
+
+    mutate({
+      data: {
+        content: emailForm,
+        companyName: formattedCompanyName,
+        // companyName: "fpt",
+        reciveUser: profile?.email,
+      },
+    });
+  };
 
   if (!modalRoot) {
     return null;
@@ -374,7 +429,11 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                         </div>
                       </NavLink>
                     </nav>
-                    <form action="" className={classes.form}>
+                    <form
+                      action=""
+                      className={classes.form}
+                      onSubmit={handleSendEmail}
+                    >
                       <div className={classes.main37}>
                         <div className={classes.main38}>
                           <div className={classes.main39}>
@@ -393,14 +452,22 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               id=""
                               className={classes.main52}
                               placeholder="Start writing your Email...."
+                              onChange={(e) => setEmailForm(e.target.value)}
+                              value={emailForm}
                             ></textarea>
                           </div>
                         </div>
                       </div>
                       <div className={classes.main53}>
-                        <button type="submit" className={classes.main54}>
-                          Send Request Email
-                        </button>
+                        {isPending ? (
+                          <button  className={classes.main54}>
+                           Wait a seconds
+                          </button>
+                        ) : (
+                          <button type="submit" className={classes.main54}>
+                            Send Request Email
+                          </button>
+                        )}
                       </div>
                     </form>
                   </div>

@@ -342,16 +342,17 @@ export default function VerifiCompany() {
     mutationFn: SelectCompany,
     onSuccess: () => {
       message.success("Choose Company Successfully");
-      // const redirectPath = "/employer-verify/jobs/account/company";
-
+      localStorage.setItem("CompanyId", companyId?.toString() || "");
       queryClient.invalidateQueries({
         queryKey: ["Company"],
         refetchType: "active",
       });
+
+      // Điều hướng trước khi tải lại trang
       navigate("/onboarding/recruit/inviteYourTeam");
       setNextStep(true);
 
-      // navigate(redirectPath);
+      // Tải lại toàn bộ trang
       window.location.reload();
     },
     onError: () => {
@@ -369,7 +370,7 @@ export default function VerifiCompany() {
           verificationCode: verificationCode,
         },
       });
-      localStorage.setItem("CompanyId", companyId?.toString());
+
       // setOpen(false);
     }
   };

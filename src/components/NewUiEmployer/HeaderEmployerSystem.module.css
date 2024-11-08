@@ -592,3 +592,32 @@
 .link5:hover{
     background-color: #EAEBFF;
 }
+
+
+.discover{
+  background-color: transparent;
+  color: #dbc0f8;
+  border-color: #dbc0f8;
+  transition: color .1s ease, border-color .1s ease;
+  will-change: color, border-color;
+  text-decoration-line: none;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  text-align: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 12px;
+  padding-right: 12px;
+  --tw-bg-opacity: 1;
+  --tw-border-opacity: 1;
+  border-style: solid;
+
+  border-width: 1px;
+  border-radius: 4px;
+  white-space: nowrap;
+  cursor: pointer;
+  margin: 0;
+  font-family: Graphik, Helvetica Neue, arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  box-sizing: border-box;
+}

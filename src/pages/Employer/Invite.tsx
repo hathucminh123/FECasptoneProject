@@ -7,6 +7,7 @@ import { message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 export default function Invite() {
   const [email, setEmail] = useState<string>("");
+  const [open, setOpen] = useState<boolean>(false);
 
   // const validateForm = () => {
   //   if (!email) {
@@ -28,7 +29,7 @@ export default function Invite() {
     mutationFn: EmailEmployees,
     onSuccess: () => {
       message.success("Mail sent successfully");
-      navigate("/onboarding/recruit/Complete");
+      setOpen(true);
     },
     onError: () => {
       message.error("Failed to update company details.");
@@ -37,14 +38,23 @@ export default function Invite() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // if (validateForm()) {
-      mutate({
-        email: {
-          email: email,
-        },
-      });
-
-      // setUpdate(false);
+    // mutate({
+    //   email: {
+    //     email: email,
+    //   },
+    // });
+    navigate("/onboarding/recruit/Complete");
+    // setUpdate(false);
     // }
+  };
+
+  const handleSendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    mutate({
+      email: {
+        email: email,
+      },
+    });
   };
   return (
     <section className={classes.section}>
@@ -79,6 +89,23 @@ export default function Invite() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
+              {isPending ? (
+                <button
+                  className={classes.btn1}
+                  style={{ marginTop: "10px" }}
+                  // onClick={(e) => handleSendEmail(e)}
+                >
+                 Wait a seconds
+                </button>
+              ) : (
+                <button
+                  className={classes.btn1}
+                  style={{ marginTop: "10px" }}
+                  onClick={(e) => handleSendEmail(e)}
+                >
+                  Send Email
+                </button>
+              )}
             </div>
           </div>
           <div className={classes.main2}></div>
@@ -91,7 +118,7 @@ export default function Invite() {
             >
               Skip for Now
             </Link>
-            {isPending ? (
+            {/* {isPending ? (
               <button
                 className={classes.btn1}
                 style={{ marginLeft: 10 }}
@@ -100,6 +127,16 @@ export default function Invite() {
                 Wait a seconds
               </button>
             ) : (
+              <button
+                className={classes.btn1}
+                style={{ marginLeft: 10 }}
+                type="submit"
+              >
+                Next up: Start recruiting
+              </button>
+            )} */}
+
+            {open && (
               <button
                 className={classes.btn1}
                 style={{ marginLeft: 10 }}
