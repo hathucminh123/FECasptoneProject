@@ -95,8 +95,17 @@ export default function ListJobDetails() {
                     jobincompanyData?.map((job) => (
                       <NavLink
                         to={`OverView/${job.id}`}
-                        className={({ isActive }) =>
-                          isActive ? classes.active : undefined
+                        // className={({ isActive }) =>
+                        //   isActive ? classes.active : undefined
+                        // }
+                        className={() =>
+                          `${classes.link2} ${
+                            location.pathname.startsWith(
+                              `/EmployerJob/listjobs/OverView/${job.id}`
+                            )
+                              ? classes.active
+                              : ""
+                          }`
                         }
                         onClick={() => setSelectJobId(job.id)}
                         end

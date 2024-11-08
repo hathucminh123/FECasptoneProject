@@ -5,7 +5,11 @@ import Typography from "@mui/material/Typography";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
-import { HttpTransportType, HubConnectionBuilder, IHttpConnectionOptions } from '@microsoft/signalr';
+import {
+  HttpTransportType,
+  HubConnectionBuilder,
+  IHttpConnectionOptions,
+} from "@microsoft/signalr";
 import { GetNotifications } from "../../Services/JobsPostActivity/GetNotifications";
 import { signalR } from "../../Services/mainService";
 import { AxiosResponse } from "axios";
@@ -29,7 +33,7 @@ export interface Notification {
 interface props {
   selectJobId?: number | undefined | null;
   notifications: Notification[];
-  token:unknown
+  token: unknown;
   setNotifications: React.Dispatch<React.SetStateAction<Notification[]>>;
 }
 
@@ -45,7 +49,7 @@ export default function HeaderEmployerSystem({
     localStorage.getItem("CompanyId")
   );
 
-  const [openModal,setOpenModal]=useState<boolean>(false)
+  const [openModal, setOpenModal] = useState<boolean>(false);
   console.log("adu ma ", selectJobId);
 
   useEffect(() => {
@@ -96,18 +100,21 @@ export default function HeaderEmployerSystem({
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets,
         accessTokenFactory: () => {
-          return `${token}`
+          return `${token}`;
         },
-      }
+      };
 
       const connection = new HubConnectionBuilder()
         .withUrl(signalR.employer.getNotificationsURL, options)
         .build();
 
-      connection.on(signalR.employer.groupNotificationsKey, async (receivedMessage) => {
-        await fetchNotifications();
-        console.log(`Notify: ${receivedMessage}`);
-      });
+      connection.on(
+        signalR.employer.groupNotificationsKey,
+        async (receivedMessage) => {
+          await fetchNotifications();
+          console.log(`Notify: ${receivedMessage}`);
+        }
+      );
 
       connection.onclose(() => {
         console.log("closed");
@@ -116,11 +123,11 @@ export default function HeaderEmployerSystem({
       await connection.start();
       return () => {
         connection.stop();
-      }
+      };
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   useEffect(() => {
     startConnection();
@@ -137,20 +144,16 @@ export default function HeaderEmployerSystem({
     } catch (error) {
       console.log(error);
     }
-  }
-
-
+  };
 
   const UserProfileData = UserProfile?.UserProfiles;
 
-
-  const handleCloseModalPayment =()=>{
-    setOpenModal(false)
-  }
+  const handleCloseModalPayment = () => {
+    setOpenModal(false);
+  };
   return (
-    <header className={classes.header} >
-
-     <AnimatePresence>
+    <header className={classes.header}>
+      <AnimatePresence>
         {openModal && (
           <PaymentModal
             onClose={handleCloseModalPayment}
@@ -160,7 +163,7 @@ export default function HeaderEmployerSystem({
           />
         )}
       </AnimatePresence>
-     
+
       <div className={classes.header1}>
         <div className={classes.header2}>
           <NavLink to="" className={classes.link1}>
@@ -188,16 +191,24 @@ export default function HeaderEmployerSystem({
                 ? `/EmployerJob/listjobs/OverView/${selectJobId}`
                 : "/EmployerJob"
             }
-            className={classes.link2}
+            className={() =>
+              `${classes.link2} ${
+                location.pathname.startsWith(
+                  `/EmployerJob/listjobs/OverView/${selectJobId}`
+                )
+                  ? classes.spanactive
+                  : ""
+              }`
+            }
             end
           >
-            {({ isActive }) => (
+            {() => (
               <div className={classes.header4}>
                 <div className={classes.header5}>
                   <span
-                    className={`${isActive ? classes.spanactive : ""} ${
-                      classes.span
-                    }`}
+                    // className={`${isActive ? classes.spanactive : ""} ${
+                    //   classes.span
+                    // }`}
                   >
                     <span style={{ display: "inline" }}>Jobs</span>
                   </span>
@@ -205,22 +216,31 @@ export default function HeaderEmployerSystem({
               </div>
             )}
           </NavLink>
+
           <NavLink
             to={
               companyId && companyId !== "null"
                 ? `/EmployerJob/applicants/jobs/${selectJobId}`
                 : "/EmployerJob"
             }
-            className={classes.link2}
+            className={() =>
+              `${classes.link2} ${
+                location.pathname.startsWith(
+                  `/EmployerJob/applicants/jobs/${selectJobId}`
+                )
+                  ? classes.spanactive
+                  : ""
+              }`
+            }
             end
           >
-            {({ isActive }) => (
+            {() => (
               <div className={classes.header4}>
                 <div className={classes.header5}>
                   <span
-                    className={`${isActive ? classes.spanactive : ""} ${
-                      classes.span
-                    }`}
+                    // className={`${isActive ? classes.spanactive : ""} ${
+                    //   classes.span
+                    // }`}
                   >
                     <span style={{ display: "inline" }}>Applicants</span>
                   </span>
@@ -228,7 +248,7 @@ export default function HeaderEmployerSystem({
               </div>
             )}
           </NavLink>
-          <NavLink
+          {/* <NavLink
             to={
               companyId && companyId !== "null"
                 ? `/EmployerJob/FindTalents/jobs/${selectJobId}`
@@ -249,10 +269,10 @@ export default function HeaderEmployerSystem({
                 </div>
               </div>
             )}
-          </NavLink>
+          </NavLink> */}
         </nav>
-        <div className={classes.discover} onClick={()=>(setOpenModal(true))}>
-<span>Payment</span>
+        <div className={classes.discover} onClick={() => setOpenModal(true)}>
+          <span>Payment</span>
         </div>
         <div className={classes.header6}></div>
         <div className={classes.header7}>
@@ -321,94 +341,94 @@ export default function HeaderEmployerSystem({
                 </div>
               </button>
               {open && (
-                <div style={{position:'relative'}}>
-                <div className={classes.header17}>
-                  <div className={classes.header18}>
-                    <div className={classes.header19}>
-                      <div>
-                        <ul className={classes.ul}>
-                          <li className={classes.li}>
-                            <Link to="" className={classes.link4}>
-                              <span className={classes.span1}>
-                                <div className={classes.header20}>
-                                  <div className={classes.img1}>
-                                    <img
-                                      src="https://wellfound.com/images/shared/nopic.png"
-                                      alt="logo"
-                                      height={30}
-                                      width={30}
-                                      className={classes.img}
-                                    />
+                <div style={{ position: "relative" }}>
+                  <div className={classes.header17}>
+                    <div className={classes.header18}>
+                      <div className={classes.header19}>
+                        <div>
+                          <ul className={classes.ul}>
+                            <li className={classes.li}>
+                              <Link to="" className={classes.link4}>
+                                <span className={classes.span1}>
+                                  <div className={classes.header20}>
+                                    <div className={classes.img1}>
+                                      <img
+                                        src="https://wellfound.com/images/shared/nopic.png"
+                                        alt="logo"
+                                        height={30}
+                                        width={30}
+                                        className={classes.img}
+                                      />
+                                    </div>
+                                    <div className={classes.header21}>
+                                      <Typography
+                                        variant="h5"
+                                        sx={{
+                                          lineHeight: "20px",
+                                          whiteSpace: "nowrap",
+                                          marginBottom: "4px",
+                                          fontWeight: 500,
+                                          fontSize: "16px",
+                                          padding: 0,
+                                          boxSizing: "border-box",
+                                        }}
+                                      >
+                                        {UserProfileData?.firstName}{" "}
+                                        {UserProfileData?.lastName}
+                                      </Typography>
+                                    </div>
                                   </div>
-                                  <div className={classes.header21}>
-                                    <Typography
-                                      variant="h5"
-                                      sx={{
-                                        lineHeight: "20px",
-                                        whiteSpace: "nowrap",
-                                        marginBottom: "4px",
-                                        fontWeight: 500,
-                                        fontSize: "16px",
-                                        padding: 0,
-                                        boxSizing: "border-box",
-                                      }}
-                                    >
-                                      {UserProfileData?.firstName}{" "}
-                                      {UserProfileData?.lastName}
-                                    </Typography>
-                                  </div>
-                                </div>
+                                </span>
+                              </Link>
+                            </li>
+                            <hr className={classes.hr} />
+                            <li className={classes.li1}>
+                              <span className={classes.span2}>Recruit for</span>
+                            </li>
+                            <li className={classes.li2}>
+                              <span className={classes.span3}>
+                                {CompanyEmployer?.companyName}
                               </span>
-                            </Link>
-                          </li>
-                          <hr className={classes.hr} />
-                          <li className={classes.li1}>
-                            <span className={classes.span2}>Recruit for</span>
-                          </li>
-                          <li className={classes.li2}>
-                            <span className={classes.span3}>
-                              {CompanyEmployer?.companyName}
-                            </span>
-                          </li>
-                          <li
-                            className={classes.li3}
-                            style={{ cursor: "pointer" }}
-                          >
-                            <Link to="" className={classes.link5}>
-                              <span className={classes.span2}>
-                                Create New Company
-                              </span>
-                            </Link>
-                          </li>
-                          <hr className={classes.hr} />
-                          <li
-                            className={classes.li3}
-                            style={{ cursor: "pointer" }}
-                          >
-                            <Link
-                              to="Account/setting"
-                              className={classes.link5}
+                            </li>
+                            <li
+                              className={classes.li3}
+                              style={{ cursor: "pointer" }}
                             >
-                              <span className={classes.span2}>
-                                Account Setting
-                              </span>
-                            </Link>
-                          </li>
-                          <li
-                            className={classes.li3}
-                            style={{ cursor: "pointer" }}
-                            onClick={handleLogout}
-                          >
-                            <Link to="" className={classes.link5}>
-                              <span className={classes.span2}>Logout</span>
-                            </Link>
-                          </li>
-                        </ul>
+                              <Link to="" className={classes.link5}>
+                                <span className={classes.span2}>
+                                  Create New Company
+                                </span>
+                              </Link>
+                            </li>
+                            <hr className={classes.hr} />
+                            <li
+                              className={classes.li3}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <Link
+                                to="Account/setting"
+                                className={classes.link5}
+                              >
+                                <span className={classes.span2}>
+                                  Account Setting
+                                </span>
+                              </Link>
+                            </li>
+                            <li
+                              className={classes.li3}
+                              style={{ cursor: "pointer" }}
+                              onClick={handleLogout}
+                            >
+                              <Link to="" className={classes.link5}>
+                                <span className={classes.span2}>Logout</span>
+                              </Link>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-                 </div>
               )}
             </div>
           </div>

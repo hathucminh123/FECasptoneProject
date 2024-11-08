@@ -368,15 +368,15 @@ export default function FormCreateEmployer() {
           </div>
         </div>
         <nav className={classes.main4}>
-          <NavLink to=" " className={classes.link1}>
+          <NavLink to="" className={classes.link1}>
             <div className={classes.main5}>
               <span>OverView</span>{" "}
             </div>{" "}
           </NavLink>
-          <NavLink to=" " className={classes.link2}>
+          <NavLink to="" className={classes.link2}>
             <div className={classes.main5}>
               <span>Edit Job</span>{" "}
-            </div>{" "}
+            </div>{""}
           </NavLink>
           <NavLink
             to=" "
