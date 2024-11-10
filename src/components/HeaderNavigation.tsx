@@ -462,11 +462,11 @@ const SkillsMenu = ({
         const jobSearchResults = data.result.items;
         // setJobSearch(data.result.items);
 
-        navigate("/it-jobs", {
+        navigate("/it_jobs", {
           state: { jobSearch: jobSearchResults, textt: text },
         });
       } else {
-        navigate("/it-jobs", { state: { textt: text } });
+        navigate("/it_obs", { state: { textt: text } });
       }
 
       queryClient.invalidateQueries({

@@ -48,13 +48,17 @@ export default function HeaderEmployerSystem({
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
+  const [IsPremium, setIsPremium] = useState<string | null>(null);
 
+  console.log("metqua", IsPremium);
   const [openModal, setOpenModal] = useState<boolean>(false);
   console.log("adu ma ", selectJobId);
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("CompanyId");
+    const IsPremium = localStorage.getItem("IsPremium");
     setCompanyId(storedCompanyId);
+    setIsPremium(IsPremium);
   }, []);
 
   const {
@@ -206,9 +210,9 @@ export default function HeaderEmployerSystem({
               <div className={classes.header4}>
                 <div className={classes.header5}>
                   <span
-                    // className={`${isActive ? classes.spanactive : ""} ${
-                    //   classes.span
-                    // }`}
+                  // className={`${isActive ? classes.spanactive : ""} ${
+                  //   classes.span
+                  // }`}
                   >
                     <span style={{ display: "inline" }}>Jobs</span>
                   </span>
@@ -238,9 +242,9 @@ export default function HeaderEmployerSystem({
               <div className={classes.header4}>
                 <div className={classes.header5}>
                   <span
-                    // className={`${isActive ? classes.spanactive : ""} ${
-                    //   classes.span
-                    // }`}
+                  // className={`${isActive ? classes.spanactive : ""} ${
+                  //   classes.span
+                  // }`}
                   >
                     <span style={{ display: "inline" }}>Applicants</span>
                   </span>
@@ -271,9 +275,12 @@ export default function HeaderEmployerSystem({
             )}
           </NavLink> */}
         </nav>
-        <div className={classes.discover} onClick={() => setOpenModal(true)}>
-          <span>Payment</span>
-        </div>
+        {IsPremium !== "True" && (
+          <div className={classes.discover} onClick={() => setOpenModal(true)}>
+            <span>Payment</span>
+          </div>
+        )}
+
         <div className={classes.header6}></div>
         <div className={classes.header7}>
           <div className={classes.header8}>

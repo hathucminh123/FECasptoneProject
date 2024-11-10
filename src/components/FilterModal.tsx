@@ -281,7 +281,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
         setJobSearch(data.result.items);
-        navigate("/it-jobs", {
+        navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             // text: text,
@@ -290,7 +290,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
         });
         onDone?.();
       } else {
-        navigate("/it-jobs", { state: { jobSearch: [] } });
+        navigate("/it_jobs", { state: { jobSearch: [] } });
         onDone?.();
       }
 
@@ -315,7 +315,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
 
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
-          navigate("/it-jobs", {
+          navigate("/it_jobs", {
             state: {
               jobSearch: result.result.items,
             },

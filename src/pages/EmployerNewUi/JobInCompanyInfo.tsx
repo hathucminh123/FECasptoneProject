@@ -70,7 +70,7 @@ export default function JobInCompanyInfo() {
             Jobs at {CompanyEmployer?.companyName}
           </Typography>
           <div className={classes.main3}>
-            <Link to="" className={classes.link1}>
+            <Link to="/EmployerJob" className={classes.link1}>
               ManageJob
             </Link>
           </div>

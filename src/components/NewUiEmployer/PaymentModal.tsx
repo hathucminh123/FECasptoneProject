@@ -24,13 +24,13 @@ const { mutate, isPending } = useMutation({
     onSuccess: (data) => {
       console.log("okchua", data.result);
   
-      message.success(`Payment successfully!`);
+      // message.success(`Payment successfully!`);
       
       // Mở đường link data.result trong tab mới
-      window.open(data.result, '_blank');
+      // window.open(data.result, '_blank');
   
       // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
-      // window.location.href = data.result;
+      window.location.href = data.result;
       
       // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
     },
@@ -47,6 +47,7 @@ const { mutate, isPending } = useMutation({
         amount: 5077000,
         orderDescription: "",
         name: Email,
+        returnUrl: "http://localhost:5173/JobSeekers/login",
       },
     });
   };
@@ -153,7 +154,7 @@ const { mutate, isPending } = useMutation({
                           >
                             $200
                           </span>
-                          /month
+                    
                         </Typography>
                         <p className={classes.p1}>Includes:</p>
                         <ul className={classes.ul}>

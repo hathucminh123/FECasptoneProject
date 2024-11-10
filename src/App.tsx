@@ -103,6 +103,8 @@ import NotificationSystemNew from "./pages/EmployerNewUi/NotificationSystemNew";
 import RecommendNew from "./pages/EmployerNewUi/RecommendNew";
 import RecommendTalents from "./pages/EmployerNewUi/RecommendTalents";
 import PassiveTalents from "./pages/EmployerNewUi/PassiveTalents";
+import PaymentCallback from "./components/NewUiEmployer/PaymentCallBack";
+import PaymentSuccess from "./components/NewUiEmployer/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -216,7 +218,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "it-jobs",
+        path: "it_jobs",
         element: <FilterJobbySkill />,
         id: "CompanyJob",
       },
@@ -331,13 +333,20 @@ const router = createBrowserRouter([
   },
 
   {
+    path:'/it-jobs',
+    element:  <PaymentSuccess />
+
+  },
+
+  {
     path: "EmployerJob",
     element: (
       <EmployerProtectedRoute>
         <ProtectedRouteNewCompany>
           <RootSystemEmployer />
         </ProtectedRouteNewCompany>
-      </EmployerProtectedRoute>
+        </EmployerProtectedRoute>
+   
     ),
 
     errorElement: <ErrorPage />,
@@ -379,6 +388,8 @@ const router = createBrowserRouter([
             path: "create",
             element: <FormCreateEmployer />,
           },
+
+
         ],
       },
       {
@@ -506,10 +517,17 @@ const router = createBrowserRouter([
           },
         ],
       },
+
+   
       // {
       //   path
       // }
     ],
+  },
+
+  {
+    path:'/api/Payment/callback',
+    element:<PaymentCallback/>
   },
 
   {

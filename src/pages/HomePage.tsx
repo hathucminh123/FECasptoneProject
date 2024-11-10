@@ -77,7 +77,7 @@ export default function HomePage() {
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
         setJobSearch(data.result.items);
-        navigate("/it-jobs", {
+        navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             text: text,
@@ -85,7 +85,7 @@ export default function HomePage() {
           },
         });
       } else {
-        navigate("/it-jobs", { state: { text: text, location: location ,jobSearch:[]} });
+        navigate("/it_jobs", { state: { text: text, location: location ,jobSearch:[]} });
       }
 
       queryClient.invalidateQueries({

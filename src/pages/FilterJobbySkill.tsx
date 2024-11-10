@@ -405,7 +405,7 @@ export default function FilterJobbySkill() {
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
         setJobSearch(data.result.items);
-        navigate("/it-jobs", {
+        navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             text: text,
@@ -414,7 +414,7 @@ export default function FilterJobbySkill() {
         });
       } else {
         setJobSearch([]);
-        navigate("/it-jobs", {
+        navigate("/it_jobs", {
           state: { text: text, location: location, jobSearch: [] },
         });
       }

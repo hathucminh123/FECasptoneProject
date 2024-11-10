@@ -1,13 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Complete.module.css";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
-import GroupIcon from "@mui/icons-material/Group";
+import { useNavigate } from "react-router-dom";
+// import GroupIcon from "@mui/icons-material/Group";
 import WorkIcon from "@mui/icons-material/Work";
+import { AnimatePresence } from "framer-motion";
+import PaymentModal from "../../components/NewUiEmployer/PaymentModal";
 
 export default function Complete() {
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const IsPremium = localStorage.getItem("IsPremium");
+  console.log("duochua", IsPremium);
+
+  const handleCloseModalPayment = () => {
+    setOpenModal(false);
+  };
+
+  const handlePostJobs = () => {
+    if (IsPremium === "True") {
+      navigate("/EmployerJob/jobs/create");
+    } else {
+      setOpenModal(true);
+    }
+  };
   return (
     <section className={classes.section}>
+      <AnimatePresence>
+        {openModal && (
+          <PaymentModal
+            onClose={handleCloseModalPayment}
+            // profile={profileScore}
+            // id={idApplicants}
+            // idJob={id}
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.main}>
         <Typography
           variant="h3"
@@ -30,14 +58,18 @@ export default function Complete() {
           job for free. Your journey to discovering standout hires starts here.
         </p>
         <div className={classes.main1}>
-          <Link to="/EmployerJob/applicants" className={classes.link1}>
+          {/* <Link to="/EmployerJob/applicants" className={classes.link1}>
             <GroupIcon />
             Find Talent
-          </Link>
-          <Link to="/EmployerJob/jobs/create" className={classes.link2}>
+          </Link> */}
+          {/* <Link to="/EmployerJob/jobs/create" className={classes.link2}>
             <WorkIcon />
            Post Jobs
-          </Link>
+          </Link> */}
+          <div className={classes.link2} onClick={handlePostJobs}>
+            <WorkIcon />
+            Post Jobs
+          </div>
         </div>
       </div>
     </section>

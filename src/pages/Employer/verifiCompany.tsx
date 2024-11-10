@@ -338,7 +338,7 @@ export default function VerifiCompany() {
     // }
   };
 
-  const { mutate: verifi } = useMutation({
+  const { mutate: verifi,  isPending:IsVerifi } = useMutation({
     mutationFn: SelectCompany,
     onSuccess: () => {
       message.success("Choose Company Successfully");
@@ -348,12 +348,12 @@ export default function VerifiCompany() {
         refetchType: "active",
       });
 
-      // Điều hướng trước khi tải lại trang
-      navigate("/onboarding/recruit/inviteYourTeam");
+   
+      navigate("/onboarding/recruit/Complete");
       setNextStep(true);
 
-      // Tải lại toàn bộ trang
-      window.location.reload();
+  
+      // window.location.reload();
     },
     onError: () => {
       message.error("Failed to Choose the Company");
@@ -419,7 +419,7 @@ export default function VerifiCompany() {
                   />
                 </div>
               </div>
-              <button className={classes.btn1}>Enter Code Verification</button>
+              {/* <button className={classes.btn1}>Enter Code Verification</button> */}
             </div>
           </form>
         </div>
@@ -427,12 +427,21 @@ export default function VerifiCompany() {
           <Link to="/onboarding/recruit" className={classes.btn2}>
             Back
           </Link>
-          <button
-            className={classes.btn3}
-            onClick={(e) => handleSubmitVerification(e)}
-          >
-            Continue
-          </button>
+          {IsVerifi ? (
+            <button
+              className={classes.btn3}
+            
+            >
+              Wait a seconds
+            </button>
+          ) : (
+            <button
+              className={classes.btn3}
+              onClick={(e) => handleSubmitVerification(e)}
+            >
+              Continue
+            </button>
+          )}
         </div>
       </div>
     </section>

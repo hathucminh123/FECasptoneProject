@@ -1,13 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./JobPageNoJob.module.css";
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 import NoJob from "../../components/NewUiEmployer/NoJob";
+import { AnimatePresence } from "framer-motion";
+import PaymentModal from "../../components/NewUiEmployer/PaymentModal";
 
 export default function JobPageNoJob() {
+  const navigate = useNavigate();
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const IsPremium = localStorage.getItem("IsPremium");
+  console.log("duochua", IsPremium);
+
+  const handleCloseModalPayment = () => {
+    setOpenModal(false);
+  };
+
+  const handlePostJobs = () => {
+    if (IsPremium ==="True") {
+      navigate("/EmployerJob/jobs/create");
+    } else {
+      setOpenModal(true);
+    }
+  };
   return (
     <div className={classes.main}>
+        <AnimatePresence>
+        {openModal && (
+          <PaymentModal 
+            onClose={handleCloseModalPayment}
+            // profile={profileScore}
+            // id={idApplicants}
+            // idJob={id}
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
@@ -15,10 +43,14 @@ export default function JobPageNoJob() {
               <div className={classes.main5}>
                 <div className={classes.main6}>
                   <header className={classes.header}>Jobs</header>
-                  <Link to="/EmployerJob/jobs/create" className={classes.link}>
+                  {/* <Link to="/EmployerJob/jobs/create" className={classes.link}>
                     {" "}
                     + Post Jobs
-                  </Link>
+                  </Link> */}
+                  <div className={classes.link} onClick={handlePostJobs}>
+                    {" "}
+                    + Post Jobs
+                  </div>
                 </div>
                 <div className={classes.main7}>
                   <input
@@ -43,7 +75,7 @@ export default function JobPageNoJob() {
                   </NavLink> */}
                 </nav>
                 <div className={classes.main10}>
-                  <NotifiModal />
+                  <NotifiModal/>
                 </div>
               </div>
             </div>
@@ -52,7 +84,7 @@ export default function JobPageNoJob() {
             <div className={classes.main12}>
               <NoJob />
             </div>
-            <Outlet/>
+            <Outlet />
           </div>
         </div>
       </div>
