@@ -2,7 +2,7 @@
 
 import { QueryClient } from "@tanstack/react-query";
 
-const baseURL = "https://b57e-14-187-156-252.ngrok-free.app/api";
+const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
 const baseSignalURL = "https://finalcapstonebe-aib5.onrender.com";
 const LocalURL="https://b57e-14-187-156-252.ngrok-free.app/api"
 
