@@ -77,7 +77,7 @@ export default function Apply() {
   });
 
   const job = jobData?.JobPosts;
-  const [selectedCvId, setSelectedCvId] = useState<number | null>(null); // State để lưu ID CV được chọn
+  const [selectedCvId, setSelectedCvId] = useState<number | null>(null); 
 
   const { data: CVdata } = useQuery({
     queryKey: ["CVs"],
@@ -90,11 +90,11 @@ export default function Apply() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1); // Quay lại trang trước đó
+    navigate(-1); 
   };
 
   const handleCVSelect = (cvId: number) => {
-    setSelectedCvId(cvId); // Lưu ID của CV được chọn
+    setSelectedCvId(cvId); 
   };
 
   const { mutate } = useMutation({
@@ -104,9 +104,13 @@ export default function Apply() {
         queryKey: ["JobPostActivity"],
         refetchType: "active", // Ensure an active refetch
       });
+
       message.success(`CV Apply to ${job?.jobTitle} successfully!`);
       navigate(`/thankyou/${job?.id}`);
     },
+
+
+
     onError: () => {
       message.error("Failed to Apply CV.");
     },
@@ -126,6 +130,7 @@ console.log('ok chua ta ',data)
       // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
       // navigate(`/thankyou/${job?.id}`);
     },
+    
     onError: () => {
       message.error("Failed to Apply CV.");
     },
@@ -165,32 +170,32 @@ console.log('ok chua ta ',data)
     if (selectedCvId && selectedCv?.url) {
       try {
         // Show loading indicator here if needed
-        const response = await fetch(selectedCv?.url);
-        const blob = await response.blob();
+        // const response = await fetch(selectedCv?.url);
+        // const blob = await response.blob();
   
-        // Convert Blob to File
-        const file = new File([blob], selectedCv?.name || "uploaded_file", {
-          type: blob.type,
-        });
+        // // Convert Blob to File
+        // const file = new File([blob], selectedCv?.name || "uploaded_file", {
+        //   type: blob.type,
+        // });
   
         // Send file via PostCVAi
         await PostCVAi({
           data: {
             jobPostId: job?.id,
-            file: file,
+            url: selectedCv?.url,
           },
         });
   
         // Trigger mutation for further updates
-        // await mutate({
-        //   data: {
-        //     jobPostId: job?.id,
-        //     cvId: selectedCvId,
-        //   },
-        // });
+        await mutate({
+          data: {
+            jobPostId: job?.id,
+            cvId: selectedCvId,
+          },
+        });
   
        
-        message.success("CV sent successfully!");
+        // message.success("CV sent successfully!");
   
       } catch (error) {
         console.error("Error during CV submission:", error);

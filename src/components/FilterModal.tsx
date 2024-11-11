@@ -42,12 +42,17 @@ interface JobPost {
 }
 interface SearchData {
   jobTitle?: string;
+  companyNames?: string[];
   companyName?: string;
   skillSet?: string;
+  skillSets?: string[];
   city?: string;
+  cities?: string[];
   location?: string;
+  locations?: string;
   experience?: number;
   jobType?: string;
+  jobTypes?: string[];
   pageSize: number;
   minSalary?: number;
   maxSalary?: number;
@@ -69,6 +74,15 @@ interface Props {
 //   "8+ years of experience",
 // ];
 
+const datacities = [
+  "HO CHI MINH",
+  "HA NOI",
+  "DA NANG",
+  "HAI PHONG",
+  "CAN THO",
+  "NHA TRANG",
+];
+
 export default function FilterModal({ onDone, filteredJobs }: Props) {
   const JobSalary = filteredJobs?.map((salary) => salary.salary);
   const flattenedArraySalary = JobSalary?.flat();
@@ -78,16 +92,19 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
 
   const SalaryJob = uniqueArraySalary;
   const maxSalaryJob = Math.max(...SalaryJob);
-  
+
   const [salary, setSalary] = useState<number[]>([500, maxSalaryJob]);
   const [minSalary, setMinSalary] = useState<number>(500);
   const [maxSalary, setMaxSalary] = useState<number>(maxSalaryJob);
-  const [selectedSkill, setSelectedSkill] = useState<string>("");
-  const [selectedType, setSelectedType] = useState<string>("");
-  const [selectedCompany, setSelectedCompany] = useState<string | null>(null);
+  const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
+  const [selectedType, setSelectedType] = useState<string[]>([]);
+
+  const [selectedCompany, setSelectedCompany] = useState<string[]>([]);
   const [searchDataArray, setSearchDataArray] = useState<SearchData[]>([]);
+  const [selectedCites, setSelectedCites] = useState<string[]>([]);
 
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [searchQueryCities, setSearchQueryCities] = useState<string>("");
 
   //exp
   const [openExp, setOpenExp] = useState<boolean>(false);
@@ -103,10 +120,18 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   };
 
   const handleSkillSelect = (skill: string) => {
-    setSelectedSkill((prevSkill) => (prevSkill === skill ? "" : skill));
+    setSelectedSkill((prevSkills) =>
+      prevSkills.includes(skill)
+        ? prevSkills.filter((s) => s !== skill)
+        : [...prevSkills, skill]
+    );
   };
-  const handleTypeSelect = (Type: string) => {
-    setSelectedType((prevSkill) => (prevSkill === Type ? "" : Type));
+  const handleTypeSelect = (type: string) => {
+    setSelectedType((prevTypes) =>
+      prevTypes.includes(type)
+        ? prevTypes.filter((t) => t !== type)
+        : [...prevTypes, type]
+    );
   };
 
   //exp
@@ -129,7 +154,19 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   };
 
   const handleCheckboxChange = (name: string) => {
-    setSelectedCompany((prevSelected) => (prevSelected === name ? null : name));
+    setSelectedCompany((prevSelected) =>
+      prevSelected.includes(name)
+        ? prevSelected.filter((company) => company !== name)
+        : [...prevSelected, name]
+    );
+  };
+
+  const handleCheckboxChangeCities = (name: string) => {
+    setSelectedCites((prevSelected) =>
+      prevSelected.includes(name)
+        ? prevSelected.filter((company) => company !== name)
+        : [...prevSelected, name]
+    );
   };
 
   const CompanyName = filteredJobs?.map((name) => name.companyName);
@@ -144,6 +181,9 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const filtercites = datacities.filter((name) =>
+    name.toLowerCase().includes(searchQueryCities.toLowerCase())
+  );
   // const {
   //   data: JobPosts,
   //   // isLoading: isJobLoading,
@@ -244,22 +284,30 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
       maxSalary: maxSalary,
     };
 
-    if (selectedSkill) {
-      searchObject.skillSet = selectedSkill;
+    if (selectedSkill.length > 0) {
+      searchObject.skillSets = selectedSkill;
     }
 
-    if (selectedType) {
-      searchObject.jobType = selectedType;
+    if (selectedType.length > 0) {
+      searchObject.jobTypes = selectedType;
     }
     if (selectExp) {
       searchObject.experience = selectExp;
     }
-    if (selectedCompany) {
-      searchObject.companyName = selectedCompany;
+    if (selectedCompany.length > 0) {
+      searchObject.companyNames = selectedCompany;
     }
-
+    if (selectedCites.length > 0) {
+      searchObject.cities = selectedCites;
+    }
     // Push to newSearchDataArray only if at least one filter is selected
-    if (selectedSkill || selectedType || selectedCompany || selectExp) {
+    if (
+      selectedSkill ||
+      selectedType ||
+      selectedCompany ||
+      selectExp ||
+      selectedCites
+    ) {
       newSearchDataArray.push(searchObject);
     }
 
@@ -271,6 +319,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     maxSalary,
     selectedCompany,
     selectExp,
+    selectedCites,
   ]);
   console.log("thietko", jobSearch);
   const { mutateAsync, isPending } = useMutation({
@@ -329,7 +378,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   };
   return (
     <Modal
-    text="Filter"
+      text="Filter"
       title="Filter"
       onClose={onDone}
       onClickSubmit={handleNavigateJob}
@@ -342,19 +391,22 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
         className={classes.maine}
       >
         <section className={classes.main}>
-          <Typography variant="h4" className={classes.sectionTitle}>
+          <Typography variant="h6" className={classes.sectionTitle}>
             Skills
           </Typography>
           <div className={classes.workingModelButtons}>
             {skillsColumns.map((skills) => (
               <Button
-                variant={selectedSkill === skills ? "contained" : "outlined"}
+                variant={
+                  selectedSkill.includes(skills) ? "contained" : "outlined"
+                }
                 onClick={() => handleSkillSelect(skills)}
                 className={classes.modelButton}
                 style={{
-                  backgroundColor:
-                    selectedSkill === skills ? "#ed1b2f" : "transparent",
-                  color: selectedSkill === skills ? "#ffffff" : "#ed1b2f",
+                  backgroundColor: selectedSkill.includes(skills)
+                    ? "#ed1b2f"
+                    : "transparent",
+                  color: selectedSkill.includes(skills) ? "#ffffff" : "#ed1b2f",
                   borderColor: "#ed1b2f",
                 }}
               >
@@ -365,19 +417,20 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
         </section>
 
         <section className={classes.main}>
-          <Typography variant="h4" className={classes.sectionTitle}>
+          <Typography variant="h6" className={classes.sectionTitle}>
             JobType
           </Typography>
           <div className={classes.workingModelButtons}>
             {TypeJob.map((type) => (
               <Button
-                variant={selectedType === type ? "contained" : "outlined"}
+                variant={selectedType.includes(type) ? "contained" : "outlined"}
                 onClick={() => handleTypeSelect(type)}
                 className={classes.modelButton}
                 style={{
-                  backgroundColor:
-                    selectedType === type ? "#ed1b2f" : "transparent",
-                  color: selectedType === type ? "#ffffff" : "#ed1b2f",
+                  backgroundColor: selectedType.includes(type)
+                    ? "#ed1b2f"
+                    : "transparent",
+                  color: selectedType.includes(type) ? "#ffffff" : "#ed1b2f",
                   borderColor: "#ed1b2f",
                 }}
               >
@@ -388,7 +441,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
         </section>
 
         <section className={classes.main}>
-          <Typography variant="h4" className={classes.sectionTitle}>
+          <Typography variant="h6" className={classes.sectionTitle}>
             Salary
           </Typography>
           <div className={classes.main1}>
@@ -427,7 +480,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
                     <span className={classes.span}>*</span>
                   </div>
                 </div> */}
-            <Typography variant="h4" className={classes.sectionTitle}>
+            <Typography variant="h6" className={classes.sectionTitle}>
               Work experience
             </Typography>
             <div className={classes.main13} onClick={handleOpenSelectExp}>
@@ -490,7 +543,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
         </section>
 
         <section className={classes.main}>
-          <Typography variant="h4" className={classes.sectionTitle}>
+          <Typography variant="h6" className={classes.sectionTitle}>
             Company
           </Typography>
           <input
@@ -502,11 +555,47 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
           <div className={classes.industryList}>
             {filter.map((name) => (
               <label key={name} className={classes.label}>
-                <input
+                {/* <input
                   type="checkbox"
                   className={classes.inputchecked}
                   checked={selectedCompany === name}
                   onChange={() => handleCheckboxChange(name)}
+                /> */}
+                <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedCompany.includes(name)}
+                  onChange={() => handleCheckboxChange(name)}
+                />
+                <span className={classes.span2}>{name}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+        <section className={classes.main}>
+          <Typography variant="h6" className={classes.sectionTitle}>
+            Cities
+          </Typography>
+          <input
+            placeholder="Search Cities"
+            type="text"
+            className={classes.input}
+            onChange={(e) => setSearchQueryCities(e.target.value)}
+          />
+          <div className={classes.industryList}>
+            {filtercites.map((name) => (
+              <label key={name} className={classes.label}>
+                {/* <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedCompany === name}
+                  onChange={() => handleCheckboxChange(name)}
+                /> */}
+                <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedCites.includes(name)}
+                  onChange={() => handleCheckboxChangeCities(name)}
                 />
                 <span className={classes.span2}>{name}</span>
               </label>
