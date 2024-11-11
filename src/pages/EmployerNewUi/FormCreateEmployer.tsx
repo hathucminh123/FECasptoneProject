@@ -676,6 +676,7 @@ export default function FormCreateEmployer() {
                     <button
                       className={classes.link5}
                       onClick={(e) => handleSubmitJobtype(e)}
+                      type="button"
                     >
                       Create new Type
                     </button>

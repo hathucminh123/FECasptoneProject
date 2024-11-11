@@ -25,6 +25,7 @@ import { storage } from "../firebase/config.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile.ts";
+import { PostCVsAI } from "../Services/CVService/PostCVAI.ts";
 
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState("");
@@ -49,7 +50,7 @@ export default function Apply() {
   const { mutate: postcv } = useMutation({
     mutationFn: PostCVs,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["CVs"] });
+      queryClient.invalidateQueries({ queryKey: ["CVs"],refetchType:'active' });
       message.success("CV uploaded successfully!");
     },
     onError: () => {
@@ -111,18 +112,125 @@ export default function Apply() {
     },
   });
 
-  const handleSendCvApply = () => {
-    if (selectedCvId) {
-      mutate({
-        data: {
-          jobPostId: job?.id,
-          cvId: selectedCvId,
-        },
-      });
+  const selectedCv =dataCVS.find((item) => item.id === selectedCvId)
+
+
+  const { mutate:PostCVAi } = useMutation({
+    mutationFn: PostCVsAI,
+    onSuccess: (data) => {
+console.log('ok chua ta ',data)
+      // queryClient.invalidateQueries({
+      //   queryKey: ["JobPostActivity"],
+      //   refetchType: "active", // Ensure an active refetch
+      // });
+      // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+      // navigate(`/thankyou/${job?.id}`);
+    },
+    onError: () => {
+      message.error("Failed to Apply CV.");
+    },
+  });
+
+  console.log('on khong',selectedCv)
+  // const handleSendCvApply =async () => {
+  //   if (selectedCvId && selectedCv?.url) {
+ 
+  //     const response = await fetch(selectedCv?.url);
+  //     const blob = await response.blob();
+
+  //     // Convert the Blob into a File object
+  //     const file = new File([blob], selectedCv?.name || "uploaded_file", {
+  //       type: blob.type,
+  //     });
+  //     PostCVAi({
+  //       data: {
+  //         jobPostId: job?.id,
+  //         file: file, 
+  //       },
+  //     });
+
+  //     mutate({
+  //       data: {
+  //         jobPostId: job?.id,
+  //         cvId: selectedCvId,
+  //       },
+  //     });
+  //   } else {
+  //     message.warning("Please select a CV to apply.");
+  //   }
+  // };
+
+
+  const handleSendCvApply = async () => {
+    if (selectedCvId && selectedCv?.url) {
+      try {
+        // Show loading indicator here if needed
+        const response = await fetch(selectedCv?.url);
+        const blob = await response.blob();
+  
+        // Convert Blob to File
+        const file = new File([blob], selectedCv?.name || "uploaded_file", {
+          type: blob.type,
+        });
+  
+        // Send file via PostCVAi
+        await PostCVAi({
+          data: {
+            jobPostId: job?.id,
+            file: file,
+          },
+        });
+  
+        // Trigger mutation for further updates
+        // await mutate({
+        //   data: {
+        //     jobPostId: job?.id,
+        //     cvId: selectedCvId,
+        //   },
+        // });
+  
+       
+        message.success("CV sent successfully!");
+  
+      } catch (error) {
+        console.error("Error during CV submission:", error);
+        message.error("Failed to send CV. Please try again.");
+      }
     } else {
       message.warning("Please select a CV to apply.");
     }
   };
+  
+  // const handleScoreAi = async () => {
+  //   if (selectedCvId && selectedCv?.url) {
+  //     try {
+  //       // Fetch the file from the Firebase URL
+  //       const response = await fetch(selectedCv?.url);
+  //       const blob = await response.blob();
+  
+  //       // Convert the Blob into a File object
+  //       const file = new File([blob], selectedCv?.name || "uploaded_file", {
+  //         type: blob.type,
+  //       });
+  
+     
+  //        PostCVAi({
+  //         data: {
+  //           jobPostId: job?.id,
+  //           file: file, 
+  //         },
+  //       });
+  
+  //       message.success("CV uploaded and processed successfully.");
+  //     } catch (error) {
+  //       // console.error("Error processing the selected CV:", error);
+  //       // message.error("Failed to process the selected CV. Please try again.");
+  //     }
+  //   } else {
+  //     message.warning("Please select a CV to apply.");
+  //   }
+  // };
+  
 
   return (
     <div className={classes.main}>
@@ -486,6 +594,7 @@ export default function Apply() {
                     color="#ed1b2f"
                     variant="contained"
                     sxOverrides={{ width: "100%" }}
+                    // onClick={handleSendCvApply}
                     onClick={handleSendCvApply}
                   />
                 </div>

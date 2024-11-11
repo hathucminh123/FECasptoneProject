@@ -39,7 +39,7 @@ export default function RootSystemEmployer() {
   }, [token, tokenDuration, submit]);
   return (
     <div className={classes.main}>
-      <HeaderEmployerSystem token={token} selectJobId={selectJobId} notifications={notifications}   setNotifications={setNotifications} />
+      {/* <HeaderEmployerSystem token={token} selectJobId={selectJobId} notifications={notifications}   setNotifications={setNotifications} /> */}
 
       <Outlet 
         context={{ selectJobId, setSelectJobId,setNotifications ,notifications}}

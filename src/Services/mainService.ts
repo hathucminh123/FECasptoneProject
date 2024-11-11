@@ -2,8 +2,9 @@
 
 import { QueryClient } from "@tanstack/react-query";
 
-const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
+const baseURL = "https://b57e-14-187-156-252.ngrok-free.app/api";
 const baseSignalURL = "https://finalcapstonebe-aib5.onrender.com";
+const LocalURL="https://b57e-14-187-156-252.ngrok-free.app/api"
 
 export const queryClient = new QueryClient();
 
@@ -114,6 +115,9 @@ export const apiLinks = {
   },
   payment:{
     POST:`${baseURL}/Payment`
+  },
+  PostCVAI:{
+    POST:`${LocalURL}/FileHandling/Analyze`
   }
 };
 
