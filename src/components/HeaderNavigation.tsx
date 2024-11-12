@@ -26,6 +26,7 @@ import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 // import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
@@ -809,6 +810,11 @@ const ProfileMenu = ({
       itemKey: "Item 3",
     },
     {
+      text: "Email Subscriptions",
+      icon: MailOutlineIcon,
+      itemKey: "Item 5",
+    },
+    {
       text: "Sign out",
       icon: LogoutOutlinedIcon,
       itemKey: "Item 4",
@@ -831,6 +837,8 @@ const ProfileMenu = ({
       navigate("/my-jobs");
     } else if (item === "Item 3") {
       navigate("/Job-invitation");
+    } else if (item === "Item 5") {
+      navigate("/subscription");
     }
 
     setSelectedMenu(item);

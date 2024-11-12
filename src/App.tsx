@@ -105,6 +105,7 @@ import RecommendTalents from "./pages/EmployerNewUi/RecommendTalents";
 import PassiveTalents from "./pages/EmployerNewUi/PassiveTalents";
 import PaymentCallback from "./components/NewUiEmployer/PaymentCallBack";
 import PaymentSuccess from "./components/NewUiEmployer/PaymentSuccess";
+import Subscription from "./pages/Subscription";
 
 const router = createBrowserRouter([
   {
@@ -191,6 +192,11 @@ const router = createBrowserRouter([
             element: <PassedJob />,
           },
         ],
+      },
+
+      {
+            path:'subscription',
+            element:<Subscription/>
       },
       {
         // Protect my-jobs routes
