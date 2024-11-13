@@ -53,7 +53,7 @@ export default function Education({ onDone }: Props) {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    name: "",
+    // name: "",
     institutionName: "",
     degree: "",
     FieldOfStudy: "",
@@ -74,7 +74,7 @@ export default function Education({ onDone }: Props) {
       });
       navigate('#');
       setFormData({
-        name: "",
+        // name: "",
         institutionName: "",
         degree: "",
         FieldOfStudy: "",
@@ -118,7 +118,7 @@ export default function Education({ onDone }: Props) {
   
     mutate({
       data: {
-        name: formData.name,
+        // name: formData.name,
         institutionName: formData.institutionName,
         degree: formData.degree,
         FieldOfStudy: formData.FieldOfStudy,
@@ -142,7 +142,7 @@ export default function Education({ onDone }: Props) {
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>
-            <TextField
+            {/* <TextField
               label="School Name"
               name="name"
               required
@@ -150,7 +150,7 @@ export default function Education({ onDone }: Props) {
               onChange={handleChange}
               variant="outlined"
               className={classes.inputGroup}
-            />
+            /> */}
             <TextField
               label="Institution Name"
               name="institutionName"

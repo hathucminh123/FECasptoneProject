@@ -327,7 +327,7 @@ export default function Subscription() {
                       <div className={classes.main22}>
                         <div className={classes.main23}>
                           <span className={classes.span1}>
-                            <Link to="" className={classes.link1}>
+                            <Link to={`/company/detail/${item.id}`} className={classes.link1}>
                               {item.companyName}
                             </Link>
                           </span>

@@ -112,7 +112,7 @@ export default function ProfileSystem() {
                           >
                             <div>
                               <strong>
-                                School Name: {edu.name} | From:{""}
+                                School Name: {edu.institutionName} | From:{""}
                                 {moment(edu.startDate).format("DD-MM-YYYY")} -
                                 To: {moment(edu.endDate).format("DD-MM-YYYY")}
                               </strong>

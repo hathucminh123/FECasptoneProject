@@ -131,7 +131,7 @@ export default function MinimalTemplate() {
                       {UserProfileData?.educationDetails.map((edu) => (
                         <div className={classes.education1}>
                           <div className={classes.education2}>
-                            School name: {edu.name}
+                            School name: {edu.institutionName}
                           </div>
                           <div className={classes.education3}>
                             Major: {edu.fieldOfStudy}

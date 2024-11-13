@@ -40,7 +40,7 @@ import FormSelect from "../../components/Employer/FormSelect";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../../firebase/config";
 import { v4 as uuidv4 } from "uuid";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { PutJobPost } from "../../Services/JobsPost/PutJobPost";
 
 const dataType = ["Full Time", "Part Time", "Remote"];
@@ -141,13 +141,14 @@ export default function EditableJobDetailPage() {
   });
 
   const JobTypeDatas = JobTypedata?.JobTypes;
-
+const navigate =useNavigate()
   const { mutate: JobPost, isPending: PostPending } = useMutation({
     mutationFn: PutJobPost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       message.success("Update Job successfully.");
       setShowAlert(true);
+      navigate(`/EmployerJob/listjobs/OverView/${job?.id}`);
     },
     onError: () => {
       message.error("Failed to Update the job.");

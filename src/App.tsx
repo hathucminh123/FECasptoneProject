@@ -24,7 +24,7 @@ import CompanyComment from "./pages/CompanyComment";
 import CompanyReviews from "./pages/CompanyReviews";
 import Recommend from "./pages/Recommend";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
-import RecentViewJob from "./pages/RecentViewJob";
+// import RecentViewJob from "./pages/RecentViewJob";
 import AppliedJob from "./pages/AppliedJob";
 // import EmployerPage from "./pages/Employer/EmployerPage";
 // import RootHeaderEmployer from "./pages/Employer/RootHeaderEmployer";
@@ -106,6 +106,9 @@ import PassiveTalents from "./pages/EmployerNewUi/PassiveTalents";
 import PaymentCallback from "./components/NewUiEmployer/PaymentCallBack";
 import PaymentSuccess from "./components/NewUiEmployer/PaymentSuccess";
 import Subscription from "./pages/Subscription";
+import CVScreeningPassed from "./pages/CVScreeningPassed";
+import InterviewStage from "./pages/InterviewStage";
+import CVScreeningPassedApplicants from "./pages/EmployerNewUi/CVScreeningPassedApplicants";
 
 const router = createBrowserRouter([
   {
@@ -181,6 +184,14 @@ const router = createBrowserRouter([
             index: true,
             element: <PendingJob />,
           },
+          {
+            path: "CVScreeningPassed",
+            element: <CVScreeningPassed />,
+          },
+          {
+            path: "InterviewStage",
+            element: <InterviewStage />,
+          },
 
           {
             path: "Rejected-Jobs",
@@ -195,8 +206,8 @@ const router = createBrowserRouter([
       },
 
       {
-            path:'subscription',
-            element:<Subscription/>
+        path: "subscription",
+        element: <Subscription />,
       },
       {
         // Protect my-jobs routes
@@ -212,10 +223,10 @@ const router = createBrowserRouter([
             element: <SaveJobs />,
           },
 
-          {
-            path: "recent-viewed",
-            element: <RecentViewJob />,
-          },
+          // {
+          //   path: "recent-viewed",
+          //   element: <RecentViewJob />,
+          // },
 
           {
             path: "applied",
@@ -339,9 +350,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path:'/it-jobs',
-    element:  <PaymentSuccess />
-
+    path: "/it-jobs",
+    element: <PaymentSuccess />,
   },
 
   {
@@ -351,8 +361,7 @@ const router = createBrowserRouter([
         <ProtectedRouteNewCompany>
           <RootSystemEmployer />
         </ProtectedRouteNewCompany>
-        </EmployerProtectedRoute>
-   
+      </EmployerProtectedRoute>
     ),
 
     errorElement: <ErrorPage />,
@@ -394,8 +403,6 @@ const router = createBrowserRouter([
             path: "create",
             element: <FormCreateEmployer />,
           },
-
-
         ],
       },
       {
@@ -414,6 +421,10 @@ const router = createBrowserRouter([
               {
                 index: true,
                 element: <AllApplicants />,
+              },
+              {
+                path: "CVScreeningPassed",
+                element: <CVScreeningPassedApplicants/>,
               },
               {
                 path: "Passed",
@@ -524,7 +535,6 @@ const router = createBrowserRouter([
         ],
       },
 
-   
       // {
       //   path
       // }
@@ -532,8 +542,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path:'/api/Payment/callback',
-    element:<PaymentCallback/>
+    path: "/api/Payment/callback",
+    element: <PaymentCallback />,
   },
 
   {

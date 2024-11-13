@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import classes from "./AllApplicants.module.css";
+import classes from "./CVScreeningPassedApplicants.module.css";
 import Typography from "@mui/material/Typography";
 // import CloseIcon from "@mui/icons-material/Close";
 
@@ -18,6 +18,8 @@ import { message } from "antd";
 import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
 import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+// import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
+// import NoJob from "../../components/NewUiEmployer/NoJob";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
@@ -66,7 +68,7 @@ interface UserProfile {
   cvs: CVs[];
   skillSets: SkillSet[];
 }
-export default function RejectedApplicants() {
+export default function CVScreeningPassedApplicants() {
   const { id } = useParams();
   const JobId = Number(id);
   const [openExp, setOpenExp] = useState<boolean>(false);
@@ -109,7 +111,9 @@ export default function RejectedApplicants() {
   // const dataSeekerApply = SeekerApply?.GetSeekers;
   const PendingDataSeekerApply = useMemo(() => {
     return (
-      SeekerApply?.GetSeekers?.filter((item) => item.status === "Rejected") || []
+      SeekerApply?.GetSeekers?.filter(
+        (item) => item.status === "CVScreeningPassed"
+      ) || []
     );
   }, [SeekerApply]);
 
@@ -151,26 +155,26 @@ export default function RejectedApplicants() {
     mutate({
       data: {
         jobPostActivityId: id,
-        status: 3,
+        status: 5,
       },
     });
   };
-  // const handlePutStatusRejected = (id: number) => {
-  //   mutate({
-  //     data: {
-  //       jobPostActivityId: id,
-  //       status: 2,
-  //     },
-  //   });
-  // };
-  // const handlePutStatusInterView = (id: number) => {
-  //   mutate({
-  //     data: {
-  //       jobPostActivityId: id,
-  //       status: 5,
-  //     },
-  //   });
-  // };
+  //   const handlePutStatusRejected = (id: number) => {
+  //     mutate({
+  //       data: {
+  //         jobPostActivityId: id,
+  //         status: 2,
+  //       },
+  //     });
+  //   };
+  //   const handlePutStatusInterView = (id: number) => {
+  //     mutate({
+  //       data: {
+  //         jobPostActivityId: id,
+  //         status: 5,
+  //       },
+  //     });
+  //   };
 
   const handleOpenMdalScore = (id: number, profile: UserProfile) => {
     setOpenModalScore(true);
@@ -187,9 +191,10 @@ export default function RejectedApplicants() {
   //   return `${(percentage / 100) * circumference} ${circumference}`;
   // };
 
-  if(PendingDataSeekerApply.length === 0){
-    return <NoJobApplicants text="There are no Rejected applicants yet." />
+  if (PendingDataSeekerApply.length === 0) {
+    return <NoJobApplicants text="There are no applicants to your job yet." />;
   }
+
   return (
     <div className={classes.main}>
       <CommentModal
@@ -245,7 +250,11 @@ export default function RejectedApplicants() {
                         </div>
                       </div>
                       <div className={classes.main9}>
-                        <button type="button" className={classes.button} style={{marginRight:'50px'}}>
+                        <button
+                          type="button"
+                          className={classes.button}
+                          style={{ marginRight: "50px" }}
+                        >
                           <span>
                             {" "}
                             {data.status} {" ✦"}
@@ -397,7 +406,7 @@ export default function RejectedApplicants() {
                           </div>
                         </div>
 
-                        <div className={classes.main28} >
+                        <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
                             <div className={classes.main29}>
                               <span>{skill.name}</span>
@@ -406,7 +415,7 @@ export default function RejectedApplicants() {
                         </div>
                       </div>
                     </div>
-                    <div className={classes.main33}  style={{ top: 175}}>
+                    <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button
                           type="button"
@@ -421,14 +430,21 @@ export default function RejectedApplicants() {
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 0}}>
+                    <div className={classes.main33} style={{ top: 0 }}>
                       <div>
-                        <button type="button" className={classes.button6}    onClick={() =>
-                              handleOpenMdalScore(data.id, profile)
-                            }>
+                        <button
+                          type="button"
+                          className={classes.button6}
+                          onClick={() => handleOpenMdalScore(data.id, profile)}
+                        >
                           {/* <span className={classes.spanicon}> */}
-                             <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/>
-                          
+                          <GradientCircularProgress
+                            percentage={
+                              data.analyzedResult.matchDetails.scores
+                                .overallMatch
+                            }
+                          />
+
                           {/* </span> */}
                         </button>
                       </div>
@@ -477,9 +493,8 @@ export default function RejectedApplicants() {
                             }
                           >
                             <CheckIcon />
-                            <span>Pass</span>
+                            <span>InterView</span>
                           </button>
-                        
                         </div>
                       </div>
                     </div>

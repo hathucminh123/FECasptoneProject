@@ -32,7 +32,7 @@ export default function HeaderJobsApply() {
                 Applied Job
               </NavLink>
             </li>
-            <li className={classes.menuItem}>
+            {/* <li className={classes.menuItem}>
               <NavLink
                 to="recent-viewed"
                 className={({ isActive }) =>
@@ -42,7 +42,7 @@ export default function HeaderJobsApply() {
               >
               Interview
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>

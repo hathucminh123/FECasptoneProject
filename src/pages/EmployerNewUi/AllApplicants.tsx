@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./AllApplicants.module.css";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
+// import CloseIcon from "@mui/icons-material/Close";
 
 import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
@@ -153,26 +153,26 @@ export default function AllApplicants() {
     mutate({
       data: {
         jobPostActivityId: id,
-        status: 3,
+        status: 4,
       },
     });
   };
-  const handlePutStatusRejected = (id: number) => {
-    mutate({
-      data: {
-        jobPostActivityId: id,
-        status: 2,
-      },
-    });
-  };
-  const handlePutStatusInterView = (id: number) => {
-    mutate({
-      data: {
-        jobPostActivityId: id,
-        status: 5,
-      },
-    });
-  };
+  // const handlePutStatusRejected = (id: number) => {
+  //   mutate({
+  //     data: {
+  //       jobPostActivityId: id,
+  //       status: 2,
+  //     },
+  //   });
+  // };
+  // const handlePutStatusInterView = (id: number) => {
+  //   mutate({
+  //     data: {
+  //       jobPostActivityId: id,
+  //       status: 5,
+  //     },
+  //   });
+  // };
 
   const handleOpenMdalScore = (id: number, profile: UserProfile) => {
     setOpenModalScore(true);
@@ -452,7 +452,7 @@ export default function AllApplicants() {
 
                     <div className={classes.main30}>
                       <div className={classes.main31}>
-                        <button
+                        {/* <button
                           type="button"
                           className={classes.button2}
                           onClick={() =>
@@ -461,9 +461,9 @@ export default function AllApplicants() {
                         >
                           
                           Interview
-                        </button>
+                        </button> */}
                         <div className={classes.main32}>
-                          <button
+                          {/* <button
                             className={classes.button3}
                             onClick={() =>
                               handlePutStatusRejected(data.jobPostActivityId)
@@ -471,7 +471,7 @@ export default function AllApplicants() {
                           >
                             <CloseIcon />
                             <span>Rejected</span>
-                          </button>
+                          </button> */}
                           <button
                             type="button"
                             className={classes.button4}
@@ -480,7 +480,7 @@ export default function AllApplicants() {
                             }
                           >
                             <CheckIcon />
-                            <span>Pass</span>
+                            <span>CV Screening</span>
                           </button>
                         
                         </div>

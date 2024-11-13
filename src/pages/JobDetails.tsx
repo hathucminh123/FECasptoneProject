@@ -14,6 +14,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import styled from "styled-components";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Visibility from "@mui/icons-material/Visibility";
+
 // import CardJob from "../components/CardJob";
 
 // import { compose } from "@reduxjs/toolkit";
@@ -337,6 +339,8 @@ export default function JobDetails() {
   //   };
   // }, []);
 
+
+
   if (!job) {
     return <div>No job details available</div>;
   }
@@ -496,12 +500,23 @@ export default function JobDetails() {
                           "DD/MM/YYYY HH:mm"
                         )}
                       </span>
-
+                      {/* <span className={classes.span1}>
+                        <IconButton onClick={handleStartAddNewChallenge}>
+                          <Comment />
+                        </IconButton>
+                      </span> */}
                       {feedBackUserJob?.status === "Rejected" ||
                       feedBackUserJob?.status === "Passed" ||
                       feedBackUserJob?.status === "InterviewStage" ||
                       feedBackUserJob?.status === "CVScreeningPassed" ? (
                         <span className={classes.span1}>
+                          <IconButton
+                            onClick={() =>
+                              window.open(feedBackUserJob?.cvPath, "_blank")
+                            }
+                          >
+                            <Visibility />
+                          </IconButton>
                           <IconButton onClick={handleStartAddNewChallenge}>
                             <Comment />
                           </IconButton>

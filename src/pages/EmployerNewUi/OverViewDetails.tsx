@@ -243,8 +243,8 @@ export default function OverViewDetails() {
                     {job?.skillSets.map((item) => (
                       <span className={classes.span}>{item}</span>
                     ))}
-                    <span className={classes.span}>sdf</span>{" "}
-                    <span className={classes.span}>sdf</span>
+                    {/* <span className={classes.span}>sdf</span>{" "}
+                    <span className={classes.span}>sdf</span> */}
                   </dt>
                 </div>
               </dl>

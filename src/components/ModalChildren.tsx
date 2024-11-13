@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
-import { Box, TextField, Typography } from "@mui/material";
-
-import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
+import { Box, TextField } from "@mui/material";
+// import Typography from "@mui/material/Typography";
+// import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
+// import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import classes from "./ModalChildren.module.css";
-import Image from "./../assets/image/minh.jpg";
+// import Image from "./../assets/image/minh.jpg";
 import { PutUser } from "../Services/UserJobPostActivity/PutUser";
 import { queryClient } from "../Services/mainService";
 import { useMutation } from "@tanstack/react-query";
@@ -113,7 +113,7 @@ export default function ModalChildren({ onDone }: Props) {
       onClickSubmit={handleSubmit}
     >
       <Box component="form" noValidate autoComplete="off">
-        <div className={classes.image}>
+        {/* <div className={classes.image}>
           <img src={Image} alt="profile" className={classes.profileImage} />
           <div className={classes.formButton}>
             <div className={classes.buttonGroup}>
@@ -138,7 +138,7 @@ export default function ModalChildren({ onDone }: Props) {
               </Typography>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className={classes.formInput}>
           <TextField

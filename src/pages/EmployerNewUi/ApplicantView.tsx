@@ -38,13 +38,16 @@ export default function ApplicantView() {
   const InterViewDataSeekerApply = dataSeekerApply?.filter(
     (item) => item.status === "InterviewStage"
   );
+  const CVScreeningDataSeekerApply = dataSeekerApply?.filter(
+    (item) => item.status === "CVScreeningPassed"
+  );
 
   return (
     <div className={classes.main}>
       <header className={classes.header}>
         <div className={classes.main1}>
           <div className={classes.main2}>
-            <p className={classes.p}>{job?.jobTitle}</p>  
+            <p className={classes.p}>{job?.jobTitle}</p>
             <div className={classes.main3}>
               <span className={classes.span}>Live</span>
             </div>
@@ -96,7 +99,7 @@ export default function ApplicantView() {
               )}
             </NavLink>
             <NavLink
-              to="Passed"
+              to="CVScreeningPassed"
               style={{ marginLeft: "24px" }}
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
@@ -107,35 +110,12 @@ export default function ApplicantView() {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                      Passed
+                      CVScreeningPassed
                     </span>
                   </div>
                   <div className={classes.main7}>
                     <div className={classes.main8}>
-                      <span>{PassedDataSeekerApply?.length}</span>
-                    </div>
-                  </div>
-                </>
-              )}
-            </NavLink>
-            <NavLink
-              to="Rejected"
-              style={{ marginLeft: "24px" }}
-              className={({ isActive }) =>
-                isActive ? classes.active : undefined
-              }
-              end
-            >
-              {({ isActive }) => (
-                <>
-                  <div className={classes.main4}>
-                    <span style={isActive ? { color: "#050c26" } : undefined}>
-                      Rejected
-                    </span>
-                  </div>
-                  <div className={classes.main7}>
-                    <div className={classes.main8}>
-                      <span>{RejectedDataSeekerApply?.length}</span>
+                      <span>{CVScreeningDataSeekerApply?.length}</span>
                     </div>
                   </div>
                 </>
@@ -159,6 +139,53 @@ export default function ApplicantView() {
                   <div className={classes.main7}>
                     <div className={classes.main8}>
                       <span>{InterViewDataSeekerApply?.length}</span>
+                    </div>
+                  </div>
+                </>
+              )}
+            </NavLink>
+            <NavLink
+              to="Passed"
+              style={{ marginLeft: "24px" }}
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              end
+            >
+              {({ isActive }) => (
+                <>
+                  <div className={classes.main4}>
+                    <span style={isActive ? { color: "#050c26" } : undefined}>
+                      Passed
+                    </span>
+                  </div>
+                  <div className={classes.main7}>
+                    <div className={classes.main8}>
+                      <span>{PassedDataSeekerApply?.length}</span>
+                    </div>
+                  </div>
+                </>
+              )}
+            </NavLink>
+
+            <NavLink
+              to="Rejected"
+              style={{ marginLeft: "24px" }}
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              end
+            >
+              {({ isActive }) => (
+                <>
+                  <div className={classes.main4}>
+                    <span style={isActive ? { color: "#050c26" } : undefined}>
+                      Rejected
+                    </span>
+                  </div>
+                  <div className={classes.main7}>
+                    <div className={classes.main8}>
+                      <span>{RejectedDataSeekerApply?.length}</span>
                     </div>
                   </div>
                 </>

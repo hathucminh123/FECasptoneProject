@@ -64,7 +64,7 @@ interface props {
 export default function ModalScore({ onClose, profile, id, idJob }: props) {
   const [emailForm, setEmailForm] = useState<string>("");
   const companyId = localStorage.getItem("CompanyId");
-
+  const [openExp, setOpenExp] = useState<boolean>(false);
   const {
     data: CompanyDa,
     // isLoading,
@@ -123,7 +123,9 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
       return;
     }
 
-    const formattedCompanyName = companyDataa?.companyName.replace(/\s{2,}/g, ' ').trim();
+    const formattedCompanyName = companyDataa?.companyName
+      .replace(/\s{2,}/g, " ")
+      .trim();
 
     mutate({
       data: {
@@ -213,10 +215,20 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                         <div className={classes.main15}>
                           <div className={classes.main16}>
                             <div className={classes.main17}>
-                              <div className={classes.main18}>Experience</div>
+                              <div className={classes.main18}>
+                                Experience{" "}
+                                <button
+                                  type="button"
+                                  className={classes.button1}
+                                  onClick={() => setOpenExp((prev) => !prev)}
+                                >
+                                  {" "}
+                                  - View More
+                                </button>
+                              </div>
                             </div>
-                            <div className={classes.main19}>
-                              {/* map experience */}
+                            {/* <div className={classes.main19}>
+                           
                               {profile?.experienceDetails &&
                               profile?.experienceDetails.length > 0
                                 ? profile.experienceDetails.map((exp) => (
@@ -257,6 +269,78 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                     </div>
                                   ))
                                 : undefined}
+                            </div> */}
+                            <div className={classes.main144}>
+                              {profile?.experienceDetails &&
+                              profile?.educationDetails.length > 0
+                                ? profile.experienceDetails.map((exp) => (
+                                    <div className={classes.main155}>
+                                      <div className={classes.main166}>
+                                        <div className={classes.main177}>
+                                          <div className={classes.main188}>
+                                            <span>
+                                              Company Name: {exp.companyName}
+                                            </span>
+                                          </div>
+                                          <span className={classes.spanne}>
+                                            Position: {exp.position}
+                                          </span>
+                                          <div className={classes.main199}>
+                                            <span className={classes.span1}>
+                                              From:{""}
+                                              {moment(exp.startDate).format(
+                                                "DD-MM-YYYY"
+                                              )}{" "}
+                                              - To:{" "}
+                                              {moment(exp.endDate).format(
+                                                "DD-MM-YYYY"
+                                              )}
+                                            </span>
+                                            {/* {". "}
+                                        <span>asdasdas</span> */}
+                                          </div>
+                                          {openExp && (
+                                            <>
+                                              <div className={classes.main200}>
+                                                <span>
+                                                  Responsibilities:
+                                                  <div
+                                                    dangerouslySetInnerHTML={{
+                                                      __html:
+                                                        exp.responsibilities,
+                                                    }}
+                                                  />
+                                                </span>
+                                              </div>
+                                              <div className={classes.main211}>
+                                                <div
+                                                  className={classes.main222}
+                                                >
+                                                  Achievements
+                                                </div>
+                                                <div
+                                                  className={classes.main233}
+                                                >
+                                                  <div
+                                                    className={classes.main244}
+                                                  ></div>
+                                                  <span>
+                                                    <div
+                                                      dangerouslySetInnerHTML={{
+                                                        __html:
+                                                          exp.achievements,
+                                                      }}
+                                                    />
+                                                  </span>
+                                                </div>
+                                              </div>
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))
+                                : undefined}
                             </div>
                           </div>
                         </div>
@@ -264,7 +348,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                         <div className={classes.main15}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>Education</div>
-                            {profile?.educationDetails &&
+                            {/* {profile?.educationDetails &&
                             profile.educationDetails.length > 0
                               ? profile.educationDetails.map((edu) => (
                                   <div className={classes.main32}>
@@ -291,7 +375,37 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                     </div>
                                   </div>
                                 ))
-                              : undefined}
+                              : undefined} */}
+                            {profile?.educationDetails &&
+                            profile?.educationDetails.length > 0
+                              ? profile.educationDetails.map((edu) => (
+                                  <div key={edu.id} className={classes.main255}>
+                                    <div className={classes.main266}>
+                                      <span>
+                                        School name: {edu.institutionName}
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Field of Study: {edu.fieldOfStudy} -
+                                        GPA: {edu.gpa}
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        From:{" "}
+                                        {moment(edu.startDate).format(
+                                          "DD-MM-YYYY"
+                                        )}{" "}
+                                        - To:{" "}
+                                        {moment(edu.endDate).format(
+                                          "DD-MM-YYYY"
+                                        )}
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              : null}
                           </div>
                         </div>
                         {/* Skills */}
@@ -460,8 +574,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                       </div>
                       <div className={classes.main53}>
                         {isPending ? (
-                          <button  className={classes.main54}>
-                           Wait a seconds
+                          <button className={classes.main54}>
+                            Wait a seconds
                           </button>
                         ) : (
                           <button type="submit" className={classes.main54}>

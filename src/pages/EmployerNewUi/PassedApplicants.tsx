@@ -163,14 +163,14 @@ export default function PassedApplicants() {
       },
     });
   };
-  const handlePutStatusInterView = (id: number) => {
-    mutate({
-      data: {
-        jobPostActivityId: id,
-        status: 5,
-      },
-    });
-  };
+  // const handlePutStatusInterView = (id: number) => {
+  //   mutate({
+  //     data: {
+  //       jobPostActivityId: id,
+  //       status: 5,
+  //     },
+  //   });
+  // };
 
   const handleOpenMdalScore = (id: number, profile: UserProfile) => {
     setOpenModalScore(true);
@@ -451,7 +451,7 @@ export default function PassedApplicants() {
 
                     <div className={classes.main30}>
                       <div className={classes.main31}>
-                        <button
+                        {/* <button
                           type="button"
                           className={classes.button2}
                           onClick={() =>
@@ -460,7 +460,7 @@ export default function PassedApplicants() {
                         >
                           
                           Interview
-                        </button>
+                        </button> */}
                         <div className={classes.main32}>
                           <button
                             className={classes.button3}

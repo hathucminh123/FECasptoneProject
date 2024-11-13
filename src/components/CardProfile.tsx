@@ -118,7 +118,7 @@ export default function CardProfile({
                         mb: 0,
                       }}
                     >
-                      School name: {item?.name}
+                      School name:  {item.institutionName}
                     </Typography>
                     <div className={classes.edit}>
                       <div
@@ -143,10 +143,10 @@ export default function CardProfile({
                       )}
                     </div>
                   </div>
-                  <div className={classes.main6}>
+                  {/* <div className={classes.main6}>
                     {" "}
                     School branch: {item.institutionName}
-                  </div>
+                  </div> */}
 
                   {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
                   <div className={classes.main7}>

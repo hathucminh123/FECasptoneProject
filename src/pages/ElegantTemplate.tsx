@@ -82,7 +82,7 @@ export default function ElegantTemplate() {
                     {UserProfileData?.educationDetails.map((edu) => (
                       <div className={classes.education3}>
                         <span className={classes.span}>
-                          School name: {edu.name}
+                          School name: {edu.institutionName}
                         </span>
                         <div className={classes.education4}>
                           <p className={classes.p1}>

@@ -37,6 +37,12 @@ export default function HeaderJobStatus() {
   const JobPassed = JobPostActivitydata?.filter(
     (item) => item.status === "Passed"
   );
+  const JobCVScreening = JobPostActivitydata?.filter(
+    (item) => item.status === "CVScreeningPassed"
+  );
+  const InterviewStage = JobPostActivitydata?.filter(
+    (item) => item.status === "InterviewStage"
+  );
   return (
     <div className={classes.header}>
       <div className={classes.icontainer}>
@@ -51,6 +57,31 @@ export default function HeaderJobStatus() {
             >
               Pending
               <div className={classes.main}>{JobPending?.length}</div>
+            </NavLink>
+          </li>
+
+          <li className={classes.menuItem}>
+            <NavLink
+              to="CVScreeningPassed"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              end
+            >
+              CVScreening
+              <div className={classes.main}>{JobCVScreening?.length}</div>
+            </NavLink>
+          </li>
+          <li className={classes.menuItem}>
+            <NavLink
+              to="InterviewStage"
+              className={({ isActive }) =>
+                isActive ? classes.active : undefined
+              }
+              end
+            >
+              InterviewStage
+              <div className={classes.main}>{InterviewStage?.length}</div>
             </NavLink>
           </li>
           <li className={classes.menuItem}>

@@ -14,7 +14,7 @@ import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import MenuItem from "@mui/material/MenuItem";
-import Image from "./../assets/image/minh.jpg";
+// import Image from "./../assets/image/minh.jpg";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
@@ -267,7 +267,7 @@ export default function HeaderNavigation({ token }: props) {
                     onMouseEnter={handleMouseEnterProfile}
                   >
                     <div className={classes.profileleft}>
-                      <img
+                      {/* <img
                         src={Image}
                         alt="profile image"
                         style={{
@@ -281,7 +281,7 @@ export default function HeaderNavigation({ token }: props) {
                           cursor: "pointer",
                           color: "#a6a6a6",
                         }}
-                      />
+                      /> */}
                     </div>
                     <div className={classes.profileRight}>
                       <Typography

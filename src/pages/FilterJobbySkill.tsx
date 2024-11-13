@@ -19,6 +19,7 @@ import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
 import Stack from "@mui/material/Stack";
 import { RootState } from "../redux/store";
+import Visibility from "@mui/icons-material/Visibility";
 // import { useCompanyAndJobData } from "../redux/selectorLogic/data";
 // import { setCompanies } from "../redux/slices/companyJobslice";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -784,8 +785,21 @@ export default function FilterJobbySkill() {
                                   )}
                                 </div>
                                 {feedBackUserJob?.status === "Rejected" ||
-                                feedBackUserJob?.status === "Passed" ? (
+                                feedBackUserJob?.status === "Passed" ||
+                                feedBackUserJob?.status === "InterviewStage" ||
+                                feedBackUserJob?.status ===
+                                  "CVScreeningPassed" ? (
                                   <span className={classes.span1}>
+                                    <IconButton
+                                      onClick={() =>
+                                        window.open(
+                                          feedBackUserJob?.cvPath,
+                                          "_blank"
+                                        )
+                                      }
+                                    >
+                                      <Visibility />
+                                    </IconButton>
                                     <IconButton
                                       onClick={handleStartAddNewChallenge}
                                     >

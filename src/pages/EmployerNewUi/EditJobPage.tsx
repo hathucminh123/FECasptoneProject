@@ -332,7 +332,7 @@ export default function EditJobPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       message.success("Post Job successfully.");
-      navigate(`/EmployerJob/listjobs/OverView/${selectJobId}`);
+      navigate(`/EmployerJob/listjobs/OverView/${job?.id}`);
       //   setShowAlert(true);
     },
     onError: () => {

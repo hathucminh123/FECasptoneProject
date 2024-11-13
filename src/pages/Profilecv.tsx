@@ -5,7 +5,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import { AnimatePresence, motion } from "framer-motion";
 // import { renderButton } from "../components/RenderButton";
 import RenderButton from "../components/RenderButton";
-import Image from "./../assets/image/minh.jpg";
+// import Image from "./../assets/image/minh.jpg";
 import MailOutlinedIcon from "@mui/icons-material/MailOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 // import CardGiftcardOutlinedIcon from "@mui/icons-material/CardGiftcardOutlined";
@@ -466,7 +466,7 @@ export default function Profilecv() {
             <div className={classes.main1}>
               <div className={classes.main2}>
                 <div className={classes.img}>
-                  <img
+                  {/* <img
                     src={Image}
                     alt="profile image"
                     style={{
@@ -476,7 +476,7 @@ export default function Profilecv() {
                       aspectRatio: "auto 120/120",
                       borderRadius: "50%",
                     }}
-                  />
+                  /> */}
                 </div>
                 <div className={classes.main3}>
                   <Typography
