@@ -518,7 +518,8 @@ export default function FilterJobbySkill() {
   return (
     <div className={classes.main}>
       {openFilter && (
-        <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
+        // <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
+        <FilterModal filteredJobs={JobPostsdata} onDone={CloseHandleFilter} />
       )}
       <div className={classes.main1}>
         {showAlert && (
@@ -647,7 +648,40 @@ export default function FilterJobbySkill() {
                         </Button>
                       </div>
                     </div>
-                  ) : undefined}
+                  ) : (
+                    <div className={classes.filter}>
+                      <div className={classes.btn}>
+                        <Button
+                          variant="outlined"
+                          startIcon={<FilterAltOutlinedIcon />}
+                          onClick={OpenhandleFilter}
+                          sx={{
+                            fontSize: "16px",
+                            fontWeight: 500,
+                            padding: "7px 20px",
+                            minWidth: "140px",
+                            borderRadius: "4px",
+                            color: "#ed1b2f",
+                            backgroundColor: "#fff",
+                            borderColor: "#ed1b2f",
+                            display: "inline-flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            lineHeight: 1.5,
+                            border: "1px solid #ed1b2f",
+                            gap: "8px",
+                            "&:hover": {
+                              backgroundColor: "#f60d00",
+                              color: "white",
+                              borderColor: "#f60d00",
+                            },
+                          }}
+                        >
+                          <span style={{ fontWeight: 5000 }}>Filter</span>
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </div>
                 <div className={classes.detail}>
                   <div className={classes.detailleft}>

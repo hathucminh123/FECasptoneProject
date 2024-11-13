@@ -43,7 +43,10 @@ export default function ElegantTemplate() {
               </div>
               <div className={classes.main5}>
                 <div className={classes.main6}>
-                  <div className={classes.main7}>{UserProfileData?.firstName}{UserProfileData?.lastName}</div>
+                  <div className={classes.main7}>
+                    {UserProfileData?.firstName}
+                    {UserProfileData?.lastName}
+                  </div>
                 </div>
                 <div className={classes.main8}>
                   <div className={classes.main9}>
@@ -106,17 +109,18 @@ export default function ElegantTemplate() {
                   <div className={classes.skill1}>Skill</div>
 
                   <div className={classes.skill2}>
-                    {UserProfileData?.skillSets.map((skill) => (
-                      <div className={classes.education3}>
-                        <div className={classes.skill3}>
-                          <div className={classes.skill4}>Skill Name</div>
-                          <div className={classes.skill5}>
+                    <div className={classes.education3}>
+                      <div className={classes.skill3}>
+                        <div className={classes.skill4}>Skill Name</div>
+                        <div className={classes.skill5}>
+                          {UserProfileData?.skillSets.map((skill) => (
                             <span className={classes.spanskill}>
                               {skill.name}
                             </span>
-                          </div>
+                          ))}
                         </div>
-                        <div className={classes.skill3}>
+                      </div>
+                      {/* <div className={classes.skill3}>
                           <div className={classes.skill4}>Description</div>
                           <div className={classes.skill5}>
                             <p className={classes.education5}>
@@ -127,9 +131,8 @@ export default function ElegantTemplate() {
                               />
                             </p>
                           </div>
-                        </div>
-                      </div>
-                    ))}
+                        </div> */}
+                    </div>
                   </div>
                 </div>
                 <div className={classes.experience}>

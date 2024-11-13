@@ -96,13 +96,13 @@ export default function HeaderNavigation({ token }: props) {
     setHovered(event.currentTarget.textContent || null);
     setSelectedMenu(event.currentTarget.textContent || null);
   };
-  const handleMouseEnterCompany = (
-    event: React.MouseEvent<HTMLAnchorElement>
-  ) => {
-    setAnchorElCompany(event.currentTarget);
-    setHoveredCompany(event.currentTarget.textContent || null);
-    setSelectedMenuCompany(event.currentTarget.textContent || null);
-  };
+  // const handleMouseEnterCompany = (
+  //   event: React.MouseEvent<HTMLAnchorElement>
+  // ) => {
+  //   setAnchorElCompany(event.currentTarget);
+  //   setHoveredCompany(event.currentTarget.textContent || null);
+  //   setSelectedMenuCompany(event.currentTarget.textContent || null);
+  // };
 
   const handleMouseLeaveCompany = () => {
     setTimeout(() => {
@@ -226,7 +226,7 @@ export default function HeaderNavigation({ token }: props) {
                   />
                 </NavLink>
               </li>
-              <li className={classes.li}>
+              {/* <li className={classes.li}>
                 <NavLink
                   onMouseEnter={handleMouseEnterCompany}
                   className={classes.link}
@@ -246,12 +246,12 @@ export default function HeaderNavigation({ token }: props) {
                     }}
                   />
                 </NavLink>
-              </li>
-              <li className={classes.li}>
+              </li> */}
+              {/* <li className={classes.li}>
                 <NavLink className={classes.link} to="/contact">
                   Blog
                 </NavLink>
-              </li>
+              </li> */}
             </ul>
 
             <ul className={classes.listright}>

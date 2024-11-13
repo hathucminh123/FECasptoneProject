@@ -6,11 +6,14 @@ import Typography from "@mui/material/Typography";
 import Slider from "@mui/material/Slider";
 import Button from "@mui/material/Button";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { queryClient } from "../Services/mainService";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
+import { GetJobType } from "../Services/JobTypeService/GetJobType";
 // import { useQuery } from "@tanstack/react-query";
 // import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -96,19 +99,27 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const [salary, setSalary] = useState<number[]>([500, maxSalaryJob]);
   const [minSalary, setMinSalary] = useState<number>(500);
   const [maxSalary, setMaxSalary] = useState<number>(maxSalaryJob);
-  const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
-  const [selectedType, setSelectedType] = useState<string[]>([]);
 
-  const [selectedCompany, setSelectedCompany] = useState<string[]>([]);
+  // const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
+  const [selectedSkill, setSelectedSkill] = useState<string[]>(() =>
+    JSON.parse(localStorage.getItem("selectedSkill") || "[]")
+  );
+  // const [selectedType, setSelectedType] = useState<string[]>([]);
+  const [selectedType, setSelectedType] = useState<string[]>(() =>
+    JSON.parse(localStorage.getItem("selectedType") || "[]")
+  );
+  // const [selectedCompany, setSelectedCompany] = useState<string[]>([]);
+  const [selectedCompany, setSelectedCompany] = useState<string[]>(() => JSON.parse(localStorage.getItem("selectedCompany") || "[]"));
   const [searchDataArray, setSearchDataArray] = useState<SearchData[]>([]);
-  const [selectedCites, setSelectedCites] = useState<string[]>([]);
-
+  // const [selectedCites, setSelectedCites] = useState<string[]>([]);
+  const [selectedCites, setSelectedCites] = useState<string[]>(() => JSON.parse(localStorage.getItem("selectedCities") || "[]"));
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchQueryCities, setSearchQueryCities] = useState<string>("");
 
   //exp
   const [openExp, setOpenExp] = useState<boolean>(false);
-  const [selectExp, setSelectExp] = useState<number | null>();
+  // const [selectExp, setSelectExp] = useState<number | null>();
+  const [selectExp, setSelectExp] = useState<number | null>(() => JSON.parse(localStorage.getItem("selectExp") || "null"));
   const [selectExpString, setSelectExpString] = useState<string | null>("");
   const navigate = useNavigate();
 
@@ -169,7 +180,19 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     );
   };
 
-  const CompanyName = filteredJobs?.map((name) => name.companyName);
+  // const CompanyName = filteredJobs?.map((name) => name.companyName);
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+  const Companiesdata = Company?.Companies;
+
+  const CompanyName = Companiesdata?.map((name) => name.companyName);
 
   const flattenedArrayCompanyName = CompanyName?.flat();
   const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
@@ -178,7 +201,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const CompanyColums = uniqueArrayCompanyName;
 
   const filter = CompanyColums.filter((name) =>
-    name.toLowerCase().includes(searchQuery.toLowerCase())
+    name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const filtercites = datacities.filter((name) =>
@@ -196,21 +219,52 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
 
   // const JobPostsdata = JobPosts?.JobPosts;
   //skills
-  const skills = filteredJobs?.map((skill) => skill.skillSets);
+  const { data: SkillSetData } = useQuery({
+    queryKey: ["SkillSetDetails"],
+    queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
+    staleTime: 1000,
+  });
+
+
+  const SkillSetDatas = SkillSetData?.SkillSets;
+  // const skills = filteredJobs?.map((skill) => skill.skillSets);
+  const skills = SkillSetDatas?.map((skill) => skill.name);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
   console.log("realy", uniqueArray);
 
   const skillsColumns = uniqueArray;
-
+  useEffect(() => {
+    localStorage.setItem("selectedSkill", JSON.stringify(selectedSkill));
+  }, [selectedSkill]);
   //Jobtype
-  const Jobtype = filteredJobs?.map((type) => type.jobType.name);
+  const { data: JobTypedata } = useQuery({
+    queryKey: ["JobType"],
+    queryFn: ({ signal }) => GetJobType({ signal }),
+    staleTime: 5000,
+  });
+
+  const JobTypeDatas = JobTypedata?.JobTypes;
+  // const Jobtype = filteredJobs?.map((type) => type.jobType.name);
+  const Jobtype = JobTypeDatas?.map((type) => type.name);
   const flattenedArrayType = Jobtype?.flat();
   const uniqueArrayType = [...new Set(flattenedArrayType)];
   console.log("realy", uniqueArrayType);
 
   const TypeJob = uniqueArrayType;
+  useEffect(() => {
+    localStorage.setItem("selectedType", JSON.stringify(selectedType));
+  }, [selectedType]);
+  useEffect(() => {
+    localStorage.setItem("selectedCompany", JSON.stringify(selectedCompany));
+  }, [selectedCompany]);
+  useEffect(() => {
+    localStorage.setItem("selectedCities", JSON.stringify(selectedCites));
+  }, [selectedCites]);
 
+  useEffect(() => {
+    localStorage.setItem("selectExp", JSON.stringify(selectExp));
+  }, [selectExp]);
   //Experience
   const JobExp = filteredJobs?.map((exp) => exp.experienceRequired);
   const flattenedArrayExp = JobExp?.flat();
@@ -376,6 +430,21 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
       console.error("Error during job search:", error);
     }
   };
+
+  const handleClearAll = () => {
+    setSelectedSkill([]);
+    setSelectedType([]);
+    setSelectedCompany([]);
+    setSelectedCites([]);
+    setSelectExp(null);
+
+    // Remove items from localStorage
+    localStorage.removeItem("selectedSkill");
+    localStorage.removeItem("selectedType");
+    localStorage.removeItem("selectedCompany");
+    localStorage.removeItem("selectedCities");
+    localStorage.removeItem("selectExp");
+  };
   return (
     <Modal
       text="Filter"
@@ -383,6 +452,8 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
       onClose={onDone}
       onClickSubmit={handleNavigateJob}
       isPending={isPending}
+      Appear={true}
+      onClickReset={handleClearAll}
     >
       <Box
         component="form"

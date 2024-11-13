@@ -10,9 +10,11 @@ interface ModalProps {
   children?: React.ReactNode;
   onClose?: () => void;
   onClickSubmit?: () => void;
+  onClickReset?: () => void;
   isPending?: unknown;
   disappear?: boolean;
-  text:string
+  text: string;
+  Appear?: boolean;
 }
 
 export default function Modal({
@@ -22,7 +24,9 @@ export default function Modal({
   onClickSubmit,
   isPending,
   disappear,
-  text
+  text,
+  Appear,
+  onClickReset
 }: ModalProps) {
   const modalRoot = document.getElementById("modal");
 
@@ -58,7 +62,21 @@ export default function Modal({
           </div>
           <div className={classes.modal2}>{children}</div>
           <div className={classes.modal3}>
-            <RenderButton text="Cancel" color="white" variant="outlined"  onClick={onClose} />
+            <RenderButton
+              text="Cancel"
+              color="white"
+              variant="outlined"
+              onClick={onClose}
+            />
+            {Appear &&  (
+              <RenderButton
+                text="Reset Filter"
+                color="white"
+                variant="outlined"
+                onClick={onClickReset}
+              />
+            ) }
+
             {disappear ? (
               <></>
             ) : isPending ? (
