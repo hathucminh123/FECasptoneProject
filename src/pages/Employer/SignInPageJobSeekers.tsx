@@ -115,7 +115,7 @@ export default function SignInPageJobSeekers() {
       const userName = userInfo.name;
       const Email =userInfo.Email
       const expiration = new Date();
-      expiration.setHours(expiration.getHours() + 1);
+      expiration.setHours(expiration.getHours() + 24);
       const token = data.result;
       const from = location.state?.from || "/";
       const redirectStateString = localStorage.getItem("redirectState");

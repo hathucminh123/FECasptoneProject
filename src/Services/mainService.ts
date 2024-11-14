@@ -120,7 +120,17 @@ export const apiLinks = {
   },
   PostCVAI:{
     POST:`${baseURL}/FileHandling/Analyze`
+  },
+  Subscription:{
+    GET:`${baseURL}/Subscription`
+  },
+  UserJobAlertCriteria:{
+    POST:`${baseURL}/UserJobAlertCriteria`,
+    GET:`${baseURL}/UserJobAlertCriteria`,
+    DELETE:`${baseURL}/UserJobAlertCriteria`
   }
+
+
 };
 
 export const signalR = {

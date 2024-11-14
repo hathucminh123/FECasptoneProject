@@ -108,7 +108,7 @@ export default function SignInPageEmployer() {
       const CompanyId = userInfo.CompanyId;
       const Email =userInfo.Email
       const IsPremium=userInfo.IsPremium
-      expiration.setHours(expiration.getHours() + 1);
+      expiration.setHours(expiration.getHours() + 24);
       const token = data.result;
       if (userRole === "employer") {
         localStorage.setItem("Auth", "true");
