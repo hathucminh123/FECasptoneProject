@@ -109,6 +109,8 @@ import Subscription from "./pages/Subscription";
 import CVScreeningPassed from "./pages/CVScreeningPassed";
 import InterviewStage from "./pages/InterviewStage";
 import CVScreeningPassedApplicants from "./pages/EmployerNewUi/CVScreeningPassedApplicants";
+import RootSetting from "./pages/EmployerNewUi/RootSetting";
+import Billing from "./pages/EmployerNewUi/Billing";
 
 const router = createBrowserRouter([
   {
@@ -424,7 +426,7 @@ const router = createBrowserRouter([
               },
               {
                 path: "CVScreeningPassed",
-                element: <CVScreeningPassedApplicants/>,
+                element: <CVScreeningPassedApplicants />,
               },
               {
                 path: "Passed",
@@ -533,6 +535,16 @@ const router = createBrowserRouter([
             element: <Password />,
           },
         ],
+      },
+      {
+        path: "recruit",
+        element: <RootSetting />,
+        children:[
+            {
+              index:true,
+              element:<Billing/>
+            }
+        ]
       },
 
       // {

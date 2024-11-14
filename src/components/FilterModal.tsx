@@ -109,17 +109,23 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     JSON.parse(localStorage.getItem("selectedType") || "[]")
   );
   // const [selectedCompany, setSelectedCompany] = useState<string[]>([]);
-  const [selectedCompany, setSelectedCompany] = useState<string[]>(() => JSON.parse(localStorage.getItem("selectedCompany") || "[]"));
+  const [selectedCompany, setSelectedCompany] = useState<string[]>(() =>
+    JSON.parse(localStorage.getItem("selectedCompany") || "[]")
+  );
   const [searchDataArray, setSearchDataArray] = useState<SearchData[]>([]);
   // const [selectedCites, setSelectedCites] = useState<string[]>([]);
-  const [selectedCites, setSelectedCites] = useState<string[]>(() => JSON.parse(localStorage.getItem("selectedCities") || "[]"));
+  const [selectedCites, setSelectedCites] = useState<string[]>(() =>
+    JSON.parse(localStorage.getItem("selectedCities") || "[]")
+  );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchQueryCities, setSearchQueryCities] = useState<string>("");
 
   //exp
   const [openExp, setOpenExp] = useState<boolean>(false);
   // const [selectExp, setSelectExp] = useState<number | null>();
-  const [selectExp, setSelectExp] = useState<number | null>(() => JSON.parse(localStorage.getItem("selectExp") || "null"));
+  const [selectExp, setSelectExp] = useState<number | null>(() =>
+    JSON.parse(localStorage.getItem("selectExp") || "null")
+  );
   const [selectExpString, setSelectExpString] = useState<string | null>("");
   const navigate = useNavigate();
 
@@ -224,7 +230,6 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
     staleTime: 1000,
   });
-
 
   const SkillSetDatas = SkillSetData?.SkillSets;
   // const skills = filteredJobs?.map((skill) => skill.skillSets);
@@ -445,6 +450,11 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     localStorage.removeItem("selectedCities");
     localStorage.removeItem("selectExp");
   };
+  const [showAllSkills, setShowAllSkills] = useState(false);
+
+  const displayedSkills = showAllSkills
+    ? skillsColumns
+    : skillsColumns.slice(0, 10);
   return (
     <Modal
       text="Filter"
@@ -466,7 +476,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
             Skills
           </Typography>
           <div className={classes.workingModelButtons}>
-            {skillsColumns.map((skills) => (
+            {displayedSkills.map((skills) => (
               <Button
                 variant={
                   selectedSkill.includes(skills) ? "contained" : "outlined"
@@ -484,6 +494,19 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
                 {skills}
               </Button>
             ))}
+            <div onClick={()=>setShowAllSkills(!showAllSkills)}>
+              <Typography
+                sx={{
+                  fontWeight: 400,
+                  cursor: "pointer",
+                  lineHeight: 1.5,
+                  fontSize: "16px",
+                  color: "red",
+                }}
+              >
+               {showAllSkills ? "Show Less" : "View More"}
+              </Typography>
+            </div>
           </div>
         </section>
 
