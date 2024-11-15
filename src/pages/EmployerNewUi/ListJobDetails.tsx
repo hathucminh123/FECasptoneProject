@@ -1,12 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./ListJobDetails.module.css";
-import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
+import { Link, NavLink, Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import moment from "moment";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
 import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
+import PaymentModal from "../../components/NewUiEmployer/PaymentModal";
+import { AnimatePresence } from "framer-motion";
 
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 type JobContextType = {
@@ -52,8 +54,49 @@ export default function ListJobDetails() {
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;
+const navigate=useNavigate()
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
+
+  const isPremiumExpired = () => {
+    const expireDate = localStorage.getItem("PremiumExpireDate");
+
+    if (!expireDate) {
+      return true;
+    }
+
+    const expirationDate = new Date(expireDate);
+    const currentDate = new Date();
+
+    return expirationDate < currentDate;
+  };
+
+  const handleCloseModalPayment = () => {
+    setOpenModal(false);
+  };
+
+  const handleNavigate =()=>{
+    if(isPremiumExpired()){
+      setOpenModal(true);
+      return;
+    }else{
+ navigate("/EmployerJob/jobs/create")
+    }
+  }
+
   return (
     <div className={classes.main}>
+      <AnimatePresence>
+       {openModal && (
+          <PaymentModal
+            onClose={handleCloseModalPayment}
+            // profile={profileScore}
+            // id={idApplicants}
+            // idJob={id}
+          />
+        )}
+      </AnimatePresence>
+
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
@@ -61,7 +104,7 @@ export default function ListJobDetails() {
               <div className={classes.main5}>
                 <div className={classes.main6}>
                   <header className={classes.header}>Jobs</header>
-                  <Link to="/EmployerJob/jobs/create" className={classes.link}>
+                  <Link to="" className={classes.link} onClick={handleNavigate}>
                     {" "}
                     + Post Jobs
                   </Link>

@@ -43,11 +43,14 @@ import { PostFavoriteJobs } from "../Services/FavoriteJobs/PostFavoriteJobs";
 import { queryClient } from "../Services/mainService";
 import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
 import { DeleteFavoriteJobs } from "../Services/FavoriteJobs/DeleteFavoriteJobs";
-import { Comment } from "@mui/icons-material";
+// import { Comment } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
 import { AnimatePresence } from "framer-motion";
 import FeedbackModal from "../components/FeedbackModal";
+import ModalSroreSeeker from "../components/ModalSroreSeeker";
+import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
+import GradientCircularProgress from "../components/NewUiEmployer/GradientCircularProgress";
 // import HourglassFullIcon from '@mui/icons-material/HourglassFull';
 // import VerifiedIcon from '@mui/icons-material/Verified';
 const StyledLink = styled(Link)`
@@ -102,13 +105,14 @@ export default function JobDetails() {
   const containerLeftRef = useRef<HTMLDivElement | null>(null);
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const applyRef = useRef<HTMLDivElement | null>(null);
+  const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const navigate = useNavigate();
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
 
-  function handleStartAddNewChallenge() {
-    setIsCreatingNewChallenge(true);
-  }
+  // function handleStartAddNewChallenge() {
+  //   setIsCreatingNewChallenge(true);
+  // }
 
   function handleDone() {
     setIsCreatingNewChallenge(false);
@@ -273,6 +277,15 @@ export default function JobDetails() {
       });
     }
   };
+
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    enabled: !!userId,
+  });
+
+  const profile = UserProfile?.UserProfiles;
   const { data: SeekerApply } = useQuery({
     queryKey: ["SeekerApply", JobId],
     queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(JobId), signal }),
@@ -338,8 +351,9 @@ export default function JobDetails() {
   //     window.removeEventListener("scroll", handleScroll);
   //   };
   // }, []);
-
-
+  const handleCloseModalScore = () => {
+    setOpenModalScore(false);
+  };
 
   if (!job) {
     return <div>No job details available</div>;
@@ -350,6 +364,17 @@ export default function JobDetails() {
   }
   return (
     <div className={classes.main}>
+      <AnimatePresence>
+        {openModalScore && (
+          <ModalSroreSeeker
+            onClose={handleCloseModalScore}
+            profile={profile}
+            id={Number(userId)}
+            idJob={JobId}
+            feedBackUserJob={feedBackUserJob}
+          />
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {isCreatingNewChallenge && (
           <FeedbackModal
@@ -426,20 +451,40 @@ export default function JobDetails() {
           <div className={classes.containerLeft} ref={containerLeftRef}>
             <div className={classes.apply} ref={applyRef}>
               <div className={classes.content}>
-                <Typography
-                  variant="h4"
-                  gutterBottom
-                  sx={{
-                    paddingTop: "20px !important",
-                    textAlign: "start",
-                    fontWeight: "bold",
-                    mb: 3,
-                    color: "#333",
-                  }}
-                >
-                  {job?.jobTitle}
-                </Typography>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                  <Typography
+                    variant="h4"
+                    gutterBottom
+                    sx={{
+                      paddingTop: "20px !important",
+                      textAlign: "start",
+                      fontWeight: "bold",
+                      mb: 3,
+                      color: "#333",
+                    }}
+                  >
+                    {job?.jobTitle}
+                  </Typography>
+                  {feedBackUserJob && hasAppliedJobActivity ? (
+                    <div>
+                      <button
+                        type="button"
+                        className={classes.button6}
+                        onClick={() => setOpenModalScore(!openModalScore)}
+                      >
+                        {/* <span className={classes.spanicon}> */}
+                        <GradientCircularProgress
+                          percentage={
+                            feedBackUserJob.analyzedResult.matchDetails.scores
+                              .overallMatch
+                          }
+                        />
 
+                        {/* </span> */}
+                      </button>
+                    </div>
+                  ) : undefined}
+                </div>
                 <Typography
                   variant="h5"
                   gutterBottom
@@ -517,9 +562,9 @@ export default function JobDetails() {
                           >
                             <Visibility />
                           </IconButton>
-                          <IconButton onClick={handleStartAddNewChallenge}>
+                          {/* <IconButton onClick={handleStartAddNewChallenge}>
                             <Comment />
-                          </IconButton>
+                          </IconButton> */}
                         </span>
                       ) : undefined}
                     </div>

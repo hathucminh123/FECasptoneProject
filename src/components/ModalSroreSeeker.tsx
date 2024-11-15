@@ -1,18 +1,20 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
-import classes from "./ModalScore.module.css";
+import classes from "./ModalSroreSeeker.module.css";
 
 import Typography from "@mui/material/Typography";
-import PercentileChart from "./PercentileChart";
+import PercentileChart from "./NewUiEmployer/PercentileChart";
 import { NavLink } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+import {  useQuery } from "@tanstack/react-query";
+import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
 import moment from "moment";
-import { CustomEmail } from "../../Services/CustomEmail/CustomEmail";
-import { message } from "antd";
-import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
+import Rating from "@mui/material/Rating";
+
+import Box from "@mui/material/Box";
 interface EducationDetail {
+
+
   id: number;
   name: string;
   institutionName: string;
@@ -55,29 +57,88 @@ interface UserProfile {
   cvs: CVs[];
   skillSets: SkillSet[];
 }
+
+interface SeekersByJobPost {
+    id: number;
+    userName: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    phoneNumber: number;
+    cvId: number;
+    cvPath: string;
+    jobPostActivityId: number;
+    status: string;
+    jobPostActivityComments: Comment[];
+    analyzedResult: AnalyzedResult; // Integrating AnalyzedResult here
+  }
+  
+  interface Comment {
+    id: number;
+    commentText: string;
+    commentDate: string;
+    rating: number;
+  }
+  
+  interface AnalyzedResult {
+    success: boolean;
+    processingTime: number;
+    deviceUsed: string;
+    matchDetails: MatchDetails;
+  }
+  
+  interface MatchDetails {
+    jobId: number;
+    jobTitle: string;
+    candidateName: string;
+    candidateEmail: string;
+    scores: Scores;
+    skillAnalysis: SkillAnalysis;
+    experienceAnalysis: ExperienceAnalysis;
+    recommendation: Recommendation;
+  }
+  
+  interface Scores {
+    overallMatch: number;
+    skillMatch: number;
+    experienceMatch: number;
+    contentSimilarity: number;
+  }
+  
+  interface SkillAnalysis {
+    matchingSkills: string[];
+    missingSkills: string[];
+    additionalSkills: string[];
+  }
+  
+  interface ExperienceAnalysis {
+    requiredYears: number;
+    candidateYears: number;
+    meetsRequirement: boolean;
+  }
+  
+  interface Recommendation {
+    category: string;
+    action: string;
+  }
+  
 interface props {
   onClose?: () => void;
   profile?: UserProfile | null;
   id?: number | null;
   idJob?: string;
+  feedBackUserJob:SeekersByJobPost|undefined
 }
-export default function ModalScore({ onClose, profile, id, idJob }: props) {
-  const [emailForm, setEmailForm] = useState<string>("");
-  const companyId = localStorage.getItem("CompanyId");
-  const [openExp, setOpenExp] = useState<boolean>(false);
-  const {
-    data: CompanyDa,
-    // isLoading,
-    // error,
-  } = useQuery({
-    queryKey: ["Company-details", companyId], // Sửa lại tên key cho chính xác
-    queryFn: ({ signal }) =>
-      fetchCompaniesById({ id: Number(companyId), signal }),
-    enabled: !!companyId,
-  });
+export default function ModalSroreSeeker({
+  onClose,
+  profile,
+  id,
+  idJob,
+  feedBackUserJob,
+}: props) {
 
-  // Dữ liệu công ty (nếu có)
-  const companyDataa = CompanyDa?.Companies;
+  const [openExp, setOpenExp] = useState<boolean>(false);
+ 
 
   const {
     data: SeekerApply,
@@ -100,42 +161,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
   //   contentSimilarity: 41.73,
   // };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: CustomEmail,
-    onSuccess: () => {
-      // queryClient.invalidateQueries({
-      //   queryKey: ["JobPostActivity"],
-      //   refetchType: "active", // Ensure an active refetch
-      // });
-      message.success(`Send Email successfully!`);
-      // navigate(`/thankyou/${job?.id}`);
-    },
-    onError: () => {
-      message.error("Failed to Send Email.");
-    },
-  });
+ 
 
-  const handleSendEmail = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!emailForm || emailForm.trim() === "") {
-      console.error("Email content is required");
-      return;
-    }
-
-    const formattedCompanyName = companyDataa?.companyName
-      .replace(/\s{2,}/g, " ")
-      .trim();
-
-    mutate({
-      data: {
-        content: emailForm,
-        companyName: formattedCompanyName,
-        // companyName: "fpt",
-        reciveUser: profile?.email,
-      },
-    });
-  };
 
   if (!modalRoot) {
     return null;
@@ -502,7 +529,9 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                         </div>
                         <div className={classes.main27}>
                           <div className={classes.main16}>
-                            <div className={classes.main28}>Additional Skills</div>
+                            <div className={classes.main28}>
+                              Additional Skills
+                            </div>
                             <div className={classes.main29}>
                               {profileResult?.analyzedResult.matchDetails
                                 .skillAnalysis.additionalSkills &&
@@ -532,57 +561,59 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                   <div className={classes.main35}>
                     <nav className={classes.nav}>
                       <NavLink
-                        to="/EmployerJob/applicants/jobs/2"
+                        to=""
                         className={({ isActive }) =>
                           isActive ? classes.active : undefined
                         }
                         end
                       >
                         <div className={classes.main36}>
-                          <span>Send Email</span>
+                          <span>Comment</span>
                         </div>
                       </NavLink>
                     </nav>
                     <form
                       action=""
                       className={classes.form}
-                      onSubmit={handleSendEmail}
+                      //   onSubmit={handleSendEmail}
                     >
-                      <div className={classes.main37}>
-                        <div className={classes.main38}>
-                          <div className={classes.main39}>
-                            <div className={classes.main40}>
-                              <button className={classes.main41}>
-                                Saved Templates ✦
-                              </button>
+                      <Box component="div" className={classes.commentContainer}>
+                        {feedBackUserJob && feedBackUserJob.jobPostActivityComments.length > 0 ? (
+                        feedBackUserJob?.jobPostActivityComments.map((comment) => (
+                            <div key={comment.id} className={classes.comment}>
+                              <Typography variant="body1" component="p">
+                                <strong>Comment:</strong> {comment.commentText}
+                              </Typography>
+                              <Typography variant="body2" color="textSecondary">
+                                <strong>Date:</strong>{" "}
+                                {new Date(
+                                  comment.commentDate
+                                ).toLocaleDateString()}
+                              </Typography>
+                              <Box display="flex" alignItems="center">
+                                <Typography
+                                  variant="body2"
+                                  color="textSecondary"
+                                >
+                                  <strong>Rating:</strong>
+                                </Typography>
+                                <Rating
+                                  name={`rating-${comment.id}`}
+                                  value={comment.rating}
+                                  readOnly
+                                  precision={0.5}
+                                  sx={{ ml: 1 }}
+                                />
+                              </Box>
+                              <hr className={classes.commentSeparator} />
                             </div>
-                          </div>
-                          <div className={classes.main42}></div>
-                        </div>
-                        <div className={classes.main50}>
-                          <div className={classes.main51}>
-                            <textarea
-                              name=""
-                              id=""
-                              className={classes.main52}
-                              placeholder="Start writing your Email...."
-                              onChange={(e) => setEmailForm(e.target.value)}
-                              value={emailForm}
-                            ></textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <div className={classes.main53}>
-                        {isPending ? (
-                          <button className={classes.main54}>
-                            Wait a seconds
-                          </button>
+                          ))
                         ) : (
-                          <button type="submit" className={classes.main54}>
-                            Send Request Email
-                          </button>
+                          <Typography variant="body2" color="textSecondary">
+                            No comments available.
+                          </Typography>
                         )}
-                      </div>
+                      </Box>
                     </form>
                   </div>
                 </div>

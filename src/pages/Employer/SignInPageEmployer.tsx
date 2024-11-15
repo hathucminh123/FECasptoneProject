@@ -23,6 +23,7 @@ interface CustomJwtPayload extends JwtPayload {
   CompanyId: string;
   Email:string
   IsPremium:string
+  PremiumExpireDate:string
 }
 
 export default function SignInPageEmployer() {
@@ -108,6 +109,7 @@ export default function SignInPageEmployer() {
       const CompanyId = userInfo.CompanyId;
       const Email =userInfo.Email
       const IsPremium=userInfo.IsPremium
+      const PremiumExpireDate=userInfo.PremiumExpireDate
       expiration.setHours(expiration.getHours() + 24);
       const token = data.result;
       if (userRole === "employer") {
@@ -119,6 +121,7 @@ export default function SignInPageEmployer() {
         localStorage.setItem("CompanyId", CompanyId);
         localStorage.setItem("Email", Email);
         localStorage.setItem('IsPremium',IsPremium)
+        localStorage.setItem('PremiumExpireDate',PremiumExpireDate)
 
         localStorage.setItem("expiration", expiration.toISOString());
         if(CompanyId && CompanyId !== "null") {

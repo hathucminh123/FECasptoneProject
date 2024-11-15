@@ -8,7 +8,6 @@ import { Payment } from "../../Services/Payment/Payment";
 import { message } from "antd";
 // import { redirect, useNavigate } from "react-router-dom";
 
-
 interface props {
   onClose?: () => void;
   // profile?: UserProfile | null;
@@ -19,32 +18,63 @@ export default function PaymentModal({ onClose }: props) {
   const modalRoot = document.getElementById("modalPayment");
   const Email = localStorage.getItem("Email");
 
-const { mutate, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: Payment,
     onSuccess: (data) => {
       console.log("okchua", data.result);
-  
+
       // message.success(`Payment successfully!`);
-      
+
       // Mở đường link data.result trong tab mới
       // window.open(data.result, '_blank');
-  
+
       // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
       window.location.href = data.result;
-      
+
       // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
     },
     onError: () => {
       message.error("Failed to Payment.");
     },
   });
-  
+  const { mutate:Year, isPending :isPendingYears} = useMutation({
+    mutationFn: Payment,
+    onSuccess: (data) => {
+      console.log("okchua", data.result);
+
+      // message.success(`Payment successfully!`);
+
+      // Mở đường link data.result trong tab mới
+      // window.open(data.result, '_blank');
+
+      // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
+      window.location.href = data.result;
+
+      // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
+    },
+    onError: () => {
+      message.error("Failed to Payment.");
+    },
+  });
+ 
 
   const handlePayment = () => {
     mutate({
       data: {
         orderType: "NCB",
+        amount: 2538999,
+        orderDescription: "",
+        name: Email,
+        returnUrl: "http://localhost:5173/JobSeekers/login",
+      },
+    });
+  };
+  const handlePaymentYear = () => {
+    Year({
+      data: {
+        orderType: "NCB",
         amount: 5077000,
+
         orderDescription: "",
         name: Email,
         returnUrl: "http://localhost:5173/JobSeekers/login",
@@ -152,9 +182,8 @@ const { mutate, isPending } = useMutation({
                               borderStyle: "solid",
                             }}
                           >
-                            $200
+                            $100/month
                           </span>
-                    
                         </Typography>
                         <p className={classes.p1}>Includes:</p>
                         <ul className={classes.ul}>
@@ -202,7 +231,6 @@ const { mutate, isPending } = useMutation({
                             </svg>
                             Advanced Applicant Filters
                           </li>
-                          
                         </ul>
                       </div>
                       <footer className={classes.footer}>
@@ -211,12 +239,128 @@ const { mutate, isPending } = useMutation({
                             className={classes.button1}
                             // onClick={handlePayment}
                           >
-                       wait a second...
+                            wait a second...
                           </button>
                         ) : (
                           <button
                             className={classes.button1}
                             onClick={handlePayment}
+                              type="button"
+                          >
+                            Upgrade
+                          </button>
+                        )}
+                      </footer>
+                    </div>
+                  </div>
+                  <div className={classes.main7}>
+                    <div className={classes.main8}>
+                      <div className={classes.main9}>
+                        <Typography
+                          variant="h4"
+                          sx={{
+                            fontWeight: 700,
+                            fontSize: "100%",
+                            margin: 0,
+                            padding: 0,
+
+                            boxSizing: "border-box",
+                            borderWidth: 0,
+                            borderStyle: "solid",
+                          }}
+                        >
+                          {" "}
+                          Vip
+                        </Typography>
+                        <div className={classes.main10}>
+                          Get Started posting Job
+                        </div>
+                        <Typography
+                          variant="h3"
+                          sx={{
+                            fontSize: "14px",
+                            lineHeight: "20px",
+                            marginBottom: "24px",
+                            fontWeight: 400,
+                            boxSizing: "border-box",
+                            borderWidth: 0,
+                            borderStyle: "solid",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontWeight: 700,
+                              fontSize: "24px",
+                              lineHeight: "30px",
+                              boxSizing: "border-box",
+                              borderWidth: 0,
+                              borderStyle: "solid",
+                            }}
+                          >
+                            $200/years
+                          </span>
+                        </Typography>
+                        <p className={classes.p1}>Includes:</p>
+                        <ul className={classes.ul}>
+                          <li className={classes.li}>
+                            <svg viewBox="0 0 24 24" className={classes.svg1}>
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                fill="currentColor"
+                                d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                              ></path>
+                            </svg>
+                            Post Unlimited Jobs
+                          </li>
+                          <li className={classes.li}>
+                            <svg viewBox="0 0 24 24" className={classes.svg1}>
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                fill="currentColor"
+                                d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                              ></path>
+                            </svg>
+                            Review Applicants
+                          </li>
+                          <li className={classes.li}>
+                            <svg viewBox="0 0 24 24" className={classes.svg1}>
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                fill="currentColor"
+                                d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                              ></path>
+                            </svg>
+                            Quick Accept/Reject with Templates
+                          </li>
+                          <li className={classes.li}>
+                            <svg viewBox="0 0 24 24" className={classes.svg1}>
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                fill="currentColor"
+                                d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                              ></path>
+                            </svg>
+                            Advanced Applicant Filters
+                          </li>
+                        </ul>
+                      </div>
+                      <footer className={classes.footer}>
+                        {isPendingYears ? (
+                          <button
+                            className={classes.button1}
+                            // onClick={handlePayment}
+                          >
+                            wait a second...
+                          </button>
+                        ) : (
+                          <button
+                            className={classes.button1}
+                            onClick={handlePaymentYear}
+                            type="button"
                           >
                             Upgrade
                           </button>

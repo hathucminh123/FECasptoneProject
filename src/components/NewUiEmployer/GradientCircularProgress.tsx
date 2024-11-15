@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./GradientCircularProgress.module.css";
 interface GradientCircularProgressProps {
-  percentage: number;
+  percentage: number ;
 }
 
 const GradientCircularProgress: React.FC<GradientCircularProgressProps> = ({

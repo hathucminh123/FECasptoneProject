@@ -293,11 +293,11 @@ export default function HeaderEmployerSystem({
             )}
           </NavLink> */}
         </nav>
-        {IsPremium !== "True" && (
+        {/* {IsPremium !== "True" && ( */}
           <div className={classes.discover} onClick={() => setOpenModal(true)}>
             <span>Payment</span>
           </div>
-        )}
+        {/* )} */}
 
         <div className={classes.header6}></div>
         <div className={classes.header7}>

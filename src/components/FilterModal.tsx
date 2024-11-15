@@ -77,7 +77,7 @@ interface Props {
 //   "8+ years of experience",
 // ];
 
-const datacities = [
+const datacities:string[] = [
   "HO CHI MINH",
   "HA NOI",
   "DA NANG",
