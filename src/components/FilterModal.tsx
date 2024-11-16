@@ -119,6 +119,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   );
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchQueryCities, setSearchQueryCities] = useState<string>("");
+  const [searchQuerySkills, setSearchQuerySkills] = useState<string>("");
 
   //exp
   const [openExp, setOpenExp] = useState<boolean>(false);
@@ -136,13 +137,13 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     setMaxSalary(newMaxSalary);
   };
 
-  const handleSkillSelect = (skill: string) => {
-    setSelectedSkill((prevSkills) =>
-      prevSkills.includes(skill)
-        ? prevSkills.filter((s) => s !== skill)
-        : [...prevSkills, skill]
-    );
-  };
+  // const handleSkillSelect = (skill: string) => {
+  //   setSelectedSkill((prevSkills) =>
+  //     prevSkills.includes(skill)
+  //       ? prevSkills.filter((s) => s !== skill)
+  //       : [...prevSkills, skill]
+  //   );
+  // };
   const handleTypeSelect = (type: string) => {
     setSelectedType((prevTypes) =>
       prevTypes.includes(type)
@@ -186,6 +187,13 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     );
   };
 
+  const handleCheckboxChangeSkills = (name: string) => {
+    setSelectedSkill((prevSelected) =>
+      prevSelected.includes(name)
+        ? prevSelected.filter((company) => company !== name)
+        : [...prevSelected, name]
+    );
+  };
   // const CompanyName = filteredJobs?.map((name) => name.companyName);
   const {
     data: Company,
@@ -213,6 +221,9 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const filtercites = datacities.filter((name) =>
     name.toLowerCase().includes(searchQueryCities.toLowerCase())
   );
+  // const filterSkills = skillsColumns.filter((name) =>
+  //   name.toLowerCase().includes(searchQuerySkills.toLowerCase())
+  // );
   // const {
   //   data: JobPosts,
   //   // isLoading: isJobLoading,
@@ -239,6 +250,9 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   console.log("realy", uniqueArray);
 
   const skillsColumns = uniqueArray;
+  const filterSkills = skillsColumns.filter((name) =>
+    name.toLowerCase().includes(searchQuerySkills.toLowerCase())
+  );
   useEffect(() => {
     localStorage.setItem("selectedSkill", JSON.stringify(selectedSkill));
   }, [selectedSkill]);
@@ -450,11 +464,11 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     localStorage.removeItem("selectedCities");
     localStorage.removeItem("selectExp");
   };
-  const [showAllSkills, setShowAllSkills] = useState(false);
+  // const [showAllSkills, setShowAllSkills] = useState(false);
 
-  const displayedSkills = showAllSkills
-    ? skillsColumns
-    : skillsColumns.slice(0, 10);
+  // const displayedSkills = showAllSkills
+  //   ? skillsColumns
+  //   : skillsColumns.slice(0, 10);
   return (
     <Modal
       text="Filter"
@@ -471,7 +485,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
         autoComplete="off"
         className={classes.maine}
       >
-        <section className={classes.main}>
+        {/* <section className={classes.main}>
           <Typography variant="h6" className={classes.sectionTitle}>
             Skills
           </Typography>
@@ -507,6 +521,36 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
                {showAllSkills ? "Show Less" : "View More"}
               </Typography>
             </div>
+          </div>
+        </section> */}
+        <section className={classes.main}>
+          <Typography variant="h6" className={classes.sectionTitle}>
+            Skills
+          </Typography>
+          <input
+            placeholder="Search Skills"
+            type="text"
+            className={classes.input}
+            onChange={(e) => setSearchQuerySkills(e.target.value)}
+          />
+          <div className={classes.industryList}>
+            {filterSkills.map((name) => (
+              <label key={name} className={classes.label}>
+                {/* <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedCompany === name}
+                  onChange={() => handleCheckboxChange(name)}
+                /> */}
+                <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedSkill.includes(name)}
+                  onChange={() => handleCheckboxChangeSkills(name)}
+                />
+                <span className={classes.span2}>{name}</span>
+              </label>
+            ))}
           </div>
         </section>
 

@@ -386,12 +386,12 @@ export default function HomePage() {
                 <div className={classes.divne}></div>
               </CardService>
 
-              <CardService
+              {/* <CardService
                 url="https://itviec.com/assets/homepage/blog-a0cee7c69f270172e8c4470bde32d5c15e0a113cb4c3aa92f9d8bfc9ab92c8c7.svg"
                 title="Blog"
                 text="Updates about salary, benefits, working policies, and careers in IT"
                 textButton="Explore blog"
-              />
+              /> */}
             </div>
           </section>
         </div>

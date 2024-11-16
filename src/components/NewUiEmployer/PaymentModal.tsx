@@ -18,7 +18,7 @@ export default function PaymentModal({ onClose }: props) {
   const modalRoot = document.getElementById("modalPayment");
   const Email = localStorage.getItem("Email");
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: Payment,
     onSuccess: (data) => {
       console.log("okchua", data.result);
@@ -37,7 +37,7 @@ export default function PaymentModal({ onClose }: props) {
       message.error("Failed to Payment.");
     },
   });
-  const { mutate:Year, isPending :isPendingYears} = useMutation({
+  const { mutate: Year } = useMutation({
     mutationFn: Payment,
     onSuccess: (data) => {
       console.log("okchua", data.result);
@@ -56,25 +56,25 @@ export default function PaymentModal({ onClose }: props) {
       message.error("Failed to Payment.");
     },
   });
- 
 
-  const handlePayment = () => {
+  const handlePayment = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     mutate({
       data: {
         orderType: "NCB",
-        amount: 2538999,
+        amount: 500000,
         orderDescription: "",
         name: Email,
         returnUrl: "http://localhost:5173/JobSeekers/login",
       },
     });
   };
-  const handlePaymentYear = () => {
+  const handlePaymentYear = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     Year({
       data: {
         orderType: "NCB",
-        amount: 5077000,
-
+        amount: 1000000,
         orderDescription: "",
         name: Email,
         returnUrl: "http://localhost:5173/JobSeekers/login",
@@ -182,7 +182,7 @@ export default function PaymentModal({ onClose }: props) {
                               borderStyle: "solid",
                             }}
                           >
-                            $100/month
+                            $20 / 6 month
                           </span>
                         </Typography>
                         <p className={classes.p1}>Includes:</p>
@@ -234,22 +234,22 @@ export default function PaymentModal({ onClose }: props) {
                         </ul>
                       </div>
                       <footer className={classes.footer}>
-                        {isPending ? (
+                        {/* {isPending ? (
                           <button
                             className={classes.button1}
                             // onClick={handlePayment}
                           >
                             wait a second...
                           </button>
-                        ) : (
-                          <button
-                            className={classes.button1}
-                            onClick={handlePayment}
-                              type="button"
-                          >
-                            Upgrade
-                          </button>
-                        )}
+                        ) : ( */}
+                        <button
+                          className={classes.button1}
+                          onClick={handlePayment}
+                          type="button"
+                        >
+                          Upgrade
+                        </button>
+                        {/* )} */}
                       </footer>
                     </div>
                   </div>
@@ -297,7 +297,7 @@ export default function PaymentModal({ onClose }: props) {
                               borderStyle: "solid",
                             }}
                           >
-                            $200/years
+                            $40/years
                           </span>
                         </Typography>
                         <p className={classes.p1}>Includes:</p>
@@ -349,22 +349,22 @@ export default function PaymentModal({ onClose }: props) {
                         </ul>
                       </div>
                       <footer className={classes.footer}>
-                        {isPendingYears ? (
+                        {/* {isPendingYears ? (
                           <button
                             className={classes.button1}
                             // onClick={handlePayment}
                           >
                             wait a second...
                           </button>
-                        ) : (
-                          <button
-                            className={classes.button1}
-                            onClick={handlePaymentYear}
-                            type="button"
-                          >
-                            Upgrade
-                          </button>
-                        )}
+                        ) : ( */}
+                        <button
+                          className={classes.button1}
+                          onClick={handlePaymentYear}
+                          type="button"
+                        >
+                          Upgrade
+                        </button>
+                        {/* )} */}
                       </footer>
                     </div>
                   </div>

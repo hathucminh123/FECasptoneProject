@@ -77,10 +77,10 @@ export default function CompanyDetailRoot() {
     }
   }, [companyDataa]);
 
-  const handleNavigate = () => {
-    navigate("/company/Comment");
-    console.log("Navigating to /company/Comment");
-  };
+  // const handleNavigate = () => {
+  //   navigate("/company/Comment");
+  //   console.log("Navigating to /company/Comment");
+  // };
 
   // Hàm điều hướng tới chi tiết công việc
   const handleNavigateJob = (job: JobPost) => {
@@ -367,13 +367,13 @@ export default function CompanyDetailRoot() {
                   </div>
                 </div>
                 <div className={classes.button}>
-                  <RenderButton
-                    // icon={<CheckIcon />}
+                  {/* <RenderButton
+                    icon={<CheckIcon />}
                     text="Write review"
                     color="#ed1b2f"
                     variant="contained"
                     onClick={handleNavigate}
-                  />
+                  /> */}
                   {haveFollow ? (
                     <RenderButton
                       icon={<CheckIcon />}
@@ -417,7 +417,7 @@ export default function CompanyDetailRoot() {
                       Overview
                     </NavLink>
                   </li>
-                  <li className={classes.menuItem}>
+                  {/* <li className={classes.menuItem}>
                     <NavLink
                       to="review"
                       state={companyDataa}
@@ -428,7 +428,7 @@ export default function CompanyDetailRoot() {
                     >
                       Reviews
                     </NavLink>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
 
