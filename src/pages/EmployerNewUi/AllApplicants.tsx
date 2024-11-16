@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./AllApplicants.module.css";
 import Typography from "@mui/material/Typography";
-// import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from "@mui/icons-material/Close";
 
 import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
@@ -157,14 +157,14 @@ export default function AllApplicants() {
       },
     });
   };
-  // const handlePutStatusRejected = (id: number) => {
-  //   mutate({
-  //     data: {
-  //       jobPostActivityId: id,
-  //       status: 2,
-  //     },
-  //   });
-  // };
+  const handlePutStatusRejected = (id: number) => {
+    mutate({
+      data: {
+        jobPostActivityId: id,
+        status: 2,
+      },
+    });
+  };
   // const handlePutStatusInterView = (id: number) => {
   //   mutate({
   //     data: {
@@ -463,7 +463,7 @@ export default function AllApplicants() {
                           Interview
                         </button> */}
                         <div className={classes.main32}>
-                          {/* <button
+                          <button
                             className={classes.button3}
                             onClick={() =>
                               handlePutStatusRejected(data.jobPostActivityId)
@@ -471,7 +471,7 @@ export default function AllApplicants() {
                           >
                             <CloseIcon />
                             <span>Rejected</span>
-                          </button> */}
+                          </button>
                           <button
                             type="button"
                             className={classes.button4}

@@ -111,6 +111,7 @@ import InterviewStage from "./pages/InterviewStage";
 import CVScreeningPassedApplicants from "./pages/EmployerNewUi/CVScreeningPassedApplicants";
 import RootSetting from "./pages/EmployerNewUi/RootSetting";
 import Billing from "./pages/EmployerNewUi/Billing";
+import ListTalent from "./pages/EmployerNewUi/ListTalent";
 
 const router = createBrowserRouter([
   {
@@ -456,13 +457,13 @@ const router = createBrowserRouter([
         path: "FindTalents",
         element: (
           <ProtectedRouteApplicants>
-            <ListJobDetailsApplicants />
+            <ListTalent/>
           </ProtectedRouteApplicants>
         ),
 
         children: [
           {
-            path: "jobs/:id",
+            path: "talent",
             element: <RecommendNew />,
             children: [
               {
@@ -539,12 +540,12 @@ const router = createBrowserRouter([
       {
         path: "recruit",
         element: <RootSetting />,
-        children:[
-            {
-              index:true,
-              element:<Billing/>
-            }
-        ]
+        children: [
+          {
+            index: true,
+            element: <Billing />,
+          },
+        ],
       },
 
       // {

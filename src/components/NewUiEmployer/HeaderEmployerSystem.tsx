@@ -270,10 +270,10 @@ export default function HeaderEmployerSystem({
               </div>
             )}
           </NavLink>
-          {/* <NavLink
+          <NavLink
             to={
               companyId && companyId !== "null"
-                ? `/EmployerJob/FindTalents/jobs/${selectJobId}`
+                ? `/EmployerJob/FindTalents/talent`
                 : "/EmployerJob"
             }
             className={classes.link2}
@@ -291,7 +291,7 @@ export default function HeaderEmployerSystem({
                 </div>
               </div>
             )}
-          </NavLink> */}
+          </NavLink>
         </nav>
         {/* {IsPremium !== "True" && ( */}
           <div className={classes.discover} onClick={() => setOpenModal(true)}>

@@ -16,7 +16,7 @@ interface props {
 }
 export default function PaymentModal({ onClose }: props) {
   const modalRoot = document.getElementById("modalPayment");
-  const Email = localStorage.getItem("Email");
+  // const Email = localStorage.getItem("Email");
 
   const { mutate } = useMutation({
     mutationFn: Payment,
@@ -61,11 +61,7 @@ export default function PaymentModal({ onClose }: props) {
     e.preventDefault();
     mutate({
       data: {
-        orderType: "NCB",
-        amount: 500000,
-        orderDescription: "",
-        name: Email,
-        returnUrl: "http://localhost:5173/JobSeekers/login",
+        orderType:1
       },
     });
   };
@@ -73,11 +69,7 @@ export default function PaymentModal({ onClose }: props) {
     e.preventDefault();
     Year({
       data: {
-        orderType: "NCB",
-        amount: 1000000,
-        orderDescription: "",
-        name: Email,
-        returnUrl: "http://localhost:5173/JobSeekers/login",
+        orderType:2
       },
     });
   };

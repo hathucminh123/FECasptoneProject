@@ -27,6 +27,8 @@ import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 // import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
@@ -402,6 +404,18 @@ const SkillsMenu = ({
 
   const JobPostsdata = JobPosts?.JobPosts;
 
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const Companiesdata = Company?.Companies;
+
   const skills = JobPostsdata?.map((skill) => skill.skillSets);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
@@ -416,13 +430,13 @@ const SkillsMenu = ({
 
   const JobTitleColums = uniqueArrayJobTitle;
 
-  const CompanyName = JobPostsdata?.map((name) => name.companyName);
+  // const CompanyName = JobPostsdata?.map((name) => name.companyName);
+  const CompanyName = Companiesdata?.map((name) => name.companyName);
+  // const flattenedArrayCompanyName = CompanyName?.flat();
+  // const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
+  // console.log("realy1", CompanyName);
 
-  const flattenedArrayCompanyName = CompanyName?.flat();
-  const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
-  console.log("realy1", CompanyName);
-
-  const CompanyColums = uniqueArrayCompanyName;
+  // const CompanyColums = uniqueArrayCompanyName;
 
   // const titlejobColumns = [
   //   "Java Developer",
@@ -467,7 +481,7 @@ const SkillsMenu = ({
           state: { jobSearch: jobSearchResults, textt: text },
         });
       } else {
-        navigate("/it_obs", { state: { textt: text } });
+        navigate("/it_jobs", { state: { textt: text } });
       }
 
       queryClient.invalidateQueries({
@@ -481,6 +495,7 @@ const SkillsMenu = ({
       message.error("Failed to Search");
     },
   });
+
   // const { mutateAsync } = useMutation({
   //   mutationFn: GetJobSearch,
   //   onSuccess: (data) => {
@@ -517,15 +532,114 @@ const SkillsMenu = ({
       : selectedMenu === "Jobs by City"
       ? cityColumn
       : selectedMenu === "Jobs by Company"
-      ? CompanyColums
+      ? CompanyName
       : selectedMenu === "Jobs by JobType"
       ? JobTypeColumn
       : selectedMenu === "Jobs by Title"
       ? JobTitleColums
       : undefined;
   const navigate = useNavigate();
+  // const handleOnclick = async (column: string) => {
+  //   setText(column);
+  //   interface JobSearchResponse {
+  //     result: {
+  //       items: JobPost[];
+  //     };
+  //   }
+  //   interface SearchData {
+  //     jobTitle?: string;
+  //     companyName?: string;
+  //     skillSet?: string;
+  //     city?: string;
+  //     location?: string;
+  //     // experience?: number;
+  //     jobType?: string;
+  //     pageSize: number;
+  //   }
+  //   // let searchDataArray: SearchData[];
+  //   // if (column === "All") {
+  //   //   searchDataArray = [
+  //   //     { companyName: column, pageSize: 9 },
+  //   //     { skillSet: column, pageSize: 9 },
+  //   //     { city: column, pageSize: 9 },
+  //   //     { location: column, pageSize: 9 },
+  //   //     // { experience: Number(text), pageSize: 9 },
+  //   //     { jobType: column, pageSize: 9 },
+  //   //   ];
+  //   // } else if (cityColumn.some((city) => city === column)) {
+  //   //   searchDataArray = [{ city: column, pageSize: 9 }];
+  //   // } else if (column !== "All") {
+  //   //   searchDataArray = [
+  //   //     { companyName: column, pageSize: 9 },
+  //   //     { skillSet: column, pageSize: 9 },
+  //   //     { city: column, pageSize: 9 },
+  //   //     { location: column, pageSize: 9 },
+  //   //     // { experience: Number(text), pageSize: 9 },
+  //   //     { jobType: column, pageSize: 9 },
+  //   //   ];
+  //   // } else {
+  //   //   searchDataArray = [];
+  //   // }
+
+  //   let searchDataArray: SearchData[];
+
+  //   if (column === "All") {
+  //     searchDataArray = [
+  //       { jobTitle: "", pageSize: 9 },
+  //       { companyName: "", pageSize: 9 },
+  //       { skillSet: "", pageSize: 9 },
+  //       { city: "", pageSize: 9 },
+  //       { location: "", pageSize: 9 },
+  //       { jobType: "", pageSize: 9 },
+  //     ];
+  //   } else if (cityColumn.includes(column)) {
+  //     searchDataArray = [
+  //       { city: column, pageSize: 9 },
+  //       { location: column, pageSize: 9 },
+  //     ];
+  //   } else {
+  //     searchDataArray = [
+  //       { jobTitle: column, pageSize: 9 },
+  //       { companyName: column, pageSize: 9 },
+  //       { skillSet: column, pageSize: 9 },
+  //       { city: column, pageSize: 9 },
+  //       { location: column, pageSize: 9 },
+  //       { jobType: column, pageSize: 9 },
+  //     ];
+  //   }
+  //   // const searchDataArray: SearchData[] = [
+  //   //   { companyName: column, pageSize: 9 },
+  //   //   { skillSet: column, pageSize: 9 },
+  //   //   { location: column, pageSize: 9 },
+  //   //   { city: column, pageSize: 9 },
+  //   //   // { experience: column, pageSize: 9 },
+  //   //   { jobType: column, pageSize: 9 },
+  //   // ];
+
+  //   for (let i = 0; i < searchDataArray.length; i++) {
+  //     try {
+  //       console.log("Searching with:", searchDataArray[i]);
+
+  //       const result: JobSearchResponse = await mutateAsync({
+  //         data: searchDataArray[i],
+  //       });
+  //       console.log("chan", result.result.items);
+
+  //       if (result && result.result && result.result.items.length > 0) {
+  //         // setJobSearch(result.result.items);
+
+  //         break;
+  //       }
+  //     } catch (error) {
+  //       console.error("Error during job search:", error);
+  //     }
+  //   }
+  //   // navigate("/it-jobs", { state: column });
+  // };
+
   const handleOnclick = async (column: string) => {
     setText(column);
+
     interface JobSearchResponse {
       result: {
         items: JobPost[];
@@ -537,34 +651,27 @@ const SkillsMenu = ({
       skillSet?: string;
       city?: string;
       location?: string;
-      // experience?: number;
       jobType?: string;
       pageSize: number;
     }
-    // let searchDataArray: SearchData[];
-    // if (column === "All") {
-    //   searchDataArray = [
-    //     { companyName: column, pageSize: 9 },
-    //     { skillSet: column, pageSize: 9 },
-    //     { city: column, pageSize: 9 },
-    //     { location: column, pageSize: 9 },
-    //     // { experience: Number(text), pageSize: 9 },
-    //     { jobType: column, pageSize: 9 },
-    //   ];
-    // } else if (cityColumn.some((city) => city === column)) {
-    //   searchDataArray = [{ city: column, pageSize: 9 }];
-    // } else if (column !== "All") {
-    //   searchDataArray = [
-    //     { companyName: column, pageSize: 9 },
-    //     { skillSet: column, pageSize: 9 },
-    //     { city: column, pageSize: 9 },
-    //     { location: column, pageSize: 9 },
-    //     // { experience: Number(text), pageSize: 9 },
-    //     { jobType: column, pageSize: 9 },
-    //   ];
-    // } else {
-    //   searchDataArray = [];
-    // }
+
+    if (selectedMenu === "Jobs by Company") {
+      // Handle the company search separately
+      try {
+        const companyData = await SearchCompany({ name: column });
+        if (companyData) {
+          console.log("Company search results:", companyData.Companies);
+          navigate(`/company/detail/${companyData?.Companies.id}`);
+        } else {
+          console.warn("No results found for company search.");
+          navigate("/it_jobs", { state: { textt: text } });
+        }
+      } catch (error) {
+        console.error("Error during company search:", error);
+      }
+      return;
+    }
+
 
     let searchDataArray: SearchData[];
 
@@ -592,14 +699,6 @@ const SkillsMenu = ({
         { jobType: column, pageSize: 9 },
       ];
     }
-    // const searchDataArray: SearchData[] = [
-    //   { companyName: column, pageSize: 9 },
-    //   { skillSet: column, pageSize: 9 },
-    //   { location: column, pageSize: 9 },
-    //   { city: column, pageSize: 9 },
-    //   // { experience: column, pageSize: 9 },
-    //   { jobType: column, pageSize: 9 },
-    // ];
 
     for (let i = 0; i < searchDataArray.length; i++) {
       try {
@@ -608,19 +707,21 @@ const SkillsMenu = ({
         const result: JobSearchResponse = await mutateAsync({
           data: searchDataArray[i],
         });
-        console.log("chan", result.result.items);
+        console.log("Search results:", result.result.items);
 
         if (result && result.result && result.result.items.length > 0) {
-          // setJobSearch(result.result.items);
-
+          // Perform navigation with results
+          navigate("/it_jobs", {
+            state: { jobSearch: result.result.items, textt: text },
+          });
           break;
         }
       } catch (error) {
         console.error("Error during job search:", error);
       }
     }
-    // navigate("/it-jobs", { state: column });
   };
+
   return (
     <Menu
       id="skills-menu"

@@ -160,6 +160,7 @@ export default function Subscription() {
     queryFn: ({ signal }) =>
       GetUserJobAlertCriteria({ signal, id: Number(UserId) }),
     staleTime: 5000,
+    enabled: !!UserId,
   });
   const AlertData = Alert?.Criteria;
   console.log("kk", AlertData);

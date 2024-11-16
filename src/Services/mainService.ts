@@ -25,6 +25,7 @@ export const apiLinks = {
     GET: `${baseURL}/Company`,
     DELETE: `${baseURL}/Company`,
     GetCompaniesbyId: `${baseURL}/Company`,
+    GetSearch: `${baseURL}/Company/company-name`
   },
   JobPosts: {
     POST: `${baseURL}/JobPosts`,
@@ -128,7 +129,12 @@ export const apiLinks = {
     POST:`${baseURL}/UserJobAlertCriteria`,
     GET:`${baseURL}/UserJobAlertCriteria`,
     DELETE:`${baseURL}/UserJobAlertCriteria`
+  },
+
+  GetSeekers:{
+    GET:`${baseURL}/User/JobSeekerRole`,
   }
+
 
 
 };

@@ -1,45 +1,62 @@
 import React from "react";
 import classes from "./RecommendNew.module.css";
-import { Link, NavLink, Outlet, useParams } from "react-router-dom";
-import Typography from "@mui/material/Typography";
+import {  NavLink, Outlet,
+  //  useParams 
+  } from "react-router-dom";
+// import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
-import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+// import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
 export default function RecommendNew() {
-  const { id } = useParams();
-  const JobId = Number(id);
+  // const { id } = useParams();
+  // const JobId = Number(id);
+  // const {
+  //   data: SeekerApply,
+  //   // isLoading: isSeekerLoading,
+  //   // isError: isSeekerError,
+  // } = useQuery({
+  //   queryKey: ["SeekerApply", JobId],
+  //   queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(JobId), signal }),
+  //   enabled: !!JobId,
+  // });
   const {
-    data: SeekerApply,
+    data: ListSeeker,
     // isLoading: isSeekerLoading,
     // isError: isSeekerError,
   } = useQuery({
-    queryKey: ["SeekerApply", JobId],
-    queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(JobId), signal }),
-    enabled: !!JobId,
+    queryKey: ["JobSeekerRole"],
+    queryFn: ({ signal }) => ListSeekers({ signal }),
   });
 
-  const dataSeekerApply = SeekerApply?.GetSeekers;
+  const ListSeekrData = ListSeeker?.UserProfiles;
 
-  const PassedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Passed")
-//   const RejectedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Rejected")
-//   const InterViewDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="InterviewStage")
+  console.log("metmoi", ListSeekrData);
+
+  // const dataSeekerApply = SeekerApply?.GetSeekers;
+
+  // const PassedDataSeekerApply = dataSeekerApply?.filter(
+  //   (item) => item.status === "Passed"
+  // );
+  //   const RejectedDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="Rejected")
+  //   const InterViewDataSeekerApply = dataSeekerApply?.filter((item)=> item.status==="InterviewStage")
 
   return (
     <div className={classes.main}>
       <header className={classes.header}>
         <div className={classes.main1}>
           <div className={classes.main2}>
-            <p className={classes.p}>Reactjs</p>
+            <p className={classes.p}>List Job Seeker</p>
             <div className={classes.main3}>
               <span className={classes.span}>Live</span>
             </div>
           </div>
-          <div className={classes.main4}>
+          {/* <div className={classes.main4}>
             <Link to="" className={classes.link1}>
               View Job
             </Link>
-          </div>
+          </div> */}
         </div>
-        <Typography
+        {/* <Typography
           variant="h3"
           sx={{
             fontSize: "16px",
@@ -50,7 +67,7 @@ export default function RecommendNew() {
           className={classes.main5}
         >
           Hồ Chí Minh
-        </Typography>
+        </Typography> */}
         <div className={classes.main6}>
           <nav className={classes.nav}>
             <NavLink
@@ -65,18 +82,18 @@ export default function RecommendNew() {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                    Recommend
+                      Active
                     </span>
                   </div>
                   <div className={classes.main7}>
                     <div className={classes.main8}>
-                      <span>{dataSeekerApply?.length}</span>
+                      <span>{ListSeekrData?.length}</span>
                     </div>
                   </div>
                 </>
               )}
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to="Passed"
               style={{ marginLeft: "24px" }}
               className={({ isActive }) =>
@@ -98,7 +115,7 @@ export default function RecommendNew() {
                   </div>
                 </>
               )}
-            </NavLink>
+            </NavLink> */}
             {/* <NavLink
               to="Rejected"
               style={{ marginLeft: "24px" }}
@@ -148,7 +165,7 @@ export default function RecommendNew() {
           </nav>
         </div>
       </header>
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }
