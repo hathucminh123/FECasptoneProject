@@ -2,7 +2,7 @@ import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
 interface User {
-  data: { [key: string]: string | number };
+  data: { [key: string]: string | number | undefined | null | boolean };
 }
 
 export const PutUser = async ({ data }: User) => {

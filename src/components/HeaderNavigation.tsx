@@ -9,6 +9,7 @@ import {
 import classes from "./HeaderNavigation.module.css";
 import React, { useEffect, useState } from "react";
 // import { List, Menu, Divider, Typography, MenuItem } from "@mui/material";
+import SettingsIcon from '@mui/icons-material/Settings';
 import List from "@mui/material/List";
 import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
@@ -916,6 +917,11 @@ const ProfileMenu = ({
       itemKey: "Item 5",
     },
     {
+      text: "Settings",
+      icon: SettingsIcon,
+      itemKey: "Item 6",
+    },
+    {
       text: "Sign out",
       icon: LogoutOutlinedIcon,
       itemKey: "Item 4",
@@ -940,6 +946,8 @@ const ProfileMenu = ({
       navigate("/Job-invitation");
     } else if (item === "Item 5") {
       navigate("/subscription");
+    } else if(item === "Item 6"){
+      navigate("/settings");
     }
 
     setSelectedMenu(item);

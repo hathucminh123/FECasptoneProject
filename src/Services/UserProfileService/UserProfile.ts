@@ -34,6 +34,7 @@ interface CVs {
 interface UserProfile {
   id: number;
   userName: string;
+  isLookingForJob:boolean;
   firstName: string;
   lastName: string;
   email: string;

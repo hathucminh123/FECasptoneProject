@@ -313,7 +313,7 @@ export default function HomePage() {
                   color: "#fff",
                 }}
               >
-                Suggestions for you:
+                Skills for you:
               </Typography>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
                 {uniqueArray.map((item) => (

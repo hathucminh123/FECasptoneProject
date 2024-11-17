@@ -112,6 +112,7 @@ import CVScreeningPassedApplicants from "./pages/EmployerNewUi/CVScreeningPassed
 import RootSetting from "./pages/EmployerNewUi/RootSetting";
 import Billing from "./pages/EmployerNewUi/Billing";
 import ListTalent from "./pages/EmployerNewUi/ListTalent";
+import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
   {
@@ -210,7 +211,19 @@ const router = createBrowserRouter([
 
       {
         path: "subscription",
-        element: <Subscription />,
+        element: (
+          <ProtectedRoute>
+            <Subscription />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <ProtectedRoute>
+            <Settings />
+          </ProtectedRoute>
+        ),
       },
       {
         // Protect my-jobs routes
@@ -457,7 +470,7 @@ const router = createBrowserRouter([
         path: "FindTalents",
         element: (
           <ProtectedRouteApplicants>
-            <ListTalent/>
+            <ListTalent />
           </ProtectedRouteApplicants>
         ),
 
