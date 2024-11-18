@@ -38,7 +38,7 @@ export default function ManageCV() {
     setSelectedFile(file);
   };
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: PostCVs,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["CVs"] });
@@ -174,16 +174,27 @@ export default function ManageCV() {
                         Selected file: {selectedFile.name}
                       </Typography>
                     )}
-                    {selectedFile && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleUploadClick}
-                        sx={{ marginTop: "1rem" }}
-                      >
-                        Upload CV
-                      </Button>
-                    )}
+
+                    {selectedFile &&
+                      (isPending ? (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          // onClick={handleUploadClick}
+                          sx={{ marginTop: "1rem" }}
+                        >
+                          Wait a seconds
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={handleUploadClick}
+                          sx={{ marginTop: "1rem" }}
+                        >
+                          Upload CV
+                        </Button>
+                      ))}
 
                     {/* Uploaded CVs list */}
                     {dataCVS.length > 0 && (

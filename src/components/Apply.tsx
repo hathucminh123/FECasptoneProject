@@ -50,7 +50,10 @@ export default function Apply() {
   const { mutate: postcv } = useMutation({
     mutationFn: PostCVs,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["CVs"],refetchType:'active' });
+      queryClient.invalidateQueries({
+        queryKey: ["CVs"],
+        refetchType: "active",
+      });
       message.success("CV uploaded successfully!");
     },
     onError: () => {
@@ -77,7 +80,7 @@ export default function Apply() {
   });
 
   const job = jobData?.JobPosts;
-  const [selectedCvId, setSelectedCvId] = useState<number | null>(null); 
+  const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
 
   const { data: CVdata } = useQuery({
     queryKey: ["CVs"],
@@ -90,39 +93,19 @@ export default function Apply() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1); 
+    navigate(-1);
   };
 
   const handleCVSelect = (cvId: number) => {
-    setSelectedCvId(cvId); 
+    setSelectedCvId(cvId);
   };
 
-  const { mutate } = useMutation({
-    mutationFn: PostJobPostActivity,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["JobPostActivity"],
-        refetchType: "active", // Ensure an active refetch
-      });
+  const selectedCv = dataCVS.find((item) => item.id === selectedCvId);
 
-      message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-      navigate(`/thankyou/${job?.id}`);
-    },
-
-
-
-    onError: () => {
-      message.error("Failed to Apply CV.");
-    },
-  });
-
-  const selectedCv =dataCVS.find((item) => item.id === selectedCvId)
-
-
-  const { mutate:PostCVAi } = useMutation({
+  const { mutate: PostCVAi } = useMutation({
     mutationFn: PostCVsAI,
     onSuccess: (data) => {
-console.log('ok chua ta ',data)
+      console.log("ok chua ta ", data);
       // queryClient.invalidateQueries({
       //   queryKey: ["JobPostActivity"],
       //   refetchType: "active", // Ensure an active refetch
@@ -130,16 +113,50 @@ console.log('ok chua ta ',data)
       // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
       // navigate(`/thankyou/${job?.id}`);
     },
-    
+
     onError: () => {
       message.error("Failed to Apply CV.");
     },
   });
 
-  console.log('on khong',selectedCv)
+  const { mutate } = useMutation({
+    mutationFn: PostJobPostActivity,
+    // onSuccess: () => {
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["JobPostActivity"],
+    //     refetchType: "active", // Ensure an active refetch
+    //   });
+
+    //   message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+    //   navigate(`/thankyou/${job?.id}`);
+    // },
+
+    onSuccess: async () => {
+      try {
+        await PostCVAi({
+          data: { jobPostId: job?.id, url: selectedCv?.url ?? "" },
+        });
+
+        message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+        navigate(`/thankyou/${job?.id}`);
+        queryClient.invalidateQueries({
+          queryKey: ["JobPostActivity"],
+          refetchType: "active",
+        });
+      } catch {
+        message.error("Failed to apply CV.");
+      }
+    },
+
+    onError: () => {
+      message.error("Failed to Apply CV.");
+    },
+  });
+
+  console.log("on khong", selectedCv);
   // const handleSendCvApply =async () => {
   //   if (selectedCvId && selectedCv?.url) {
- 
+
   //     const response = await fetch(selectedCv?.url);
   //     const blob = await response.blob();
 
@@ -150,7 +167,7 @@ console.log('ok chua ta ',data)
   //     PostCVAi({
   //       data: {
   //         jobPostId: job?.id,
-  //         file: file, 
+  //         file: file,
   //       },
   //     });
 
@@ -165,27 +182,26 @@ console.log('ok chua ta ',data)
   //   }
   // };
 
-
   const handleSendCvApply = async () => {
     if (selectedCvId && selectedCv?.url) {
       try {
         // Show loading indicator here if needed
         // const response = await fetch(selectedCv?.url);
         // const blob = await response.blob();
-  
+
         // // Convert Blob to File
         // const file = new File([blob], selectedCv?.name || "uploaded_file", {
         //   type: blob.type,
         // });
-  
+
         // Send file via PostCVAi
-        await PostCVAi({
-          data: {
-            jobPostId: job?.id,
-            url: selectedCv?.url,
-          },
-        });
-  
+        // await PostCVAi({
+        //   data: {
+        //     jobPostId: job?.id,
+        //     url: selectedCv?.url,
+        //   },
+        // });
+
         // Trigger mutation for further updates
         await mutate({
           data: {
@@ -193,10 +209,8 @@ console.log('ok chua ta ',data)
             cvId: selectedCvId,
           },
         });
-  
-       
+
         // message.success("CV sent successfully!");
-  
       } catch (error) {
         console.error("Error during CV submission:", error);
         message.error("Failed to send CV. Please try again.");
@@ -205,27 +219,26 @@ console.log('ok chua ta ',data)
       message.warning("Please select a CV to apply.");
     }
   };
-  
+
   // const handleScoreAi = async () => {
   //   if (selectedCvId && selectedCv?.url) {
   //     try {
   //       // Fetch the file from the Firebase URL
   //       const response = await fetch(selectedCv?.url);
   //       const blob = await response.blob();
-  
+
   //       // Convert the Blob into a File object
   //       const file = new File([blob], selectedCv?.name || "uploaded_file", {
   //         type: blob.type,
   //       });
-  
-     
+
   //        PostCVAi({
   //         data: {
   //           jobPostId: job?.id,
-  //           file: file, 
+  //           file: file,
   //         },
   //       });
-  
+
   //       message.success("CV uploaded and processed successfully.");
   //     } catch (error) {
   //       // console.error("Error processing the selected CV:", error);
@@ -235,7 +248,6 @@ console.log('ok chua ta ',data)
   //     message.warning("Please select a CV to apply.");
   //   }
   // };
-  
 
   return (
     <div className={classes.main}>

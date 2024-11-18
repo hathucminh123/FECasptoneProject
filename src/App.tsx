@@ -102,7 +102,7 @@ import Password from "./pages/EmployerNewUi/Password";
 import NotificationSystemNew from "./pages/EmployerNewUi/NotificationSystemNew";
 import RecommendNew from "./pages/EmployerNewUi/RecommendNew";
 import RecommendTalents from "./pages/EmployerNewUi/RecommendTalents";
-import PassiveTalents from "./pages/EmployerNewUi/PassiveTalents";
+// import PassiveTalents from "./pages/EmployerNewUi/PassiveTalents";
 import PaymentCallback from "./components/NewUiEmployer/PaymentCallBack";
 import PaymentSuccess from "./components/NewUiEmployer/PaymentSuccess";
 import Subscription from "./pages/Subscription";
@@ -476,17 +476,18 @@ const router = createBrowserRouter([
 
         children: [
           {
-            path: "talent",
+            path: "talent/:id",
             element: <RecommendNew />,
             children: [
               {
                 index: true,
                 element: <RecommendTalents />,
               },
-              {
-                path: "Passed",
-                element: <PassiveTalents />,
-              },
+              
+              // {
+              //   path: "Passed",
+              //   element: <PassiveTalents />,
+              // },
               // {
               //   path: "Rejected",
               //   element: <RejectedApplicants />,

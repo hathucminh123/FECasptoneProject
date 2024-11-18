@@ -4,17 +4,24 @@ import { motion } from "framer-motion";
 import classes from "./ModalSendEmail.module.css";
 
 import Typography from "@mui/material/Typography";
-import PercentileChart from "./PercentileChart";
-import { NavLink } from "react-router-dom";
+
+import { NavLink, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+
 import moment from "moment";
 import { CustomEmail } from "../../Services/CustomEmail/CustomEmail";
 import { message } from "antd";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { AddUserJobPostActivity } from "../../Services/JobsPostActivity/AddUser";
+import { queryClient } from "../../Services/mainService";
+import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
+import { PostCVsAI } from "../../Services/CVService/PostCVAI";
 interface EducationDetail {
   id: number;
-  name: string;
   institutionName: string;
   degree: string;
   fieldOfStudy: string;
@@ -22,6 +29,7 @@ interface EducationDetail {
   endDate: string;
   gpa: number;
 }
+
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -31,11 +39,12 @@ interface ExperienceDetail {
   responsibilities: string;
   achievements: string;
 }
+
 interface SkillSet {
   id: number;
   name: string;
-  shorthand: string;
-  description: string; // HTML content as a string
+  shorthand: string | null;
+  description: string | null;
 }
 
 interface CVs {
@@ -43,9 +52,9 @@ interface CVs {
   url: string;
   name: string;
 }
+
 interface UserProfile {
   id: number;
-  userName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -57,16 +66,26 @@ interface UserProfile {
 }
 interface props {
   onClose?: () => void;
-  profile?: UserProfile | null;
+  profile?: UserProfile | undefined | null;
   id?: number | null;
   idJob?: string;
 }
-export default function ModalSendEmail({ onClose, profile, id, idJob }: props) {
+export default function ModalSendEmail({ onClose, profile, idJob }: props) {
   const [emailForm, setEmailForm] = useState<string>("");
   const companyId = localStorage.getItem("CompanyId");
   const [openExp, setOpenExp] = useState<boolean>(false);
+  const [searchParams] = useSearchParams();
+  const isEmail = searchParams.get("mode") === "Email";
+  console.log("email", isEmail);
+  const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
+  const [selectedCvUrl, setSelectedCvUrl] = useState<string | null>(null);
+  const handleCVSelect = (cv: CVs) => {
+    setSelectedCvId(cv.id);
+    setSelectedCvUrl(cv.url);
+  };
+
   const {
-    data: CompanyDa,    
+    data: CompanyDa,
     // isLoading,
     // error,
   } = useQuery({
@@ -79,18 +98,26 @@ export default function ModalSendEmail({ onClose, profile, id, idJob }: props) {
   // Dữ liệu công ty (nếu có)
   const companyDataa = CompanyDa?.Companies;
 
-  const {
-    data: SeekerApply,
-    // isLoading: isSeekerLoading,
-    // isError: isSeekerError,
-  } = useQuery({
-    queryKey: ["SeekerApply", idJob],
-    queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(idJob), signal }),
+  // const {
+  //   data: SeekerApply,
+  //   // isLoading: isSeekerLoading,
+  //   // isError: isSeekerError,
+  // } = useQuery({
+  //   queryKey: ["SeekerApply", idJob],
+  //   queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(idJob), signal }),
+  //   enabled: !!idJob,
+  // });
+  // const dataSeekerApply = SeekerApply?.GetSeekers;
+
+  const { data: jobData } = useQuery({
+    queryKey: ["Job-details", idJob],
+    queryFn: ({ signal }) => GetJobPostById({ id: Number(idJob), signal }),
     enabled: !!idJob,
   });
-  const dataSeekerApply = SeekerApply?.GetSeekers;
 
-  const profileResult = dataSeekerApply?.find((item) => item.id === id);
+  const job = jobData?.JobPosts;
+
+  // const profileResult = dataSeekerApply?.find((item) => item.id === id);
 
   const modalRoot = document.getElementById("modalScore");
   // const data = {
@@ -135,6 +162,101 @@ export default function ModalSendEmail({ onClose, profile, id, idJob }: props) {
         reciveUser: profile?.email,
       },
     });
+  };
+
+  const { mutate: PostCVAi } = useMutation({
+    mutationFn: PostCVsAI,
+    onSuccess: (data) => {
+      console.log("ok chua ta ", data);
+      // queryClient.invalidateQueries({
+      //   queryKey: ["JobPostActivity"],
+      //   refetchType: "active", // Ensure an active refetch
+      // });
+      // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+      // navigate(`/thankyou/${job?.id}`);
+    },
+
+    onError: () => {
+      message.error("Failed to Apply CV.");
+    },
+  });
+
+  const { mutate: Add, isPending: Adding } = useMutation({
+    mutationFn: AddUserJobPostActivity,
+    onSuccess: async () => {
+      try {
+        await PostCVAi({
+          data: { jobPostId: job?.id, url: selectedCvUrl ?? "" },
+        });
+
+        message.success(
+          `Add user to InterView at ${job?.jobTitle} successfully!`
+        );
+        queryClient.invalidateQueries({
+          queryKey: ["JobPostActivity"],
+          refetchType: "active",
+        });
+      } catch {
+        message.error("Failed to apply CV after adding user to interview.");
+      }
+    },
+    // onSuccess: () => {
+
+    //   PostCVAi({
+    //     data: {
+    //       jobPostId: job?.id,
+    //       url: selectedCvUrl,
+    //     },
+    //   });
+
+    //   message.success(
+    //     `Add user to InterView at  ${job?.jobTitle} successfully!`
+    //   );
+    // },
+
+    onError: () => {
+      message.error("Failed to Add User InterView.");
+    },
+  });
+
+  const handleSendCvApply = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedCvId && selectedCvUrl) {
+      try {
+        // Show loading indicator here if needed
+        // const response = await fetch(selectedCv?.url);
+        // const blob = await response.blob();
+
+        // // Convert Blob to File
+        // const file = new File([blob], selectedCv?.name || "uploaded_file", {
+        //   type: blob.type,
+        // });
+
+        // Send file via PostCVAi
+        // await PostCVAi({
+        //   data: {
+        //     jobPostId: job?.id,
+        //     url: selectedCvUrl,
+        //   },
+        // });
+
+        // Trigger mutation for further updates
+        await Add({
+          data: {
+            jobPostId: job?.id,
+            cvId: selectedCvId,
+            userId: profile?.id,
+          },
+        });
+
+        // message.success("CV sent successfully!");
+      } catch (error) {
+        console.error("Error during CV submission:", error);
+        message.error("Failed to send CV. Please try again.");
+      }
+    } else {
+      message.warning("Please select a CV to apply.");
+    }
   };
 
   if (!modalRoot) {
@@ -528,58 +650,146 @@ export default function ModalSendEmail({ onClose, profile, id, idJob }: props) {
                   <div className={classes.main35}>
                     <nav className={classes.nav}>
                       <NavLink
-                        to=""
-                        className={({ isActive }) =>
-                          isActive ? classes.active : undefined
-                        }
+                        to={`?mode=Email`}
+                        className={isEmail ? classes.active : undefined}
                         end
                       >
                         <div className={classes.main36}>
                           <span>Send Email</span>
                         </div>
                       </NavLink>
+                      <NavLink
+                        to={`?mode=CVs`}
+                        // className={({ isActive }) =>
+                        //   isActive ? classes.active : undefined
+                        // }
+                        className={!isEmail ? classes.active : undefined}
+                        style={{ marginLeft: "24px" }}
+                        end
+                      >
+                        <div className={classes.main36}>
+                          <span>View CVS</span>
+                        </div>
+                      </NavLink>
                     </nav>
-                    <form
-                      action=""
-                      className={classes.form}
-                      onSubmit={handleSendEmail}
-                    >
-                      <div className={classes.main37}>
-                        <div className={classes.main38}>
-                          <div className={classes.main39}>
-                            <div className={classes.main40}>
-                              <button className={classes.main41}>
-                                Saved Templates ✦
-                              </button>
+                    {isEmail ? (
+                      <form
+                        action=""
+                        className={classes.form}
+                        onSubmit={handleSendEmail}
+                      >
+                        <div className={classes.main37}>
+                          <div className={classes.main38}>
+                            <div className={classes.main39}>
+                              <div className={classes.main40}>
+                                <button className={classes.main41}>
+                                  Saved Templates ✦
+                                </button>
+                              </div>
+                            </div>
+                            <div className={classes.main42}></div>
+                          </div>
+                          <div className={classes.main50}>
+                            <div className={classes.main51}>
+                              <textarea
+                                name=""
+                                id=""
+                                className={classes.main52}
+                                placeholder="Start writing your Email...."
+                                onChange={(e) => setEmailForm(e.target.value)}
+                                value={emailForm}
+                              ></textarea>
                             </div>
                           </div>
-                          <div className={classes.main42}></div>
                         </div>
-                        <div className={classes.main50}>
-                          <div className={classes.main51}>
-                            <textarea
-                              name=""
-                              id=""
-                              className={classes.main52}
-                              placeholder="Start writing your Email...."
-                              onChange={(e) => setEmailForm(e.target.value)}
-                              value={emailForm}
-                            ></textarea>
+                        <div className={classes.main53}>
+                          {isPending ? (
+                            <button className={classes.main54}>
+                              Wait a seconds
+                            </button>
+                          ) : (
+                            <button type="submit" className={classes.main54}>
+                              Send Request Email
+                            </button>
+                          )}
+                        </div>
+                      </form>
+                    ) : (
+                      <form
+                        action=""
+                        className={classes.form}
+                        onSubmit={handleSendCvApply}
+                      >
+                        {profile?.cvs.map((cv) => (
+                          <div
+                            key={cv.id}
+                            className={`${
+                              selectedCvId === cv.id
+                                ? classes.formupload1
+                                : classes.formupload
+                            }`}
+                          >
+                            <div className={classes.check}>
+                              <FormGroup>
+                                <FormControlLabel
+                                  control={
+                                    <Checkbox
+                                      checked={selectedCvId === cv.id}
+                                      onChange={() => handleCVSelect(cv)}
+                                      name="form"
+                                    />
+                                  }
+                                  label="Use This CV"
+                                />
+                              </FormGroup>
+                            </div>
+                            <div className={classes.file}>
+                              <div className={classes.upload5}>
+                                <div className={classes.filename}>
+                                  <a
+                                    href={cv.url}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "blue",
+                                    }}
+                                    className={classes.a}
+                                  >
+                                    {cv.name}
+                                  </a>
+                                  <a
+                                    href={cv.url}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "blue",
+                                    }}
+                                    className={classes.a}
+                                  >
+                                    <VisibilityIcon style={{ color: "blue" }} />
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
                           </div>
+                        ))}
+                        <div className={classes.main53}>
+                          {Adding ? (
+                            <button  className={classes.main54}>
+                              Wait a seconds
+                            </button>
+                          ) : (
+                            <button type="submit" className={classes.main54}>
+                              Add To Interview
+                            </button>
+                          )}
                         </div>
-                      </div>
-                      <div className={classes.main53}>
-                        {isPending ? (
-                          <button className={classes.main54}>
-                            Wait a seconds
-                          </button>
-                        ) : (
-                          <button type="submit" className={classes.main54}>
-                            Send Request Email
-                          </button>
-                        )}
-                      </div>
-                    </form>
+                      </form>
+                    )}
                   </div>
                 </div>
               </div>

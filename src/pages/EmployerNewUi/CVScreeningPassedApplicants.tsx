@@ -438,12 +438,20 @@ export default function CVScreeningPassedApplicants() {
                           onClick={() => handleOpenMdalScore(data.id, profile)}
                         >
                           {/* <span className={classes.spanicon}> */}
-                          <GradientCircularProgress
+                          {/* <GradientCircularProgress
                             percentage={
                               data.analyzedResult.matchDetails.scores
                                 .overallMatch
                             }
-                          />
+                          /> */}
+                          {data.analyzedResult.matchDetails && (
+                            <GradientCircularProgress
+                              percentage={
+                                data.analyzedResult.matchDetails.scores
+                                  .overallMatch
+                              }
+                            />
+                          )}
 
                           {/* </span> */}
                         </button>

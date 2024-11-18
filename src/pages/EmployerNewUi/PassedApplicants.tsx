@@ -429,7 +429,15 @@ export default function PassedApplicants() {
                               handleOpenMdalScore(data.id, profile)
                             }>
                           {/* <span className={classes.spanicon}> */}
-                             <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/>
+                             {/* <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/> */}
+                             {data.analyzedResult.matchDetails && (
+                            <GradientCircularProgress
+                              percentage={
+                                data.analyzedResult.matchDetails.scores
+                                  .overallMatch
+                              }
+                            />
+                          )}
                           
                           {/* </span> */}
                         </button>

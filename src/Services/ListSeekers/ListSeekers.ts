@@ -1,8 +1,8 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
+
 interface EducationDetail {
   id: number;
-  name: string;
   institutionName: string;
   degree: string;
   fieldOfStudy: string;
@@ -10,6 +10,7 @@ interface EducationDetail {
   endDate: string;
   gpa: number;
 }
+
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -19,11 +20,12 @@ interface ExperienceDetail {
   responsibilities: string;
   achievements: string;
 }
+
 interface SkillSet {
   id: number;
   name: string;
-  shorthand: string;
-  description: string; // HTML content as a string
+  shorthand: string | null;
+  description: string | null;
 }
 
 interface CVs {
@@ -31,9 +33,9 @@ interface CVs {
   url: string;
   name: string;
 }
+
 interface UserProfile {
   id: number;
-  userName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -48,35 +50,46 @@ interface FetchError extends Error {
   code?: number;
   info?: Record<string, unknown>;
 }
-interface UserId {
+
+interface ListSeekersParams {
+  pageIndex?: number;
+  pageSize?: number;
   signal?: AbortSignal;
 }
 
+interface PaginatedResponse<T> {
+  pageIndex?: number;
+  pageSize?: number;
+  totalCount: number;
+  totalPages: number;
+  items: T[];
+}
+
 export const ListSeekers = async ({
+  pageIndex,
+  pageSize,
   signal,
-}: UserId): Promise<{ UserProfiles: UserProfile[] }> => {
+}: ListSeekersParams): Promise<PaginatedResponse<UserProfile>> => {
   try {
     const response = await httpClient.get({
       url: `${apiLinks.GetSeekers.GET}`,
-      //   params: { id },
-      signal: signal,
+      params: { pageIndex, pageSize },
+      signal,
     });
 
     if (response.status !== 200) {
       const error: FetchError = new Error(
-        "An error occurred while fetching Companies"
+        "An error occurred while fetching seekers"
       );
       error.code = response.status;
       error.info = response.data as Record<string, unknown>;
       throw error;
     }
 
-    const UserProfile = response.data;
-    return {
-      UserProfiles: UserProfile.result as UserProfile[],
-    };
+    const result = response.data.result as PaginatedResponse<UserProfile>;
+    return result;
   } catch (error) {
-    console.error("Fetching companies failed", error);
+    console.error("Fetching seekers failed", error);
     throw error;
   }
 };

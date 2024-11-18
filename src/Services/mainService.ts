@@ -67,7 +67,8 @@ export const apiLinks = {
     PUT: `${baseURL}/JobPostActivity`,
     GetNotifications: `${baseURL}/JobPostActivity/notifications`,
     ReadNotification: `${baseURL}/JobPostActivity/notification/read?notificationId=`,
-    ReadAllNotifications: `${baseURL}/JobPostActivity/notification/read-all`
+    ReadAllNotifications: `${baseURL}/JobPostActivity/notification/read-all`,
+    AddUser:`${baseURL}/JobPostActivity/Add-User-To-JobPostActivity`,
   },
   JobType: {
     POST: `${baseURL}/JobType`,
@@ -135,7 +136,7 @@ export const apiLinks = {
     GET:`${baseURL}/User/JobSeekerRole`,
   }
 
-
+ 
 
 };
 

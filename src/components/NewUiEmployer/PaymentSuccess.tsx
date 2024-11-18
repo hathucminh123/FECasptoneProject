@@ -11,6 +11,8 @@ export default function PaymentSuccess() {
   const queryParams = new URLSearchParams(location.search);
   const status = queryParams.get("status");
   // const IsPremium = localStorage.getItem("IsPremium");
+
+  
   return (
     <div className={classes.main}>
       <div className={classes.main1}>

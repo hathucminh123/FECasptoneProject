@@ -273,7 +273,7 @@ export default function HeaderEmployerSystem({
           <NavLink
             to={
               companyId && companyId !== "null"
-                ? `/EmployerJob/FindTalents/talent`
+                ? `/EmployerJob/FindTalents/talent/${selectJobId}`
                 : "/EmployerJob"
             }
             className={classes.link2}

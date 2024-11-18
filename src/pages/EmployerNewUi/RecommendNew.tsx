@@ -25,10 +25,10 @@ export default function RecommendNew() {
     // isError: isSeekerError,
   } = useQuery({
     queryKey: ["JobSeekerRole"],
-    queryFn: ({ signal }) => ListSeekers({ signal }),
+    queryFn: ({ signal }) => ListSeekers({ signal:signal }),
   });
 
-  const ListSeekrData = ListSeeker?.UserProfiles;
+  const ListSeekrData = ListSeeker?.items;
 
   console.log("metmoi", ListSeekrData);
 

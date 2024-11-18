@@ -451,7 +451,13 @@ export default function JobDetails() {
           <div className={classes.containerLeft} ref={containerLeftRef}>
             <div className={classes.apply} ref={applyRef}>
               <div className={classes.content}>
-                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <Typography
                     variant="h4"
                     gutterBottom
@@ -473,12 +479,14 @@ export default function JobDetails() {
                         onClick={() => setOpenModalScore(!openModalScore)}
                       >
                         {/* <span className={classes.spanicon}> */}
-                        <GradientCircularProgress
-                          percentage={
-                            feedBackUserJob.analyzedResult.matchDetails.scores
-                              .overallMatch
-                          }
-                        />
+                        {feedBackUserJob.analyzedResult.matchDetails && (
+                          <GradientCircularProgress
+                            percentage={
+                              feedBackUserJob.analyzedResult.matchDetails.scores
+                                .overallMatch
+                            }
+                          />
+                        )}
 
                         {/* </span> */}
                       </button>

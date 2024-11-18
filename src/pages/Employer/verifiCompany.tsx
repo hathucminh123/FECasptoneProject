@@ -269,7 +269,7 @@ export default function VerifiCompany() {
       });
 
       // navigate(redirectPath);
-      window.location.reload();
+      // window.location.reload();
     },
     onError: () => {
       message.error("Failed to Choose the Company");

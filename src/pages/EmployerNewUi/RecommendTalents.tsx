@@ -1,17 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {  useState } from "react";
 import classes from "./RecommendTalents.module.css";
 import Typography from "@mui/material/Typography";
-import CloseIcon from "@mui/icons-material/Close";
 
-import EditIcon from "@mui/icons-material/Edit";
-import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { useParams } from "react-router-dom";
-import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+
 import { useQuery } from "@tanstack/react-query";
-import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
+import Pagination from "@mui/material/Pagination";
+
 import moment from "moment";
 import CheckIcon from "@mui/icons-material/Check";
-import CommentModal from "../../components/NewUiEmployer/ModalComment";
+
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
 import { AnimatePresence } from "framer-motion";
 import ModalSendEmail from "../../components/NewUiEmployer/ModalSendEmail";
@@ -24,7 +22,6 @@ import ModalSendEmail from "../../components/NewUiEmployer/ModalSendEmail";
 
 interface EducationDetail {
   id: number;
-  name: string;
   institutionName: string;
   degree: string;
   fieldOfStudy: string;
@@ -32,6 +29,7 @@ interface EducationDetail {
   endDate: string;
   gpa: number;
 }
+
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -41,11 +39,12 @@ interface ExperienceDetail {
   responsibilities: string;
   achievements: string;
 }
+
 interface SkillSet {
   id: number;
   name: string;
-  shorthand: string;
-  description: string; // HTML content as a string
+  shorthand: string | null;
+  description: string | null;
 }
 
 interface CVs {
@@ -53,9 +52,9 @@ interface CVs {
   url: string;
   name: string;
 }
+
 interface UserProfile {
   id: number;
-  userName: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -67,70 +66,22 @@ interface UserProfile {
 }
 export default function RecommendTalents() {
   const { id } = useParams();
-  const JobId = Number(id);
+  // const JobId = Number(id);
   const [openExp, setOpenExp] = useState<boolean>(false);
-  const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
-  const [jobProfileCounts, setJobProfileCounts] = useState<
-    Record<number, UserProfile>
-  >({});
-
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
-    number | null
-  >(null);
+  
+  
+ 
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
 
-  const handleOpenModal = (id: number) => {
-    setOpenModal(true);
-    setSelectedIdJobPostActivity(id);
-  };
+ 
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-  };
-  console.log("kkk", jobProfileCounts);
-  const {
-    data: SeekerApply,
-    // isLoading: isSeekerLoading,
-    // isError: isSeekerError,
-  } = useQuery({
-    queryKey: ["SeekerApply", JobId],
-    queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(JobId), signal }),
-    enabled: !!JobId,
-  });
 
-  const dataSeekerApply = SeekerApply?.GetSeekers;
 
-  const {
-    data: ListSeeker,
-    // isLoading: isSeekerLoading,
-    // isError: isSeekerError,
-  } = useQuery({
-    queryKey: ["JobSeekerRole"],
-    queryFn: ({ signal }) => ListSeekers({ signal }),
-  });
 
-  const ListSeekrData = ListSeeker?.UserProfiles;
-  const fetchProfileApply = useCallback(async () => {
-    if (dataSeekerApply) {
-      setIsFetchingProfile(true);
-      const ProfileSeeker: Record<number, UserProfile> = {};
-      await Promise.all(
-        dataSeekerApply.map(async (item) => {
-          const seekerData = await GetUserProfile({ id: item.id });
-          const data = seekerData?.UserProfiles || {};
-          ProfileSeeker[item.id] = data;
-        })
-      );
-      setJobProfileCounts(ProfileSeeker);
-      setIsFetchingProfile(false);
-    }
-  }, [dataSeekerApply]);
 
-  useEffect(() => {
-    fetchProfileApply();
-  }, [fetchProfileApply]);
+  
+
 
   //   const { mutate } = useMutation({
   //     mutationFn: PutJobPostActivityStatus,
@@ -182,14 +133,32 @@ export default function RecommendTalents() {
     setProfileScore(profile);
     // setIdApplicants(id);
   };
+  const [pageIndex, setPageIndex] = useState(1);
+  const pageSize = 5;
+
+  const { data: ListSeeker, isLoading, isError } = useQuery({
+    queryKey: ["JobSeekerRole", pageIndex],
+    queryFn: ({ signal }) => ListSeekers({ signal, pageIndex, pageSize }),
+  });
+
+  const ListSeekrData = ListSeeker?.items ?? [];
+  const totalPages = Math.ceil((ListSeeker?.totalCount || 0) / pageSize); // Calculate total pages
+
+  const handlePageChange = (_event: React.ChangeEvent<unknown>, value: number) => {
+    setPageIndex(value);
+  };
+  if (isLoading) {
+    return <div className={classes.loading}>Loading talents...</div>;
+  }
+
+  if (isError) {
+    return <div className={classes.error}>Error loading talents.</div>;
+  }
+
 
   return (
     <div className={classes.main}>
-      <CommentModal
-        open={openModal}
-        onClose={handleCloseModal}
-        selectedIdJobPostActivity={selectedIdJobPostActivity}
-      />
+    
       <AnimatePresence>
         {openModalScore && (
           <ModalSendEmail
@@ -200,6 +169,7 @@ export default function RecommendTalents() {
           />
         )}
       </AnimatePresence>
+      
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
@@ -456,7 +426,18 @@ export default function RecommendTalents() {
               );
             })}
           </div>
+          <div className={classes.pagination}>
+            <Pagination
+              count={totalPages} // Total number of pages
+              page={pageIndex} // Current page
+              onChange={handlePageChange} // Update state when page changes
+              color="primary"
+              shape="rounded"
+            />
+          </div>
+          
         </div>
+        
       </div>
     </div>
   );

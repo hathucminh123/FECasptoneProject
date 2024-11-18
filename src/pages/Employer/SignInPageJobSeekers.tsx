@@ -36,6 +36,7 @@ export default function SignInPageJobSeekers() {
   // const navigate = useNavigate();
   // Error state management for registration form
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errorslogin, setErrorslogin] = useState<{ [key: string]: string }>({});
 // const [errorsMessage,setErrorsMessage]=useState<string>("")
   const location = useLocation();
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export default function SignInPageJobSeekers() {
   }, [alertMessage]);
 
   const [formData, setFormData] = useState({
-    userName: "",
+    // userName: "",
     email: "",
     fistName: "",
     lastName: "",
@@ -75,7 +76,7 @@ export default function SignInPageJobSeekers() {
     onSuccess: (data) => {
       // queryClient.invalidateQueries({ queryKey: ["Jobs"] });
       setFormData({
-        userName: "",
+        // userName: "",
         email: "",
         fistName: "",
         lastName: "",
@@ -196,7 +197,7 @@ export default function SignInPageJobSeekers() {
     const newErrors: { [key: string]: string } = {};
     if (!islogin.userEmail) newErrors.userEmail = "Email is required";
     if (!islogin.password) newErrors.password = "Password is required";
-    setErrors(newErrors);
+    setErrorslogin(newErrors);
 
     if (Object.keys(newErrors).length === 0) {
       // console.log("Form Submitted", formData);
@@ -215,7 +216,7 @@ export default function SignInPageJobSeekers() {
     if (!formData.fistName) newErrors.fistName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.password) newErrors.password = "Password is required";
-    if (formData.password.length < 6)
+    if (formData.password.length <7)
       newErrors.password = "Password must be at least 6 characters";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords must match";
@@ -555,8 +556,8 @@ export default function SignInPageJobSeekers() {
                             variant="outlined"
                             value={islogin.userEmail}
                             onChange={handleLoginChange}
-                            error={Boolean(errors.userEmail)}
-                            helperText={errors.userEmail}
+                            error={Boolean(errorslogin.userEmail)}
+                            helperText={errorslogin.userEmail}
                             sx={{
                               flex: 1,
                               "& .MuiOutlinedInput-root": {
@@ -591,8 +592,8 @@ export default function SignInPageJobSeekers() {
                             required
                             value={islogin.password}
                             onChange={handleLoginChange}
-                            error={Boolean(errors.password)}
-                            helperText={errors.password}
+                            error={Boolean(errorslogin.password)}
+                            helperText={errorslogin.password}
                             autoComplete="new-password"
                             variant="outlined"
                             sx={{

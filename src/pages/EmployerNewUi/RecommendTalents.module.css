@@ -633,3 +633,14 @@
       border-width: 0;
       border-style: solid;
   }
+
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+
+
+  

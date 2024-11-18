@@ -109,7 +109,9 @@ export default function InterViewApplicants() {
   // const dataSeekerApply = SeekerApply?.GetSeekers;
   const PendingDataSeekerApply = useMemo(() => {
     return (
-      SeekerApply?.GetSeekers?.filter((item) => item.status === "InterviewStage") || []
+      SeekerApply?.GetSeekers?.filter(
+        (item) => item.status === "InterviewStage"
+      ) || []
     );
   }, [SeekerApply]);
 
@@ -187,8 +189,10 @@ export default function InterViewApplicants() {
   //   return `${(percentage / 100) * circumference} ${circumference}`;
   // };
 
-  if(PendingDataSeekerApply.length === 0){
-    return <NoJobApplicants text="There are no applicants to Interview  yet." />
+  if (PendingDataSeekerApply.length === 0) {
+    return (
+      <NoJobApplicants text="There are no applicants to Interview  yet." />
+    );
   }
 
   return (
@@ -246,7 +250,11 @@ export default function InterViewApplicants() {
                         </div>
                       </div>
                       <div className={classes.main9}>
-                        <button type="button" className={classes.button} style={{marginRight:'50px'}}>
+                        <button
+                          type="button"
+                          className={classes.button}
+                          style={{ marginRight: "50px" }}
+                        >
                           <span>
                             {" "}
                             {data.status} {" ✦"}
@@ -398,7 +406,7 @@ export default function InterViewApplicants() {
                           </div>
                         </div>
 
-                        <div className={classes.main28} >
+                        <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
                             <div className={classes.main29}>
                               <span>{skill.name}</span>
@@ -407,7 +415,7 @@ export default function InterViewApplicants() {
                         </div>
                       </div>
                     </div>
-                    <div className={classes.main33}  style={{ top: 175}}>
+                    <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button
                           type="button"
@@ -422,14 +430,23 @@ export default function InterViewApplicants() {
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 0}}>
+                    <div className={classes.main33} style={{ top: 0 }}>
                       <div>
-                        <button type="button" className={classes.button6}    onClick={() =>
-                              handleOpenMdalScore(data.id, profile)
-                            }>
+                        <button
+                          type="button"
+                          className={classes.button6}
+                          onClick={() => handleOpenMdalScore(data.id, profile)}
+                        >
                           {/* <span className={classes.spanicon}> */}
-                             <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/>
-                          
+                          {data.analyzedResult.matchDetails && (
+                            <GradientCircularProgress
+                              percentage={
+                                data.analyzedResult.matchDetails.scores
+                                  .overallMatch
+                              }
+                            />
+                          )}
+
                           {/* </span> */}
                         </button>
                       </div>
@@ -480,7 +497,6 @@ export default function InterViewApplicants() {
                             <CheckIcon />
                             <span>Pass</span>
                           </button>
-                        
                         </div>
                       </div>
                     </div>
