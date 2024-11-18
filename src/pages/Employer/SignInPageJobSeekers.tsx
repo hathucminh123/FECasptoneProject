@@ -194,7 +194,7 @@ export default function SignInPageJobSeekers() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: string } = {};
-    if (!islogin.userEmail) newErrors.userEmail = "Username is required";
+    if (!islogin.userEmail) newErrors.userEmail = "Email is required";
     if (!islogin.password) newErrors.password = "Password is required";
     setErrors(newErrors);
 
@@ -210,7 +210,7 @@ export default function SignInPageJobSeekers() {
     // Basic validation for registration form
     const newErrors: { [key: string]: string } = {};
 
-    if (!formData.userName) newErrors.userName = "Username is required";
+    // if (!formData.userName) newErrors.userName = "Username is required";
     if (!formData.email) newErrors.email = "Email is required";
     if (!formData.fistName) newErrors.fistName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
@@ -681,7 +681,7 @@ export default function SignInPageJobSeekers() {
                     >
                       Login Information
                     </p>
-                    <div className={classes.form10}>
+                    {/* <div className={classes.form10}>
                       <label htmlFor="userName" className={classes.label}>
                         Username
                       </label>
@@ -699,7 +699,7 @@ export default function SignInPageJobSeekers() {
                         helperText={errors.userName}
                         sx={{ width: "100%" }}
                       />
-                    </div>
+                    </div> */}
                     <div className={classes.form10}>
                       <label htmlFor="email" className={classes.label}>
                         Email

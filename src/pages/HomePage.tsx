@@ -80,12 +80,12 @@ export default function HomePage() {
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
-            text: text,
+            text: text || "",
             location: location,
           },
         });
       } else {
-        navigate("/it_jobs", { state: { text: text, location: location ,jobSearch:[]} });
+        navigate("/it_jobs", { state: { text: text||"", location: location ,jobSearch:[]} });
       }
 
       queryClient.invalidateQueries({

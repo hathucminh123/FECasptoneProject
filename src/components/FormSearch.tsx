@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -10,9 +10,11 @@ import {
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
-// import { useAppDispatch } from "../redux/hooks/hooks";
-// import { filter } from "../redux/slices/searchSlice";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+import { SearchCompany } from "../Services/CompanyService/SearchCompany";
+import classes from "./FormSearch.module.css";
 
 interface JobType {
   id: number;
@@ -49,7 +51,7 @@ interface FormSearchProps {
   onClick: () => void;
   location: string;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
-  isPending?: unknown;
+  isPending?: boolean;
 }
 
 export default function FormSearch({
@@ -61,16 +63,88 @@ export default function FormSearch({
   isPending,
 }: FormSearchProps) {
   const locationPass = useLocation();
+  const navigate = useNavigate();
+  const [hovered, setHovered] = useState<null | number>(null);
+
   const locationText = locationPass.state?.textt || "";
 
-  console.log("city", location);
-  // const dispatch = useAppDispatch();
+  const { data: Company } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal }),
+    staleTime: 5000,
+  });
 
-  // useEffect(() => {
-  //   if (location || text) {
-  //     dispatch(filter({ location, text }));
-  //   }
-  // }, [location, text, dispatch]);
+  const Companiesdata = Company?.Companies;
+
+  // Filtered companies based on the input text
+  const filterCompany =
+    text.trim() !== ""
+      ? Companiesdata?.filter((name) =>
+          name.companyName.toLowerCase().includes(text.toLowerCase())
+        )
+      : [];
+
+  const handleMouseEnter = (id: number) => setHovered(id);
+  const handleMouseLeave = () => setHovered(null);
+
+  const handleSearchCompany = async () => {
+    try {
+      // Normalize the input text
+      const normalizedText = (text || "").trim().toLowerCase();
+
+      const matchingCompany = filterCompany?.find(
+        (item) => item.companyName.trim().toLowerCase() === normalizedText
+      );
+
+      if (matchingCompany) {
+        navigate(`/company/detail/${matchingCompany.id}`);
+      } else {
+        // Navigate to the job search page if no exact match is found
+        navigate("/it_jobs", { state: { textt: text } });
+      }
+    } catch (error) {
+      console.error("Error during company search:", error);
+    }
+  };
+
+  const handleSelect = async (name: string) => {
+    setText(name);
+    try {
+      const companyData = await SearchCompany({ name });
+      if (companyData?.Companies) {
+        navigate(`/company/detail/${companyData.Companies.id}`);
+      } else {
+        navigate("/it_jobs", { state: { textt: text } });
+      }
+    } catch (error) {
+      console.error("Error during company search:", error);
+    }
+  };
+
+  const handleChangeLocation = (event: SelectChangeEvent) =>
+    setLocation(event.target.value as string);
+
+  const handleText = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setText(e.target.value || "");
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+
+     const normalizedText = (text || "").trim().toLowerCase();
+
+      const matchingCompany = filterCompany?.find(
+        (item) => item.companyName.trim().toLowerCase() === normalizedText
+      );
+
+      if (matchingCompany) {
+        handleSearchCompany();
+      } else {
+        onClick();
+      }
+    }
+  };
+
   useEffect(() => {
     const allowedLocations = [
       "All",
@@ -85,25 +159,10 @@ export default function FormSearch({
     if (allowedLocations.includes(locationText)) {
       setLocation(locationText);
     } else {
-      setText(locationText);
+      setText(locationText? locationText :text);
       setLocation("All");
     }
-  }, [locationText, setLocation, setText]);
-
-  const handleChangeLocation = (event: SelectChangeEvent) => {
-    setLocation(event.target.value as string);
-  };
-
-  const handleText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setText(e.target.value);
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      onClick();
-    }
-  };
+  }, [locationText, setLocation, setText,text]);
 
   return (
     <Box sx={{ display: "block", marginTop: "0em", unicodeBidi: "isolate" }}>
@@ -129,92 +188,98 @@ export default function FormSearch({
             onChange={handleChangeLocation}
             sx={{ background: "white" }}
           >
-            <MenuItem value="All">All cities</MenuItem>
-            <MenuItem value="HO CHI MINH">Hồ Chí Minh</MenuItem>
-            <MenuItem value="HA NOI">Hà Nội</MenuItem>
-            <MenuItem value="DA NANG">Đà Nẵng</MenuItem>
-            <MenuItem value="HAI PHONG">Hải Phòng</MenuItem>
-            <MenuItem value="CAN THO">Cần Thơ</MenuItem>
-            <MenuItem value="NHA TRANG">Nha Trang</MenuItem>
+            {[
+              "All",
+              "HO CHI MINH",
+              "HA NOI",
+              "DA NANG",
+              "HAI PHONG",
+              "CAN THO",
+              "NHA TRANG",
+            ].map((city) => (
+              <MenuItem key={city} value={city}>
+                {city.replace(/_/g, " ")}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
-
-        <TextField
-          value={text}
-          id="keyword-input"
-          label="Enter keyword"
-          placeholder="Skill (Java, iOS), Job title, Company"
-          type="text"
-          autoComplete="text"
-          variant="outlined"
-          onChange={handleText}
-          onKeyDown={handleKeyDown}
+        <div className={classes.main}>
+          <TextField
+            value={text}
+            id="keyword-input"
+            label="Enter keyword"
+            placeholder="Skill (Java, iOS), Job title, Company Name"
+            type="text"
+            variant="outlined"
+            onChange={handleText}
+            onKeyDown={handleKeyDown}
+            sx={{
+              width: { xs: "100%", sm: "100%" },
+              fontSize: "16px",
+              border: "none",
+              borderRadius: "5px",
+              "& .MuiOutlinedInput-root": {
+                backgroundColor: "white",
+                transition: "box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
+                },
+              },
+            }}
+          />
+          {filterCompany && filterCompany.length > 0 && (
+            <div className={classes.drop}>
+              <div className={classes.drop1}>Company</div>
+              {filterCompany.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={classes.main1}
+                  style={
+                    hovered === item.id
+                      ? { backgroundColor: "#FFF5F5" }
+                      : undefined
+                  }
+                  onMouseEnter={() => handleMouseEnter(item.id)}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => handleSelect(item.companyName)}
+                >
+                  {item.companyName}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+        <Button
+          onClick={
+            filterCompany?.length === 1 &&
+            filterCompany[0]?.companyName.trim().toLowerCase() ===
+              text.trim().toLowerCase()
+              ? handleSearchCompany
+              : onClick // Proceed with onClick if no exact match or text is empty
+          }
+          startIcon={<SearchIcon />}
+          variant="contained"
+          size="large"
           sx={{
-            width: { xs: "100%", sm: "50%" },
-            padding: "10px",
-            fontSize: "16px",
+            backgroundColor: "#FF6F61",
+            color: "white",
             border: "none",
             borderRadius: "5px",
-            "& .MuiOutlinedInput-root": {
-              backgroundColor: "white",
-              transition: "box-shadow 0.3s ease-in-out",
-              "&:hover": {
-                boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
-              },
+            padding: "10px 20px",
+            height: "56px",
+            mb: "2px",
+            fontSize: "16px",
+            width: { xs: "100%", sm: "25%" },
+            marginTop: { xs: "10px", sm: "0" },
+            transition: "background-color 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#ff5c4f",
             },
           }}
-        />
-        {isPending ? (
-          <Button
-            // onClick={onClick}
-            startIcon={<SearchIcon />}
-            variant="contained"
-            size="large"
-            sx={{
-              backgroundColor: "#FF6F61",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              padding: "10px 20px",
-              height: "56px",
-              mb: "2px",
-              fontSize: "16px",
-              width: { xs: "100%", sm: "25%" },
-              marginTop: { xs: "10px", sm: "0" },
-              transition: "background-color 0.3s ease",
-              "&:hover": {
-                backgroundColor: "#ff5c4f",
-              },
-            }}
-          >
-            Searching...
-          </Button>
-        ) : (
-          <Button
-            onClick={onClick}
-            startIcon={<SearchIcon />}
-            variant="contained"
-            size="large"
-            sx={{
-              backgroundColor: "#FF6F61",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              padding: "10px 20px",
-              height: "56px",
-              mb: "2px",
-              fontSize: "16px",
-              width: { xs: "100%", sm: "25%" },
-              marginTop: { xs: "10px", sm: "0" },
-              transition: "background-color 0.3s ease",
-              "&:hover": {
-                backgroundColor: "#ff5c4f",
-              },
-            }}
-          >
-            Search
-          </Button>
-        )}
+        >
+          {isPending ? "Searching..." : "Search"}
+        </Button>
       </Box>
     </Box>
   );

@@ -34,7 +34,7 @@ export default function Settings() {
         queryKey: ["Profile"],
         refetchType: "active",
       });
-       queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: ["JobSeekerRole"],
         refetchType: "active",
       });
@@ -45,7 +45,7 @@ export default function Settings() {
       message.success("Notification settings updated successfully");
     },
     onError: () => {
-      message.error("Failed to update notification settings");
+      message.error("You need to update Your full Profile");
     },
   });
 
@@ -57,8 +57,8 @@ export default function Settings() {
         firstName: UserProfileData?.firstName,
         lastName: UserProfileData?.lastName,
         email: UserProfileData?.email || "",
-        phoneNumber: UserProfileData?.phoneNumber,
-        isLookingForJob: updatedValue, 
+        phoneNumber: UserProfileData?.phoneNumber || null,
+        isLookingForJob: updatedValue,
       },
     });
   };
@@ -117,6 +117,28 @@ export default function Settings() {
                     </div>
                   </div>
                 </div>
+                <div className={classes.main10}>
+                  <div className={classes.main11}>Your Phone Number:</div>
+                  {UserProfileData?.phoneNumber ? (
+                    <div className={classes.main12}>
+                      <div className={classes.main9}>
+                        <span className={classes.span}>
+                          {`${UserProfileData?.phoneNumber || ""} 
+                         
+                        `}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className={classes.main12}>
+                      <div className={classes.main9}>
+                        <span className={classes.span}>
+                     No Phone Number Yet
+                        </span>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <div className={classes.main13}>
@@ -142,9 +164,7 @@ export default function Settings() {
                     <p className={classes.p}>
                       Allow to receive job invitations from employers:
                     </p>
-                    <small className={classes.small}>
-                      By text emails
-                    </small>
+                    <small className={classes.small}>By text emails</small>
                   </div>
                   <div className={classes.main18}>
                     <label className={classes.label}>
@@ -156,9 +176,7 @@ export default function Settings() {
                       />
                       <div
                         className={
-                          notificationsEnabled
-                            ? classes.main19
-                            : classes.main20
+                          notificationsEnabled ? classes.main19 : classes.main20
                         }
                       ></div>
                     </label>

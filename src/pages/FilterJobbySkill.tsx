@@ -119,7 +119,7 @@ export default function FilterJobbySkill() {
   const navigate = useNavigate();
   const location = useLocation();
   const jobSearchPass = location.state?.jobSearch || [];
-  const TextPass = location.state?.text || [];
+  const TextPass = location.state?.text || "";
   const LocationPass = location.state?.location || [];
   console.log("passko", jobSearchPass);
   console.log("text", TextPass);
