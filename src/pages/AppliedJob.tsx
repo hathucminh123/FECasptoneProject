@@ -15,12 +15,40 @@ import {
   // SelectChangeEvent,
   Typography,
 } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import CardApply from "../components/CardApply";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import { message } from "antd";
 
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
+}
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string;
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType;
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
+  skillSets: string[];
+}
 export default function AppliedJob() {
   //   const data = useAppSelector((state) => state.favorite.item);
   //   const dispatch = useAppDispatch();
@@ -66,6 +94,37 @@ export default function AppliedJob() {
     JobPostActivitydata?.some((activity) => job.id === activity.jobPostId)
   );
 
+
+  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      if (data && data.result && data.result.items.length > 0) {
+        setJobSearch(data.result.items);
+        // setTotalJobs(data.result.totalCount); 
+      } else {
+        setJobSearch([]);
+        // setTotalJobs(0);
+      }
+    },
+    onError: () => {
+      message.error("Failed to fetch job data");
+    },
+  });
+
+
+
+
+  // Fetch jobs whenever currentPage changes
+  useEffect(() => {
+    mutateAsync({
+      data: {
+        // pageIndex: currentPage,
+        pageSize: 1000,
+      },
+    });
+  }, [ mutateAsync]);
   console.log("quao", PendingJobApplied);
 
   // Tự động tắt thông báo sau 3 giây
@@ -151,7 +210,7 @@ export default function AppliedJob() {
             <div className={classes.job}>
               <div className={classes.job1}>
                 {JobPostActivitydata?.map((activity) => {
-                  const PendingJobApplied = JobPostsdata?.find(
+                  const PendingJobApplied = jobSearch?.find(
                     (job) => job.id === activity.jobPostId
                   );
                   const companys = Companiesdata?.find(

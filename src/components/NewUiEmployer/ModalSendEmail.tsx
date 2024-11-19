@@ -19,7 +19,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import { AddUserJobPostActivity } from "../../Services/JobsPostActivity/AddUser";
 import { queryClient } from "../../Services/mainService";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
-import { PostCVsAI } from "../../Services/CVService/PostCVAI";
+// import { PostCVsAI } from "../../Services/CVService/PostCVAI";
+import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 interface EducationDetail {
   id: number;
   institutionName: string;
@@ -98,16 +99,22 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
   // Dữ liệu công ty (nếu có)
   const companyDataa = CompanyDa?.Companies;
 
-  // const {
-  //   data: SeekerApply,
-  //   // isLoading: isSeekerLoading,
-  //   // isError: isSeekerError,
-  // } = useQuery({
-  //   queryKey: ["SeekerApply", idJob],
-  //   queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(idJob), signal }),
-  //   enabled: !!idJob,
-  // });
-  // const dataSeekerApply = SeekerApply?.GetSeekers;
+  const {
+    data: SeekerApply,
+    // isLoading: isSeekerLoading,
+    // isError: isSeekerError,
+  } = useQuery({
+    queryKey: ["SeekerApply", idJob],
+    queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(idJob), signal }),
+    enabled: !!idJob,
+  });
+  const dataSeekerApply = SeekerApply?.GetSeekers;
+
+  const feedBackUserJob = dataSeekerApply?.find(
+    (item) => item.id === Number(profile?.id)
+  );
+
+  console.log("quap", dataSeekerApply);
 
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", idJob],
@@ -164,37 +171,48 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
     });
   };
 
-  const { mutate: PostCVAi } = useMutation({
-    mutationFn: PostCVsAI,
-    onSuccess: (data) => {
-      console.log("ok chua ta ", data);
-      // queryClient.invalidateQueries({
-      //   queryKey: ["JobPostActivity"],
-      //   refetchType: "active", // Ensure an active refetch
-      // });
-      // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-      // navigate(`/thankyou/${job?.id}`);
-    },
+  // const { mutate: PostCVAi, isPending: Adding } = useMutation({
+  //   mutationFn: PostCVsAI,
+  //   onSuccess: (data) => {
+  //     console.log("ok chua ta ", data);
+  //     message.success(
+  //       `Add user to InterView at ${job?.jobTitle} successfully!`
+  //     );
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["JobPostActivity"],
+  //       refetchType: "active",
+  //     });
+  //     // queryClient.invalidateQueries({
+  //     //   queryKey: ["JobPostActivity"],
+  //     //   refetchType: "active", // Ensure an active refetch
+  //     // });
+  //     // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+  //     // navigate(`/thankyou/${job?.id}`);
+  //   },
 
-    onError: () => {
-      message.error("Failed to Apply CV.");
-    },
-  });
+  //   onError: () => {
+  //     message.error("Failed to Apply CV.");
+  //   },
+  // });
 
   const { mutate: Add, isPending: Adding } = useMutation({
     mutationFn: AddUserJobPostActivity,
     onSuccess: async () => {
       try {
-        await PostCVAi({
-          data: { jobPostId: job?.id, url: selectedCvUrl ?? "" },
-        });
-
-        message.success(
-          `Add user to InterView at ${job?.jobTitle} successfully!`
-        );
+        // await PostCVAi({
+        //   data: { jobPostId: job?.id, url: selectedCvUrl ?? "" },
+        // });
         queryClient.invalidateQueries({
           queryKey: ["JobPostActivity"],
           refetchType: "active",
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["JobPostActivity"],
+          refetchType: "active", 
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["SeekerApply"],
+          refetchType: "active", 
         });
       } catch {
         message.error("Failed to apply CV after adding user to interview.");
@@ -779,8 +797,12 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                         ))}
                         <div className={classes.main53}>
                           {Adding ? (
-                            <button  className={classes.main54}>
+                            <button className={classes.main54}>
                               Wait a seconds
+                            </button>
+                          ) : feedBackUserJob ? (
+                            <button type="button" className={classes.main54}>
+                            Status: {feedBackUserJob.status}
                             </button>
                           ) : (
                             <button type="submit" className={classes.main54}>

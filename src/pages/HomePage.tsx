@@ -3,17 +3,19 @@ import Typography from "@mui/material/Typography";
 import classes from "./HomePage.module.css";
 import FormSearch from "../components/FormSearch";
 import CardService from "../components/CardService";
-import CardEmployer from "../components/CardEmployer";
-import CardJob from "../components/CardJob";
+// import CardEmployer from "../components/CardEmployer";
+// import CardJob from "../components/CardJob";
 
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
-import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
+// import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import { useState } from "react";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
+import TopEmployersSection from "../components/TopEmployersSection";
+import TopJobSection from "../components/TopJobSection";
 
 // const skillsColumns = [
 //   "Java",
@@ -230,37 +232,45 @@ export default function HomePage() {
   });
 
   // Fetching Companies using React Query
-  const {
-    data: Company,
-    isLoading: isCompanyLoading,
-    isError: isCompanyError,
-  } = useQuery({
-    queryKey: ["Company"],
-    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
-    staleTime: 5000,
-  });
+  // const {
+  //   data: Company,
+  //   isLoading: isCompanyLoading,
+  //   isError: isCompanyError,
+  // } = useQuery({
+  //   queryKey: ["Company"],
+  //   queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+  //   staleTime: 5000,
+  // });
 
   const JobPostsdata = JobPosts?.JobPosts;
   const skills = JobPostsdata?.map((skill) => skill.skillSets);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
 
-  const Companiesdata = Company?.Companies;
+  // const Companiesdata = Company?.Companies;
 
   const handleNavigate = () => {
     navigate("/cv-templates");
   };
 
   // Handle loading state
-  if (isJobLoading || isCompanyLoading) {
+  // if (isJobLoading || isCompanyLoading) {
+  //   return <div>Loading...</div>;
+  // }
+
+  // // Handle error state
+  // if (isJobError || isCompanyError) {
+  //   return <div>Error loading data...</div>;
+  // }
+
+  if (isJobLoading ) {
     return <div>Loading...</div>;
   }
 
   // Handle error state
-  if (isJobError || isCompanyError) {
+  if (isJobError) {
     return <div>Error loading data...</div>;
   }
-
   return (
     <>
       <div className={classes.container}>
@@ -398,7 +408,7 @@ export default function HomePage() {
       </div>
 
       {/* Section for Top Employers */}
-      <main className={classes.main}>
+      {/* <main className={classes.main}>
         <div className={classes.container1}>
           <section className={classes.section}>
             <div className={classes.divtitle}>
@@ -437,10 +447,11 @@ export default function HomePage() {
             </div>
           </section>
         </div>
-      </main>
+      </main> */}
+      <TopEmployersSection />
 
       {/* Section for IT Jobs */}
-      <main className={classes.main}>
+      {/* <main className={classes.main}>
         <div className={classes.container1}>
           <section className={classes.section}>
             <div className={classes.divtitle}>
@@ -475,7 +486,8 @@ export default function HomePage() {
             </div>
           </section>
         </div>
-      </main>
+      </main> */}
+      <TopJobSection/>
     </>
   );
 }

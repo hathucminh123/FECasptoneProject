@@ -10,7 +10,7 @@ import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import useScrollToTop from "../hook/useScrollToTop";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompaniesById } from "../Services/CompanyService/GetCompanyById";
-import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+// import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import Image from "./../assets/image/download.png";
 import { GetFollowCompany } from "../Services/FollowCompany/GetFollowCompany";
@@ -20,6 +20,7 @@ import { message } from "antd";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompany";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 interface JobType {
   id: number;
   name: string;
@@ -113,17 +114,50 @@ export default function CompanyDetailRoot() {
   }, [handleScroll]);
 
   // Lấy danh sách công việc từ API
-  const { data: JobPosts } = useQuery({
-    queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal }),
-    staleTime: 5000,
+  // const { data: JobPosts } = useQuery({
+  //   queryKey: ["JobPosts"],
+  //   queryFn: ({ signal }) => GetJobPost({ signal }),
+  //   staleTime: 5000,
+  // });
+  // const JobPostsdata = JobPosts?.JobPosts;
+
+  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      if (data && data.result && data.result.items.length > 0) {
+        setJobSearch(data.result.items);
+        // setTotalJobs(data.result.totalCount); 
+      } else {
+        setJobSearch([]);
+        // setTotalJobs(0);
+      }
+    },
+    onError: () => {
+      message.error("Failed to fetch job data");
+    },
   });
-  const JobPostsdata = JobPosts?.JobPosts;
+
+
+
+
+  // Fetch jobs whenever currentPage changes
+  useEffect(() => {
+    mutateAsync({
+      data: {
+        // pageIndex: currentPage,
+        pageSize: 1000,
+      },
+    });
+  }, [ mutateAsync]);
 
   // Lọc các công việc thuộc về công ty hiện tại
-  const jobincompanyData = JobPostsdata?.filter(
+  const jobincompanyData = jobSearch?.filter(
     (item) => item.companyId === companyDataa?.id
   );
+
+  console.log('ok',jobincompanyData)
   // const skills = jobincompanyData?.map((skill) => skill.skillSets);
   // const flattenedArray = skills?.flat();
   // const uniqueArray = [...new Set(flattenedArray)];

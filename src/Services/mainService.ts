@@ -3,6 +3,7 @@
 import { QueryClient } from "@tanstack/react-query";
 
 const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
+const baseURLL = "https://finalcapstonebe-aib5.onrender.com";
 // const baseURL = "https://946a-14-187-150-194.ngrok-free.app/api";
 // const baseURL = "https://cors-anywhere.herokuapp.com/https://b732-14-187-150-194.ngrok-free.app/api";
 const baseSignalURL = "https://finalcapstonebe-aib5.onrender.com";
@@ -25,11 +26,12 @@ export const apiLinks = {
     GET: `${baseURL}/Company`,
     DELETE: `${baseURL}/Company`,
     GetCompaniesbyId: `${baseURL}/Company`,
-    GetSearch: `${baseURL}/Company/company-name`
+    GetSearch: `${baseURL}/Company/company-name`,
+    getSeacrhByname:`${baseURLL}`
   },
   JobPosts: {
     POST: `${baseURL}/JobPosts`,
-    GET: `${baseURL}/JobPosts/accept`,
+    GET: `${baseURL}/JobPosts/pending`,
     PostJobPostsSkillset: `${baseURL}/JobPosts/SkillSet`,
     GetJobbyId:`${baseURL}/JobPosts`,
     GetSeekerByJobPosts: `${baseURL}/JobPosts/Id`,
@@ -134,8 +136,11 @@ export const apiLinks = {
 
   GetSeekers:{
     GET:`${baseURL}/User/JobSeekerRole`,
-  }
+  },
 
+  SearchQuery:{
+    POST:`${baseURL}/JobPosts/SearchJobsQuery`,
+  }
  
 
 };

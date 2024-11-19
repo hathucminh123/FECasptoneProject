@@ -1,22 +1,211 @@
 .main {
-    min-height: calc(100vh - 495px);
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .main1 {
-    flex-grow: 1;
-    display: block;
-  }
-  
-  .footer {
-    color: var(--i-silver-grey);
-    /* background: linear-gradient(180deg, #ff8243, #ffd194); */
-    /* background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%); */
-    padding-top: 48px;
-    box-sizing: border-box;
-    margin: 0;
-    display: block;
+  min-height: calc(100vh - 495px);
+  display: flex;
+  flex-direction: column;
+}
 
-  }
-  
+.main1 {
+  flex-grow: 1;
+  display: block;
+}
+
+.footer {
+  color: var(--i-silver-grey);
+  /* background: linear-gradient(180deg, #ff8243, #ffd194); */
+  /* background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%); */
+  padding-top: 48px;
+  box-sizing: border-box;
+  margin: 0;
+  display: block;
+}
+
+.main2 {
+  bottom: 40px;
+  align-items: center;
+  background-color: #FF6F61;
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-size: 27px;
+  height: 48px;
+  justify-content: center;
+  padding: 6px;
+  position: fixed;
+  right: 50px;
+  text-align: center;
+  transform: rotate(0);
+  width: 48px;
+  z-index: 4;
+  box-sizing: border-box;
+}
+
+.main3 {
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  line-height: 1.42857143;
+  display: block;
+}
+
+.img{
+  height: 27.77px;
+    width: 33.58px;
+    vertical-align: middle;
+    border: 0;
+    box-sizing: border-box;
+    overflow-clip-margin: content-box;
+    overflow: clip;
+    color: #fff;
+    cursor: pointer;
+    font-size: 27px;
+    text-align: center;
+}
+
+
+.modal{
+  bottom: 90px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .08);
+  max-width: 100%;
+  min-height: 100px;
+  overflow: hidden;
+  position: fixed;
+  right: 40px;
+  width: 360px;
+  z-index: 1000;
+  box-sizing: border-box;
+  display: block;
+  unicode-bidi: isolate;
+}
+
+.modal1{
+  background-color: #FF6F61;
+  background-image: url("https://static.topcv.vn/v4/image/support-ticket/customer-service.png");
+  background-position-x: right;
+  background-position-y: center;
+  background-repeat: no-repeat;
+  background-size: 176px, 164px;
+  border-radius: 8px 8px 0 0;
+  color: #fff;
+  font-size: 15px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: block;
+}
+
+
+.modal2{
+  height: 56px;
+
+  box-sizing: border-box;
+  display: block;
+}
+
+.modal3{
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.modal4{
+  font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    margin-bottom: 8px;
+    box-sizing: border-box;
+    display: block;
+}
+
+.modal5{
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;  
+  box-sizing: border-box;
+}
+
+.modal6{
+
+  box-sizing: border-box;
+  display: block;
+}
+
+.modal7{
+  display: block;
+  unicode-bidi: isolate;
+  box-sizing: border-box;
+}
+
+.ul{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.li{
+  background: #fff;
+  border-bottom: 1px solid #e9eaec;
+  margin: 0;
+  padding: 0;
+  display: list-item;
+  text-align: -webkit-match-parent;
+  unicode-bidi: isolate;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+
+.main5{
+  align-items: center;
+  color: #212f3f;
+  display: flex;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  gap: 12px;
+  height: 56px;
+  justify-content: flex-start;
+  line-height: 20px;
+  padding: 16px 20px;
+  width: 100%;
+  outline: none !important;
+  background-color: transparent;
+
+}
+
+.modalne{
+  background: #fff;
+  border-radius: 8px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.modalHeader {
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: bold;
+  color: #00b14f;
+}
+
+.modalSubtitle {
+  font-size: 14px;
+  color: #666;
+}
+
+.modalContent {
+  width: 100%;
+}

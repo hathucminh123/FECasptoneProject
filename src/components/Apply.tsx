@@ -102,10 +102,17 @@ export default function Apply() {
 
   const selectedCv = dataCVS.find((item) => item.id === selectedCvId);
 
-  const { mutate: PostCVAi } = useMutation({
+  const { mutate: PostCVAi,isPending } = useMutation({
     mutationFn: PostCVsAI,
     onSuccess: (data) => {
       console.log("ok chua ta ", data);
+      
+      message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+      navigate(`/thankyou/${job?.id}`);
+      queryClient.invalidateQueries({
+        queryKey: ["JobPostActivity"],
+        refetchType: "active",
+      });
       // queryClient.invalidateQueries({
       //   queryKey: ["JobPostActivity"],
       //   refetchType: "active", // Ensure an active refetch
@@ -119,7 +126,7 @@ export default function Apply() {
     },
   });
 
-  const { mutate } = useMutation({
+  const { mutate, } = useMutation({
     mutationFn: PostJobPostActivity,
     // onSuccess: () => {
     //   queryClient.invalidateQueries({
@@ -137,12 +144,6 @@ export default function Apply() {
           data: { jobPostId: job?.id, url: selectedCv?.url ?? "" },
         });
 
-        message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-        navigate(`/thankyou/${job?.id}`);
-        queryClient.invalidateQueries({
-          queryKey: ["JobPostActivity"],
-          refetchType: "active",
-        });
       } catch {
         message.error("Failed to apply CV.");
       }
@@ -605,16 +606,29 @@ export default function Apply() {
                     {500 - coverLetter.length} of 500 characters remaining
                   </Typography>
                 </div>
-                <div>
-                  <RenderButton
-                    text="Send my cv"
-                    color="#ed1b2f"
-                    variant="contained"
-                    sxOverrides={{ width: "100%" }}
-                    // onClick={handleSendCvApply}
-                    onClick={handleSendCvApply}
-                  />
-                </div>
+                {isPending ? (
+                  <div>
+                    <RenderButton
+                      text="Wait a seconds"
+                      color="#ed1b2f"
+                      variant="contained"
+                      sxOverrides={{ width: "100%" }}
+                      // onClick={handleSendCvApply}
+                      // onClick={handleSendCvApply}
+                    />
+                  </div>
+                ) : (
+                  <div>
+                    <RenderButton
+                      text="Send my cv"
+                      color="#ed1b2f"
+                      variant="contained"
+                      sxOverrides={{ width: "100%" }}
+                      // onClick={handleSendCvApply}
+                      onClick={handleSendCvApply}
+                    />
+                  </div>
+                )}
               </Box>
             </div>
           </div>

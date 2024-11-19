@@ -13,7 +13,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
-import { SearchCompany } from "../Services/CompanyService/SearchCompany";
+// import { SearchCompany } from "../Services/CompanyService/SearchCompany";
+import { SearchCompanyByName } from "../Services/CompanyService/CompanySearchbyName";
 import classes from "./FormSearch.module.css";
 
 interface JobType {
@@ -110,7 +111,7 @@ export default function FormSearch({
   const handleSelect = async (name: string) => {
     setText(name);
     try {
-      const companyData = await SearchCompany({ name });
+      const companyData = await SearchCompanyByName({ name });
       if (companyData?.Companies) {
         navigate(`/company/detail/${companyData.Companies.id}`);
       } else {

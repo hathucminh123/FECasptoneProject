@@ -1,15 +1,7 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 interface SearchData {
-  jobTitle?:string;
-  companyName?: string;
-  skillSet?: string;
-  city?: string;
-  location?: string;
-  experience?: number;
-  jobType?: string;
-  pageSize?: number;
-  pageIndex?:number
+    query:string
 }
 
 interface JobSearch{
@@ -17,10 +9,10 @@ interface JobSearch{
     data:SearchData
 }
 
-export const GetJobSearch = async ({ data }: JobSearch) => {
+export const JobSearchQuery = async ({ data }: JobSearch) => {
     try {
       const response = await httpClient.post({
-        url: apiLinks.jobSearch.POST,
+        url: apiLinks.SearchQuery.POST,
         data: data,
       });
       return response.data;

@@ -29,7 +29,8 @@ import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
-import { SearchCompany } from "../Services/CompanyService/SearchCompany";
+// import { SearchCompany } from "../Services/CompanyService/SearchCompany";
+import { SearchCompanyByName } from "../Services/CompanyService/CompanySearchbyName";
 // import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
@@ -94,11 +95,11 @@ export default function HeaderNavigation({ token }: props) {
     null
   );
 
-  const handleMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    setAnchorEl(event.currentTarget);
-    setHovered(event.currentTarget.textContent || null);
-    setSelectedMenu(event.currentTarget.textContent || null);
-  };
+  // const handleMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  //   setHovered(event.currentTarget.textContent || null);
+  //   setSelectedMenu(event.currentTarget.textContent || null);
+  // };
   // const handleMouseEnterCompany = (
   //   event: React.MouseEvent<HTMLAnchorElement>
   // ) => {
@@ -208,7 +209,7 @@ export default function HeaderNavigation({ token }: props) {
           </div>
           <div className={classes.containerright}>
             <ul className={classes.list}>
-              <li className={classes.li}>
+              {/* <li className={classes.li}>
                 <NavLink
                   onMouseEnter={handleMouseEnter}
                   className={classes.link}
@@ -228,7 +229,7 @@ export default function HeaderNavigation({ token }: props) {
                     }}
                   />
                 </NavLink>
-              </li>
+              </li> */}
               {/* <li className={classes.li}>
                 <NavLink
                   onMouseEnter={handleMouseEnterCompany}
@@ -659,7 +660,7 @@ const SkillsMenu = ({
     if (selectedMenu === "Jobs by Company") {
       // Handle the company search separately
       try {
-        const companyData = await SearchCompany({ name: column });
+        const companyData = await SearchCompanyByName({ name: column });
         if (companyData) {
           console.log("Company search results:", companyData.Companies);
           navigate(`/company/detail/${companyData?.Companies.id}`);
