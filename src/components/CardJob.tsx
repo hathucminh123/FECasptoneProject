@@ -98,7 +98,7 @@ export default function CardJob({
     (city) => city?.jobLocationCities
   );
   const flattenedArrayCity = city?.flat();
-  console.log("aduphong1", city);
+  
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;
@@ -126,7 +126,7 @@ export default function CardJob({
     e.stopPropagation();
     Unfollow({ id: Number(haveFavorite?.id) });
   };
-  console.log('haha',company)
+ 
   const navigate=useNavigate()
   const handleNavigateApply = () => {
     if (!auth) {

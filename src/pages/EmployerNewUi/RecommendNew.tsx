@@ -30,7 +30,7 @@ export default function RecommendNew() {
 
   const ListSeekrData = ListSeeker?.items;
 
-  console.log("metmoi", ListSeekrData);
+ 
 
   // const dataSeekerApply = SeekerApply?.GetSeekers;
 

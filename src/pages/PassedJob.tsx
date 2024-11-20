@@ -125,7 +125,7 @@ export default function PassedJob() {
     JobPending?.some((activity) => job.id === activity.jobPostId)
   );
 
-  console.log("quao", PendingJobApplied);
+  console.log("pending", PendingJobApplied);
 
   // Tự động tắt thông báo sau 3 giây
   useEffect(() => {

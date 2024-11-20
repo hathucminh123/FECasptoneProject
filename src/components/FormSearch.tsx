@@ -3,19 +3,22 @@ import {
   Box,
   Button,
   FormControl,
-  InputLabel,
+
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { SelectChangeEvent } from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 import { SearchCompanyByName } from "../Services/CompanyService/CompanySearchbyName";
 import classes from "./FormSearch.module.css";
+import { JobSearchQuery } from "../Services/JobSearchService/JobSearchQuery";
+import { message } from "antd";
 
 interface JobType {
   id: number;
@@ -68,6 +71,11 @@ export default function FormSearch({
   const [hovered, setHovered] = useState<null | number>(null);
 
   const locationText = locationPass.state?.textt || "";
+  // const advance = locationPass.state?.boolean || "";
+  // const [turnOn, setTurnOn] = useState<boolean>(advance ||false);
+  const [turnOn, setTurnOn] = useState<boolean>(() =>
+    JSON.parse(localStorage.getItem("Turn") || "false")
+  );
 
   const { data: Company } = useQuery({
     queryKey: ["Company"],
@@ -122,6 +130,10 @@ export default function FormSearch({
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem("Turn", JSON.stringify(turnOn));
+  }, [turnOn]);
+
   const handleChangeLocation = (event: SelectChangeEvent) =>
     setLocation(event.target.value as string);
 
@@ -132,7 +144,7 @@ export default function FormSearch({
     if (e.key === "Enter") {
       e.preventDefault();
 
-     const normalizedText = (text || "").trim().toLowerCase();
+      const normalizedText = (text || "").trim().toLowerCase();
 
       const matchingCompany = filterCompany?.find(
         (item) => item.companyName.trim().toLowerCase() === normalizedText
@@ -141,10 +153,57 @@ export default function FormSearch({
       if (matchingCompany) {
         handleSearchCompany();
       } else {
-        onClick();
+        if (turnOn === true) {
+          handleSearch();
+        } else {
+          onClick();
+        }
       }
     }
   };
+
+
+
+  const { mutate, isPending: Loading } = useMutation({
+    mutationFn: JobSearchQuery,
+    onSuccess: (data) => {
+      console.log("Search result:", data);
+
+      if (data && data.result && data.result.length > 0) {
+        const jobSearchResults = data.result;
+        // setJobSearch(data.result.items);
+
+        navigate("/it_jobs", {
+          state: {
+            jobSearch: jobSearchResults,
+            text: text || "",
+            boolean: turnOn,
+          },
+          // state: { jobSearch: jobSearchResults },
+        });
+      } else {
+        // navigate("/it_jobs", { state: { textt: searchTerm } });
+        navigate("/it_jobs");
+      }
+
+      // navigate("/it-jobs",{state : text});
+    },
+    onError: () => {
+      message.error("Failed to Search.");
+    },
+  });
+
+  const handleSearch = () => {
+    mutate({
+      data: {
+        query: text,
+      },
+    });
+  };
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const allowedLocations = [
@@ -160,10 +219,10 @@ export default function FormSearch({
     if (allowedLocations.includes(locationText)) {
       setLocation(locationText);
     } else {
-      setText(locationText? locationText :text);
+      setText(locationText ? locationText : text);
       setLocation("All");
     }
-  }, [locationText, setLocation, setText,text]);
+  }, [locationText, setLocation, setText, text]);
 
   return (
     <Box sx={{ display: "block", marginTop: "0em", unicodeBidi: "isolate" }}>
@@ -180,8 +239,39 @@ export default function FormSearch({
         autoComplete="off"
       >
         <FormControl fullWidth sx={{ width: { xs: "100%", sm: "25%" } }}>
-          <InputLabel id="location-select-label">Location</InputLabel>
-          <Select
+        <Select
+        IconComponent={() => (
+          <LocationOnIcon
+            sx={{
+              transform: open ? "rotate(180deg)" : "rotate(0deg)",
+              transition: "transform 0.3s",
+            }}
+          />
+        )}
+        labelId="location-select-label"
+        id="location-select"
+        value={location || ""}
+        onChange={handleChangeLocation}
+        onOpen={handleOpen}
+        onClose={handleClose}
+        sx={{ background: "white" }}
+      >
+        {[
+          "All",
+          "HO CHI MINH",
+          "HA NOI",
+          "DA NANG",
+          "HAI PHONG",
+          "CAN THO",
+          "NHA TRANG",
+        ].map((city) => (
+          <MenuItem key={city} value={city}>
+            {city.replace(/_/g, " ")}
+          </MenuItem>
+        ))}
+      </Select>
+          {/* <Select
+          IconComponent={LocationOnIcon} 
             labelId="location-select-label"
             id="location-select"
             value={location || ""}
@@ -202,7 +292,7 @@ export default function FormSearch({
                 {city.replace(/_/g, " ")}
               </MenuItem>
             ))}
-          </Select>
+          </Select> */}
         </FormControl>
         <div className={classes.main}>
           <TextField
@@ -257,7 +347,9 @@ export default function FormSearch({
             filterCompany[0]?.companyName.trim().toLowerCase() ===
               text.trim().toLowerCase()
               ? handleSearchCompany
-              : onClick // Proceed with onClick if no exact match or text is empty
+              : turnOn
+              ? handleSearch
+              : onClick
           }
           startIcon={<SearchIcon />}
           variant="contained"
@@ -268,6 +360,7 @@ export default function FormSearch({
             border: "none",
             borderRadius: "5px",
             padding: "10px 20px",
+            boxSizing: "border-box",
             height: "56px",
             mb: "2px",
             fontSize: "16px",
@@ -279,7 +372,38 @@ export default function FormSearch({
             },
           }}
         >
-          {isPending ? "Searching..." : "Search"}
+          {turnOn
+            ? Loading
+              ? "Searching..."
+              : "Search"
+            : isPending
+            ? "Searching..."
+            : "Search"}
+        </Button>
+        <Button
+          onClick={() => setTurnOn(!turnOn)}
+          // startIcon={<SearchIcon />}
+          variant="contained"
+          size="large"
+          sx={{
+            backgroundColor: "#FF6F61",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            boxSizing: "border-box",
+            padding: "10px 20px",
+            height: "56px",
+            mb: "2px",
+            fontSize: "16px",
+            width: { xs: "100%", sm: "60%" },
+            marginTop: { xs: "10px", sm: "0" },
+            transition: "background-color 0.3s ease",
+            "&:hover": {
+              backgroundColor: "#ff5c4f",
+            },
+          }}
+        >
+          Advanced Search: {turnOn ? "Turn Off" : "Turn On"}
         </Button>
       </Box>
     </Box>

@@ -70,7 +70,7 @@ export default function CreateJobs() {
   const [count, setCount] = useState<number>(1);
 
   const [skills, setSkills] = useState<SkillSet[]>([]);
-  console.log('thiệt khong',skills)
+ 
   const [inputSkill, setInputSkill] = useState<string>("");
   const [salary, setSalary] = useState<number>();
   const [skillLevel, setSkillLevel] = useState<number>();
@@ -88,7 +88,7 @@ export default function CreateJobs() {
   const [shorthand, setShorthand] = useState("");
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
   const [skillId, setSkillId] = useState<number[]>([]);
-  console.log('thiệt khongid',skillId)
+
   const [fileUrl, setFileUrl] = useState<string>();
  
   const adjustTimezone = (date:Date) => {
@@ -96,7 +96,7 @@ export default function CreateJobs() {
     return new Date(date.getTime() - offsetInMs).toISOString();
   };
    const date=  selectedDate ? adjustTimezone(selectedDate) : ""
-  console.log('coko',date)
+  console.log('date',date)
   const companyId = localStorage.getItem("CompanyId");
   const userId = localStorage.getItem("userId");
   const onChange = (value: number) => {

@@ -129,7 +129,7 @@ export default function SignInPageJobSeekers() {
         ? JSON.parse(redirectStateString1)
         : {};
       const combinedState = { ...redirectState, ...redirectState1 };
-      console.log("minhquala", combinedState);
+    
       const redirectPath = localStorage.getItem("redirectPath") || "/";
       if (userRole === "jobseeker") {
         localStorage.setItem("Auth", "true");

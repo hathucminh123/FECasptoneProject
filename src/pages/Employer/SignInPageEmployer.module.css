@@ -32,7 +32,10 @@
     padding: 10rem 1rem 0 1rem;
     display: flex;
     min-height: calc(100vh - 161px);
+    /* height: 100vh; */
+    position: relative !important;
     justify-content: center;
+    align-items: center;
     /* background-image: radial-gradient(281.67% 158.44% at 105.89% -50.76%, #ff8243 0%, #ffd194 100%); */
     background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
     margin: 0;
@@ -278,6 +281,7 @@ display: flex;
 
 .divright{
     min-height: calc(100vh - 161px);
+    height: 100vh;
     display: flex;
     padding: 0 2rem;
     align-items: center;

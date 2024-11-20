@@ -95,7 +95,7 @@ export default function InterViewApplicants() {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  console.log("kkk", jobProfileCounts);
+ 
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,

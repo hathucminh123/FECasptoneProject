@@ -157,14 +157,14 @@ export default function CompanyDetailRoot() {
     (item) => item.companyId === companyDataa?.id
   );
 
-  console.log('ok',jobincompanyData)
+ 
   // const skills = jobincompanyData?.map((skill) => skill.skillSets);
   // const flattenedArray = skills?.flat();
   // const uniqueArray = [...new Set(flattenedArray)];
 
   const city = jobincompanyData?.map((city) => city.jobLocationCities);
   const flattenedArrayCity = city?.flat();
-  console.log("aduphong1", city);
+
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;

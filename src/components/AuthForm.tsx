@@ -20,10 +20,10 @@ export default function AuthForm() {
   // const [searchParams] = useSearchParams();
   // const isLogin = searchParams.get("mode") === "login";
   const auth = localStorage.getItem("auth");
-  const redirectPath = localStorage.getItem("redirectPath");
-  console.log("mememe", redirectPath);
-  const from = location.state?.from;
-  console.log("adu", from);
+  // const redirectPath = localStorage.getItem("redirectPath");
+  // console.log("mememe", redirectPath);
+  // const from = location.state?.from;
+  // console.log("adu", from);
   useEffect(() => {
     if (auth) {
       const from = location.state?.from || "/";

@@ -77,7 +77,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
   const [openExp, setOpenExp] = useState<boolean>(false);
   const [searchParams] = useSearchParams();
   const isEmail = searchParams.get("mode") === "Email";
-  console.log("email", isEmail);
+
   const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
   const [selectedCvUrl, setSelectedCvUrl] = useState<string | null>(null);
   const handleCVSelect = (cv: CVs) => {
@@ -114,7 +114,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
     (item) => item.id === Number(profile?.id)
   );
 
-  console.log("quap", dataSeekerApply);
+
 
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", idJob],

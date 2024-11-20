@@ -121,8 +121,8 @@ export default function FilterJobbySkill() {
   const jobSearchPass = location.state?.jobSearch || [];
   const TextPass = location.state?.text || "";
   const LocationPass = location.state?.location || [];
-  console.log("passko", jobSearchPass);
-  console.log("text", TextPass);
+  console.log("JobSearchPass", jobSearchPass);
+  // console.log("text", TextPass);
 
   const [jobSearch, setJobSearch] = useState<JobPost[]>(
     location.state?.jobSearch || []
@@ -146,19 +146,19 @@ export default function FilterJobbySkill() {
 
   // const filteredJobs = useAppSelector(TodoListSelector);
   const filteredJobs = jobSearch;
-  console.log("dasdne", jobSearch);
 
-  console.log("dasd", filteredJobs);
+
+
 
   const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
-  console.log("oke", dataa);
+  console.log("fe", dataa);
 
   const [detailsCompany, setDetailsCompany] = useState<Company | undefined>();
   const [selectedJob, setSelectedJob] = useState<null | JobPost>(null);
   const [applied, setApplied] = useState<UserJobActivity | undefined>();
   const dispatch = useAppDispatch();
   const selectJobData = (state: RootState) => state.companyJobs.jobPosts;
-  console.log("hihi", selectJobData);
+  console.log("select", selectJobData);
   const {
     data: Company,
     // isLoading: isCompanyLoading,
@@ -188,13 +188,15 @@ export default function FilterJobbySkill() {
   });
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
   const JobPostsdata = JobPosts?.JobPosts;
+
+
   const Companiesdata = Company?.Companies;
   useEffect(() => {
     if (Companiesdata || JobPostsdata) {
       dispatch(setCompanies(Companiesdata || []));
       dispatch(setJobPosts(JobPostsdata || []));
 
-      console.log("buon", Companiesdata);
+    
     }
   }, [Companiesdata, JobPostsdata, dispatch]);
 
@@ -690,9 +692,9 @@ export default function FilterJobbySkill() {
                         (item) => item.id === job.companyId
                       );
 
-                      const jobs = JobPostsdata?.find(
-                        (item) => item.id === job.id
-                      );
+                      // const jobs = JobPostsdata?.find(
+                      //   (item) => item.id === job.id
+                      // );
                       // const hasAppliedJobActivity = filteredJobs?.some((job) =>
                       //   JobPostActivitydata?.some(
                       //     (activity) => job.id === activity.jobPostId
@@ -706,7 +708,7 @@ export default function FilterJobbySkill() {
                         <CardJobSearch
                           selectedJob={selectedJob}
                           key={job.id}
-                          data={jobs}
+                          data={job}
                           applied={hasAppliedJobActivity}
                           img={
                             job?.imageURL === null || job?.imageURL === "string"

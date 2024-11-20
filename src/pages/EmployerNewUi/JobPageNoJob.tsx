@@ -11,7 +11,7 @@ export default function JobPageNoJob() {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const IsPremium = localStorage.getItem("IsPremium");
-  console.log("duochua", IsPremium);
+
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);

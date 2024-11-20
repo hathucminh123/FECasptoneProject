@@ -35,7 +35,7 @@ export const useCompanyAndJobData = () => {
   if (Companiesdata || JobPostsdata){
     dispatch(setCompanies(Companiesdata|| []));
     dispatch(setJobPosts(JobPostsdata || []));
-     console.log('buon',Companiesdata)
+  
   }
   },[Companiesdata,JobPostsdata,dispatch])
 

@@ -51,7 +51,7 @@ export default function NotificationSystem() {
   const { notifications, setNotifications } = useOutletContext<OutletContextType>();
   const token = localStorage.getItem("token");
   
-  console.log("thietko", notifications);
+
   // Tính toán tổng số trang
   const totalPages = Math.ceil(notifications?.length / notificationsPerPage);
 

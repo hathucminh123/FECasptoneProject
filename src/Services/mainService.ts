@@ -31,7 +31,7 @@ export const apiLinks = {
   },
   JobPosts: {
     POST: `${baseURL}/JobPosts`,
-    GET: `${baseURL}/JobPosts/pending`,
+    GET: `${baseURL}/JobPosts/accept`,
     PostJobPostsSkillset: `${baseURL}/JobPosts/SkillSet`,
     GetJobbyId:`${baseURL}/JobPosts`,
     GetSeekerByJobPosts: `${baseURL}/JobPosts/Id`,

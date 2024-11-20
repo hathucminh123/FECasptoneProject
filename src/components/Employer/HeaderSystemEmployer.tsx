@@ -82,7 +82,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token,notification
     const storedCompanyId = localStorage.getItem("CompanyId");
     setCompanyId(storedCompanyId);
   }, []);
-  console.log("quao", readOpen);
+
 
   // Handle clicking "More" to toggle the "Mark as read" option
   const handleOpenReadMark = (event: React.MouseEvent, id: number) => {

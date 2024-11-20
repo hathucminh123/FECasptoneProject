@@ -125,7 +125,7 @@ export default function Subscription() {
 
   const JobTypeDatas = JobTypedata?.JobTypes;
 
-  const { mutate: PostAlert } = useMutation({
+  const { mutate: PostAlert, isPending: AlertPending } = useMutation({
     mutationFn: PostUserJobAlertCriteria,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -163,12 +163,11 @@ export default function Subscription() {
     enabled: !!UserId,
   });
   const AlertData = Alert?.Criteria;
-  console.log("kk", AlertData);
 
   const navigate = useNavigate();
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
   const [text, setText] = useState<string>("");
-  console.log("thietko", jobSearch);
+  console.log("data", jobSearch);
   const { mutateAsync } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
@@ -200,7 +199,6 @@ export default function Subscription() {
     },
   });
   const handleNavigateSkill = async (item: string) => {
-    console.log("alo");
     setText(item);
     interface JobSearchResponse {
       result: {
@@ -223,7 +221,6 @@ export default function Subscription() {
         const result: JobSearchResponse = await mutateAsync({
           data: searchDataArray[i],
         });
-        console.log("chan", result.result.items);
 
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
@@ -394,7 +391,7 @@ export default function Subscription() {
     setDropdownOpenJobType(false);
   };
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: PostFollowCompany,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -764,13 +761,23 @@ export default function Subscription() {
                         </div>
                       </div>
                       <div className={classes.main35}>
-                        <button
-                          className={classes.button}
-                          type="submit"
-                          //   style={{ fontWeight: 1000 }}
-                        >
-                          Subscribe
-                        </button>
+                        {AlertPending ? (
+                          <button
+                            className={classes.button}
+                            type="button"
+                            //   style={{ fontWeight: 1000 }}
+                          >
+                            Wait a seconds
+                          </button>
+                        ) : (
+                          <button
+                            className={classes.button}
+                            type="submit"
+                            //   style={{ fontWeight: 1000 }}
+                          >
+                            Subscribe
+                          </button>
+                        )}
                       </div>
                     </form>
                   </div>
@@ -956,14 +963,25 @@ export default function Subscription() {
                           </div>
                         </div>
                       </div>
+
                       <div className={classes.main20}>
-                        <button
-                          className={classes.button2}
-                          type="submit"
-                          //   style={{ fontWeight: 1000 }}
-                        >
-                          Follow
-                        </button>
+                        {isPending ? (
+                          <button
+                            className={classes.button2}
+                            type="button"
+                            //   style={{ fontWeight: 1000 }}
+                          >
+                            wait a seconds
+                          </button>
+                        ) : (
+                          <button
+                            className={classes.button2}
+                            type="submit"
+                            //   style={{ fontWeight: 1000 }}
+                          >
+                            Follow
+                          </button>
+                        )}
                       </div>
                     </form>
                   </div>

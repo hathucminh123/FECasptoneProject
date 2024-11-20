@@ -68,7 +68,7 @@ export default function HomePage() {
     }
   };
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
-  console.log("thietko", jobSearch);
+ 
   const [text, setText] = useState<string>("");
   const [location, setLocation] = useState<string>("All");
   const { mutateAsync ,isPending } = useMutation({
@@ -185,7 +185,7 @@ export default function HomePage() {
   };
 
   const handleNavigateSkill = async (item: string) => {
-    console.log("alo");
+  
     interface JobSearchResponse {
       result: {
         items: JobPost[];
@@ -207,7 +207,7 @@ export default function HomePage() {
         const result: JobSearchResponse = await mutateAsync({
           data: searchDataArray[i],
         });
-        console.log("chan", result.result.items);
+     
 
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);

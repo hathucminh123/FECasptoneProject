@@ -64,7 +64,7 @@ interface CardEmployerProps {
 
 const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
   const navigate = useNavigate();
-  console.log("quaone", jobs);
+
   const handleNavigate = (company: Company) => {
     if (!company) return;
     navigate(`/company/detail/${company.id}`);
@@ -75,7 +75,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
 
   const city = jobs?.map((city) => city.jobLocationCities);
   const flattenedArrayCity = city?.flat();
-  console.log("aduphong1", city);
+  
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;

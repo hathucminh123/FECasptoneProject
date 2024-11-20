@@ -117,7 +117,7 @@ export default function EditableJobDetailPage() {
     return new Date(date.getTime() - offsetInMs).toISOString();
   };
   const date = selectedDate ? adjustTimezone(selectedDate) : "";
-  console.log("coko", date);
+  console.log("date", date);
   const companyId = localStorage.getItem("CompanyId");
   const userId = localStorage.getItem("userId");
   const onChange = (value: number) => {

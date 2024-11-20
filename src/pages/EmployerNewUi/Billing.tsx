@@ -28,7 +28,7 @@ export default function Billing() {
   const PaymentSubscription = GetSubscriptions?.Subscriptions;
 
 
-console.log('kkk',PaymentSubscription)
+
 
   return (
     <div className={classes.main}>

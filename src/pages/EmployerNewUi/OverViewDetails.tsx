@@ -31,7 +31,7 @@ export default function OverViewDetails() {
 
   const city = job?.jobLocationCities;
   const flattenedArrayCity = city?.flat();
-  console.log("aduphong1", city);
+
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;
@@ -39,7 +39,7 @@ export default function OverViewDetails() {
   const handleStatusChange = (event: SelectChangeEvent) => {
     setSelectedStatus(event.target.value as string);
   };
-  console.log("có không ta", JobId);
+
   const handleEditClick = (id: number | undefined) => {
     setselectJobId(id);
     setOpenModal(true);

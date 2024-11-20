@@ -125,7 +125,7 @@ export default function AppliedJob() {
       },
     });
   }, [ mutateAsync]);
-  console.log("quao", PendingJobApplied);
+  console.log("Pending", PendingJobApplied);
 
   // Tự động tắt thông báo sau 3 giây
   useEffect(() => {

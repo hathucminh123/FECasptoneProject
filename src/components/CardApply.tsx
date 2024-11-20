@@ -79,7 +79,7 @@ export default function CardApply({ company, job, activity }: props) {
     (city) => city?.jobLocationCities
   );
   const flattenedArrayCity = city?.flat();
-  console.log("aduphong1", city);
+ 
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;

@@ -307,7 +307,7 @@ import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import LanguageIcon from "@mui/icons-material/Language";
 export default function CompanyDetail() {
   const { CompanyId } = useParams();
-  console.log("id", CompanyId);
+
   const { data: CompanyData } = useQuery({
     queryKey: ["Company-details", CompanyId],
     queryFn: ({ signal }) =>
@@ -320,7 +320,7 @@ export default function CompanyDetail() {
     staleTime: 5000,
   });
   const Companiesdata = Company?.Companies;
-  console.log("companies", Companiesdata);
+
   const { data: BusinessStream } = useQuery({
     queryKey: ["BusinessStream"],
     queryFn: ({ signal }) => GetBusinessStream({ signal }),
@@ -328,16 +328,16 @@ export default function CompanyDetail() {
   });
 
   const BusinessStreamData = BusinessStream?.BusinessStreams;
-  console.log("busines", BusinessStreamData);
+ 
   const companyDataa = CompanyData?.Companies;
   // console.log('name',companyDataa?.businessStream.businessStreamName)
   const detail = Companiesdata?.find((item) => item.id === companyDataa?.id);
-  console.log("quao", detail);
+ 
 
   const BusinessStreamDatainCompany = BusinessStreamData?.find(
     (item) => detail?.businessStream?.id === item.id
   );
-  console.log("haha", BusinessStreamDatainCompany);
+ 
   // console.log('sad',BusinessStreamDatainCompany?.businessStreamName)
 
   return (

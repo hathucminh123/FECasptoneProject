@@ -76,7 +76,7 @@ export default function CompanyInfo() {
   const flattenedArray = skillss?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
 
-  console.log("quao", CompanyEmployer);
+ 
   const handleOpenUpdate = () => {
     setUpdate(!update);
   };

@@ -49,17 +49,17 @@ export default function HeaderEmployerSystem({
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
-  const [IsPremium, setIsPremium] = useState<string | null>(null);
+  // const [IsPremium, setIsPremium] = useState<string | null>(null);
   const [openSettings, SetOpenSettings] = useState<boolean>(false);
-  console.log("metqua", IsPremium);
+
   const [openModal, setOpenModal] = useState<boolean>(false);
-  console.log("adu ma ", selectJobId);
+
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("CompanyId");
-    const IsPremium = localStorage.getItem("IsPremium");
+    // const IsPremium = localStorage.getItem("IsPremium");
     setCompanyId(storedCompanyId);
-    setIsPremium(IsPremium);
+    // setIsPremium(IsPremium);
   }, []);
 
   const {

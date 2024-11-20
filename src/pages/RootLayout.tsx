@@ -29,8 +29,8 @@ export default function RootLayout() {
   const toggleModal = () => setSearchOpen((prev) => !prev);
   const token = useRouteLoaderData("root");
   const userRole = localStorage.getItem("role");
-  console.log("rolene", userRole);
-  console.log("tokenne", token);
+  console.log("role", userRole);
+  console.log("token", token);
   // const navigate =useNavigate()
   const submit = useSubmit();
 

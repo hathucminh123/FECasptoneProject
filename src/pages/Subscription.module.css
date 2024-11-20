@@ -367,6 +367,7 @@
     border: 1px solid transparent;
     gap: 8px;
     font-weight: 600 !important;
+    width: 100%;
     font-size: 1rem !important;
     -webkit-appearance: button;
     text-transform: none;
@@ -575,7 +576,7 @@
 .main33{
     margin-bottom: 1rem !important;
     flex: 0 0 auto;
-    width: 30.66666667%;
+    width: 33.3333333%;
     /* max-width: 100%; */
     padding-right: calc(var(--i-gutter-x)* .5);
     padding-left: calc(var(--i-gutter-x)* .5);
@@ -588,7 +589,8 @@
 .main34{
     margin-bottom: 1rem !important;
     flex: 0 0 auto;
-    width: 25.33333333%;
+    flex-wrap: nowrap;
+    width: 33.3333333%;
     /* max-width: 100%; */
     padding-right: calc(var(--i-gutter-x)* .5);
     padding-left: calc(var(--i-gutter-x)* .5);
@@ -614,13 +616,13 @@
     text-align: right !important;
     margin-bottom: 1rem !important;
     flex: 0 0 auto;
-    width: 10.66666667%;
+    width: 100%;
     max-width: 100%;
     padding-right: calc(var(--i-gutter-x)* .5);
     padding-left: calc(var(--i-gutter-x)* .5);
     margin-top: var(--i-gutter-y);
     box-sizing: border-box;
-
+   align-items:center ;
     display: block;
     unicode-bidi: isolate;
 }

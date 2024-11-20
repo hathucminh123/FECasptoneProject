@@ -21,7 +21,7 @@ export default function PaymentModal({ onClose }: props) {
   const { mutate } = useMutation({
     mutationFn: Payment,
     onSuccess: (data) => {
-      console.log("okchua", data.result);
+      // console.log("okchua", data.result);
 
       // message.success(`Payment successfully!`);
 
@@ -40,7 +40,7 @@ export default function PaymentModal({ onClose }: props) {
   const { mutate: Year } = useMutation({
     mutationFn: Payment,
     onSuccess: (data) => {
-      console.log("okchua", data.result);
+     
 
       // message.success(`Payment successfully!`);
 

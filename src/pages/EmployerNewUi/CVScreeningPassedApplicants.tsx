@@ -97,7 +97,7 @@ export default function CVScreeningPassedApplicants() {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
-  console.log("kkk", jobProfileCounts);
+
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,

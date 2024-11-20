@@ -3,7 +3,7 @@ import classes from "./FilterModal.module.css";
 import Modal from "./Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
+// import Slider from "@mui/material/Slider";
 import Button from "@mui/material/Button";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -56,7 +56,7 @@ interface SearchData {
   experience?: number;
   jobType?: string;
   jobTypes?: string[];
-  pageSize: number;
+  pageSize?: number;
   minSalary?: number;
   maxSalary?: number;
 }
@@ -87,18 +87,18 @@ const datacities:string[] = [
 ];
 
 export default function FilterModal({ onDone, filteredJobs }: Props) {
-  const JobSalary = filteredJobs?.map((salary) => salary.salary);
-  const flattenedArraySalary = JobSalary?.flat();
+  // const JobSalary = filteredJobs?.map((salary) => salary.salary);
+  // const flattenedArraySalary = JobSalary?.flat();
 
-  const uniqueArraySalary = [...new Set(flattenedArraySalary)];
-  console.log("realyne", uniqueArraySalary);
+  // const uniqueArraySalary = [...new Set(flattenedArraySalary)];
+ 
 
-  const SalaryJob = uniqueArraySalary;
-  const maxSalaryJob = Math.max(...SalaryJob);
+  // const SalaryJob = uniqueArraySalary;
+  // const maxSalaryJob = Math.max(...SalaryJob);
 
-  const [salary, setSalary] = useState<number[]>([500, maxSalaryJob]);
-  const [minSalary, setMinSalary] = useState<number>(500);
-  const [maxSalary, setMaxSalary] = useState<number>(maxSalaryJob);
+  // const [salary, setSalary] = useState<number[]>([500, maxSalaryJob]);
+  // const [minSalary, setMinSalary] = useState<number>(500);
+  // const [maxSalary, setMaxSalary] = useState<number>(maxSalaryJob);
 
   // const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<string[]>(() =>
@@ -130,12 +130,12 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const [selectExpString, setSelectExpString] = useState<string | null>("");
   const navigate = useNavigate();
 
-  const handleSalaryChange = (_event: Event, newValue: number | number[]) => {
-    const [newMinSalary, newMaxSalary] = newValue as number[];
-    setSalary([newMinSalary, newMaxSalary]);
-    setMinSalary(newMinSalary);
-    setMaxSalary(newMaxSalary);
-  };
+  // const handleSalaryChange = (_event: Event, newValue: number | number[]) => {
+  //   const [newMinSalary, newMaxSalary] = newValue as number[];
+  //   setSalary([newMinSalary, newMaxSalary]);
+  //   setMinSalary(newMinSalary);
+  //   setMaxSalary(newMaxSalary);
+  // };
 
   // const handleSkillSelect = (skill: string) => {
   //   setSelectedSkill((prevSkills) =>
@@ -210,8 +210,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
 
   const flattenedArrayCompanyName = CompanyName?.flat();
   const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
-  console.log("realy1", CompanyName);
-
+ 
   const CompanyColums = uniqueArrayCompanyName;
 
   const filter = CompanyColums.filter((name) =>
@@ -247,7 +246,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const skills = SkillSetDatas?.map((skill) => skill.name);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
-  console.log("realy", uniqueArray);
+ 
 
   const skillsColumns = uniqueArray;
   const filterSkills = skillsColumns.filter((name) =>
@@ -268,7 +267,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const Jobtype = JobTypeDatas?.map((type) => type.name);
   const flattenedArrayType = Jobtype?.flat();
   const uniqueArrayType = [...new Set(flattenedArrayType)];
-  console.log("realy", uniqueArrayType);
+
 
   const TypeJob = uniqueArrayType;
   useEffect(() => {
@@ -288,7 +287,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   const JobExp = filteredJobs?.map((exp) => exp.experienceRequired);
   const flattenedArrayExp = JobExp?.flat();
   const uniqueArrayExp = [...new Set(flattenedArrayExp)];
-  console.log("realyne", uniqueArrayExp);
+
 
   const ExpJob = uniqueArrayExp;
 
@@ -352,9 +351,9 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
 
     // Build the search object conditionally
     const searchObject: SearchData = {
-      pageSize: 9,
-      minSalary: minSalary,
-      maxSalary: maxSalary,
+     
+      // minSalary: minSalary,
+      // maxSalary: maxSalary,
     };
 
     if (selectedSkill.length > 0) {
@@ -388,8 +387,8 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
   }, [
     selectedSkill,
     selectedType,
-    minSalary,
-    maxSalary,
+    // minSalary,
+    // maxSalary,
     selectedCompany,
     selectExp,
     selectedCites,
@@ -578,7 +577,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
           </div>
         </section>
 
-        <section className={classes.main}>
+        {/* <section className={classes.main}>
           <Typography variant="h6" className={classes.sectionTitle}>
             Salary
           </Typography>
@@ -586,7 +585,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
             <div className={classes.main2}>
               <div className={classes.main3}>
                 <div className={classes.salaryRange}>
-                  {/* {`${salary[0]}$ - ${salary[1]}$`} */}
+                  {`${salary[0]}$ - ${salary[1]}$`}
                   <p>Minimum Salary: {minSalary}</p>
                   <p>Maximum Salary: {maxSalary}</p>
                 </div>
@@ -605,7 +604,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
               />
             </div>
           </div>
-        </section>
+        </section> */}
         <section className={classes.main}>
           <label
             htmlFor=""

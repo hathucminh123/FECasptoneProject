@@ -179,7 +179,7 @@ export default function SaveJobs() {
             <div className={classes.job}>
               <div className={classes.job1}>
                 {FavoriteJobs?.map((job) => {
-              console.log('jaha',FavoriteJobs)
+            
                   const jobsfavorite= JobPostsdata?.find((item)=> item.id === job.id)
                   const companys = Companiesdata?.find(
                     (item) => item.id === jobsfavorite?.companyId

@@ -81,7 +81,8 @@ export default function TopEmployersSection() {
           {/* Pagination Controls */}
           <div className={classes.pagination}>
             <Pagination
-              count={Math.ceil((data?.totalCount || 0))} 
+              // count={Math.ceil((data?.totalCount || 0))} 
+              count={Math.ceil((data?.totalCount ? data?.totalCount/itemsPerPage :   0))} 
             //   count={Math.ceil((data?.totalCount || 0))} 
               page={currentPage}
               onChange={handlePageChange} // Handle page change

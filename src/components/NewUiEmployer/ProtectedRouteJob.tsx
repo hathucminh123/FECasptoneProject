@@ -16,7 +16,7 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
 
   // const [selectJobId,setSelectJobId]=useState<number|null>()
 
-  console.log("adu ma ", selectJobId);
+
 
   const location = useLocation();
 

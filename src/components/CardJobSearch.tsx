@@ -9,7 +9,7 @@ import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutli
 import moment from "moment";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
-
+import WorkIcon from "@mui/icons-material/Work";
 import CancelIcon from "@mui/icons-material/Cancel";
 
 interface JobType {
@@ -191,7 +191,7 @@ export default function CardJobSearch({
           </div>
           <div className={classes.line}></div>
           <div style={{ marginTop: "8px" }}></div>
-          <div className={classes.location}>
+          <div className={classes.location} style={{ gap: "10px" }}>
             <LocationOnOutlinedIcon />
             <Typography
               variant="h6"
@@ -229,7 +229,7 @@ export default function CardJobSearch({
               )}
             </Typography>
           </div>
-          <div className={classes.location}>
+          <div className={classes.location} style={{ gap: "10px" }}>
             <BusinessCenterOutlinedIcon />
             <Typography
               variant="h6"
@@ -243,6 +243,30 @@ export default function CardJobSearch({
               }}
             >
               {data?.jobType?.name}
+            </Typography>
+          </div>
+          <div className={classes.location} style={{ gap: "10px" }}>
+            <WorkIcon
+            // fontSize="large"
+            // sx={{
+            //   width: "16px",
+            //   height: "16px",
+            //   color: "#a6a6a6",
+            //   mt: "10px",
+            // }}
+            />
+            <Typography
+              variant="h6"
+              gutterBottom
+              sx={{
+                alignItems: "start",
+                fontWeight: 400,
+                mt: "7px",
+                color: " #414042 !important",
+                fontSize: "14px",
+              }}
+            >
+              {data?.experienceRequired} years
             </Typography>
           </div>
           <div className={classes.skill}>

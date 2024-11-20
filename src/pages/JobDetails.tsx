@@ -168,7 +168,7 @@ export default function JobDetails() {
     staleTime: 5000,
   });
   const FavoriteJobs = FavoriteJob?.JobPost;
-  console.log("hehe", FavoriteJobs);
+ 
 
   const haveFavorite = FavoriteJobs?.find(
     (item) => item.id === Number(job?.id)
