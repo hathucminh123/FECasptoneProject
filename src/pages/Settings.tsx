@@ -1,17 +1,22 @@
 import React, { useEffect, useState } from "react";
-import classes from "./Settings.module.css";
 import Typography from "@mui/material/Typography";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 import { PutUser } from "../Services/UserJobPostActivity/PutUser";
 import { queryClient } from "../Services/mainService";
 import { message } from "antd";
+import { AnimatePresence } from "framer-motion";
+import ModalOff from "../components/ModalOff";
+import classes from "./Settings.module.css";
 
 export default function Settings() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const [pendingUpdate, setPendingUpdate] = useState<boolean | null>(null); // Trạng thái cần cập nhật sau khi modal đóng
+
   const userId = localStorage.getItem("userId");
 
-  const { data: UserProfile } = useQuery({
+  const { data: UserProfile, isLoading } = useQuery({
     queryKey: ["UserProfile"],
     queryFn: ({ signal }) =>
       GetUserProfile({ id: Number(userId), signal: signal }),
@@ -20,7 +25,6 @@ export default function Settings() {
 
   const UserProfileData = UserProfile?.UserProfiles;
 
-  // Initialize state when data is available
   useEffect(() => {
     if (UserProfileData) {
       setNotificationsEnabled(UserProfileData.isLookingForJob || false);
@@ -30,18 +34,9 @@ export default function Settings() {
   const { mutate } = useMutation({
     mutationFn: PutUser,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["Profile"],
-        refetchType: "active",
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["JobSeekerRole"],
-        refetchType: "active",
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["UserProfile"],
-        refetchType: "active",
-      });
+      queryClient.invalidateQueries({ queryKey: ["Profile"], refetchType: "active" });
+      queryClient.invalidateQueries({ queryKey: ["JobSeekerRole"], refetchType: "active" });
+      queryClient.invalidateQueries({ queryKey: ["UserProfile"], refetchType: "active" });
       message.success("Notification settings updated successfully");
     },
     onError: () => {
@@ -51,20 +46,69 @@ export default function Settings() {
 
   const handleCheckboxChange = () => {
     const updatedValue = !notificationsEnabled;
-    setNotificationsEnabled(updatedValue);
+
+    if (!updatedValue) {
+     
+      setPendingUpdate(updatedValue); 
+      setOpenModal(true); 
+    } else {
+   
+      setNotificationsEnabled(updatedValue);
+      mutate({
+        data: {
+          firstName: UserProfileData?.firstName,
+          lastName: UserProfileData?.lastName,
+          email: UserProfileData?.email || "",
+          phoneNumber: UserProfileData?.phoneNumber || null,
+          isLookingForJob: updatedValue,
+        },
+      });
+    }
+  };
+
+  const handleConfirmModal = () => {
+    
+    setNotificationsEnabled(pendingUpdate as boolean); 
+    setOpenModal(false);
+
+  
     mutate({
       data: {
         firstName: UserProfileData?.firstName,
         lastName: UserProfileData?.lastName,
         email: UserProfileData?.email || "",
         phoneNumber: UserProfileData?.phoneNumber || null,
-        isLookingForJob: updatedValue,
+        isLookingForJob: pendingUpdate,
       },
     });
+    setPendingUpdate(null); 
   };
+
+  const handleCloseModal = () => {
+   
+    setOpenModal(false);
+    setPendingUpdate(null); 
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!UserProfileData) {
+    return <div>Something went wrong. Please try again later.</div>;
+  }
 
   return (
     <div className={classes.main}>
+      <AnimatePresence>
+        {openModal && (
+          <ModalOff
+            onClose={handleCloseModal} // Đóng modal
+            onConfirm={handleConfirmModal} // Xác nhận trong modal
+          />
+        )}
+      </AnimatePresence>
+
       <div className={classes.main1}>
         <div className={classes.main2}>
           <div className={classes.main3}>
@@ -100,7 +144,7 @@ export default function Settings() {
                   <div className={classes.main8}>
                     <div className={classes.main9}>
                       <span className={classes.span}>
-                        {UserProfileData?.email || "Loading..."}
+                        {UserProfileData?.email || "Not Available"}
                       </span>
                     </div>
                   </div>
@@ -119,25 +163,13 @@ export default function Settings() {
                 </div>
                 <div className={classes.main10}>
                   <div className={classes.main11}>Your Phone Number:</div>
-                  {UserProfileData?.phoneNumber ? (
-                    <div className={classes.main12}>
-                      <div className={classes.main9}>
-                        <span className={classes.span}>
-                          {`${UserProfileData?.phoneNumber || ""} 
-                         
-                        `}
-                        </span>
-                      </div>
+                  <div className={classes.main12}>
+                    <div className={classes.main9}>
+                      <span className={classes.span}>
+                        {UserProfileData?.phoneNumber || "No Phone Number Yet"}
+                      </span>
                     </div>
-                  ) : (
-                    <div className={classes.main12}>
-                      <div className={classes.main9}>
-                        <span className={classes.span}>
-                     No Phone Number Yet
-                        </span>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,7 +208,9 @@ export default function Settings() {
                       />
                       <div
                         className={
-                          notificationsEnabled ? classes.main19 : classes.main20
+                          notificationsEnabled
+                            ? classes.main19
+                            : classes.main20
                         }
                       ></div>
                     </label>

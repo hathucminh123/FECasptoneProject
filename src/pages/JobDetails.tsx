@@ -43,7 +43,7 @@ import { PostFavoriteJobs } from "../Services/FavoriteJobs/PostFavoriteJobs";
 import { queryClient } from "../Services/mainService";
 import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
 import { DeleteFavoriteJobs } from "../Services/FavoriteJobs/DeleteFavoriteJobs";
-// import { Comment } from "@mui/icons-material";
+import { Comment } from "@mui/icons-material";
 import { IconButton } from "@mui/material";
 import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
 import { AnimatePresence } from "framer-motion";
@@ -51,6 +51,8 @@ import FeedbackModal from "../components/FeedbackModal";
 import ModalSroreSeeker from "../components/ModalSroreSeeker";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 import GradientCircularProgress from "../components/NewUiEmployer/GradientCircularProgress";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import Pagination from "@mui/material/Pagination";
 // import HourglassFullIcon from '@mui/icons-material/HourglassFull';
 // import VerifiedIcon from '@mui/icons-material/Verified';
 const StyledLink = styled(Link)`
@@ -110,9 +112,47 @@ export default function JobDetails() {
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
 
-  // function handleStartAddNewChallenge() {
-  //   setIsCreatingNewChallenge(true);
-  // }
+  function handleStartAddNewChallenge() {
+    setIsCreatingNewChallenge(true);
+  }
+
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 4; // Page size
+  const [jobSearch, setJobSearch] = useState<JobPost[]>([]); // State to hold job search results
+  const [totalJobs, setTotalJobs] = useState<number>(0); // Total count for pagination
+
+  // Fetching job search data using mutation
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      if (data && data.result && data.result.items.length > 0) {
+        setJobSearch(data.result.items);
+        setTotalJobs(data.result.totalCount); 
+      } else {
+        setJobSearch([]);
+        setTotalJobs(0);
+      }
+    },
+    onError: () => {
+      message.error("Failed to fetch job data");
+    },
+  });
+
+  useEffect(() => {
+    mutateAsync({
+      data: {
+        pageIndex: currentPage,
+        pageSize: itemsPerPage,
+      },
+    });
+  }, [currentPage, mutateAsync]);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    setCurrentPage(page); // Update current page
+    // scrollToTop();
+  };
+
 
   function handleDone() {
     setIsCreatingNewChallenge(false);
@@ -213,6 +253,7 @@ export default function JobDetails() {
   const Companiesdata = Company?.Companies;
 
   const JobPostsdata = JobPosts?.JobPosts;
+  console.log("data",JobPostsdata)
   // const job: Job | null = location.state ?? null;
 
   // const job: Job | null = location.state ?? null;
@@ -553,11 +594,11 @@ export default function JobDetails() {
                           "DD/MM/YYYY HH:mm"
                         )}
                       </span>
-                      {/* <span className={classes.span1}>
+                      <span className={classes.span1}>
                         <IconButton onClick={handleStartAddNewChallenge}>
                           <Comment />
                         </IconButton>
-                      </span> */}
+                      </span>
                       {feedBackUserJob?.status === "Rejected" ||
                       feedBackUserJob?.status === "Passed" ||
                       feedBackUserJob?.status === "InterviewStage" ||
@@ -570,9 +611,9 @@ export default function JobDetails() {
                           >
                             <Visibility />
                           </IconButton>
-                          {/* <IconButton onClick={handleStartAddNewChallenge}>
+                          <IconButton onClick={handleStartAddNewChallenge}>
                             <Comment />
-                          </IconButton> */}
+                          </IconButton>
                         </span>
                       ) : undefined}
                     </div>
@@ -1207,7 +1248,7 @@ export default function JobDetails() {
             More jobs for you
           </Typography>
           <div className={classes.cardJob}>
-            {JobPostsdata?.map((job) => {
+            {jobSearch?.map((job) => {
               const companys = Companiesdata?.find(
                 (item) => item.id === job.companyId
               );
@@ -1226,6 +1267,20 @@ export default function JobDetails() {
               <CardJob />
               <CardJob />
               <CardJob /> */}
+               <div className={classes.pagination}>
+            <Pagination
+              count={Math.ceil(totalJobs / itemsPerPage)} // Total pages
+              page={currentPage}
+              onChange={handlePageChange} 
+              color="primary"
+              size="large"
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            />
+          </div>
           </div>
         </div>
       </div>

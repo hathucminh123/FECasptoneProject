@@ -10,6 +10,7 @@
   margin-right: auto;
   margin-left: auto;
   display: block;
+  box-sizing: border-box;
 }
 
 .container {
@@ -18,7 +19,12 @@
   margin: 0 !important;
   display: flex;
   flex-wrap: wrap;
+  --i-gutter-x: 1.5rem;
+  --i-gutter-y: 0;
+  box-sizing: border-box;
 }
+
+
 
 .container1 {
   padding: 0 !important;
@@ -26,6 +32,7 @@
   flex: 0 0 auto;
   width: 100%;
   display: block;
+  box-sizing: border-box;
 }
 
 .title {
@@ -34,15 +41,12 @@
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
-}
-.sort {
-  margin-top: 0px !important;
-  align-items: center !important;
-  display: flex !important;
+  box-sizing: border-box;
 }
 
 .job {
   display: block;
+  box-sizing: border-box;
 }
 
 .job1 {
@@ -51,11 +55,15 @@
   grid-gap: 20px;
   margin-bottom: 64px !important;
   justify-content: center !important;
+  box-sizing: border-box;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 
+
 .carditem{
-    transition: box-shadow 300ms;
+    /* transition: box-shadow 300ms;
     border-radius: 8px;
     margin-bottom: 0px !important;
     width: 400px;
@@ -64,12 +72,73 @@
     background-color: white;
     flex-direction: column !important;
     position: relative !important;
+    display: flex !important; */
+    transition: box-shadow 300ms;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    margin-bottom: 0px !important;
+
+    padding-bottom: 20px !important;  
+    padding-top: 16px !important;
+    --i-bg-opacity: 1;
+ 
+    flex-direction: column !important;
+    background-color: white;
+    position: relative !important;
     display: flex !important;
+    box-sizing: border-box;
 }
 
+.carditem:hover {
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
 .button_icon {
     display: flex;
     /* align-items: center;
     justify-content: space-between; */
     align-self: flex-end;
+}
+
+@media (max-width: 768px) {
+  .icontainer {
+    padding: 0 16px;
   }
+
+  .container {
+    flex-direction: column;
+  }
+
+  .job1 {
+    grid-template-columns: 1fr; /* Single column on smaller devices */
+  }
+
+  .title, .sort {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .carditem {
+    margin-bottom: 16px !important;
+  }
+
+  .button_icon {
+    align-self: stretch; /* Allow full width for smaller screens */
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .tab {
+    min-height: calc(100vh - 300px);
+  }
+
+  .carditem {
+    padding: 12px;
+  }
+
+  .title {
+    margin-top: 16px !important;
+    margin-bottom: 16px !important;
+  }
+}

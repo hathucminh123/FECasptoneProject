@@ -10,6 +10,7 @@
     margin-right: auto;
     margin-left: auto;
     display: block;
+    box-sizing: border-box;
   }
   
   .container {
@@ -18,6 +19,7 @@
     margin: 0 !important;
     display: flex;
     flex-wrap: wrap;
+    box-sizing: border-box;
   }
   
   .container1 {

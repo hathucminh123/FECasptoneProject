@@ -204,7 +204,7 @@ export default function CVScreeningPassed() {
                     mb: 0,
                   }}
                 >
-                  Pending Job ({JobPending?.length})
+                  CVSreening Jobs ({JobPending?.length})
                 </Typography>
              
               </div>

@@ -24,7 +24,7 @@ interface Props {
 
 const FeedbackModal: React.FC<Props> = ({ onDone, data }) => {
   return (
-    <Modal text="" disappear={true} title="Comments" onClose={onDone}>
+    <Modal  text="" disappear={true} title="Comments" onClose={onDone}>
       <Box component="div" className={classes.commentContainer}>
         {data && data.length > 0 ? (
           data.map((comment) => (

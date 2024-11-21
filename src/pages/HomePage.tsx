@@ -68,10 +68,10 @@ export default function HomePage() {
     }
   };
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
- 
+
   const [text, setText] = useState<string>("");
   const [location, setLocation] = useState<string>("All");
-  const { mutateAsync ,isPending } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       console.log("Search result:", data);
@@ -87,7 +87,9 @@ export default function HomePage() {
           },
         });
       } else {
-        navigate("/it_jobs", { state: { text: text||"", location: location ,jobSearch:[]} });
+        navigate("/it_jobs", {
+          state: { text: text || "", location: location, jobSearch: [] },
+        });
       }
 
       queryClient.invalidateQueries({
@@ -111,7 +113,7 @@ export default function HomePage() {
 
     // Define the shape of each search data object
     interface SearchData {
-      jobTitle?:string
+      jobTitle?: string;
       companyName?: string;
       skillSet?: string;
       city?: string;
@@ -185,7 +187,6 @@ export default function HomePage() {
   };
 
   const handleNavigateSkill = async (item: string) => {
-  
     interface JobSearchResponse {
       result: {
         items: JobPost[];
@@ -207,7 +208,6 @@ export default function HomePage() {
         const result: JobSearchResponse = await mutateAsync({
           data: searchDataArray[i],
         });
-     
 
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
@@ -263,7 +263,7 @@ export default function HomePage() {
   //   return <div>Error loading data...</div>;
   // }
 
-  if (isJobLoading ) {
+  if (isJobLoading) {
     return <div>Loading...</div>;
   }
 
@@ -487,7 +487,9 @@ export default function HomePage() {
           </section>
         </div>
       </main> */}
-      <TopJobSection/>
+   
+        <TopJobSection />
+    
     </>
   );
 }

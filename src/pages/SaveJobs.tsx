@@ -131,7 +131,7 @@ export default function SaveJobs() {
       <div className={classes.icontainer}>
         <div className={classes.container}>
           <div className={classes.container1}>
-            <div style={{ display: "block" }}>
+            <div style={{ display: "block",boxSizing:'border-box' }}>
               <div className={classes.title}>
                 <Typography
                   variant="h2"

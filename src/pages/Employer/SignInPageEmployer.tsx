@@ -33,7 +33,7 @@ export default function SignInPageEmployer() {
   const [alertMessage, setAlertMessage] = useState<boolean | null>(null);
   const [isConfirmPasswordShowRegister, setConfirmIsPasswordShowRegister] =
     useState<boolean>(false);
-  const [check, setCheck] = useState<boolean>(false);
+  // const [check, setCheck] = useState<boolean>(false);
   // const [errorsMessage,setErrorsMessage]=useState<string>("")
   // const [showAlert, setShowAlert] = useState<boolean>(false);
   // const navigate = useNavigate();
@@ -158,9 +158,9 @@ export default function SignInPageEmployer() {
     },
   });
 
-  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheck(e.target.checked);
-  };
+  // const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setCheck(e.target.checked);
+  // };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -826,7 +826,7 @@ export default function SignInPageEmployer() {
                       Company Information
                     </p> */}
 
-                    <div className={classes.check}>
+                    {/* <div className={classes.check}>
                       <input
                         id="checkbox1"
                         type="checkbox"
@@ -837,7 +837,7 @@ export default function SignInPageEmployer() {
                         I have read and accept the Terms of Use and Privacy
                         Policy
                       </span>
-                    </div>
+                    </div> */}
                     {isPending ? (
                       <button
                         disabled
@@ -848,9 +848,10 @@ export default function SignInPageEmployer() {
                       </button>
                     ) : (
                       <button
-                        disabled={!check}
+                        // disabled={!check}
                         type="submit"
-                        className={check ? classes.button1 : classes.button2}
+                        // className={check ? classes.button1 : classes.button2}
+                        className={ classes.button1 }
                       >
                         Register
                       </button>

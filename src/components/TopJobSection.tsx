@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import CardJob from "../components/CardJob";
+import { motion } from "framer-motion"; // Import Framer Motion
 import classes from "../pages/HomePage.module.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
@@ -37,17 +38,17 @@ interface JobPost {
 
 export default function TopJobSection() {
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 8; // Page size
-  const [jobSearch, setJobSearch] = useState<JobPost[]>([]); // State to hold job search results
-  const [totalJobs, setTotalJobs] = useState<number>(0); // Total count for pagination
+  const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
+  const itemsPerPage = 8;
+  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+  const [totalJobs, setTotalJobs] = useState<number>(0);
 
-  // Fetching job search data using mutation
   const { mutateAsync } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
       if (data && data.result && data.result.items.length > 0) {
         setJobSearch(data.result.items);
-        setTotalJobs(data.result.totalCount); // Update total count for pagination
+        setTotalJobs(data.result.totalCount);
       } else {
         setJobSearch([]);
         setTotalJobs(0);
@@ -58,7 +59,6 @@ export default function TopJobSection() {
     },
   });
 
-  // Fetching companies
   const { data: Company } = useQuery({
     queryKey: ["Company"],
     queryFn: ({ signal }) => fetchCompanies({ signal }),
@@ -67,7 +67,6 @@ export default function TopJobSection() {
 
   const Companiesdata = Company?.Companies || [];
 
-  // Fetch jobs whenever currentPage changes
   useEffect(() => {
     mutateAsync({
       data: {
@@ -78,7 +77,8 @@ export default function TopJobSection() {
   }, [currentPage, mutateAsync]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
-    setCurrentPage(page); // Update current page
+    setDirection(page > currentPage ? 1 : -1); // Determine direction based on page number
+    setCurrentPage(page);
     scrollToTop();
   };
 
@@ -87,6 +87,22 @@ export default function TopJobSection() {
       top: 1800,
       behavior: "smooth",
     });
+  };
+
+  // Animation variants
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -1000 : 1000,
+      opacity: 0,
+    }),
   };
 
   return (
@@ -108,12 +124,24 @@ export default function TopJobSection() {
                 color: "#121212",
               }}
             >
-           IT Jobs "Chất" for user
+              IT Jobs "Chất" for user
             </Typography>
           </div>
 
-          {/* Display jobs */}
-          <div className={classes.cardJob}>
+          {/* Job Cards with Animation */}
+          <motion.div
+            key={currentPage} // Ensure re-render on page change
+            className={classes.cardJob}
+            custom={direction} // Pass direction to variants
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+          >
             {jobSearch.map((job) => {
               const company = Companiesdata.find(
                 (item) => item.id === job.companyId
@@ -121,14 +149,14 @@ export default function TopJobSection() {
               if (!company) return null;
               return <CardJob key={job.id} data={job} company={company} />;
             })}
-          </div>
+          </motion.div>
 
           {/* Pagination Controls */}
           <div className={classes.pagination}>
             <Pagination
-              count={Math.ceil(totalJobs / itemsPerPage)} // Total pages
+              count={Math.ceil(totalJobs / itemsPerPage)}
               page={currentPage}
-              onChange={handlePageChange} // Handle page change
+              onChange={handlePageChange}
               color="primary"
               size="large"
               sx={{

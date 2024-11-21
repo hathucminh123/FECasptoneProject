@@ -1,12 +1,14 @@
 .main {
-  min-height: calc(100vh - 495px);
-  display: flex;
-  flex-direction: column;
+  min-height: calc(100vh - 471px);
+  flex-direction: column !important;
+  display: flex !important;
+  box-sizing: border-box;
 }
 
 .main1 {
-  flex-grow: 1;
+  flex-grow: 1 !important;
   display: block;
+  box-sizing: border-box;
 }
 
 .footer {

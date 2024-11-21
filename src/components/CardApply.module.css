@@ -1,6 +1,7 @@
 .main {
-  transition: box-shadow 300ms;
-  cursor: pointer;
+  /* transition: box-shadow 300ms;
+  border: 1px solid transparent;
+
   border-radius: 8px;
   margin-bottom: 0px !important;
   padding-bottom: 20px !important;
@@ -8,10 +9,34 @@
   background-color: #fff;
   width: 350px;
   flex-direction: column !important;
-  position: relative;
+  position: relative !important;
+  display: flex !important;
+  box-sizing: border-box;
+  --i-bg-opacity: 1; */
+  max-width:400px;
+
+  transition: box-shadow 300ms;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  /* max-width: 500px; */
+
+  margin-bottom: 0px !important;
+
+  padding-bottom: 20px !important;  
+  padding-top: 16px !important;
+  --i-bg-opacity: 1;
+
+  flex-direction: column !important;
+  background-color: white;
+  position: relative !important;
   display: flex !important;
   box-sizing: border-box;
 }
+
+.main:hover {
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
+  }
 
 .main1{
     padding-left: 12px !important;
@@ -124,7 +149,7 @@
 }
 
 .link1{
-
+    color: #121212 !important;
     width: 48px;
     height: 48px;
     box-sizing: content-box;
@@ -133,6 +158,11 @@
     cursor: pointer;
 }
 
+.link:hover {
+    /* text-decoration: underline; */
+    color: #FF0000 !important;
+  }
+  
 .span1{
     margin-left: 8px !important;
     font-size: 14px;
@@ -180,6 +210,7 @@
     display: flex !important;
     box-sizing: border-box;
     cursor: pointer;
+
 }
 
 .span3{
@@ -218,3 +249,38 @@
     cursor: pointer;
     box-sizing: border-box;
 }
+
+@media (max-width: 768px) {
+    .main {
+      flex-direction: column;
+      padding: 10px;
+    }
+  
+    .main3 {
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .button1 {
+      font-size: 10px;
+      padding: 2px 6px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .main {
+      padding: 8px;
+    }
+  
+    .status, .Pending, .Rejected {
+      position: static; /* Loại bỏ tuyệt đối */
+      margin: 10px 0;
+    }
+  
+    .button1 {
+      font-size: 8px;
+      padding: 2px 4px;
+    }
+  }
+  

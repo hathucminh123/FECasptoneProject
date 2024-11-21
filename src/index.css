@@ -17,7 +17,10 @@ body, main {
   margin: 0;
   padding: 0;
   display: block;
+  font-family: var(--i-body-font-family);
   box-sizing: border-box;
+  font-family: Roboto, Helvetica, Verdana, Arial, sans-serif;
+  /* font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; */
 }
 
 .button {

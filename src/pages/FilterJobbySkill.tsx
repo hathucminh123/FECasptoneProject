@@ -147,9 +147,6 @@ export default function FilterJobbySkill() {
   // const filteredJobs = useAppSelector(TodoListSelector);
   const filteredJobs = jobSearch;
 
-
-
-
   const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
   console.log("fe", dataa);
 
@@ -189,14 +186,11 @@ export default function FilterJobbySkill() {
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
   const JobPostsdata = JobPosts?.JobPosts;
 
-
   const Companiesdata = Company?.Companies;
   useEffect(() => {
     if (Companiesdata || JobPostsdata) {
       dispatch(setCompanies(Companiesdata || []));
       dispatch(setJobPosts(JobPostsdata || []));
-
-    
     }
   }, [Companiesdata, JobPostsdata, dispatch]);
 
@@ -234,9 +228,13 @@ export default function FilterJobbySkill() {
 
   const handleApplyClick = () => {
     if (!auth) {
-      navigate("/JobSeekers/login", {
-        state: { from: window.location.pathname },
-      });
+      navigate(
+        "/JobSeekers/login",
+        //   {
+        //   state: { from: window.location.pathname },
+        // }
+        { state: { from: `/job/Apply/${jobDetails?.id}` } }
+      );
     } else {
       navigate(`/job/Apply/${jobDetails?.id}`);
     }

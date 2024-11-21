@@ -203,7 +203,7 @@ export default function AppliedJob() {
                     mb: 0,
                   }}
                 >
-                  Passed Job ({JobPostActivitydata?.length})
+                  Applied Job ({JobPostActivitydata?.length})
                 </Typography>
               </div>
             </div>

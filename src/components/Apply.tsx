@@ -93,7 +93,7 @@ export default function Apply() {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate(`/jobs/detail/${Number(JobId)}`);
   };
 
   const handleCVSelect = (cvId: number) => {

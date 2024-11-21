@@ -298,7 +298,7 @@ export default function FormSearch({
           <TextField
             value={text}
             id="keyword-input"
-            label="Enter keyword"
+            // label="Enter keyword"
             placeholder="Skill (Java, iOS), Job title, Company Name"
             type="text"
             variant="outlined"

@@ -9,9 +9,11 @@
 
 .container{
     display: flex;
+    /* flex-wrap: wrap; */
     padding-bottom: 3rem !important;
-    gap: 50px;
- 
+    gap: 10px;
+    box-sizing: border-box;
+
 }
 
 .containerleft{
@@ -166,10 +168,13 @@
 
 .containerRight{
     margin-left: 1.5rem !important;
-    flex-grow: 1 !important;
+    flex: 1 !important;
     display: block;
-    
+  min-width: 0;
+    box-sizing: border-box;
+   
 }
+
 
 .main{
     padding: 24px 24px 32px 24px;
@@ -179,7 +184,7 @@
     margin-top: 1.5rem !important;
     display: block;
     max-width: 100%;
-    width: 900px;
+    /* width: 900px; */
   
    
 }
@@ -230,3 +235,149 @@
     margin-top: 0;
     margin-bottom: 0;
 }
+
+/* Base styles remain unchanged */
+
+/* Medium screens (tablets) */
+@media (max-width: 1024px) {
+    .container {
+      flex-direction: column;
+      gap: 20px; /* Add spacing between stacked elements */
+      padding: 1rem;
+    }
+  
+    .containerleft {
+      width: 100%;
+      min-width: unset;
+      margin-bottom: 1rem;
+    }
+  
+    .containerRight {
+      margin-left: 0;
+    }
+  
+    .main {
+      padding: 16px;
+      margin-top: 1rem;
+      width: 100%;
+      box-shadow: none; /* Simplify design on smaller screens */
+    }
+  
+    .main2 {
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  
+    .main4 {
+      grid-template-columns: 100%; /* Single column layout */
+      row-gap: 16px;
+    }
+  
+    .img {
+      text-align: center; /* Center images on smaller screens */
+    }
+  
+    .button1, .btnform {
+      width: 100%; /* Full-width buttons */
+      margin-top: 1rem;
+    }
+  
+    .morecontent {
+      justify-content: center;
+      font-size: 14px; /* Adjust font size */
+    }
+  
+    .separator {
+      margin: 10px 0; /* Reduce spacing for dividers */
+    }
+  }
+  
+  /* Small screens (mobile) */
+  @media (max-width: 768px) {
+    .icontainer {
+      padding: 0 10px;
+    }
+  
+    .main {
+      padding: 12px;
+      margin-top: 1rem;
+    }
+  
+    .main4 {
+      grid-template-columns: 100%; /* Stack all content */
+      row-gap: 12px;
+    }
+  
+    .button1, .btnform {
+      font-size: 14px;
+      padding: 10px 12px;
+    }
+  
+    .updateprofile {
+      margin: 0;
+      gap: 10px;
+    }
+  
+    .updateul {
+      padding: 0;
+    }
+  
+    .iconadd {
+      margin-top: 10px;
+      justify-content: center;
+    }
+  
+    .cvform {
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+  
+    .content {
+      margin-top: 1rem;
+      padding: 16px;
+    }
+  }
+  
+  /* Extra small screens (mobile phones) */
+  @media (max-width: 480px) {
+    .icontainer {
+      padding: 0 5px;
+    }
+  
+    .main {
+      padding: 8px;
+      margin-top: 0.5rem;
+    }
+  
+    .main4 {
+      grid-template-columns: 100%; /* Single column for mobile */
+      gap: 8px;
+    }
+  
+    .img {
+      margin: 0 auto; /* Center the image */
+      display: block;
+    }
+  
+    .button1, .btnform {
+      font-size: 12px;
+      padding: 8px;
+      width: 100%;
+    }
+  
+    .content {
+      margin-top: 0.5rem;
+      padding: 12px;
+    }
+  
+    .morecontent {
+      font-size: 12px;
+      padding: 0.5rem;
+    }
+  
+    .separator {
+      margin: 5px 0; /* Minimal spacing for dividers */
+    }
+  }
+  

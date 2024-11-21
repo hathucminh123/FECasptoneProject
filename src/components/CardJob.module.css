@@ -1,6 +1,5 @@
 .card_main {
-   padding-bottom: 20px;
-   box-sizing: border-box;
+
  
 }
 .card_item {
@@ -168,7 +167,8 @@
 }
 
 .link:hover {
-  text-decoration: underline;
+  /* text-decoration: underline; */
+  color: #FF0000 !important;
 }
 
 
@@ -176,4 +176,15 @@
   text-decoration: none;
   color: black; 
   /* color: black;  */
+}
+
+
+.link3{
+  text-decoration: none;
+  color: black; 
+  box-sizing: border-box;
+}
+
+.link3:hover{
+    text-decoration: underline;
 }

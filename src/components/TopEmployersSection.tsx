@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { Typography } from "@mui/material";
 import Pagination from "@mui/material/Pagination";
 import CardEmployer from "../components/CardEmployer";
+import { motion } from "framer-motion"; // Import Framer Motion
 import classes from "../pages/HomePage.module.css";
 import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 import { useQuery } from "@tanstack/react-query";
 
 export default function TopEmployersSection() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
   const itemsPerPage = 6; // Page size
 
   // Fetch companies using React Query
@@ -16,20 +18,16 @@ export default function TopEmployersSection() {
     queryFn: ({ signal }) =>
       SearchCompany({
         signal,
-        // name: companyName,
         pageIndex: currentPage,
         pageSize: itemsPerPage,
       }),
   });
 
   const Companies = data?.items || [];
+  const totalCount = data?.totalCount || 0;
 
-  const count =data?.totalCount ||[]
-  console.log('das',count)
-  const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
+  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+    setDirection(page > currentPage ? 1 : -1); // Determine direction based on page number
     setCurrentPage(page);
     scrollToTop();
   };
@@ -39,6 +37,22 @@ export default function TopEmployersSection() {
       top: 500,
       behavior: "smooth",
     });
+  };
+
+  // Animation variants
+  const variants = {
+    enter: (direction: number) => ({
+      x: direction > 0 ? 1000 : -1000,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction: number) => ({
+      x: direction > 0 ? -1000 : 1000,
+      opacity: 0,
+    }),
   };
 
   return (
@@ -68,7 +82,20 @@ export default function TopEmployersSection() {
           {isLoading && <Typography>Loading...</Typography>}
           {isError && <Typography>Error fetching data</Typography>}
 
-          <div className={classes.card1}>
+          {/* Company Cards with Animation */}
+          <motion.div
+            key={currentPage} // Ensure re-render on page change
+            className={classes.card1}
+            custom={direction} // Pass direction to variants
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 },
+            }}
+          >
             {Companies?.map((company) => (
               <CardEmployer
                 key={company.id}
@@ -76,14 +103,12 @@ export default function TopEmployersSection() {
                 jobs={company.jobPosts}
               />
             ))}
-          </div>
+          </motion.div>
 
           {/* Pagination Controls */}
           <div className={classes.pagination}>
             <Pagination
-              // count={Math.ceil((data?.totalCount || 0))} 
-              count={Math.ceil((data?.totalCount ? data?.totalCount/itemsPerPage :   0))} 
-            //   count={Math.ceil((data?.totalCount || 0))} 
+              count={Math.ceil(totalCount / itemsPerPage)} // Total pages
               page={currentPage}
               onChange={handlePageChange} // Handle page change
               color="primary"

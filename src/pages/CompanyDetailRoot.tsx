@@ -186,7 +186,7 @@ export default function CompanyDetailRoot() {
       message.success(`Follow ${companyDataa?.companyName} Successfully`);
     },
     onError: () => {
-      message.error(`Failed to Follow ${companyDataa?.companyName} `);
+      // message.error(`Failed to Follow ${companyDataa?.companyName} `);
     },
   });
   const { mutate: Unfollow } = useMutation({

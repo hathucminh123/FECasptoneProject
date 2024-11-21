@@ -626,3 +626,138 @@
     display: block;
     unicode-bidi: isolate;
 }
+
+/* Base styles remain as provided */
+
+@media (max-width: 1024px) {
+    .main {
+      min-height: calc(100vh - 400px); /* Adjusted height for medium screens */
+    }
+  
+    .main4 {
+      max-width: 768px; /* Reduce container width */
+      padding-bottom: 2rem !important;
+      padding-top: 1rem !important;
+    }
+  
+    .main5 {
+      padding: 16px; /* Reduce padding for smaller screens */
+      font-size: 14px;
+    }
+  
+    .main13 {
+      flex-direction: column; /* Stack inputs vertically */
+      align-items: stretch;
+    }
+  
+    .main33, .main34, .main12 {
+      width: 100%; /* Full width for form elements */
+      padding-right: 0;
+      padding-left: 0;
+    }
+  
+    .button, .button2 {
+      min-width: 120px; /* Reduce button width */
+      font-size: 14px !important; /* Adjust font size */
+      padding: 8px 16px;
+    }
+  
+    .svg {
+      height: 14px;
+      width: 14px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .main {
+      min-height: calc(100vh - 300px); /* Further height adjustment */
+    }
+  
+    .main4 {
+      max-width: 600px; /* Reduce container width further */
+    }
+  
+    .main5 {
+      padding: 12px; /* Further reduce padding */
+      box-shadow: none; /* Remove shadow for minimalistic design */
+    }
+  
+    .main7 {
+      margin: 0.5rem 0; /* Reduce spacing around dividers */
+    }
+  
+    .button, .button2 {
+      min-width: 100px; /* Smaller buttons */
+      padding: 6px 12px;
+      font-size: 12px !important;
+    }
+  
+    .input {
+      font-size: 14px !important;
+      padding: 6px !important; /* Adjust input padding */
+    }
+  
+    .main32 {
+      margin: 0.5rem 0; /* Reduce margin around subscribed items */
+    }
+  
+    .mainactive, .main16 {
+      padding-right: 1rem; /* Reduce dropdown padding */
+    }
+  
+    .svg {
+      height: 12px;
+      width: 12px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .main {
+      min-height: calc(100vh - 200px); /* Adjust height for mobile */
+    }
+  
+    .main4 {
+      max-width: 100%; /* Full-width container */
+      padding: 8px; /* Reduce padding */
+    }
+  
+    .main5 {
+      padding: 8px; /* Minimal padding for compact design */
+      font-size: 12px; /* Reduce font size for mobile */
+    }
+  
+    .main13 {
+      flex-direction: column; /* Stack elements */
+      gap: 8px; /* Add spacing between stacked elements */
+    }
+  
+    .button, .button2 {
+      width: 100%; /* Full-width buttons for mobile */
+      min-width: unset;
+    }
+  
+    .main10, .main30 {
+      margin: 0; /* Remove unnecessary margins */
+      padding: 8px;
+    }
+  
+    .input {
+      font-size: 12px !important; /* Adjust input font size */
+      padding: 4px !important;
+    }
+  
+    .span {
+      padding: 6px; /* Compact padding */
+    }
+  
+    .svg {
+      height: 10px;
+      width: 10px; /* Small icons */
+    }
+  
+    .mainactive, .main16 {
+      padding-right: 0.5rem;
+      padding-left: 0.5rem; /* Smaller padding for dropdown */
+    }
+  }
+  

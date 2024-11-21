@@ -203,7 +203,7 @@ export default function InterviewStage() {
                     mb: 0,
                   }}
                 >
-                  Pending Job ({JobPending?.length})
+                  InterView Job ({JobPending?.length})
                 </Typography>
               </div>
             </div>

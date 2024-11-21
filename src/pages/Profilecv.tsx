@@ -226,7 +226,7 @@ export default function Profilecv() {
                     fontWeight: 600,
                   }}
                 >
-                  Upgrade profile to "Excellent" to unlock Download CV
+                  Upgrade profile to "Excellent" to  Download CV
                 </Typography>
 
                 <div className={classes.updateprofile}>
@@ -461,7 +461,7 @@ export default function Profilecv() {
             </div>
           </div>
         </div>
-        <div className={classes.containerright}>
+        <div className={classes.containerRight}>
           <div className={classes.main}>
             <div className={classes.main1}>
               <div className={classes.main2}>

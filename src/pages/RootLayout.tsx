@@ -2,31 +2,31 @@ import React, { useEffect, useState } from "react";
 import {
   Outlet,
   useLocation,
-  useNavigate,
+  // useNavigate,
   // useNavigate,
   useRouteLoaderData,
   useSubmit,
 } from "react-router-dom";
 import HeaderNavigation from "../components/HeaderNavigation";
-import CloseIcon from "@mui/icons-material/Close";
+// import CloseIcon from "@mui/icons-material/Close";
 import Footer from "../components/Footer";
 import classes from "./RootLayout.module.css";
 import useScrollToTop from "../hook/useScrollToTop";
 import { getTokenDuration } from "../utils/Auth";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import { useMutation } from "@tanstack/react-query";
-import { JobSearchQuery } from "../Services/JobSearchService/JobSearchQuery";
-import { message } from "antd";
+// import SearchIcon from "@mui/icons-material/Search";
+// import TextField from "@mui/material/TextField";
+// import Box from "@mui/material/Box";
+// import Button from "@mui/material/Button";
+// import { useMutation } from "@tanstack/react-query";
+// import { JobSearchQuery } from "../Services/JobSearchService/JobSearchQuery";
+// import { message } from "antd";
 // import { queryClient } from "../Services/mainService";
 
 export default function RootLayout() {
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchOpen, setSearchOpen] = useState(false);
+  // const [searchTerm, setSearchTerm] = useState("");
 
-  const toggleModal = () => setSearchOpen((prev) => !prev);
+  // const toggleModal = () => setSearchOpen((prev) => !prev);
   const token = useRouteLoaderData("root");
   const userRole = localStorage.getItem("role");
   console.log("role", userRole);
@@ -34,40 +34,40 @@ export default function RootLayout() {
   // const navigate =useNavigate()
   const submit = useSubmit();
 
-  const navigate = useNavigate();
-  const { mutate } = useMutation({
-    mutationFn: JobSearchQuery,
-    onSuccess: (data) => {
-      console.log("Search result:", data);
+  // const navigate = useNavigate();
+  // const { mutate } = useMutation({
+  //   mutationFn: JobSearchQuery,
+  //   onSuccess: (data) => {
+  //     console.log("Search result:", data);
 
-      if (data && data.result && data.result.length > 0) {
-        const jobSearchResults = data.result;
-        // setJobSearch(data.result.items);
+  //     if (data && data.result && data.result.length > 0) {
+  //       const jobSearchResults = data.result;
+       
 
-        navigate("/it_jobs", {
-          // state: { jobSearch: jobSearchResults, textt: searchTerm },
-          state: { jobSearch: jobSearchResults },
-        });
-      } else {
-        // navigate("/it_jobs", { state: { textt: searchTerm } });
-        navigate("/it_jobs");
-      }
-      setSearchOpen(false);
+  //       navigate("/it_jobs", {
+        
+  //         state: { jobSearch: jobSearchResults },
+  //       });
+  //     } else {
+        
+  //       navigate("/it_jobs");
+  //     }
+  //     setSearchOpen(false);
 
-      // navigate("/it-jobs",{state : text});
-    },
-    onError: () => {
-      message.error("Failed to Search.");
-    },
-  });
+    
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Search.");
+  //   },
+  // });
 
-  const handleSearch = () => {
-    mutate({
-      data: {
-        query: searchTerm,
-      },
-    });
-  };
+  // const handleSearch = () => {
+  //   mutate({
+  //     data: {
+  //       query: searchTerm,
+  //     },
+  //   });
+  // };
 
   const tokenDuration = getTokenDuration();
 
@@ -125,7 +125,7 @@ export default function RootLayout() {
         <Footer onClick={handelScroll} scroll={scroll} />
       </footer>
 
-      <div className={classes.main3}>
+      {/* <div className={classes.main3}>
         {searchOpen ? (
           <div className={classes.modal}>
             <div className={classes.modal1}>
@@ -137,7 +137,7 @@ export default function RootLayout() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* <div className={classes.modal6}>
             <div className={classes.modal7}>
               <ul className={classes.ul}>
@@ -170,7 +170,7 @@ export default function RootLayout() {
               alignItems: "center",
             }}
           > */}
-            <Box className={classes.modalne}>
+            {/* <Box className={classes.modalne}>
               <div className={classes.modalContent}>
                 <TextField
                   id="search-keyword"
@@ -197,16 +197,16 @@ export default function RootLayout() {
                 </Button>
               </div>
             </Box>
-            {/* </Modal> */}
+          
           </div>
-        ) : undefined}
+        ) : undefined} */}
 
-        <div className={classes.main2} onClick={toggleModal}>
-          {/* <img
+        {/* <div className={classes.main2} onClick={toggleModal}>
+          <img
             src="https://cdn-new.topcv.vn/unsafe/https://static.topcv.vn/v4/image/support-ticket/customer.png"
             className={classes.img}
             alt=""
-          /> */}
+          />
           {searchOpen ? (
             <CloseIcon
               sx={{
@@ -240,8 +240,8 @@ export default function RootLayout() {
               }}
             />
           )}
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
     </>
   );
 }

@@ -75,11 +75,9 @@ interface props {
 export default function CardApply({ company, job, activity }: props) {
   const pendingJobsArray = [];
   pendingJobsArray.push(job);
-  const city = pendingJobsArray?.map(
-    (city) => city?.jobLocationCities
-  );
+  const city = pendingJobsArray?.map((city) => city?.jobLocationCities);
   const flattenedArrayCity = city?.flat();
- 
+
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;
@@ -110,23 +108,23 @@ export default function CardApply({ company, job, activity }: props) {
               {moment(activity.applicationDate).format("DD-MM-YYYY")}
             </span>
           </div>
-          <Typography
-            variant="h3"
-            sx={{
-              marginTop: "12px",
-              lineHeight: 1.5,
-              fontSize: "20px",
-              fontWeight: 700,
-              boxSizing: "border-box",
-            }}
+          <Link
+            to={`/jobs/detail/${activity.jobPostId}`}
+            className={classes.link}
           >
-            <Link
-              to={`/jobs/detail/${activity.jobPostId}`}
-              className={classes.link}
+            <Typography
+              variant="h3"
+              sx={{
+                marginTop: "12px",
+                lineHeight: 1.5,
+                fontSize: "20px",
+                fontWeight: 700,
+                boxSizing: "border-box",
+              }}
             >
               {activity.jobTitle}
-            </Link>
-          </Typography>
+            </Typography>
+          </Link>
           <div className={classes.main4}>
             <Link to="" className={classes.link1}>
               <img src={company?.imageUrl} alt="" className={classes.link1} />
@@ -197,7 +195,7 @@ export default function CardApply({ company, job, activity }: props) {
                 flexShrink: 1,
               }}
             >
-              {cityColumn.length && cityColumn.length>0 ? (
+              {cityColumn.length && cityColumn.length > 0 ? (
                 <span
                   style={{
                     display: "inline-block",
@@ -216,7 +214,7 @@ export default function CardApply({ company, job, activity }: props) {
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
-                    maxWidth: "100%",
+                    // maxWidth: "100%",
                   }}
                 >
                   {company?.address} {" in "} {company?.city}

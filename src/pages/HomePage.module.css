@@ -70,6 +70,8 @@
   margin-left: auto !important;
   box-sizing: border-box;
   text-align: center !important;
+  max-width: 100%;
+  overflow: hidden;
 
 }
 
@@ -129,7 +131,7 @@
   transform: matrix(-1, 0, 0, 1, 0, 0);
   position: absolute;
   top: 0;
-  left: 105%;
+  left: 98%;
   width: 32px;
   height: 100%;
   min-width: 32px;
