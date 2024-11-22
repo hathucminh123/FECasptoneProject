@@ -508,6 +508,7 @@ export default function JobDetails() {
                       fontWeight: "bold",
                       mb: 3,
                       color: "#333",
+                      fontFamily: "Lexend, sans-serif", 
                     }}
                   >
                     {job?.jobTitle}
@@ -541,7 +542,7 @@ export default function JobDetails() {
                     fontSize: "20px",
                     textAlign: "start",
                     color: "#414042 !important",
-
+                    fontFamily: "Lexend, sans-serif",
                     mb: 3,
                   }}
                 >
@@ -560,6 +561,7 @@ export default function JobDetails() {
                       fontWeight: "bold",
                       mt: "7px",
                       color: "#0ab305 !important",
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     {job?.salary}
@@ -633,7 +635,7 @@ export default function JobDetails() {
                         fontSize: "16px",
                         fontWeight: "bold",
                         padding: "11px 24px",
-
+                        fontFamily: "Lexend, sans-serif",
                         "&:hover": {
                           // backgroundColor: "#C82222",
                           backgroundColor: "#b0b0b0",
@@ -659,7 +661,7 @@ export default function JobDetails() {
                         fontSize: "16px",
                         fontWeight: "bold",
                         padding: "11px 24px",
-
+                        fontFamily: "Lexend, sans-serif",
                         "&:hover": {
                           backgroundColor: "#C82222",
 
@@ -692,7 +694,7 @@ export default function JobDetails() {
                           fontSize="large"
                           sx={{
                             color: "#ed1b2f !important",
-
+                            fontFamily: "Lexend, sans-serif",
                             marginTop: "20px",
                             mr: 2,
                           }}
@@ -755,6 +757,7 @@ export default function JobDetails() {
                             mt: "7px",
                             color: "#414042",
                             fontSize: "16px",
+                            fontFamily: "Lexend, sans-serif",
                           }}
                         >
                           {item}
