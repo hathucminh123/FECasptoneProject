@@ -8,13 +8,13 @@ interface IFormFile {
   content: Blob | File;
 }
 interface CV {
-  data: { [key: string]: IFormFile | string | number | undefined | File };
+  data: { [key: string]: IFormFile | string | number | undefined | File |null };
 }
 
 export const PostCVsAI = async ({ data }: CV) => {
   try {
     const response = await httpClient.post({
-      url: `${apiLinks.PostCVAI.POST}?filePath=${data.url}&jobId=${data.jobPostId}&cvId=${data.cvId}`,
+      url: `${apiLinks.PostCVAI.POST}?filePath=${data.url}&jobId=${data.jobPostId}&cvId=${data.cvId}&userId=${data.userId}`,
       // data: data,
 
       // contentType: "multipart/form-data",

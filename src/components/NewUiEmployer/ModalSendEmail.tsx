@@ -21,6 +21,7 @@ import { queryClient } from "../../Services/mainService";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 // import { PostCVsAI } from "../../Services/CVService/PostCVAI";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
+import { PostCVsAI } from "../../Services/CVService/PostCVAI";
 interface EducationDetail {
   id: number;
   institutionName: string;
@@ -114,8 +115,6 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
     (item) => item.id === Number(profile?.id)
   );
 
-
-
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", idJob],
     queryFn: ({ signal }) => GetJobPostById({ id: Number(idJob), signal }),
@@ -171,49 +170,49 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
     });
   };
 
-  // const { mutate: PostCVAi, isPending: Adding } = useMutation({
-  //   mutationFn: PostCVsAI,
-  //   onSuccess: (data) => {
-  //     console.log("ok chua ta ", data);
-  //     message.success(
-  //       `Add user to InterView at ${job?.jobTitle} successfully!`
-  //     );
-  //     queryClient.invalidateQueries({
-  //       queryKey: ["JobPostActivity"],
-  //       refetchType: "active",
-  //     });
-  //     // queryClient.invalidateQueries({
-  //     //   queryKey: ["JobPostActivity"],
-  //     //   refetchType: "active", // Ensure an active refetch
-  //     // });
-  //     // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-  //     // navigate(`/thankyou/${job?.id}`);
-  //   },
+  const { mutate: PostCVAi } = useMutation({
+    mutationFn: PostCVsAI,
+    onSuccess: (data) => {
+      console.log("ok chua ta ", data);
 
-  //   onError: () => {
-  //     message.error("Failed to Apply CV.");
-  //   },
-  // });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["JobPostActivity"],
+      //   refetchType: "active", // Ensure an active refetch
+      // });
+      // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+      // navigate(`/thankyou/${job?.id}`);
+    },
+
+    onError: () => {
+      message.error("Failed to Apply CV.");
+    },
+  });
 
   const { mutate: Add, isPending: Adding } = useMutation({
     mutationFn: AddUserJobPostActivity,
     onSuccess: async () => {
       try {
-        // await PostCVAi({
-        //   data: { jobPostId: job?.id, url: selectedCvUrl ?? "" },
-        // });
+        await PostCVAi({
+          data: {
+            jobPostId: job?.id,
+            url: selectedCvUrl ?? "",
+            cvId: selectedCvId,
+            userId: profile?.id,
+          },
+        });
         queryClient.invalidateQueries({
           queryKey: ["JobPostActivity"],
           refetchType: "active",
         });
         queryClient.invalidateQueries({
           queryKey: ["JobPostActivity"],
-          refetchType: "active", 
+          refetchType: "active",
         });
         queryClient.invalidateQueries({
           queryKey: ["SeekerApply"],
-          refetchType: "active", 
+          refetchType: "active",
         });
+        message.success('Add user To InterView sucessfully')
       } catch {
         message.error("Failed to apply CV after adding user to interview.");
       }
@@ -738,63 +737,67 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                         className={classes.form}
                         onSubmit={handleSendCvApply}
                       >
-                        {profile?.cvs.map((cv) => (
-                          <div
-                            key={cv.id}
-                            className={`${
-                              selectedCvId === cv.id
-                                ? classes.formupload1
-                                : classes.formupload
-                            }`}
-                          >
-                            <div className={classes.check}>
-                              <FormGroup>
-                                <FormControlLabel
-                                  control={
-                                    <Checkbox
-                                      checked={selectedCvId === cv.id}
-                                      onChange={() => handleCVSelect(cv)}
-                                      name="form"
-                                    />
-                                  }
-                                  label="Use This CV"
-                                />
-                              </FormGroup>
-                            </div>
-                            <div className={classes.file}>
-                              <div className={classes.upload5}>
-                                <div className={classes.filename}>
-                                  <a
-                                    href={cv.url}
-                                    download
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      textDecoration: "none",
-                                      color: "blue",
-                                    }}
-                                    className={classes.a}
-                                  >
-                                    {cv.name}
-                                  </a>
-                                  <a
-                                    href={cv.url}
-                                    download
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    style={{
-                                      textDecoration: "none",
-                                      color: "blue",
-                                    }}
-                                    className={classes.a}
-                                  >
-                                    <VisibilityIcon style={{ color: "blue" }} />
-                                  </a>
+                        <div className={classes.dropdown}>
+                          {profile?.cvs.map((cv) => (
+                            <div
+                              key={cv.id}
+                              className={`${
+                                selectedCvId === cv.id
+                                  ? classes.formupload1
+                                  : classes.formupload
+                              }`}
+                            >
+                              <div className={classes.check}>
+                                <FormGroup>
+                                  <FormControlLabel
+                                    control={
+                                      <Checkbox
+                                        checked={selectedCvId === cv.id}
+                                        onChange={() => handleCVSelect(cv)}
+                                        name="form"
+                                      />
+                                    }
+                                    label="Use This CV"
+                                  />
+                                </FormGroup>
+                              </div>
+                              <div className={classes.file}>
+                                <div className={classes.upload5}>
+                                  <div className={classes.filename}>
+                                    <a
+                                      href={cv.url}
+                                      download
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "none",
+                                        color: "blue",
+                                      }}
+                                      className={classes.a}
+                                    >
+                                      {cv.name}
+                                    </a>
+                                    <a
+                                      href={cv.url}
+                                      download
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "none",
+                                        color: "blue",
+                                      }}
+                                      className={classes.a}
+                                    >
+                                      <VisibilityIcon
+                                        style={{ color: "blue" }}
+                                      />
+                                    </a>
+                                  </div>
                                 </div>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          ))}
+                        </div>
                         <div className={classes.main53}>
                           {Adding ? (
                             <button className={classes.main54}>
@@ -802,7 +805,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                             </button>
                           ) : feedBackUserJob ? (
                             <button type="button" className={classes.main54}>
-                            Status: {feedBackUserJob.status}
+                              Status: {feedBackUserJob.status}
                             </button>
                           ) : (
                             <button type="submit" className={classes.main54}>

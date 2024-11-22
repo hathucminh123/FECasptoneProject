@@ -42,6 +42,8 @@ export default function Apply() {
 
   const UserProfileData = UserProfile?.UserProfiles;
 
+  console.log("userId",UserProfileData)
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
     setSelectedFile(file);
@@ -138,6 +140,7 @@ export default function Apply() {
             jobPostId: job?.id,
             url: selectedCv?.url ?? "",
             cvId: selectedCv?.id,
+            userId:UserProfileData?.id,
           },
         });
         message.success(`CV Apply to ${job?.jobTitle} successfully!`);
