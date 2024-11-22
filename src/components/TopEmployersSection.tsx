@@ -6,11 +6,24 @@ import { motion } from "framer-motion"; // Import Framer Motion
 import classes from "../pages/HomePage.module.css";
 import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 import { useQuery } from "@tanstack/react-query";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 
 export default function TopEmployersSection() {
   const [currentPage, setCurrentPage] = useState(1);
   const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
   const itemsPerPage = 6; // Page size
+
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const JobPostsdata = JobPosts?.JobPosts;
 
   // Fetch companies using React Query
   const { data, isLoading, isError } = useQuery({
@@ -26,7 +39,10 @@ export default function TopEmployersSection() {
   const Companies = data?.items || [];
   const totalCount = data?.totalCount || 0;
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
     setDirection(page > currentPage ? 1 : -1); // Determine direction based on page number
     setCurrentPage(page);
     scrollToTop();
@@ -96,13 +112,18 @@ export default function TopEmployersSection() {
               opacity: { duration: 0.2 },
             }}
           >
-            {Companies?.map((company) => (
-              <CardEmployer
-                key={company.id}
-                data={company}
-                jobs={company.jobPosts}
-              />
-            ))}
+            {Companies?.map((company) => {
+              const jobIncompany = JobPostsdata?.filter(
+                (job) => job.companyId === company.id
+              );
+              return (
+                <CardEmployer
+                  key={company.id}
+                  data={company}
+                  jobs={jobIncompany}
+                />
+              );
+            })}
           </motion.div>
 
           {/* Pagination Controls */}

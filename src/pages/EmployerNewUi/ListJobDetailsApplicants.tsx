@@ -54,9 +54,9 @@ export default function ListJobDetailsApplicants() {
     }
   }, [selectJobId, jobincompanyData, setSelectJobId]);
 
-  const city = JobPostsdata?.map((city) => city.jobLocationCities);
-  const flattenedArrayCity = city?.flat();
-  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+  // const city = JobPostsdata?.map((city) => city.jobLocationCities);
+  // const flattenedArrayCity = city?.flat();
+  // const uniqueArrayCity = [...new Set(flattenedArrayCity)];
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -85,7 +85,7 @@ export default function ListJobDetailsApplicants() {
       navigate("/EmployerJob/jobs/create");
     }
   };
-  const cityColumn = uniqueArrayCity;
+  // const cityColumn = uniqueArrayCity;
   return (
     <div className={classes.main}>
       <AnimatePresence>
@@ -133,49 +133,56 @@ export default function ListJobDetailsApplicants() {
                   </NavLink> */}
                 </nav>
                 <div className={classes.main10}>
-                  {jobincompanyData?.map((job) => (
-                    <NavLink
-                      to={`jobs/${job.id}`}
-                      // className={({ isActive }) =>
-                      //   isActive ? classes.active : undefined
-                      // }
-                      className={() =>
-                        `${classes.link2} ${
-                          location.pathname.startsWith(
-                            `/EmployerJob/applicants/jobs/${job.id}`
-                          )
-                            ? classes.active
-                            : ""
-                        }`
-                      }
-                      onClick={() => setSelectJobId(job.id)}
-                      end
-                    >
-                      <div className={classes.main14}>
-                        <div className={classes.main15}>
-                          <div className={classes.main16}>
-                            {" "}
-                            From:{" "}
-                            {moment(job?.postingDate.slice(0, 10)).format(
-                              "DD-MM-YYYY"
-                            )}{" "}
-                            - To:{" "}
-                            {moment(job?.expiryDate.slice(0, 10)).format(
-                              "DD-MM-YYYY"
-                            )}
+                  {jobincompanyData?.map((job) => {
+                    const city = job.jobLocationCities;
+                    const uniqueArrayCity = [...new Set(city)];
+
+                    const cityColumn = uniqueArrayCity;
+                    return (
+                      <NavLink
+                        to={`jobs/${job.id}`}
+                        // className={({ isActive }) =>
+                        //   isActive ? classes.active : undefined
+                        // }
+                        className={() =>
+                          `${classes.link2} ${
+                            location.pathname.startsWith(
+                              `/EmployerJob/applicants/jobs/${job.id}`
+                            )
+                              ? classes.active
+                              : ""
+                          }`
+                        }
+                        onClick={() => setSelectJobId(job.id)}
+                        end
+                      >
+                        <div className={classes.main14}>
+                          <div className={classes.main15}>
+                            <div className={classes.main16}>
+                              {" "}
+                              From:{" "}
+                              {moment(job?.postingDate.slice(0, 10)).format(
+                                "DD-MM-YYYY"
+                              )}{" "}
+                              - To:{" "}
+                              {moment(job?.expiryDate.slice(0, 10)).format(
+                                "DD-MM-YYYY"
+                              )}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <p className={classes.p}>Job name: {job.jobTitle}</p>
-                      {cityColumn && cityColumn.length > 0 ? (
-                        <p className={classes.p1}>{cityColumn.join(",")}</p>
-                      ) : (
-                        <p className={classes.p1}>
-                          {companyDataa?.address} {" in "} {companyDataa?.city}
-                        </p>
-                      )}
-                    </NavLink>
-                  ))}
+                        <p className={classes.p}>Job name: {job.jobTitle}</p>
+                        {cityColumn && cityColumn.length > 0 ? (
+                          <p className={classes.p1}>{cityColumn.join(",")}</p>
+                        ) : (
+                          <p className={classes.p1}>
+                            {companyDataa?.address} {" in "}{" "}
+                            {companyDataa?.city}
+                          </p>
+                        )}
+                      </NavLink>
+                    );
+                  })}
                 </div>
               </div>
             </div>

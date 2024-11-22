@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import classes from "./ListJobDetails.module.css";
-import { Link, NavLink, Outlet, useNavigate, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 import SearchIcon from "@mui/icons-material/Search";
 import { useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
@@ -49,14 +55,13 @@ export default function ListTalent() {
     }
   }, [selectJobId, jobincompanyData, setSelectJobId]);
 
-  const city = JobPostsdata?.map((city) => city.jobLocationCities);
-  const flattenedArrayCity = city?.flat();
-  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+  // const city = JobPostsdata?.map((city) => city.jobLocationCities);
+  // const flattenedArrayCity = city?.flat();
+  // const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
-  const cityColumn = uniqueArrayCity;
-const navigate=useNavigate()
+  // const cityColumn = uniqueArrayCity;
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
-
 
   const isPremiumExpired = () => {
     const expireDate = localStorage.getItem("PremiumExpireDate");
@@ -75,19 +80,19 @@ const navigate=useNavigate()
     setOpenModal(false);
   };
 
-  const handleNavigate =()=>{
-    if(isPremiumExpired()){
+  const handleNavigate = () => {
+    if (isPremiumExpired()) {
       setOpenModal(true);
       return;
-    }else{
- navigate("/EmployerJob/jobs/create")
+    } else {
+      navigate("/EmployerJob/jobs/create");
     }
-  }
+  };
 
   return (
     <div className={classes.main}>
       <AnimatePresence>
-       {openModal && (
+        {openModal && (
           <PaymentModal
             onClose={handleCloseModalPayment}
             // profile={profileScore}
@@ -135,50 +140,56 @@ const navigate=useNavigate()
                   {companyId === "null" ? (
                     <NotifiModal />
                   ) : (
-                    jobincompanyData?.map((job) => (
-                      <NavLink
-                        to={`talent/${job.id}`}
-                        // className={({ isActive }) =>
-                        //   isActive ? classes.active : undefined
-                        // }
-                        className={() =>
-                          `${classes.link2} ${
-                            location.pathname.startsWith(
-                              `/EmployerJob/FindTalents/talent/${job.id}`
-                            )
-                              ? classes.active
-                              : ""
-                          }`
-                        }
-                        onClick={() => setSelectJobId(job.id)}
-                        end
-                      >
-                        <div className={classes.main14}>
-                          <div className={classes.main15}>
-                            <div className={classes.main16}>
-                              {" "}
-                              From:{" "}
-                              {moment(job?.postingDate.slice(0, 10)).format(
-                                "DD-MM-YYYY"
-                              )}{" "}
-                              - To:{" "}
-                              {moment(job?.expiryDate.slice(0, 10)).format(
-                                "DD-MM-YYYY"
-                              )}
+                    jobincompanyData?.map((job) => {
+                      const city = job.jobLocationCities;
+                      const uniqueArrayCity = [...new Set(city)];
+
+                      const cityColumn = uniqueArrayCity;
+                      return (
+                        <NavLink
+                          to={`talent/${job.id}`}
+                          // className={({ isActive }) =>
+                          //   isActive ? classes.active : undefined
+                          // }
+                          className={() =>
+                            `${classes.link2} ${
+                              location.pathname.startsWith(
+                                `/EmployerJob/FindTalents/talent/${job.id}`
+                              )
+                                ? classes.active
+                                : ""
+                            }`
+                          }
+                          onClick={() => setSelectJobId(job.id)}
+                          end
+                        >
+                          <div className={classes.main14}>
+                            <div className={classes.main15}>
+                              <div className={classes.main16}>
+                                {" "}
+                                From:{" "}
+                                {moment(job?.postingDate.slice(0, 10)).format(
+                                  "DD-MM-YYYY"
+                                )}{" "}
+                                - To:{" "}
+                                {moment(job?.expiryDate.slice(0, 10)).format(
+                                  "DD-MM-YYYY"
+                                )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <p className={classes.p}>Job name: {job.jobTitle}</p>
-                        {cityColumn && cityColumn.length > 0 ? (
-                          <p className={classes.p1}>{cityColumn.join(",")}</p>
-                        ) : (
-                          <p className={classes.p1}>
-                            {companyDataa?.address} {" in "}{" "}
-                            {companyDataa?.city}
-                          </p>
-                        )}
-                      </NavLink>
-                    ))
+                          <p className={classes.p}>Job name: {job.jobTitle}</p>
+                          {cityColumn && cityColumn.length > 0 ? (
+                            <p className={classes.p1}>{cityColumn.join(",")}</p>
+                          ) : (
+                            <p className={classes.p1}>
+                              {companyDataa?.address} {" in "}{" "}
+                              {companyDataa?.city}
+                            </p>
+                          )}
+                        </NavLink>
+                      );
+                    })
                   )}
 
                   {/* { } */}
