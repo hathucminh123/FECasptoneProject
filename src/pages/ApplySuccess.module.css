@@ -221,6 +221,11 @@ display: block;
     text-decoration: none;
     box-sizing: border-box;
 }
+.link:hover {
+    /* text-decoration: underline; */
+    color: #FF0000 !important;
+  }
+  
 .main16{
     font-weight: 500 !important;
     box-sizing: border-box;

@@ -126,7 +126,7 @@ interface props {
   onClose?: () => void;
   profile?: UserProfile | null;
   id?: number | null;
-  idJob?: string;
+  idJob?: string |number;
   feedBackUserJob:SeekersByJobPost|undefined
 }
 export default function ModalSroreSeeker({

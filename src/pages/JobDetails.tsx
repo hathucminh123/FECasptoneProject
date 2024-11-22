@@ -357,11 +357,11 @@ export default function JobDetails() {
   const detailsCompany = Companiesdata?.find(
     (item) => item.id === job?.companyId
   );
-  const handleNavigateJob = (job: JobPost) => {
-    navigate(`/jobs/detail/${job.id}`, {
-      state: job,
-    });
-  };
+  // const handleNavigateJob = (job: JobPost) => {
+  //   navigate(`/jobs/detail/${job.id}`, {
+  //     state: job,
+  //   });
+  // };
   // // Hàm để theo dõi khi người dùng cuộn
   // useEffect(() => {
   //   const handleScroll = () => {
@@ -595,9 +595,9 @@ export default function JobDetails() {
                         )}
                       </span>
                       <span className={classes.span1}>
-                        <IconButton onClick={handleStartAddNewChallenge}>
+                        {/* <IconButton onClick={handleStartAddNewChallenge}>
                           <Comment />
-                        </IconButton>
+                        </IconButton> */}
                       </span>
                       {feedBackUserJob?.status === "Rejected" ||
                       feedBackUserJob?.status === "Passed" ||
@@ -1257,7 +1257,7 @@ export default function JobDetails() {
                   key={job.id}
                   data={job}
                   company={companys}
-                  onclick={() => handleNavigateJob(job)} // Correct the event handler name
+                  // onclick={() => handleNavigateJob(job)} // Correct the event handler name
                 />
               );
             })}

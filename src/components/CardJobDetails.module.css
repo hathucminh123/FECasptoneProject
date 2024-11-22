@@ -158,5 +158,16 @@
 }
 
 .link:hover {
-  text-decoration: underline;
+
+  color: #FF0000 !important;
+}
+
+.link3{
+  text-decoration: none;
+  color: black; 
+  box-sizing: border-box;
+}
+
+.link3:hover{
+    text-decoration: underline;
 }

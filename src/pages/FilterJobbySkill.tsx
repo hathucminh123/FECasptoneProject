@@ -46,6 +46,9 @@ import { IconButton } from "@mui/material";
 import { Comment } from "@mui/icons-material";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import FilterModal from "../components/FilterModal";
+import GradientCircularProgress from "../components/NewUiEmployer/GradientCircularProgress";
+import ModalSroreSeeker from "../components/ModalSroreSeeker";
+import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 interface JobType {
   id: number;
   name: string;
@@ -107,6 +110,10 @@ export default function FilterJobbySkill() {
   // const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [openModalScore, setOpenModalScore] = useState<boolean>(false);
+
+
+ 
 
   function OpenhandleFilter() {
     setOpenFilter(true);
@@ -114,6 +121,11 @@ export default function FilterJobbySkill() {
   function CloseHandleFilter() {
     setOpenFilter(false);
   }
+  const handleCloseModalScore = () => {
+    setOpenModalScore(false);
+  };
+
+
 
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
@@ -322,6 +334,14 @@ export default function FilterJobbySkill() {
   const feedBackUserJob = dataSeeker?.find(
     (item) => item.id === Number(userId)
   );
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    enabled: !!userId,
+  });
+
+  const profile = UserProfile?.UserProfiles;
 
   const handleSaveJob = () => {
     if (!auth) {
@@ -521,6 +541,17 @@ export default function FilterJobbySkill() {
         // <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
         <FilterModal filteredJobs={JobPostsdata} onDone={CloseHandleFilter} />
       )}
+       <AnimatePresence>
+        {openModalScore && (
+          <ModalSroreSeeker
+            onClose={handleCloseModalScore}
+            profile={profile}
+            id={Number(userId)}
+            idJob={jobDetails?.id}
+            feedBackUserJob={feedBackUserJob}
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.main1}>
         {showAlert && (
           <Stack
@@ -742,7 +773,7 @@ export default function FilterJobbySkill() {
                               alt="Job"
                               style={{ width: "100px", height: "100px" }}
                             />
-                            <div className={classes.apply3}>
+                            <div >
                               <Link
                                 to={`/jobs/detail/${jobDetails?.id}`}
                                 className={classes.link}
@@ -760,6 +791,7 @@ export default function FilterJobbySkill() {
                                 >
                                   {jobDetails?.jobTitle}
                                 </Typography>
+                              
                               </Link>
                               <Typography
                                 variant="body1"
@@ -792,6 +824,30 @@ export default function FilterJobbySkill() {
                                 </Typography>
                               </div>
                             </div>
+                            {feedBackUserJob ? (
+                                  <>
+                                    <button
+                                      type="button"
+                                      className={classes.button6}
+                                      onClick={() =>
+                                        setOpenModalScore(!openModalScore)
+                                      }
+                                    >
+                                      {/* <span className={classes.spanicon}> */}
+                                      {feedBackUserJob.analyzedResult
+                                        .matchDetails && (
+                                        <GradientCircularProgress
+                                          percentage={
+                                            feedBackUserJob.analyzedResult
+                                              .matchDetails.scores.overallMatch
+                                          }
+                                        />
+                                      )}
+
+                                      {/* </span> */}
+                                    </button>
+                                  </>
+                                ) : undefined}
                           </div>
                           {applied && auth ? (
                             <div

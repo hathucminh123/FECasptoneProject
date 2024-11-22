@@ -257,3 +257,30 @@ ul > li ::marker {
 .link:hover {
   text-decoration: underline;
 }
+
+.button6{
+  border-radius: 50%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  min-height: 0;
+  opacity: 1;
+  left: calc(100% - 110px);
+  top:0;
+  position: absolute;
+  background-color: #fff;
+  padding: 4px;
+  border: 1px solid #e0e0e0;
+  cursor: pointer;
+  color: #616161;
+  transition: color, border-radius .1s;
+  will-change: color, border-radius;
+  /* width: 32px;
+  height: 32px; */
+  z-index: 2;
+  margin: 0;
+  font-family: Graphik, Helvetica Neue, arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  box-sizing: border-box;
+}

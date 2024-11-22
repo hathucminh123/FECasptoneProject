@@ -85,7 +85,7 @@ export default function CardJobDetails({
   const [favorite, setFavorite] = useState<boolean>(false);
   const dataa = useAppSelector((state) => state.favorite.item);
   const dispatch = useAppDispatch();
-
+  console.log("okok", company);
   useEffect(() => {
     if (data && dataa.find((item) => item.id === data.id)) {
       setFavorite(true);
@@ -147,14 +147,14 @@ export default function CardJobDetails({
                 {data?.expiryDate.slice(0, 10)}
               </Typography>
             </div>
-            <Link to={`jobs/detail/${data?.id}`} className={classes.link}>
+            <Link to={`/jobs/detail/${data?.id}`} className={classes.link}>
               <Typography
                 variant="h5"
                 gutterBottom
                 sx={{
                   lineHeight: "1.5",
                   fontWeight: "bold",
-                  color: "#121212",
+                  // color: "#121212",
                   marginTop: "12px !important",
                 }}
               >
@@ -171,17 +171,22 @@ export default function CardJobDetails({
                 }
                 alt="image-job"
               />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "14px",
-                  color: "#414042 !important",
-                }}
+              <Link
+                to={`/company/detail/${company?.id}`}
+                className={classes.link3}
               >
-                {company?.companyName}
-              </Typography>
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "14px",
+                    color: "#414042 !important",
+                  }}
+                >
+                  {company?.companyName}
+                </Typography>
+              </Link>
             </div>
             <div className={classes.money}>
               <MonetizationOnOutlinedIcon
