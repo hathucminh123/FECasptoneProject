@@ -127,6 +127,7 @@ export default function CardJobSearch({
               lineHeight: 1.5,
               fontSize: "18px",
               fontWeight: 700,
+              fontFamily: "Lexend",
               color: "#121212",
             }}
           >
@@ -158,6 +159,8 @@ export default function CardJobSearch({
                   fontSize: "14px",
                   fontWeight: 400,
                   color: "#414042",
+
+                  fontFamily: "Lexend",
                 }}
                 to={"/"}
               >
@@ -175,6 +178,7 @@ export default function CardJobSearch({
                   height: "20px",
                   stroke: "currentcolor",
                   width: "20px",
+                  fontFamily: "Lexend",
                 }}
               />
               <span
@@ -182,6 +186,7 @@ export default function CardJobSearch({
                   paddingLeft: "8px",
                   color: "#0ab305 ",
                   fontWeight: 500,
+                  fontFamily: "Lexend",
                 }}
               >
                 {" "}
@@ -208,6 +213,7 @@ export default function CardJobSearch({
                 textOverflow: "ellipsis",
                 maxWidth: "100%",
                 flexShrink: 1,
+                fontFamily: "Lexend, sans-serif",
               }}
             >
               {data?.jobLocationCities?.length ? (
@@ -218,6 +224,7 @@ export default function CardJobSearch({
                     overflow: "hidden",
                     textOverflow: "ellipsis",
                     maxWidth: "100%",
+                    fontFamily: "Lexend, sans-serif",
                   }}
                 >
                   {data.jobLocationCities.join(", ")}
@@ -240,6 +247,7 @@ export default function CardJobSearch({
                 mt: "7px",
                 color: " #414042 !important",
                 fontSize: "14px",
+                fontFamily: "Lexend, sans-serif",
               }}
             >
               {data?.jobType?.name}
@@ -264,6 +272,7 @@ export default function CardJobSearch({
                 mt: "7px",
                 color: " #414042 !important",
                 fontSize: "14px",
+                fontFamily: "Lexend, sans-serif",
               }}
             >
               {data?.experienceRequired} years
@@ -271,7 +280,12 @@ export default function CardJobSearch({
           </div>
           <div className={classes.skill}>
             {data?.skillSets.map((item) => (
-              <button className={classes.button}>{item}</button>
+              <button
+                style={{ fontFamily: "Lexend, sans-serif" }}
+                className={classes.button}
+              >
+                {item}
+              </button>
             ))}
             {/* <button className={classes.button}>asdasd</button>
             <button className={classes.button}>asdasd</button> */}

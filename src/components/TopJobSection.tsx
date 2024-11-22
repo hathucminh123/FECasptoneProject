@@ -147,7 +147,7 @@ export default function TopJobSection() {
                 (item) => item.id === job.companyId
               );
               if (!company) return null;
-              return <CardJob key={job.id} data={job} company={company} />;
+              return <CardJob classOn={true} key={job.id} data={job} company={company} />;
             })}
           </motion.div>
 

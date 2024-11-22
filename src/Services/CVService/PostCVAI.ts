@@ -14,7 +14,7 @@ interface CV {
 export const PostCVsAI = async ({ data }: CV) => {
   try {
     const response = await httpClient.post({
-      url: `${apiLinks.PostCVAI.POST}?filePath=${data.url}&jobId=${data.jobPostId}`,
+      url: `${apiLinks.PostCVAI.POST}?filePath=${data.url}&jobId=${data.jobPostId}&cvId=${data.cvId}`,
       // data: data,
 
       // contentType: "multipart/form-data",

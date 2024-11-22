@@ -84,7 +84,7 @@ export default function CardProfile({
         <div className={classes.main2}>
           <Typography
             variant="h2"
-            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700 }}
+            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700,fontFamily: "Lexend, sans-serif", }}
           >
             {title}
           </Typography>
@@ -116,6 +116,7 @@ export default function CardProfile({
                         fontWeight: 700,
                         mt: 0,
                         mb: 0,
+                        fontFamily: "Lexend, sans-serif",
                       }}
                     >
                       School name:  {item.institutionName}
@@ -124,6 +125,7 @@ export default function CardProfile({
                       <div
                         style={{ cursor: "pointer" }}
                         onClick={() => handleOnEdit(item)}
+                        
                       >
                         <EditOutlinedIcon
                           sx={{
@@ -149,7 +151,7 @@ export default function CardProfile({
                   </div> */}
 
                   {/* Cắt chuỗi ngày tháng để chỉ lấy phần ngày */}
-                  <div className={classes.main7}>
+                  <div className={classes.main7} style={{fontFamily: "Lexend, sans-serif",}}>
                     From:{" "}
                     {moment(item.startDate.slice(0, 10)).format("DD/MM/YYYY")} -
                     To: {moment(item.endDate.slice(0, 10)).format("DD/MM/YYYY")}
@@ -161,7 +163,7 @@ export default function CardProfile({
             </div>
           ))
         ) : (
-          <Typography variant="h3" sx={{ lineHeight: 1.5, fontSize: "22px" }}>
+          <Typography variant="h3" sx={{ lineHeight: 1.5, fontSize: "22px" ,fontFamily: "Lexend, sans-serif",}}>
             {text}
           </Typography>
         )}

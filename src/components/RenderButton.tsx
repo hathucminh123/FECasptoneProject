@@ -53,6 +53,7 @@ const RenderButton: React.FC<RenderButtonProps> = ({
         borderRadius: "4px",
         minWidth: "80px",
         display: "inline-flex",
+        fontFamily: "Lexend, sans-serif",
         justifyContent: "center",
         lineHeight: "1",
         gap: "18px",

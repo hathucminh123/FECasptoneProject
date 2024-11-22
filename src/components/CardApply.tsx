@@ -3,9 +3,11 @@ import classes from "./CardApply.module.css";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 import Typography from "@mui/material/Typography";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+// import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { Link } from "react-router-dom";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import moment from "moment";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 import CancelIcon from "@mui/icons-material/Cancel";
 import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 // import JobDetails from "../pages/JobDetails";
@@ -120,6 +122,7 @@ export default function CardApply({ company, job, activity }: props) {
                 fontSize: "20px",
                 fontWeight: 700,
                 boxSizing: "border-box",
+                fontFamily: "Lexend, sans-serif"
               }}
             >
               {activity.jobTitle}
@@ -133,6 +136,7 @@ export default function CardApply({ company, job, activity }: props) {
               <Link
                 to={`/company/detail/${company?.id}`}
                 className={classes.link1}
+                style={{fontFamily: "Lexend, sans-serif"}}
               >
                 {" "}
                 {company?.companyName}
@@ -146,9 +150,24 @@ export default function CardApply({ company, job, activity }: props) {
             </div>
           </div>
           <div className={classes.main7}></div>
-          <div className={classes.main8}>
+          <div className={classes.location}>
+              <BusinessCenterOutlinedIcon />
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#414042",
+                  paddingLeft: "8px",
+                  boxSizing: "border-box",
+                  cursor: "pointer",
+                }}
+              >
+                {job?.jobType?.name}
+              </span>
+            </div>
+          {/* <div className={classes.main8}>
             <LocationOnIcon />
-            {/* <span className={classes.span3}>
+            <span className={classes.span3}>
               {job?.jobLocationCities && job?.jobLocationCities?.length > 0 ? (
                 job?.jobLocationCities.map((item, index) => (
                   <div
@@ -177,7 +196,7 @@ export default function CardApply({ company, job, activity }: props) {
             {company?.address} {" in "} {company?.city}
                 </div>
               )}
-            </span> */}
+            </span>
             <Typography
               variant="h6"
               gutterBottom
@@ -221,16 +240,56 @@ export default function CardApply({ company, job, activity }: props) {
                 </span>
               )}
             </Typography>
-          </div>
-          <div className={classes.button}>
+          </div> */}
+            <div className={classes.location}>
+              <LocationOnOutlinedIcon />
+              <span
+               className={classes.span}
+              >
+                {cityColumn.length && cityColumn.length > 0 ? (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {cityColumn.join(", ")}
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {company?.address} {" in "} {company?.city}
+                  </span>
+                )}
+              </span>
+            </div>
+          {/* <div className={classes.button}>
             {job?.skillSets.map((tag, index) => (
               <div key={index} className={classes.button1}>
                 {tag}
               </div>
             ))}
+             
 
-            {/* <div className={classes.button1}>asdsa</div> */}
-          </div>
+           
+          </div> */}
+          <div className={classes.job}>
+              {job?.skillSets.slice(0,5).map((tag, index) => (
+                <div key={index} className={classes.button}>
+                  {tag}
+                </div>
+              ))}
+            </div>
         </div>
       </div>
     </div>

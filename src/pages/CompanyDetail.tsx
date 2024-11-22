@@ -328,16 +328,15 @@ export default function CompanyDetail() {
   });
 
   const BusinessStreamData = BusinessStream?.BusinessStreams;
- 
+
   const companyDataa = CompanyData?.Companies;
   // console.log('name',companyDataa?.businessStream.businessStreamName)
   const detail = Companiesdata?.find((item) => item.id === companyDataa?.id);
- 
 
   const BusinessStreamDatainCompany = BusinessStreamData?.find(
     (item) => detail?.businessStream?.id === item.id
   );
- 
+
   // console.log('sad',BusinessStreamDatainCompany?.businessStreamName)
 
   return (
@@ -351,6 +350,7 @@ export default function CompanyDetail() {
             lineHeight: 1.5,
             borderBottom: "1px dashed #dedede",
             paddingBottom: "16px",
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           General information
@@ -402,21 +402,23 @@ export default function CompanyDetail() {
             lineHeight: 1.5,
             borderBottom: "1px dashed #dedede",
             paddingBottom: "16px",
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           Company Overview
         </Typography>
-        <Typography
-          variant="body2"
-          sx={{
+        <span
+          style={{
             paddingTop: "16px",
             fontSize: "16px",
             fontWeight: 400,
             lineHeight: 1.8,
+            fontFamily: "Lexend, sans-serif !important",
           }}
         >
           {companyDataa && (
             <div
+              style={{ fontFamily: "Lexend, sans-serif !important" }}
               dangerouslySetInnerHTML={{
                 __html: companyDataa?.companyDescription,
               }}
@@ -424,7 +426,7 @@ export default function CompanyDetail() {
           )}
 
           {/* {companyDataa?.companyDescription} */}
-        </Typography>
+        </span>
       </div>
       <div className={classes.overview}>
         <Typography
@@ -435,6 +437,7 @@ export default function CompanyDetail() {
             lineHeight: 1.5,
             borderBottom: "1px dashed #dedede",
             paddingBottom: "16px",
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           Our key skills
@@ -447,6 +450,7 @@ export default function CompanyDetail() {
             fontWeight: 400,
             lineHeight: 1.8,
             paddingTop: "16px",
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           {" "}
@@ -456,7 +460,11 @@ export default function CompanyDetail() {
           {companyDataa?.jobPosts.map((job) => (
             <div key={job.id}>
               {job.skillSets.map((skill, index) => (
-                <button key={index} className={classes.button1}>
+                <button
+                  style={{ fontFamily: "Lexend, sans-serif" }}
+                  key={index}
+                  className={classes.button1}
+                >
                   {skill}
                 </button>
               ))}
@@ -474,10 +482,12 @@ export default function CompanyDetail() {
             fontSize: "16px",
             fontWeight: 400,
             lineHeight: 1.8,
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           {companyDataa && (
             <div
+              style={{ fontFamily: "Lexend, sans-serif" , all: "unset",}}
               dangerouslySetInnerHTML={{
                 __html: companyDataa?.companyDescription,
               }}
@@ -495,6 +505,7 @@ export default function CompanyDetail() {
             lineHeight: 1.5,
             borderBottom: "1px dashed #dedede",
             paddingBottom: "16px",
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           Why you'll love working here
@@ -506,10 +517,12 @@ export default function CompanyDetail() {
             fontSize: "16px",
             fontWeight: 400,
             lineHeight: 1.8,
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           {companyDataa && (
             <div
+              style={{ fontFamily: "Lexend, sans-serif" }}
               dangerouslySetInnerHTML={{
                 __html: companyDataa?.companyDescription,
               }}

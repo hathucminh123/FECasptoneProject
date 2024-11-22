@@ -129,7 +129,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
 
           <div className={classes.skillsContainer}>
             <div className={classes.skill1}>
-              {uniqueArray.map((tag, index) => (
+              {uniqueArray.slice(0,10).map((tag, index) => (
                 <Button
                   key={index}
                   sx={{

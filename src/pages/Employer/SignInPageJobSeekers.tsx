@@ -20,7 +20,7 @@ interface CustomJwtPayload extends JwtPayload {
   Role: string;
   UserId: string;
   name: string;
-  Email:string
+  Email: string;
 }
 
 export default function SignInPageJobSeekers() {
@@ -37,7 +37,7 @@ export default function SignInPageJobSeekers() {
   // Error state management for registration form
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [errorslogin, setErrorslogin] = useState<{ [key: string]: string }>({});
-// const [errorsMessage,setErrorsMessage]=useState<string>("")
+  // const [errorsMessage,setErrorsMessage]=useState<string>("")
   const location = useLocation();
   const navigate = useNavigate();
   // const auth = localStorage.getItem("Auth");
@@ -84,10 +84,10 @@ export default function SignInPageJobSeekers() {
         confirmPassword: "",
         role: 0,
       });
-      console.log(data)
-      localStorage.setItem("userIdRegister",data.result)
-      navigate("/Auth/Veritication")
-         
+      console.log(data);
+      localStorage.setItem("userIdRegister", data.result);
+      navigate("/Auth/Veritication");
+
       setTimeout(() => {
         reset();
       }, 3000);
@@ -114,7 +114,7 @@ export default function SignInPageJobSeekers() {
       const userRole = userInfo.Role.toLowerCase();
       const userId = userInfo.UserId.toLowerCase();
       const userName = userInfo.name;
-      const Email =userInfo.Email
+      const Email = userInfo.Email;
       const expiration = new Date();
       expiration.setHours(expiration.getHours() + 24);
       const token = data.result;
@@ -129,7 +129,7 @@ export default function SignInPageJobSeekers() {
         ? JSON.parse(redirectStateString1)
         : {};
       const combinedState = { ...redirectState, ...redirectState1 };
-    
+
       const redirectPath = localStorage.getItem("redirectPath") || "/";
       if (userRole === "jobseeker") {
         localStorage.setItem("Auth", "true");
@@ -138,15 +138,13 @@ export default function SignInPageJobSeekers() {
         localStorage.setItem("token", token);
         localStorage.setItem("userId", userId);
         localStorage.setItem("Email", Email);
-        
 
         // Combine both redirect states into one object
 
         localStorage.setItem("expiration", expiration.toISOString());
-         
+
         navigate(from !== "/" ? from : redirectPath, { state: combinedState });
         // window.location.reload();
-       
       } else {
         setAlertMessage(true);
       }
@@ -165,8 +163,8 @@ export default function SignInPageJobSeekers() {
         userEmail: "",
         password: "",
       });
-    //  console.log("error",data)
-    //   setErrorsMessage(data.message)
+      //  console.log("error",data)
+      //   setErrorsMessage(data.message)
       setTimeout(() => {
         LoginReset();
       }, 5000);
@@ -216,7 +214,7 @@ export default function SignInPageJobSeekers() {
     if (!formData.fistName) newErrors.fistName = "First name is required";
     if (!formData.lastName) newErrors.lastName = "Last name is required";
     if (!formData.password) newErrors.password = "Password is required";
-    if (formData.password.length <7)
+    if (formData.password.length < 7)
       newErrors.password = "Password must be at least 6 characters";
     if (formData.password !== formData.confirmPassword)
       newErrors.confirmPassword = "Passwords must match";
@@ -363,7 +361,7 @@ export default function SignInPageJobSeekers() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                      failed to Login Job Seeker Account
+                    failed to Login Job Seeker Account
                   </Typography>
                 </div>
               </div>
@@ -441,11 +439,10 @@ export default function SignInPageJobSeekers() {
                     fontSize: "36px",
                     margin: 0,
                     fontWeight: 700,
-                    fontFamily: "Roboto, Helvetica, Verdana, Arial, sans-serif",
+                    fontFamily: "Lexend, sans-serif",
                     color: "#fff",
                     letterSpacing: 0,
                     lineHeight: 1.5,
-                    
                   }}
                 >
                   Register/Login
@@ -455,7 +452,8 @@ export default function SignInPageJobSeekers() {
                     fontSize: "18px",
                     margin: "8px 0 0 0",
                     textAlign: "center",
-                    color:'#fff'
+                    color: "#fff",
+                    fontFamily: "Lexend, sans-serif",
                   }}
                 >
                   Link your account to continue using our system services.
@@ -477,6 +475,7 @@ export default function SignInPageJobSeekers() {
                           color: "#424242",
                           cursor: "pointer",
                           fontSize: "1.125rem",
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Employer
@@ -497,6 +496,7 @@ export default function SignInPageJobSeekers() {
                           color: "#424242",
                           cursor: "pointer",
                           fontSize: "1.125rem",
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Job Seeker
@@ -512,8 +512,7 @@ export default function SignInPageJobSeekers() {
                         fontSize: "1rem",
                         fontWeight: 400,
                         marginBottom: "1.5rem",
-                        fontFamily:
-                          "Roboto, Helvetica, Verdana, Arial, sans-serif",
+                        fontFamily: "Lexend, sans-serif",
                         color: "#222831",
                         letterSpacing: 0,
                         lineHeight: 1.5,
@@ -535,9 +534,10 @@ export default function SignInPageJobSeekers() {
                             fontWeight: 600,
                             display: "inline-block",
                             marginBottom: ".5rem",
+                            fontFamily: "Lexend, sans-serif",
                           }}
                         >
-                        Email
+                          Email
                         </label>
                         <div className={classes.input1}>
                           <div className={classes.logoinput}>
@@ -574,6 +574,7 @@ export default function SignInPageJobSeekers() {
                             fontWeight: 600,
                             display: "inline-block",
                             marginBottom: ".5rem",
+                            fontFamily: "Lexend, sans-serif",
                           }}
                         >
                           Password
@@ -626,11 +627,16 @@ export default function SignInPageJobSeekers() {
                             disabled
                             type="submit"
                             className={classes.button2}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
                           >
                             Please wait a minute
                           </button>
                         ) : (
-                          <button type="submit" className={classes.btn}>
+                          <button
+                            type="submit"
+                            className={classes.btn}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
                             Sign in
                           </button>
                         )}
@@ -659,6 +665,7 @@ export default function SignInPageJobSeekers() {
                       fontSize: "18px",
                       fontWeight: 500,
                       marginBottom: ".5rem",
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Register for an Job Seeker Account
@@ -702,7 +709,11 @@ export default function SignInPageJobSeekers() {
                       />
                     </div> */}
                     <div className={classes.form10}>
-                      <label htmlFor="email" className={classes.label}>
+                      <label
+                        htmlFor="email"
+                        className={classes.label}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
+                      >
                         Email
                       </label>
                       <TextField
@@ -721,7 +732,11 @@ export default function SignInPageJobSeekers() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="fistName" className={classes.label}>
+                      <label
+                        htmlFor="fistName"
+                        className={classes.label}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
+                      >
                         First Name
                       </label>
                       <TextField
@@ -740,7 +755,11 @@ export default function SignInPageJobSeekers() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="lastName" className={classes.label}>
+                      <label
+                        htmlFor="lastName"
+                        className={classes.label}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
+                      >
                         Last Name
                       </label>
                       <TextField
@@ -759,7 +778,11 @@ export default function SignInPageJobSeekers() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="password" className={classes.label}>
+                      <label
+                        htmlFor="password"
+                        className={classes.label}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
+                      >
                         Password
                       </label>
                       <div style={{ position: "relative" }}>
@@ -795,6 +818,7 @@ export default function SignInPageJobSeekers() {
                       <label
                         htmlFor="confirmPassword"
                         className={classes.label}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
                       >
                         Confirm Password
                       </label>
@@ -859,6 +883,7 @@ export default function SignInPageJobSeekers() {
                         disabled
                         type="submit"
                         className={classes.button2}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
                       >
                         Please wait a minute
                       </button>
@@ -868,6 +893,7 @@ export default function SignInPageJobSeekers() {
                         type="submit"
                         // className={check ? classes.button1 : classes.button2}
                         className={classes.button1}
+                        style={{ fontFamily: "Lexend, sans-serif" }}
                       >
                         Register
                       </button>

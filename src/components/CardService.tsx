@@ -41,6 +41,7 @@ export default function CardService({
                 mb: 0,
                 boxSizing: "border-box",
                 display: "block",
+                fontFamily:"Lexend",
               }}
             >
               {title}
@@ -57,7 +58,8 @@ export default function CardService({
            fontWeight:400,
            mb:0,
            boxSizing:'border-box',
-           display:'block'
+           display:'block',
+           fontFamily:"Lexend",
           }}
         >
           {text}

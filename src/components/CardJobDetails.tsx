@@ -4,11 +4,14 @@ import { add, remove } from "../redux/slices/favoriteJob";
 import Typography from "@mui/material/Typography";
 import classes from "./CardJobDetails.module.css";
 import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+// import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Button from "@mui/material/Button";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
 interface JobType {
   id: number;
@@ -31,7 +34,7 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType | string | null;
+  jobType: JobType;
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
@@ -85,7 +88,16 @@ export default function CardJobDetails({
   const [favorite, setFavorite] = useState<boolean>(false);
   const dataa = useAppSelector((state) => state.favorite.item);
   const dispatch = useAppDispatch();
-  console.log("okok", company);
+
+  const pendingJobsArray = [];
+  pendingJobsArray.push(data);
+  const city = pendingJobsArray?.map((city) => city?.jobLocationCities);
+  const flattenedArrayCity = city?.flat();
+
+  const uniqueArrayCity = [...new Set(flattenedArrayCity)];
+
+  const cityColumn = uniqueArrayCity;
+ 
   useEffect(() => {
     if (data && dataa.find((item) => item.id === data.id)) {
       setFavorite(true);
@@ -133,7 +145,7 @@ export default function CardJobDetails({
       >
         <div className={formButton ? classes.card_itemm1 : classes.card_itemm}>
           <div style={{ display: "block" }}>
-            <div className={classes.time}>
+            {/* <div className={classes.time}>
               <Typography
                 variant="body1"
                 gutterBottom
@@ -146,7 +158,19 @@ export default function CardJobDetails({
                 From: {data?.postingDate.slice(0, 10)} - To:{" "}
                 {data?.expiryDate.slice(0, 10)}
               </Typography>
+            </div> */}
+              <div className={classes.time}>
+              <span
+               style={{ fontSize: "14px",
+                fontWeight: 400,
+                color: "#a6a6a6 !important",}}
+              >
+                From:{" "}
+                {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} -
+                To: {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
+              </span>
             </div>
+
             <Link to={`/jobs/detail/${data?.id}`} className={classes.link}>
               <Typography
                 variant="h5"
@@ -156,6 +180,7 @@ export default function CardJobDetails({
                   fontWeight: "bold",
                   // color: "#121212",
                   marginTop: "12px !important",
+                  fontFamily: "Lexend, sans-serif",
                 }}
               >
                 {data?.jobTitle}
@@ -182,6 +207,7 @@ export default function CardJobDetails({
                     fontWeight: "bold",
                     fontSize: "14px",
                     color: "#414042 !important",
+                    fontFamily: "Lexend, sans-serif",
                   }}
                 >
                   {company?.companyName}
@@ -207,7 +233,7 @@ export default function CardJobDetails({
             </div>
             <div className={classes.separator}></div>
 
-            <div className={classes.location}>
+            {/* <div className={classes.location}>
               <LocationOnIcon />
               <Typography
                 variant="h6"
@@ -221,14 +247,65 @@ export default function CardJobDetails({
                 }}
               >
                 {data?.jobLocationCities.map((item) => item)}
-              </Typography>
+              </Typography> */}
+                <div className={classes.location}>
+              <LocationOnOutlinedIcon />
+              <span
+               className={classes.span}
+               style={{
+                paddingLeft: "8px",
+               }}
+              >
+                {cityColumn.length && cityColumn.length > 0 ? (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {cityColumn.join(", ")}
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {company?.address} {" in "} {company?.city}
+                  </span>
+                )}
+              </span>
             </div>
+            </div>
+            <div className={classes.location}>
+              <BusinessCenterOutlinedIcon />
+              <span
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#414042",
+                  paddingLeft: "8px",
+                  boxSizing: "border-box",
+                  cursor: "pointer",
+                }}
+              >
+                {data?.jobType?.name}
+              </span>
+            </div>
+
 
             <div className={classes.job}>
               {data?.skillSets.map((tag, index) => (
-                <button key={index} className={classes.button}>
+                <div key={index} className={classes.button}>
                   {tag}
-                </button>
+                </div>
               ))}
             </div>
           </div>
@@ -287,6 +364,6 @@ export default function CardJobDetails({
           ) : undefined}
         </div>
       </div>
-    </div>
+
   );
 }

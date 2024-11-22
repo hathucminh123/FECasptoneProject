@@ -267,6 +267,7 @@ export default function CompanyDetailRoot() {
                     fontWeight: "bold",
                     mt: 3,
                     color: "white",
+                    fontFamily: "Lexend, sans-serif",
                   }}
                 >
                   {companyDataa.companyName}
@@ -309,7 +310,9 @@ export default function CompanyDetailRoot() {
                     fontWeight: "bold",
                     mt: 3,
                     color: "white",
+                    fontFamily: "Lexend, sans-serif",
                   }}
+                  
                 >
                   {companyDataa.companyName}
                 </Typography>
@@ -330,6 +333,7 @@ export default function CompanyDetailRoot() {
                               fontSize: "14px",
                               fontWeight: 400,
                               color: "white",
+                              fontFamily: "Lexend, sans-serif",
                             }}
                           >
                             {city}
@@ -343,6 +347,7 @@ export default function CompanyDetailRoot() {
                             sx={{
                               fontSize: "14px",
                               fontWeight: 400,
+                              fontFamily: "Lexend, sans-serif",
                               color: "white",
                             }}
                           >
@@ -359,6 +364,7 @@ export default function CompanyDetailRoot() {
                             fontSize: "14px",
                             fontWeight: 400,
                             color: "white",
+                            fontFamily: "Lexend, sans-serif",
                           }}
                         >
                           {companyDataa.address}
@@ -394,6 +400,8 @@ export default function CompanyDetailRoot() {
                         whiteSpace: "nowrap",
                         textDecoration: "underline",
                         color: "white",
+                        fontFamily: "Lexend, sans-serif",
+                        
                       }}
                     >
                       {jobincompanyData?.length || 0} job openings

@@ -71,7 +71,7 @@ export default function CardSkill({
         <div className={classes.main2}>
           <Typography
             variant="h2"
-            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700 }}
+            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700,fontFamily: "Lexend, sans-serif", }}
           >
             {title}
           </Typography>
@@ -102,6 +102,7 @@ export default function CardSkill({
                         fontWeight: 700,
                         mt: 0,
                         mb: 0,
+                        fontFamily: "Lexend, sans-serif",
                       }}
                     >
                       Skill name: {item?.name}
@@ -124,7 +125,7 @@ export default function CardSkill({
             </div>
           ))
         ) : (
-          <Typography variant="h3" sx={{ lineHeight: 1.5, fontSize: "22px" }}>
+          <Typography variant="h3"  sx={{ lineHeight: 1.5, fontSize: "22px" ,fontFamily: "Lexend, sans-serif",}}>
             {text}
           </Typography>
         )}

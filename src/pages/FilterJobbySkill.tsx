@@ -112,9 +112,6 @@ export default function FilterJobbySkill() {
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
 
-
- 
-
   function OpenhandleFilter() {
     setOpenFilter(true);
   }
@@ -124,8 +121,6 @@ export default function FilterJobbySkill() {
   const handleCloseModalScore = () => {
     setOpenModalScore(false);
   };
-
-
 
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
@@ -541,7 +536,7 @@ export default function FilterJobbySkill() {
         // <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
         <FilterModal filteredJobs={JobPostsdata} onDone={CloseHandleFilter} />
       )}
-       <AnimatePresence>
+      <AnimatePresence>
         {openModalScore && (
           <ModalSroreSeeker
             onClose={handleCloseModalScore}
@@ -773,7 +768,7 @@ export default function FilterJobbySkill() {
                               alt="Job"
                               style={{ width: "100px", height: "100px" }}
                             />
-                            <div >
+                            <div>
                               <Link
                                 to={`/jobs/detail/${jobDetails?.id}`}
                                 className={classes.link}
@@ -787,11 +782,11 @@ export default function FilterJobbySkill() {
                                     fontWeight: 700,
                                     mt: 0,
                                     mb: 0,
+                                    fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
                                   {jobDetails?.jobTitle}
                                 </Typography>
-                              
                               </Link>
                               <Typography
                                 variant="body1"
@@ -802,6 +797,7 @@ export default function FilterJobbySkill() {
                                   fontWeight: 400,
                                   mt: 0,
                                   mb: 0,
+                                  fontFamily: "Lexend, sans-serif",
                                 }}
                               >
                                 {detailsCompany?.companyName}
@@ -818,6 +814,7 @@ export default function FilterJobbySkill() {
                                     fontWeight: "bold",
                                     mt: "7px",
                                     color: "#0ab305 !important",
+                                    fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
                                   {jobDetails?.salary}
@@ -825,29 +822,29 @@ export default function FilterJobbySkill() {
                               </div>
                             </div>
                             {feedBackUserJob ? (
-                                  <>
-                                    <button
-                                      type="button"
-                                      className={classes.button6}
-                                      onClick={() =>
-                                        setOpenModalScore(!openModalScore)
+                              <>
+                                <button
+                                  type="button"
+                                  className={classes.button6}
+                                  onClick={() =>
+                                    setOpenModalScore(!openModalScore)
+                                  }
+                                >
+                                  {/* <span className={classes.spanicon}> */}
+                                  {feedBackUserJob.analyzedResult
+                                    .matchDetails && (
+                                    <GradientCircularProgress
+                                      percentage={
+                                        feedBackUserJob.analyzedResult
+                                          .matchDetails.scores.overallMatch
                                       }
-                                    >
-                                      {/* <span className={classes.spanicon}> */}
-                                      {feedBackUserJob.analyzedResult
-                                        .matchDetails && (
-                                        <GradientCircularProgress
-                                          percentage={
-                                            feedBackUserJob.analyzedResult
-                                              .matchDetails.scores.overallMatch
-                                          }
-                                        />
-                                      )}
+                                    />
+                                  )}
 
-                                      {/* </span> */}
-                                    </button>
-                                  </>
-                                ) : undefined}
+                                  {/* </span> */}
+                                </button>
+                              </>
+                            ) : undefined}
                           </div>
                           {applied && auth ? (
                             <div
@@ -914,7 +911,7 @@ export default function FilterJobbySkill() {
                                   fontSize: "16px",
                                   fontWeight: "bold",
                                   padding: "11px 24px",
-
+                                  fontFamily: "Lexend, sans-serif",
                                   "&:hover": {
                                     // backgroundColor: "#C82222",
                                     backgroundColor: "#b0b0b0",
@@ -940,7 +937,7 @@ export default function FilterJobbySkill() {
                                   fontSize: "16px",
                                   fontWeight: "bold",
                                   padding: "11px 24px",
-
+fontFamily: "Lexend, sans-serif",
                                   "&:hover": {
                                     backgroundColor: "#C82222",
 
@@ -1014,6 +1011,7 @@ export default function FilterJobbySkill() {
                                           height: "16px",
                                           color: "#a6a6a6",
                                           mt: "10px",
+                                          fontFamily: "Lexend, sans-serif",
                                         }}
                                       />
                                       <Typography
@@ -1025,6 +1023,7 @@ export default function FilterJobbySkill() {
                                           mt: "7px",
                                           color: "#414042",
                                           fontSize: "16px",
+                                          fontFamily: "Lexend, sans-serif",
                                         }}
                                       >
                                         {item}
@@ -1041,6 +1040,7 @@ export default function FilterJobbySkill() {
                                       height: "16px",
                                       color: "#a6a6a6",
                                       mt: "10px",
+                                      fontFamily: "Lexend, sans-serif",
                                     }}
                                   />
                                   <Typography
@@ -1052,6 +1052,7 @@ export default function FilterJobbySkill() {
                                       mt: "7px",
                                       color: "#414042",
                                       fontSize: "16px",
+                                      fontFamily: "Lexend, sans-serif",
                                     }}
                                   >
                                     {detailsCompany.address}
@@ -1068,6 +1069,7 @@ export default function FilterJobbySkill() {
                                     height: "16px",
                                     color: "#a6a6a6",
                                     mt: "10px",
+                                    fontFamily: "Lexend, sans-serif",
                                   }}
                                 />
                                 <Typography
@@ -1079,6 +1081,7 @@ export default function FilterJobbySkill() {
                                     mt: "7px",
                                     color: " #414042 ",
                                     fontSize: "16px",
+                                    fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
                                   From{" "}
@@ -1101,12 +1104,14 @@ export default function FilterJobbySkill() {
                                     mt: "7px",
                                     color: " #414042 ",
                                     fontSize: "16px",
+                                    fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
                                   Skill :
                                 </Typography>
                                 {jobDetails?.skillSets.map((item, index) => (
                                   <button
+                                  style={{fontFamily: "Lexend, sans-serif",}}
                                     key={index}
                                     className={classes.button}
                                   >

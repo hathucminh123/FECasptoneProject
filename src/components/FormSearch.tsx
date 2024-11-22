@@ -362,6 +362,7 @@ export default function FormSearch({
             padding: "10px 20px",
             boxSizing: "border-box",
             height: "56px",
+            fontFamily:"Lexend",
             mb: "2px",
             fontSize: "16px",
             width: { xs: "100%", sm: "25%" },
@@ -396,6 +397,7 @@ export default function FormSearch({
             mb: "2px",
             fontSize: "16px",
             width: { xs: "100%", sm: "60%" },
+            fontFamily:"Lexend",
             marginTop: { xs: "10px", sm: "0" },
             transition: "background-color 0.3s ease",
             "&:hover": {

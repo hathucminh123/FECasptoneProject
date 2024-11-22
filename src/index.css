@@ -47,11 +47,13 @@ li a{
 }
 
 p{
-  font-family: Roboto, Helvetica, Verdana, Arial, sans-serif;
+  /* font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; */
   color: #222831;
+  font-family: "Lexend", sans-serif;;
   letter-spacing: 0;
 }
 
 a{
-  font-family: Roboto, Helvetica, Verdana, Arial, sans-serif;
+  /* font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; */
+  font-family: "Lexend", sans-serif;;
 }

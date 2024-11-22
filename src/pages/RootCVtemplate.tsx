@@ -15,7 +15,7 @@ export default function RootCVtemplate() {
           <div className={classes.header}>
             <div className={classes.header1}>
               <div className={classes.header2}>
-                <Link to="/profile-cv" className={classes.link}>
+                <Link to="/profile-cv" className={classes.link} style={{   fontFamily: "Lexend, sans-serif",}}>
                   <ArrowBackIcon />
                   <span>Back to update your Profile</span>
                 </Link>
@@ -30,6 +30,7 @@ export default function RootCVtemplate() {
                       marginBottom: 0,
                       boxSizing: "border-box",
                       display: "block",
+                 fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     CV Template

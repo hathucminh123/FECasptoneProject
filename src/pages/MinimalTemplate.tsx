@@ -53,6 +53,7 @@ export default function MinimalTemplate() {
                               marginBottom: 0,
                               boxSizing: "border-box",
                               display: "block",
+                           fontFamily: "Lexend, sans-serif",
                             }}
                           >
                             {UserProfileData?.firstName}{" "}
@@ -82,6 +83,8 @@ export default function MinimalTemplate() {
                           marginBottom: 0,
                           boxSizing: "border-box",
                           display: "block",
+
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Personal Details
@@ -92,7 +95,7 @@ export default function MinimalTemplate() {
                           alt="phone"
                           className={classes.img1}
                         />
-                        <div className={classes.main10}>
+                        <div className={classes.main10} style={{   fontFamily: "Lexend, sans-serif",}}>
                           {UserProfileData?.phoneNumber}
                         </div>
                       </div>
@@ -105,7 +108,7 @@ export default function MinimalTemplate() {
                           alt="email"
                           className={classes.img1}
                         />
-                        <div className={classes.main10}>
+                        <div className={classes.main10} style={{   fontFamily: "Lexend, sans-serif",}}>
                           {UserProfileData?.email}
                         </div>
                       </div>
@@ -124,25 +127,26 @@ export default function MinimalTemplate() {
                           marginBottom: 0,
                           boxSizing: "border-box",
                           display: "block",
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Education
                       </Typography>
                       {UserProfileData?.educationDetails.map((edu) => (
                         <div className={classes.education1}>
-                          <div className={classes.education2}>
+                          <div className={classes.education2} style={{   fontFamily: "Lexend, sans-serif",}}>
                             School name: {edu.institutionName}
                           </div>
-                          <div className={classes.education3}>
+                          <div className={classes.education3} style={{   fontFamily: "Lexend, sans-serif",}}>
                             Major: {edu.fieldOfStudy}
                           </div>
-                          <div className={classes.education3}>
+                          <div className={classes.education3} style={{   fontFamily: "Lexend, sans-serif",}}>
                             {" "}
                             From:{""}
                             {moment(edu.startDate).format("DD-MM-YYYY")} - To:{" "}
                             {moment(edu.endDate).format("DD-MM-YYYY")}
                           </div>
-                          <div className={classes.education3}>
+                          <div className={classes.education3} style={{   fontFamily: "Lexend, sans-serif",}}>
                             Degree: {edu.degree}
                           </div>
                         </div>
@@ -162,6 +166,7 @@ export default function MinimalTemplate() {
                           marginBottom: 0,
                           boxSizing: "border-box",
                           display: "block",
+                         fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Skills
@@ -175,20 +180,21 @@ export default function MinimalTemplate() {
                               </span>
                             </div>
                             <div className={classes.skill3}>
-                              <span className={classes.span2}>
+                              <span style={{   fontFamily: "Lexend, sans-serif",}} className={classes.span2}>
                                 {skills.name}
                               </span>
                             </div>
                           </div>
                           <div className={classes.skilldes}>
                             <div className={classes.skill2}>
-                              <span className={classes.span1}>
+                              <span className={classes.span1} style={{   fontFamily: "Lexend, sans-serif",}}>
                                 <strong>Description:</strong>
                               </span>
                             </div>
                             <div>
                               <span className={classes.span2}>
                                 <div
+                                style={{   fontFamily: "Lexend, sans-serif",}}
                                   dangerouslySetInnerHTML={{
                                     __html: skills.description,
                                   }}
@@ -216,6 +222,7 @@ export default function MinimalTemplate() {
                           marginBottom: 0,
                           boxSizing: "border-box",
                           display: "block",
+                         fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Work Experience
@@ -224,7 +231,7 @@ export default function MinimalTemplate() {
                       {UserProfileData?.experienceDetails.map((exp) => (
                         <div className={classes.main13}>
                           <div className={classes.main14}>
-                            <div className={classes.exp2}>
+                            <div className={classes.exp2} style={{   fontFamily: "Lexend, sans-serif",}}>
                               Position: {exp.position}
                             </div>
                             <div className={classes.exp3}>
@@ -234,19 +241,21 @@ export default function MinimalTemplate() {
                               {moment(exp.endDate).format("DD-MM-YYYY")}
                             </div>
                           </div>
-                          <div className={classes.exp4}>
+                          <div className={classes.exp4} style={{   fontFamily: "Lexend, sans-serif",}}>
                             Company Name: {exp.companyName}
                           </div>
                           <div className={classes.exp5}>
                             <div
+                            style={{   fontFamily: "Lexend, sans-serif",}}
                               dangerouslySetInnerHTML={{
                                 __html: exp.responsibilities,
                               }}
                             />
                           </div>
-                          <div className={classes.exp6}>Project</div>
+                          <div className={classes.exp6} style={{   fontFamily: "Lexend, sans-serif",}}>Project</div>
                           <div className={classes.exp7}>
                             <div
+                            style={{   fontFamily: "Lexend, sans-serif",}}
                               dangerouslySetInnerHTML={{
                                 __html: exp.achievements,
                               }}

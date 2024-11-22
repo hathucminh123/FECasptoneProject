@@ -106,6 +106,8 @@ export default function ManageCV() {
             lineHeight: "34px",
             color: "#121212",
             marginBottom: ".5rem",
+
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           Manage CVs
@@ -121,6 +123,7 @@ export default function ManageCV() {
             paddingTop: "1rem",
             paddingBottom: "1rem",
             marginBottom: ".5rem",
+         fontFamily: "Lexend, sans-serif",
           }}
         >
           Upload your CV below to use it throughout your application process
@@ -147,6 +150,7 @@ export default function ManageCV() {
                     fontSize: "1rem",
                     marginBottom: ".25rem",
                     lineHeight: "1.5",
+                    fontFamily: "Lexend, sans-serif",
                   }}
                   gutterBottom
                 >
@@ -162,6 +166,7 @@ export default function ManageCV() {
                         color: "blue",
                         textTransform: "none",
                         fontSize: "16px",
+                        fontFamily: "Lexend, sans-serif",
                       }}
                     >
                       Upload
@@ -170,7 +175,7 @@ export default function ManageCV() {
 
                     {/* Show selected file before upload */}
                     {selectedFile && (
-                      <Typography variant="body1" sx={{ marginTop: "10px" }}>
+                      <Typography variant="body1"  sx={{ marginTop: "10px" , fontFamily: "Lexend, sans-serif",}}>
                         Selected file: {selectedFile.name}
                       </Typography>
                     )}
@@ -181,7 +186,7 @@ export default function ManageCV() {
                           variant="contained"
                           color="primary"
                           // onClick={handleUploadClick}
-                          sx={{ marginTop: "1rem" }}
+                          sx={{ marginTop: "1rem" , fontFamily: "Lexend, sans-serif",}}
                         >
                           Wait a seconds
                         </Button>
@@ -190,7 +195,7 @@ export default function ManageCV() {
                           variant="contained"
                           color="primary"
                           onClick={handleUploadClick}
-                          sx={{ marginTop: "1rem" }}
+                          sx={{ marginTop: "1rem", fontFamily: "Lexend, sans-serif", }}
                         >
                           Upload CV
                         </Button>
@@ -201,7 +206,7 @@ export default function ManageCV() {
                       <div style={{ marginTop: "1rem" }}>
                         <Typography
                           variant="h6"
-                          sx={{ fontWeight: 500, fontSize: "1rem" }}
+                          sx={{ fontWeight: 500, fontSize: "1rem", fontFamily: "Lexend, sans-serif", }}
                         >
                           Uploaded CVs:
                         </Typography>
@@ -214,7 +219,7 @@ export default function ManageCV() {
                               <Typography
                                 key={index}
                                 variant="body1"
-                                sx={{ marginTop: ".5rem", fontSize: "14px" }}
+                                sx={{ marginTop: ".5rem", fontSize: "14px", fontFamily: "Lexend, sans-serif", }}
                               >
                                 <a
                                   href={cv.url}
@@ -265,6 +270,7 @@ export default function ManageCV() {
                 lineHeight: "34px",
                 color: "#121212",
                 marginBottom: ".5rem",
+                fontFamily: "Lexend, sans-serif",
               }}
             >
               Cover Letter
@@ -278,7 +284,8 @@ export default function ManageCV() {
           </div>
           {isCreatingNewChallenge ? (
             <div style={{ display: "block" }}>
-              <span className={classes.text}>
+              <span className={classes.text}
+              style={{ fontFamily: "Lexend, sans-serif",}}>
                 Tips: Start by describing what you bring to the table and why
                 this job excites you
               </span>
@@ -309,7 +316,7 @@ export default function ManageCV() {
             <div className={classes.content}>
               <Typography
                 variant="body1"
-                sx={{ fontSize: "16px", fontWeight: 400, lineHeight: 1.8 }}
+                sx={{ fontSize: "16px", fontWeight: 400, lineHeight: 1.8, fontFamily: "Lexend, sans-serif", }}
               >
                 Introduce yourself and why you'd make a great hire
               </Typography>

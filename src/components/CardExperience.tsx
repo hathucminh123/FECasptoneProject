@@ -82,7 +82,7 @@ export default function CardExperience({
         <div className={classes.main2}>
           <Typography
             variant="h2"
-            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700 }}
+            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700,fontFamily: "Lexend, sans-serif", }}
           >
             {title}
           </Typography>
@@ -116,6 +116,7 @@ export default function CardExperience({
                         fontWeight: 700,
                         mt: 0,
                         mb: 0,
+                        fontFamily: "Lexend, sans-serif",
                       }}
                     >
                       Position: {item?.position}
@@ -164,6 +165,7 @@ export default function CardExperience({
                       fontWeight: 700,
                       mt: 0,
                       mb: 0,
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Responsibilities:
@@ -182,6 +184,7 @@ export default function CardExperience({
                       fontWeight: 700,
                       mt: 0,
                       mb: 0,
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Achievements:

@@ -426,7 +426,7 @@ export default function SignInPageEmployer() {
                     fontSize: "36px",
                     margin: 0,
                     fontWeight: 700,
-                    fontFamily: "Roboto, Helvetica, Verdana, Arial, sans-serif",
+                    fontFamily: "Lexend, sans-serif",
                     color: "#fff",
                     letterSpacing: 0,
                     lineHeight: 1.5,
@@ -440,6 +440,7 @@ export default function SignInPageEmployer() {
                     margin: "8px 0 0 0",
                     textAlign: "center",
                     color: "#fff",
+                    fontFamily: "Lexend, sans-serif", 
                   }}
                 >
                   Link your account to continue using our system services.
@@ -461,6 +462,7 @@ export default function SignInPageEmployer() {
                           color: "#424242",
                           cursor: "pointer",
                           fontSize: "1.125rem",
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Employer
@@ -481,6 +483,7 @@ export default function SignInPageEmployer() {
                           color: "#424242",
                           cursor: "pointer",
                           fontSize: "1.125rem",
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         Job Seeker
@@ -496,8 +499,7 @@ export default function SignInPageEmployer() {
                         fontSize: "1rem",
                         fontWeight: 400,
                         marginBottom: "1.5rem",
-                        fontFamily:
-                          "Roboto, Helvetica, Verdana, Arial, sans-serif",
+                        fontFamily: "Lexend, sans-serif",
                         color: "#222831",
                         letterSpacing: 0,
                         lineHeight: 1.5,
@@ -519,6 +521,8 @@ export default function SignInPageEmployer() {
                             fontWeight: 600,
                             display: "inline-block",
                             marginBottom: ".5rem",
+                            fontFamily: "Lexend, sans-serif",
+                          
                           }}
                         >
                           Email
@@ -558,6 +562,7 @@ export default function SignInPageEmployer() {
                             fontWeight: 600,
                             display: "inline-block",
                             marginBottom: ".5rem",
+                            fontFamily: "Lexend, sans-serif",
                           }}
                         >
                           Password
@@ -599,7 +604,7 @@ export default function SignInPageEmployer() {
                           </span>
                         </div>
                       </div>
-                      <p className={classes.p}>
+                      <p className={classes.p} style={{   fontFamily: "Lexend, sans-serif",}}>
                         By logging in, you agree to our Terms of Use and Privacy
                         Policy
                       </p>
@@ -610,11 +615,12 @@ export default function SignInPageEmployer() {
                             disabled
                             type="submit"
                             className={classes.button2}
+                            style={{   fontFamily: "Lexend, sans-serif",}}
                           >
                             Please wait a minute
                           </button>
                         ) : (
-                          <button type="submit" className={classes.btn}>
+                          <button type="submit" className={classes.btn}    style={{   fontFamily: "Lexend, sans-serif",}}>
                             Sign in
                           </button>
                         )}
@@ -643,6 +649,7 @@ export default function SignInPageEmployer() {
                       fontSize: "18px",
                       fontWeight: 500,
                       marginBottom: ".5rem",
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Register for an Employer Account
@@ -662,6 +669,7 @@ export default function SignInPageEmployer() {
                         fontSize: "0.875rem",
                         fontWeight: 600,
                         marginBottom: "0.5rem",
+                        fontFamily: "Lexend, sans-serif",
                       }}
                     >
                       Login Information
@@ -686,7 +694,7 @@ export default function SignInPageEmployer() {
                       />
                     </div> */}
                     <div className={classes.form10}>
-                      <label htmlFor="email" className={classes.label}>
+                      <label htmlFor="email" className={classes.label} style={{   fontFamily: "Lexend, sans-serif",}}>
                         Email
                       </label>
                       <TextField
@@ -705,7 +713,7 @@ export default function SignInPageEmployer() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="fistName" className={classes.label}>
+                      <label htmlFor="fistName" className={classes.label}  style={{   fontFamily: "Lexend, sans-serif",}}>
                         First Name
                       </label>
                       <TextField
@@ -724,7 +732,7 @@ export default function SignInPageEmployer() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="lastName" className={classes.label}>
+                      <label htmlFor="lastName" className={classes.label}  style={{   fontFamily: "Lexend, sans-serif",}}>
                         Last Name
                       </label>
                       <TextField
@@ -743,10 +751,10 @@ export default function SignInPageEmployer() {
                       />
                     </div>
                     <div className={classes.form10}>
-                      <label htmlFor="password" className={classes.label}>
+                      <label htmlFor="password" className={classes.label}  style={{   fontFamily: "Lexend, sans-serif",}}>
                         Password
                       </label>
-                      <div style={{ position: "relative" }}>
+                      <div style={{ position: "relative" }} >
                         <TextField
                           id="outlined-password-input"
                           name="password"
@@ -779,6 +787,7 @@ export default function SignInPageEmployer() {
                       <label
                         htmlFor="confirmPassword"
                         className={classes.label}
+                        style={{   fontFamily: "Lexend, sans-serif",}}
                       >
                         Confirm Password
                       </label>
@@ -843,6 +852,7 @@ export default function SignInPageEmployer() {
                         disabled
                         type="submit"
                         className={classes.button2}
+                        style={{   fontFamily: "Lexend, sans-serif",}}
                       >
                         Please wait a minute
                       </button>
@@ -852,6 +862,7 @@ export default function SignInPageEmployer() {
                         type="submit"
                         // className={check ? classes.button1 : classes.button2}
                         className={ classes.button1 }
+                        style={{   fontFamily: "Lexend, sans-serif",}}
                       >
                         Register
                       </button>

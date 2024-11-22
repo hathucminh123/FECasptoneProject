@@ -201,6 +201,7 @@ export default function HeaderNavigation({ token }: props) {
                   boxSizing: "border-box",
                   display: "block",
                   color: "#fff",
+                  fontFamily: "Lexend, sans-serif",
                 }}
               >
                 Amazing Job
@@ -260,7 +261,7 @@ export default function HeaderNavigation({ token }: props) {
 
             <ul className={classes.listright}>
               <li className={classes.link1}>
-                <NavLink className={classes.linkk} to="/employers/login">
+                <NavLink className={classes.linkk} style={{fontFamily: "Lexend, sans-serif",}}  to="/employers/login">
                   For Employers
                 </NavLink>
               </li>
@@ -294,6 +295,7 @@ export default function HeaderNavigation({ token }: props) {
                           marginLeft: "12px",
                           color: "#fff",
                           cursor: "pointer",
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         {/* {name} */}
@@ -856,6 +858,7 @@ const Menuitem = ({
       borderBottom: "1px solid #ffffff1a",
       color: "#a6a6a6",
       paddingLeft: "16px",
+      fontFamily: "Lexend, sans-serif",
       paddingRight: "16px",
       fontSize: "14px",
       fontWeight: 400,
@@ -872,6 +875,7 @@ const Menuitem = ({
           cursor: "pointer",
           fontSize: "14px",
           fontWeight: 400,
+          fontFamily: "Lexend, sans-serif",
           color: isHovered ? "white" : "#a6a6a6",
         }}
       >
@@ -982,6 +986,7 @@ const ProfileMenu = ({
           listStyleType: "none",
           backgroundColor: "#121212",
           color: "#a6a6a6",
+          fontFamily: "Lexend, sans-serif",
         }}
       >
         {menuItems.map((menuItem) => (

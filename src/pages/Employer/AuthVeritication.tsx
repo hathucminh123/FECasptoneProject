@@ -163,7 +163,8 @@ export default function AuthVerification() {
               >
                 <Typography
                   variant="h6"
-                  sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
+                  sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" ,fontFamily: "Lexend, sans-serif"}}
+              
                 >
                   You created JobSeeker Account Successfully
                 </Typography>
@@ -198,7 +199,7 @@ export default function AuthVerification() {
                     fontSize: "36px",
                     margin: 0,
                     fontWeight: 700,
-                    fontFamily: "Roboto, Helvetica, Verdana, Arial, sans-serif",
+                  fontFamily: "Lexend, sans-serif",
                     color: "#fff",
                     letterSpacing: 0,
                     lineHeight: 1.5,
@@ -212,6 +213,7 @@ export default function AuthVerification() {
                     margin: "8px 0 0 0",
                     textAlign: "center",
                     color: "#fff",
+                    fontFamily: "Lexend, sans-serif"
                   }}
                 >
                   Input your email verification code to continue using our
@@ -234,6 +236,7 @@ export default function AuthVerification() {
                           color: "#424242",
                           cursor: "pointer",
                           fontSize: "1.125rem",
+                          fontFamily: "Lexend, sans-serif"
                         }}
                       >
                         Email Verification
@@ -254,6 +257,8 @@ export default function AuthVerification() {
                           color: "#424242",
                           cursor: "pointer",
                           fontSize: "1.125rem",
+
+                          fontFamily: "Lexend, sans-serif"
                         }}
                       >
                         Update Email
@@ -269,8 +274,7 @@ export default function AuthVerification() {
                         fontSize: "1rem",
                         fontWeight: 400,
                         marginBottom: "1.5rem",
-                        fontFamily:
-                          "Roboto, Helvetica, Verdana, Arial, sans-serif",
+                       fontFamily: "Lexend, sans-serif",
                         color: "#222831",
                         letterSpacing: 0,
                         lineHeight: 1.5,
@@ -290,6 +294,7 @@ export default function AuthVerification() {
                           htmlFor="verificationCode"
                           style={{
                             fontWeight: 600,
+                            fontFamily: "Lexend, sans-serif",
                             display: "inline-block",
                             marginBottom: ".5rem",
                           }}
@@ -335,13 +340,13 @@ export default function AuthVerification() {
 
                       {isPending ? (
                         <div className={classes.button}>
-                          <button type="submit" className={classes.btn}>
+                          <button type="submit" className={classes.btn} style={{fontFamily: "Lexend, sans-serif"}}> 
                             Wait a second
                           </button>
                         </div>
                       ) : (
                         <div className={classes.button}>
-                          <button type="submit" className={classes.btn}>
+                          <button type="submit" className={classes.btn} style={{fontFamily: "Lexend, sans-serif"}}>
                             Submit
                           </button>
                         </div>

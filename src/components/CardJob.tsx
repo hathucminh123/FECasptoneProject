@@ -75,12 +75,14 @@ interface MyComponentProps {
   setShowAlert?: Dispatch<SetStateAction<boolean>>;
   setShowAlertt?: Dispatch<SetStateAction<boolean>>;
   setUndoData?: Dispatch<SetStateAction<JobPost | null>>;
+  classOn?:boolean
 }
 
 export default function CardJob({
   Maxwidth,
   className,
   formButton,
+  classOn,
   data,
   company,
   onclick,
@@ -139,9 +141,9 @@ export default function CardJob({
   return (
     // <Link to={`jobs/detail/${data?.id}`} className={classes.link2}>
     <div
-      className={classes.card_main}
+      className={classOn ?classes.card_main:undefined}
       onClick={onclick}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: "pointer" }} 
     >
       <div
         className={`${className ? className : classes.card_item}`}
@@ -151,19 +153,15 @@ export default function CardJob({
           <div style={{ display: "block" }}>
             {/* Posting Date */}
             <div className={classes.time}>
-              <Typography
-                variant="body1"
-                gutterBottom
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  color: "#a6a6a6 !important",
-                }}
+              <span
+               style={{ fontSize: "14px",
+                fontWeight: 400,
+                color: "#a6a6a6 !important",}}
               >
                 From:{" "}
                 {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} -
                 To: {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
-              </Typography>
+              </span>
             </div>
 
             {/* Job Title */}
@@ -181,6 +179,7 @@ export default function CardJob({
                   textOverflow: "ellipsis",
                   width: "100%",
                   boxSizing: "border-box",
+                  fontFamily: "Lexend, sans-serif"
                 }}
               >
                 {data?.jobTitle}
@@ -199,7 +198,11 @@ export default function CardJob({
                 // src={company?.imageUrl}
                 alt="image-job"
               />
-              <Link to={`/company/detail/${company?.id}`} className={classes.link3}>
+              <Link
+                to={`/company/detail/${company?.id}`}
+                className={classes.link3}
+
+              >
                 <Typography
                   variant="h6"
                   gutterBottom
@@ -207,6 +210,7 @@ export default function CardJob({
                     fontWeight: "bold",
                     fontSize: "14px",
                     color: "#414042 !important",
+                    fontFamily: "Lexend, sans-serif"
                   }}
                 >
                   {company?.companyName}
@@ -238,22 +242,8 @@ export default function CardJob({
             {/* Job Location */}
             <div className={classes.location}>
               <LocationOnOutlinedIcon />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  alignItems: "start",
-                  fontWeight: 400,
-                  mt: "7px",
-                  color: "#414042 !important",
-                  fontSize: "14px",
-                  display: "flex",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  maxWidth: "100%",
-                  flexShrink: 1,
-                }}
+              <span
+               className={classes.span}
               >
                 {cityColumn.length && cityColumn.length > 0 ? (
                   <span
@@ -280,33 +270,32 @@ export default function CardJob({
                     {company?.address} {" in "} {company?.city}
                   </span>
                 )}
-              </Typography>
+              </span>
             </div>
 
             {/* Job Type */}
             <div className={classes.location}>
               <BusinessCenterOutlinedIcon />
-              <Typography
-                variant="h6"
-                gutterBottom
-                sx={{
-                  alignItems: "start",
-                  fontWeight: 400,
-                  mt: "7px",
-                  color: " #414042 !important",
+              <span
+                style={{
                   fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#414042",
+                  paddingLeft: "8px",
+                  boxSizing: "border-box",
+                  cursor: "pointer",
                 }}
               >
                 {data?.jobType?.name}
-              </Typography>
+              </span>
             </div>
 
             {/* Skills */}
             <div className={classes.job}>
-              {data?.skillSets.map((tag, index) => (
-                <button key={index} className={classes.button}>
+              {data?.skillSets.slice(0,5).map((tag, index) => (
+                <div key={index} className={classes.button}>
                   {tag}
-                </button>
+                </div>
               ))}
             </div>
           </div>

@@ -116,7 +116,6 @@ export default function JobDetails() {
     setIsCreatingNewChallenge(true);
   }
 
-
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 4; // Page size
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]); // State to hold job search results
@@ -128,7 +127,7 @@ export default function JobDetails() {
     onSuccess: (data) => {
       if (data && data.result && data.result.items.length > 0) {
         setJobSearch(data.result.items);
-        setTotalJobs(data.result.totalCount); 
+        setTotalJobs(data.result.totalCount);
       } else {
         setJobSearch([]);
         setTotalJobs(0);
@@ -148,11 +147,13 @@ export default function JobDetails() {
     });
   }, [currentPage, mutateAsync]);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
     setCurrentPage(page); // Update current page
     // scrollToTop();
   };
-
 
   function handleDone() {
     setIsCreatingNewChallenge(false);
@@ -208,7 +209,6 @@ export default function JobDetails() {
     staleTime: 5000,
   });
   const FavoriteJobs = FavoriteJob?.JobPost;
- 
 
   const haveFavorite = FavoriteJobs?.find(
     (item) => item.id === Number(job?.id)
@@ -253,7 +253,7 @@ export default function JobDetails() {
   const Companiesdata = Company?.Companies;
 
   const JobPostsdata = JobPosts?.JobPosts;
-  console.log("data",JobPostsdata)
+  console.log("data", JobPostsdata);
   // const job: Job | null = location.state ?? null;
 
   // const job: Job | null = location.state ?? null;
@@ -772,20 +772,21 @@ export default function JobDetails() {
                           mt: "10px",
                         }}
                       />
-                      <Typography
-                        variant="h5"
-                        gutterBottom
-                        sx={{
+                      <h5
+                        style={{
                           alignItems: "start",
                           fontWeight: 500,
-                          mt: "7px",
-                          color: "#414042",
+                          marginTop: "7px",
+                          color: " #414042 ",
                           fontSize: "16px",
+                          lineHeight: 1.334,
+                          padding: 0,
+                          marginBottom: "7px",
                         }}
                       >
                         {detailsCompany?.address} {" in "}{" "}
                         {detailsCompany?.city}
-                      </Typography>
+                      </h5>
                     </div>
                   )}
 
@@ -799,20 +800,21 @@ export default function JobDetails() {
                         mt: "10px",
                       }}
                     />
-                    <Typography
-                      variant="h5"
-                      gutterBottom
-                      sx={{
+                    <h5
+                      style={{
                         alignItems: "start",
                         fontWeight: 500,
-                        mt: "7px",
+                        marginTop: "7px",
                         color: " #414042 ",
                         fontSize: "16px",
+                        lineHeight: 1.334,
+                        padding: 0,
+                        marginBottom: "7px",
                       }}
                     >
                       From: {job?.postingDate.slice(0, 10)} - To:{" "}
                       {job?.expiryDate.slice(0, 10)}
-                    </Typography>
+                    </h5>
                   </div>
                   <div className={classes.location}>
                     <WorkIcon
@@ -824,38 +826,38 @@ export default function JobDetails() {
                         mt: "10px",
                       }}
                     />
-                    <Typography
-                      variant="h5"
-                      gutterBottom
-                      sx={{
+                    <h5
+                      style={{
                         alignItems: "start",
                         fontWeight: 500,
-                        mt: "7px",
+                        marginTop: "7px",
                         color: " #414042 ",
                         fontSize: "16px",
+                        lineHeight: 1.334,
+                        marginBottom: "7px",
                       }}
                     >
                       {job?.experienceRequired} years
-                    </Typography>
+                    </h5>
                   </div>
                   <div className={classes.skill}>
-                    <Typography
-                      variant="h5"
-                      gutterBottom
-                      sx={{
+                    <h5
+                      style={{
                         alignItems: "start",
                         fontWeight: 500,
-                        mt: "7px",
+                        marginTop: "7px",
                         color: " #414042 ",
                         fontSize: "16px",
+                        lineHeight: 1.334,
+                        marginBottom: "7px",
                       }}
                     >
-                      Skill :
-                    </Typography>
+                      Skills :
+                    </h5>
                     {job?.skillSets?.map((item: string) => (
-                      <button key={item} className={classes.button}>
+                      <div key={item} className={classes.button}>
                         {item}
-                      </button>
+                      </div>
                     ))}
 
                     {/* <button className={classes.button}>PHP</button>
@@ -921,9 +923,8 @@ export default function JobDetails() {
                 >
                   Job description
                 </h2>
-                <Typography
-                  variant="body2"
-                  sx={{
+                <span
+                  style={{
                     fontSize: "16px",
                     fontWeight: 400,
                     lineHeight: 1.8,
@@ -934,7 +935,7 @@ export default function JobDetails() {
                       __html: job?.jobDescription,
                     }}
                   />
-                </Typography>
+                </span>
               </div>
               <div style={{ borderBottom: "1px dashed #dedede" }}></div>
               <div className={classes.des3}>
@@ -1046,9 +1047,8 @@ export default function JobDetails() {
                   Benefits for joining us
                 </h2>
                 <ul style={{ paddingLeft: "18px", marginBottom: "1rem" }}>
-                  <Typography
-                    variant="body2"
-                    sx={{
+                  <span
+                    style={{
                       fontSize: "16px",
                       fontWeight: 400,
                       lineHeight: 1.8,
@@ -1059,7 +1059,7 @@ export default function JobDetails() {
                         __html: job?.benefits,
                       }}
                     />
-                  </Typography>
+                  </span>
                   {/* <li
                     style={{
                       fontSize: "16px",
@@ -1153,9 +1153,8 @@ export default function JobDetails() {
                   alt="company image"
                 />
                 <div style={{ display: "block", paddingLeft: "12px " }}>
-                  <Typography
-                    variant="h4"
-                    sx={{
+                  <h4
+                    style={{
                       color: "#121212",
                       fontSize: "18px",
                       fontWeight: 700,
@@ -1164,7 +1163,7 @@ export default function JobDetails() {
                     }}
                   >
                     {detailsCompany.companyName}
-                  </Typography>
+                  </h4>
                   <StyledLink
                     to={`/company/detail/${detailsCompany.id}`}
                     // state={detailsCompany}
@@ -1267,20 +1266,20 @@ export default function JobDetails() {
               <CardJob />
               <CardJob />
               <CardJob /> */}
-               <div className={classes.pagination}>
-            <Pagination
-              count={Math.ceil(totalJobs / itemsPerPage)} // Total pages
-              page={currentPage}
-              onChange={handlePageChange} 
-              color="primary"
-              size="large"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              }}
-            />
-          </div>
+            <div className={classes.pagination}>
+              <Pagination
+                count={Math.ceil(totalJobs / itemsPerPage)} // Total pages
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+                size="large"
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "20px",
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -106,8 +106,6 @@ export default function Apply() {
     mutationFn: PostCVsAI,
     onSuccess: () => {
       // console.log("ok chua ta ", data);
-      
-     
       // queryClient.invalidateQueries({
       //   queryKey: ["JobPostActivity"],
       //   refetchType: "active", // Ensure an active refetch
@@ -121,7 +119,7 @@ export default function Apply() {
     },
   });
 
-  const { mutate, isPending} = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: PostJobPostActivity,
     // onSuccess: () => {
     //   queryClient.invalidateQueries({
@@ -136,7 +134,11 @@ export default function Apply() {
     onSuccess: async () => {
       try {
         await PostCVAi({
-          data: { jobPostId: job?.id, url: selectedCv?.url ?? "" },
+          data: {
+            jobPostId: job?.id,
+            url: selectedCv?.url ?? "",
+            cvId: selectedCv?.id,
+          },
         });
         message.success(`CV Apply to ${job?.jobTitle} successfully!`);
         navigate(`/thankyou/${job?.id}`);
@@ -144,7 +146,6 @@ export default function Apply() {
           queryKey: ["JobPostActivity"],
           refetchType: "active",
         });
-
       } catch {
         message.error("Failed to apply CV.");
       }
@@ -195,7 +196,6 @@ export default function Apply() {
         // const file = new File([blob], selectedCv?.name || "uploaded_file", {
         //   type: blob.type,
         // });
-        
 
         // Send file via PostCVAi
         // await PostCVAi({

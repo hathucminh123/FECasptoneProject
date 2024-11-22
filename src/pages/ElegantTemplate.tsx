@@ -43,7 +43,7 @@ export default function ElegantTemplate() {
               </div>
               <div className={classes.main5}>
                 <div className={classes.main6}>
-                  <div className={classes.main7}>
+                  <div className={classes.main7} style={{fontFamily: "Lexend, sans-serif",}}>
                     {UserProfileData?.firstName}
                     {UserProfileData?.lastName}
                   </div>
@@ -57,7 +57,7 @@ export default function ElegantTemplate() {
                           alt="phone"
                           className={classes.img}
                         />
-                        <p className={classes.p}>
+                        <p className={classes.p} style={{fontFamily: "Lexend, sans-serif",}}>
                           {UserProfileData?.phoneNumber}
                         </p>
                       </div>
@@ -69,7 +69,7 @@ export default function ElegantTemplate() {
                           alt="phone"
                           className={classes.img}
                         />
-                        <p className={classes.p}>{UserProfileData?.email}</p>
+                        <p  style={{fontFamily: "Lexend, sans-serif",}}className={classes.p}>{UserProfileData?.email}</p>
                       </div>
                     </div>
                   </div>
@@ -79,26 +79,26 @@ export default function ElegantTemplate() {
             <div className={classes.main12}>
               <div className={classes.main13}>
                 <div className={classes.education}>
-                  <div className={classes.education1}>Education</div>
+                  <div className={classes.education1} style={{fontFamily: "Lexend, sans-serif",}}>Education</div>
 
                   <div className={classes.education2}>
                     {UserProfileData?.educationDetails.map((edu) => (
                       <div className={classes.education3}>
-                        <span className={classes.span}>
+                        <span className={classes.span} style={{fontFamily: "Lexend, sans-serif",}}>
                           School name: {edu.institutionName}
                         </span>
                         <div className={classes.education4}>
-                          <p className={classes.p1}>
+                          <p className={classes.p1} style={{fontFamily: "Lexend, sans-serif",}}>
                             From:{""}
                             {moment(edu.startDate).format("DD-MM-YYYY")} - To:{" "}
                             {moment(edu.endDate).format("DD-MM-YYYY")}
                           </p>
                           <div className={classes.line}></div>
-                          <p className={classes.education5}>
+                          <p className={classes.education5} style={{fontFamily: "Lexend, sans-serif",}}>
                             Major: {edu.fieldOfStudy}
                           </p>
                         </div>
-                        <span className={classes.span1}>
+                        <span className={classes.span1} style={{fontFamily: "Lexend, sans-serif",}}>
                           Degree: {edu.degree}
                         </span>
                       </div>
@@ -106,15 +106,15 @@ export default function ElegantTemplate() {
                   </div>
                 </div>
                 <div className={classes.skill}>
-                  <div className={classes.skill1}>Skill</div>
+                  <div className={classes.skill1} style={{fontFamily: "Lexend, sans-serif",}}>Skill</div>
 
                   <div className={classes.skill2}>
                     <div className={classes.education3}>
                       <div className={classes.skill3}>
-                        <div className={classes.skill4}>Skill Name</div>
+                        <div className={classes.skill4} style={{fontFamily: "Lexend, sans-serif",}}>Skill Name</div>
                         <div className={classes.skill5}>
                           {UserProfileData?.skillSets.map((skill) => (
-                            <span className={classes.spanskill}>
+                            <span style={{fontFamily: "Lexend, sans-serif",}} className={classes.spanskill}>
                               {skill.name}
                             </span>
                           ))}
@@ -136,23 +136,23 @@ export default function ElegantTemplate() {
                   </div>
                 </div>
                 <div className={classes.experience}>
-                  <div className={classes.experience1}>Work Experience</div>
+                  <div className={classes.experience1} style={{fontFamily: "Lexend, sans-serif",}}>Work Experience</div>
 
                   <div className={classes.experience2}>
                     {UserProfileData?.experienceDetails.map((exp) => (
                       <div className={classes.experience3}>
-                        <div className={classes.experience4}>
+                        <div className={classes.experience4} style={{fontFamily: "Lexend, sans-serif",}}>
                           {" "}
                           From:{""}
                           {moment(exp.startDate).format("DD-MM-YYYY")} - To:{" "}
                           {moment(exp.endDate).format("DD-MM-YYYY")}
                         </div>
-                        <div className={classes.experience5}>
-                          <p className={classes.pex}>
+                        <div className={classes.experience5}> 
+                          <p className={classes.pex} style={{fontFamily: "Lexend, sans-serif",}}>
                             Position: {exp.position}
                           </p>
                           <div className={classes.line}></div>
-                          <p className={classes.pex}>
+                          <p className={classes.pex} style={{fontFamily: "Lexend, sans-serif",}}>
                             CompanyName: {exp.companyName}{" "}
                           </p>
                         </div>
@@ -160,6 +160,7 @@ export default function ElegantTemplate() {
                           <div className={classes.experience7}>
                             <div className={classes.experience8}>
                               <div
+                              style={{fontFamily: "Lexend, sans-serif",}}
                                 dangerouslySetInnerHTML={{
                                   __html: exp.responsibilities,
                                 }}
@@ -168,13 +169,14 @@ export default function ElegantTemplate() {
                           </div>
                         </div>
                         <div>
-                          <div className={classes.experience9}>
+                          <div className={classes.experience9} style={{fontFamily: "Lexend, sans-serif",}}>
                             Achievements:
                           </div>
                           <div className={classes.experience6}>
                             <div className={classes.experience7}>
                               <div className={classes.experience8}>
                                 <div
+                                style={{fontFamily: "Lexend, sans-serif",}}
                                   dangerouslySetInnerHTML={{
                                     __html: exp.achievements,
                                   }}

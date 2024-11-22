@@ -326,7 +326,7 @@ export default function HomePage() {
                 Skills for you:
               </Typography>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                {uniqueArray.map((item) => (
+                {uniqueArray.slice(0,10).map((item) => (
                   <Button
                     onClick={() => handleNavigateSkill(item)}
                     key={item}
@@ -338,6 +338,7 @@ export default function HomePage() {
                       padding: "10px 20px",
                       cursor: "pointer",
                       fontSize: "14px",
+                      fontFamily:"Lexend",
                       margin: "5px",
                       "&:hover": {
                         backgroundColor: "#333",

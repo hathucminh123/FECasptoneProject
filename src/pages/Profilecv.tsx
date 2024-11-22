@@ -254,6 +254,7 @@ export default function Profilecv() {
                               lineHeight: 1.5,
                               fontSize: "16px",
                               fontWeight: 400,
+                              fontFamily: "Lexend, sans-serif",
                               "&:hover": {
                                 color: "#3442c6",
                               },
@@ -274,6 +275,7 @@ export default function Profilecv() {
                             <AddCircleOutlineOutlinedIcon
                               sx={{
                                 width: "16px",
+                                fontFamily: "Lexend, sans-serif",
                                 height: "16px",
                                 color: "#0e2eed",
                                 marginRight: "4px",
@@ -285,6 +287,7 @@ export default function Profilecv() {
                             sx={{
                               color: "#0e2eed",
                               lineHeight: 1.5,
+                              fontFamily: "Lexend, sans-serif",
                               fontSize: "16px",
                               fontWeight: 400,
                               "&:hover": {
@@ -320,6 +323,7 @@ export default function Profilecv() {
                               lineHeight: 1.5,
                               fontSize: "16px",
                               fontWeight: 400,
+                              fontFamily: "Lexend, sans-serif",
                               "&:hover": {
                                 color: "#3442c6",
                               },
@@ -361,6 +365,7 @@ export default function Profilecv() {
                                     lineHeight: 1.5,
                                     fontSize: "16px",
                                     fontWeight: 400,
+                                    fontFamily: "Lexend, sans-serif",
                                     "&:hover": {
                                       color: "#3442c6",
                                     },
@@ -416,6 +421,7 @@ export default function Profilecv() {
                           lineHeight: 1.5,
                           fontSize: "16px",
                           fontWeight: 400,
+                          fontFamily: "Lexend, sans-serif",
                         }}
                       >
                         {more ? "Show less" : "Add more information"}
@@ -444,6 +450,7 @@ export default function Profilecv() {
                     marginLeft: "12px",
                     fontSize: "16px",
                     fontWeight: 400,
+                    fontFamily: "Lexend, sans-serif",
                   }}
                 >
                   Explore CV templates and download your CV
@@ -486,6 +493,7 @@ export default function Profilecv() {
                       lineHeight: 1.5,
                       fontSize: "28px",
                       fontWeight: 700,
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     {UserProfileData?.firstName} {UserProfileData?.lastName}
@@ -498,6 +506,7 @@ export default function Profilecv() {
                       fontSize: "18px",
                       fontWeight: 700,
                       marginTop: ".5rem",
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Your title
@@ -528,6 +537,7 @@ export default function Profilecv() {
                               textOverflow: "ellipsis",
                               whiteSpace: "nowrap",
                               marginLeft: ".5rem",
+                              fontFamily: "Lexend, sans-serif",
                             }}
                           >
                             {data.text}

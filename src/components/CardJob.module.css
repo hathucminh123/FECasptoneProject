@@ -1,25 +1,29 @@
 .card_main {
-
- 
+  padding: 12px !important;
+  flex: 0 0 auto;
+  width: 25%;
+  max-width: 100%;
+  margin-top: var(--i-gutter-y);
+  box-sizing: border-box;
+  display: block;
 }
 .card_item {
-  position: relative;
+  /* position: relative;
    /* display: flex; */
   flex-direction: column;
-  align-items: center;
-  justify-content: space-between; 
+ 
+  justify-content: space-between;
   gap: 10px;
-  max-width:100%;
-  width: 320px;
-  height: 300px;
- min-height: 350px;
+  max-width: 500px;
+  height: 100% !important;
+  transition-duration: 300ms;
   padding-top: 16px !important;
   border-radius: 8px;
   /* border: 1px solid #dedede; */
   background-color: white;
   box-shadow: 0px 6px 32px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
- 
+
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .card_item:hover {
@@ -141,50 +145,61 @@
   transition: border 0.3s ease;
 }
 
-
-.formbutton{
+.formbutton {
   margin-top: 20px !important;
   align-items: flex-end !important;
   justify-content: space-between !important;
   flex-direction: row-reverse !important;
   display: flex !important;
   flex-wrap: nowrap;
-
 }
 .button_icon {
   display: flex;
   align-items: center;
   justify-content: space-between;
   align-self: flex-end;
-  gap:10px;
+  gap: 10px;
 }
 
 /* Tạo file CSS hoặc sử dụng một CSS module */
 .link {
   text-decoration: none;
-  color: black; 
+  color: black;
   box-sizing: border-box;
 }
 
 .link:hover {
   /* text-decoration: underline; */
-  color: #FF0000 !important;
+  color: #ff0000 !important;
 }
 
-
-.link2{
+.link2 {
   text-decoration: none;
-  color: black; 
+  color: black;
   /* color: black;  */
 }
 
-
-.link3{
+.link3 {
   text-decoration: none;
-  color: black; 
+  color: black;
   box-sizing: border-box;
 }
 
-.link3:hover{
-    text-decoration: underline;
+.link3:hover {
+  text-decoration: underline;
+}
+
+.span {
+  align-items: start;
+  font-weight: 400;
+  margin-top: 7px;
+  color: #414042 !important;
+  font-size: 14px;
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  flex-shrink: 1;
+  padding-left: 8px;
 }

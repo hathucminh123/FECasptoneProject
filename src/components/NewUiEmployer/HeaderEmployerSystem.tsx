@@ -200,6 +200,7 @@ export default function HeaderEmployerSystem({
                 boxSizing: "border-box",
                 display: "block",
                 color: "#fff",
+                fontFamily: "Lexend, sans-serif",
               }}
             >
               Amazing Job
@@ -481,7 +482,7 @@ export default function HeaderEmployerSystem({
                                 {CompanyEmployer?.companyName}
                               </span>
                             </li>
-                            <li
+                            {/* <li
                               className={classes.li3}
                               style={{ cursor: "pointer" }}
                             >
@@ -490,7 +491,7 @@ export default function HeaderEmployerSystem({
                                   Create New Company
                                 </span>
                               </Link>
-                            </li>
+                            </li> */}
                             <hr className={classes.hr} />
                             <li
                               className={classes.li3}
