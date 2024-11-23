@@ -7,13 +7,14 @@ interface SeekersByJobPost {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string; // Số điện thoại lưu dưới dạng chuỗi
   cvId: number;
   cvPath: string;
   jobPostActivityId: number;
   status: string;
   jobPostActivityComments: Comment[];
-  analyzedResult: AnalyzedResult; // Integrating AnalyzedResult here
+  extractedCVInfo: ExtractedCVInfo; // Thêm extractedCVInfo
+  analyzedResult: AnalyzedResult;
 }
 
 interface Comment {
@@ -21,6 +22,45 @@ interface Comment {
   commentText: string;
   commentDate: string;
   rating: number;
+}
+
+interface ExtractedCVInfo {
+  success: boolean;
+  data: ExtractedData[];
+}
+
+interface ExtractedData {
+  personal: PersonalInfo;
+  professional: ProfessionalInfo;
+}
+
+interface PersonalInfo {
+  contact: string[];
+  email: string[];
+  github: string[];
+  linkedin: string[];
+  location: string[];
+  name: string[];
+}
+
+interface ProfessionalInfo {
+  education: Education[];
+  experience: Experience[];
+  technical_skills: string[];
+  non_technical_skills: string[];
+  tools: string[];
+}
+
+interface Education {
+  qualification: string | null;
+  university: string[];
+}
+
+interface Experience {
+  company: string[];
+  role: string[];
+  years: string[];
+  project_experience: string[];
 }
 
 interface AnalyzedResult {

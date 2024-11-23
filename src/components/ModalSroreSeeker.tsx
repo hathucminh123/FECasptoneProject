@@ -454,7 +454,7 @@ export default function ModalSroreSeeker({
                           </div>
                         </div>
                         {/* chart */}
-                        <div className={classes.main27}>
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.titleChart}>
                               Matching Details
@@ -481,9 +481,39 @@ export default function ModalSroreSeeker({
                               />
                             </div>
                           </div>
+                        </div> */}
+                            <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.titleChart}>
+                              Matching Details
+                            </div>
+                            <div>
+                              {profileResult?.analyzedResult.matchDetails && (
+                                <PercentileChart
+                                  profileResult={profileResult}
+                                  overallMatch={
+                                    profileResult?.analyzedResult.matchDetails
+                                      .scores.overallMatch
+                                  }
+                                  skillMatch={
+                                    profileResult?.analyzedResult.matchDetails
+                                      .scores.skillMatch
+                                  }
+                                  experienceMatch={
+                                    profileResult?.analyzedResult.matchDetails
+                                      .scores.experienceMatch
+                                  }
+                                  contentSimilarity={
+                                    profileResult?.analyzedResult.matchDetails
+                                      .scores.contentSimilarity
+                                  }
+                                />
+                              )}
+                            </div>
+                          </div>
                         </div>
 
-                        <div className={classes.main27}>
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>
                               Skills matching
@@ -505,8 +535,36 @@ export default function ModalSroreSeeker({
                                 : undefined}
                             </div>
                           </div>
+                        </div> */}
+                          <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>
+                              Skills matching
+                            </div>
+                            {
+                               profileResult?.analyzedResult.matchDetails && (
+                                <div className={classes.main29}>
+                                {profileResult?.analyzedResult.matchDetails
+                                  .skillAnalysis.matchingSkills &&
+                                profileResult?.analyzedResult.matchDetails
+                                  .skillAnalysis.matchingSkills.length > 0
+                                  ? profileResult?.analyzedResult.matchDetails.skillAnalysis.matchingSkills.map(
+                                      (item) => (
+                                        <div className={classes.main30}>
+                                          <div className={classes.matching}>
+                                            <span>{item}</span>
+                                          </div>
+                                        </div>
+                                      )
+                                    )
+                                  : undefined}
+                              </div>
+                              )
+                            }
+                          
+                          </div>
                         </div>
-                        <div className={classes.main27}>
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>Skills Missing</div>
                             <div className={classes.main29}>
@@ -526,8 +584,34 @@ export default function ModalSroreSeeker({
                                 : undefined}
                             </div>
                           </div>
+                        </div> */}
+                          <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>Skills Missing</div>
+                            {
+                              profileResult?.analyzedResult .matchDetails&& (
+                                <div className={classes.main29}>
+                                {profileResult?.analyzedResult.matchDetails
+                                  .skillAnalysis.missingSkills &&
+                                profileResult?.analyzedResult.matchDetails
+                                  .skillAnalysis.missingSkills.length > 0
+                                  ? profileResult.analyzedResult.matchDetails.skillAnalysis.missingSkills.map(
+                                      (item) => (
+                                        <div className={classes.main30}>
+                                          <div className={classes.missing}>
+                                            <span>{item}</span>
+                                          </div>
+                                        </div>
+                                      )
+                                    )
+                                  : undefined}
+                              </div>
+                              )
+                            }
+                         
+                          </div>
                         </div>
-                        <div className={classes.main27}>
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>
                               Additional Skills
@@ -547,14 +631,322 @@ export default function ModalSroreSeeker({
                                     )
                                   )
                                 : undefined}
-                              {/* <div className={classes.main30}>
-                                <div className={classes.additional}>
-                                  <span>React</span>
-                                </div>
+                           
+                            </div>
+                          </div>
+                        </div> */}
+                         <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>
+                              Additional Skills
+                            </div>
+                            {
+                               profileResult?.analyzedResult.matchDetails && (
+                                <div className={classes.main29}>
+                                {profileResult?.analyzedResult.matchDetails
+                                  .skillAnalysis.additionalSkills &&
+                                profileResult?.analyzedResult.matchDetails
+                                  .skillAnalysis.additionalSkills.length > 0
+                                  ? profileResult.analyzedResult.matchDetails.skillAnalysis.additionalSkills.map(
+                                      (item) => (
+                                        <div className={classes.main30}>
+                                          <div className={classes.additional}>
+                                            <span>{item}</span>
+                                          </div>
+                                        </div>
+                                      )
+                                    )
+                                  : undefined}
+                                {/* <div className={classes.main30}>
+                                  <div className={classes.additional}>
+                                    <span>React</span>
+                                  </div>
+                                </div> */}
+                              </div>
+                              )
+                            }
+                         
+                          </div>
+                        </div>
+                        {profileResult?.extractedCVInfo ? (
+                          <div className={classes.main27}>
+                            {" "}
+                            <div className={classes.main16}>
+                              <div className={classes.main28}>Exact CVS:</div>
+                              <div className={classes.main28}>
+                                Personal Details:
+                              </div>
+                              {profileResult.extractedCVInfo.data &&
+                              profileResult.extractedCVInfo.data.length > 0
+                                ? profileResult.extractedCVInfo.data.map(
+                                    (item) => {
+                                      return (
+                                        <div>
+                                          <div className={classes.main2222}>
+                                            Contact:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.personal.contact
+                                              ) &&
+                                              item.personal.contact.length > 0
+                                                ? item.personal.contact.join(
+                                                    ", "
+                                                  )
+                                                : "No contacts available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            Email:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.personal.email
+                                              ) &&
+                                              item.personal.email.length > 0
+                                                ? item.personal.email.join(", ")
+                                                : "No emails available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            Github:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.personal.github
+                                              ) &&
+                                              item.personal.github.length > 0
+                                                ? item.personal.github.join(
+                                                    ", "
+                                                  )
+                                                : "No GitHub available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            Linkedin:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.personal.linkedin
+                                              ) &&
+                                              item.personal.linkedin.length > 0
+                                                ? item.personal.linkedin.join(
+                                                    ", "
+                                                  )
+                                                : "No linkedin available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            Location:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.personal.location
+                                              ) &&
+                                              item.personal.location.length > 0
+                                                ? item.personal.location.join(
+                                                    ", "
+                                                  )
+                                                : "No location available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            Name:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.personal.name
+                                              ) && item.personal.name.length > 0
+                                                ? item.personal.name.join(", ")
+                                                : "No name available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            Education:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.professional.education
+                                              ) &&
+                                              item.professional.education
+                                                .length > 0
+                                                ? item.professional.education.map(
+                                                    (edu) => edu.university
+                                                  )
+                                                : "No name available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main28}>
+                                            Experience:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.professional.experience
+                                              ) &&
+                                              item.professional.experience
+                                                .length > 0
+                                                ? item.professional.experience.map(
+                                                    (exp) => (
+                                                      <div
+                                                        className={
+                                                          classes.main155
+                                                        }
+                                                      >
+                                                        <div
+                                                          className={
+                                                            classes.main166
+                                                          }
+                                                        >
+                                                          <div
+                                                            className={
+                                                              classes.main177
+                                                            }
+                                                          >
+                                                            <div
+                                                              className={
+                                                                classes.main188
+                                                              }
+                                                            >
+                                                              <span>
+                                                                Company Name:{" "}
+                                                              </span>
+                                                              <div
+                                                                className={
+                                                                  classes.main29
+                                                                }
+                                                              >
+                                                                {Array.isArray(
+                                                                  exp.company
+                                                                ) &&
+                                                                exp.company
+                                                                  .length > 0
+                                                                  ? exp.company.join(
+                                                                      ", "
+                                                                    )
+                                                                  : "No company available"}
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              className={
+                                                                classes.main2222
+                                                              }
+                                                            >
+                                                              Personal Project:
+                                                              <div
+                                                                className={
+                                                                  classes.main29
+                                                                }
+                                                              >
+                                                                {Array.isArray(
+                                                                  exp.project_experience
+                                                                ) &&
+                                                                exp
+                                                                  .project_experience
+                                                                  .length > 0
+                                                                  ? exp.project_experience.join(
+                                                                      ", "
+                                                                    )
+                                                                  : "No project available"}
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              className={
+                                                                classes.main2222
+                                                              }
+                                                            >
+                                                              Role :
+                                                              <div
+                                                                className={
+                                                                  classes.main29
+                                                                }
+                                                              >
+                                                                {Array.isArray(
+                                                                  exp.role
+                                                                ) &&
+                                                                exp.role
+                                                                  .length > 0
+                                                                  ? exp.role.join(
+                                                                      ", "
+                                                                    )
+                                                                  : "No role available"}
+                                                              </div>
+                                                            </div>
+                                                            <div
+                                                              className={
+                                                                classes.main2222
+                                                              }
+                                                            >
+                                                              Years:
+                                                              <div
+                                                                className={
+                                                                  classes.main29
+                                                                }
+                                                              >
+                                                                {Array.isArray(
+                                                                  exp.years
+                                                                ) &&
+                                                                exp.years
+                                                                  .length > 0
+                                                                  ? `${exp.years.join(
+                                                                      ", "
+                                                                    )} years`
+                                                                  : "No years available"}
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    )
+                                                  )
+                                                : "No experience available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            non_technical_skills:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.professional
+                                                  .non_technical_skills
+                                              ) &&
+                                              item.professional
+                                                .non_technical_skills.length > 0
+                                                ? item.professional.non_technical_skills.join(
+                                                    ", "
+                                                  )
+                                                : "No non_technical_skills available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            technical_skills:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.professional
+                                                  .technical_skills
+                                              ) &&
+                                              item.professional.technical_skills
+                                                .length > 0
+                                                ? item.professional.technical_skills.join(
+                                                    ", "
+                                                  )
+                                                : "No technical_skills available"}
+                                            </div>
+                                          </div>
+                                          <div className={classes.main2222}>
+                                            tools:
+                                            <div className={classes.main29}>
+                                              {Array.isArray(
+                                                item.professional.tools
+                                              ) &&
+                                              item.professional.tools.length > 0
+                                                ? item.professional.tools.join(
+                                                    ", "
+                                                  )
+                                                : "No tools available"}
+                                            </div>
+                                          </div>
+                                        </div>
+                                      );
+                                    }
+                                  )
+                                : undefined}
+                              {/* <div className={classes.main28}>
+                              Contact:
                               </div> */}
                             </div>
                           </div>
-                        </div>
+                        ) : undefined}
                       </div>
                     </div>
                   </div>

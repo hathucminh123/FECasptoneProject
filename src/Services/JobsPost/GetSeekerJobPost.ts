@@ -7,13 +7,14 @@ interface SeekersByJobPost {
   firstName: string;
   lastName: string;
   email: string;
-  phoneNumber: number;
+  phoneNumber: string; // Số điện thoại lưu dưới dạng chuỗi
   cvId: number;
   cvPath: string;
   jobPostActivityId: number;
   status: string;
   jobPostActivityComments: Comment[];
-  analyzedResult: AnalyzedResult; // Integrating AnalyzedResult here
+  extractedCVInfo: ExtractedCVInfo; // Thêm extractedCVInfo
+  analyzedResult: AnalyzedResult;
 }
 
 interface Comment {
@@ -21,6 +22,45 @@ interface Comment {
   commentText: string;
   commentDate: string;
   rating: number;
+}
+
+interface ExtractedCVInfo {
+  success: boolean;
+  data: ExtractedData[];
+}
+
+interface ExtractedData {
+  personal: PersonalInfo;
+  professional: ProfessionalInfo;
+}
+
+interface PersonalInfo {
+  contact: string[];
+  email: string[];
+  github: string[];
+  linkedin: string[];
+  location: string[];
+  name: string[];
+}
+
+interface ProfessionalInfo {
+  education: Education[];
+  experience: Experience[];
+  technical_skills: string[];
+  non_technical_skills: string[];
+  tools: string[];
+}
+
+interface Education {
+  qualification: string | null;
+  university: string[];
+}
+
+interface Experience {
+  company: string[];
+  role: string[];
+  years: string[];
+  project_experience: string[];
 }
 
 interface AnalyzedResult {
@@ -65,7 +105,7 @@ interface Recommendation {
   action: string;
 }
 
-interface signal {
+interface Signal {
   signal?: AbortSignal;
   id: number;
 }
@@ -78,7 +118,7 @@ interface FetchError extends Error {
 export const GetSeekerJobPost = async ({
   id,
   signal,
-}: signal): Promise<{
+}: Signal): Promise<{
   GetSeekers: SeekersByJobPost[];
 }> => {
   try {
@@ -89,19 +129,19 @@ export const GetSeekerJobPost = async ({
 
     if (response.status !== 200) {
       const error: FetchError = new Error(
-        "An error occurred while fetching Seekfer Apply by JobPost"
+        "An error occurred while fetching Seekers Apply by JobPost"
       );
       error.code = response.status;
       error.info = response.data as Record<string, unknown>;
       throw error;
     }
 
-    const Seeker = response.data;
+    const seeker = response.data;
     return {
-      GetSeekers: Seeker.result as SeekersByJobPost[],
+      GetSeekers: seeker.result as SeekersByJobPost[],
     };
   } catch (error) {
-    console.error("Fetching Seekfer by JobPost failed", error);
+    console.error("Fetching Seekers by JobPost failed", error);
     throw error;
   }
 };

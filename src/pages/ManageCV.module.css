@@ -121,3 +121,123 @@ position: relative;
 .main1:hover{
     background-color: #ffd194;
 }
+
+.formupload{
+    border: 1px solid #dedede;
+    border-radius: 4px;
+    margin-top: 16px !important;
+    padding: 16px !important;
+    /* display: block; */
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.main2{
+    line-height: 40px;
+    color: rgb(51, 51, 51);
+    font-size: 16px;
+    font-weight: 500;
+    display: inline-block;
+    overflow: hidden;
+    white-space: pre;
+    box-sizing: border-box;
+}
+
+
+.main3{
+    position: relative;
+    box-sizing: border-box;
+    display: block;
+}
+
+.button{
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    min-height: 36px;
+    min-width: 36px;
+    border-radius: 8px;
+    font-weight: 500;
+    display: inline-flex
+;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    padding: 0px;
+    font-size: 14px;
+    line-height: 20px;
+    outline: none !important;
+    background-color: rgb(255, 255, 255) !important;
+    color: rgb(51, 51, 51) !important;
+    border: 2px solid transparent !important;
+    -webkit-appearance: button;
+    text-transform: none;
+    font-family: "Lexend" sans-serif;
+}
+
+.main4{
+    position: absolute;
+    left: -190.479px;
+    top: -100px;
+    z-index: 100;
+    box-sizing: border-box;
+    display: block;
+}
+
+.main5{
+    animation: 0.25s ease-in-out 0s 1 normal forwards running gItWsg;
+    width: max-content;
+    background-color: rgb(255, 255, 255);
+    border-radius: 8px;
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 8px 0px;
+    margin: 2px 4px 4px;
+    padding: 16px;
+    box-sizing: border-box;
+}
+.main6{
+    position: relative;
+    cursor: pointer;
+    padding: 8px 8px 8px 16px;
+    display: flex;
+    box-sizing: border-box;
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: 8px;
+    gap: 8px;
+}
+
+.main6:hover{
+    background-color: #ffd194;
+}
+
+.main7{
+    box-sizing: border-box;
+    display: block;
+}
+.main8{
+    position: relative;
+    cursor: pointer;
+    padding: 8px 8px 8px 16px;
+    display: flex;
+    box-sizing: border-box;
+    -webkit-box-align: center;
+    align-items: center;
+    border-radius: 8px;
+    gap: 8px;
+}
+
+.main8:hover{
+    background-color: #ffd194;
+}
+
+.main9{
+    box-sizing: border-box;
+    display: block;
+}

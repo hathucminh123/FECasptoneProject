@@ -14,9 +14,11 @@ import { fetchCVs } from "../Services/CVService/GetCV";
 import RenderButton from "../components/RenderButton.tsx";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import { DeleteCV } from "../Services/CVService/DeleteCV";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { storage } from "../firebase/config.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
+import DownloadIcon from "@mui/icons-material/Download";
 
 export default function ManageCV() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -24,6 +26,13 @@ export default function ManageCV() {
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
+
+  const [readOpen, setReadOpen] = useState<{ [key: number]: boolean }>({});
+
+  const handleOpenReadMark = (event: React.MouseEvent, id: number) => {
+    event.stopPropagation(); // Prevent event from closing the modal
+    setReadOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
+  };
 
   const handleStartAddNewChallenge = () => {
     setIsCreatingNewChallenge(true);
@@ -123,7 +132,7 @@ export default function ManageCV() {
             paddingTop: "1rem",
             paddingBottom: "1rem",
             marginBottom: ".5rem",
-         fontFamily: "Lexend, sans-serif",
+            fontFamily: "Lexend, sans-serif",
           }}
         >
           Upload your CV below to use it throughout your application process
@@ -175,7 +184,13 @@ export default function ManageCV() {
 
                     {/* Show selected file before upload */}
                     {selectedFile && (
-                      <Typography variant="body1"  sx={{ marginTop: "10px" , fontFamily: "Lexend, sans-serif",}}>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          marginTop: "10px",
+                          fontFamily: "Lexend, sans-serif",
+                        }}
+                      >
                         Selected file: {selectedFile.name}
                       </Typography>
                     )}
@@ -186,7 +201,10 @@ export default function ManageCV() {
                           variant="contained"
                           color="primary"
                           // onClick={handleUploadClick}
-                          sx={{ marginTop: "1rem" , fontFamily: "Lexend, sans-serif",}}
+                          sx={{
+                            marginTop: "1rem",
+                            fontFamily: "Lexend, sans-serif",
+                          }}
                         >
                           Wait a seconds
                         </Button>
@@ -195,7 +213,10 @@ export default function ManageCV() {
                           variant="contained"
                           color="primary"
                           onClick={handleUploadClick}
-                          sx={{ marginTop: "1rem", fontFamily: "Lexend, sans-serif", }}
+                          sx={{
+                            marginTop: "1rem",
+                            fontFamily: "Lexend, sans-serif",
+                          }}
                         >
                           Upload CV
                         </Button>
@@ -203,10 +224,17 @@ export default function ManageCV() {
 
                     {/* Uploaded CVs list */}
                     {dataCVS.length > 0 && (
-                      <div style={{ marginTop: "1rem" }}>
+                      <div
+                        style={{ marginTop: "1rem" }}
+                        className={classes.check}
+                      >
                         <Typography
                           variant="h6"
-                          sx={{ fontWeight: 500, fontSize: "1rem", fontFamily: "Lexend, sans-serif", }}
+                          sx={{
+                            fontWeight: 500,
+                            fontSize: "1rem",
+                            fontFamily: "Lexend, sans-serif",
+                          }}
                         >
                           Uploaded CVs:
                         </Typography>
@@ -215,42 +243,138 @@ export default function ManageCV() {
                             cv: { url: string; id: number; name: string },
                             index: number
                           ) => (
-                            <div className={classes.main1}>
-                              <Typography
-                                key={index}
-                                variant="body1"
-                                sx={{ marginTop: ".5rem", fontSize: "14px", fontFamily: "Lexend, sans-serif", }}
-                              >
-                                <a
-                                  href={cv.url}
-                                  download
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  style={{
-                                    textDecoration: "none",
-                                    color: "blue",
+                            <div key={cv.id} className={classes.formupload}>
+                              <div style={{ display: "block" }}>
+                                <div className={classes.main2}>
+                                  Attached Documents
+                                </div>
+                                <Typography
+                                  key={index}
+                                  variant="body1"
+                                  sx={{
+                                    marginTop: ".5rem",
+                                    fontSize: "14px",
+                                    fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
-                                  {cv.name}
-                                </a>
-                              </Typography>
-                              {deletingId === cv.id ? (
-                                <>Please wait a second...</>
-                              ) : (
-                                <div
-                                  onClick={() => handleDeleteCV(cv.id)}
-                                  style={{ cursor: "pointer" }}
+                                  <a
+                                    href={cv.url}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      textDecoration: "none",
+                                      color: "blue",
+                                    }}
+                                  >
+                                    {cv.name}
+                                  </a>
+                                </Typography>
+                              </div>
+                              <div className={classes.main3}>
+                                <button
+                                  type="button"
+                                  className={classes.button}
+                                  onClick={(e) => handleOpenReadMark(e, cv.id)}
                                 >
-                                  <DeleteOutlineOutlinedIcon
-                                    sx={{ color: "blue" }}
-                                  />
-                                </div>
-                              )}
+                                  <MoreVertIcon />
+                                </button>
+                                {readOpen[cv.id] && (
+                                  <div className={classes.main4}>
+                                    <div className={classes.main5}>
+                                      <a
+                                        className={classes.main6}
+                                        href={cv.url}
+                                        download
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{
+                                          textDecoration: "none",
+                                          color: "black",
+                                        }}
+                                      >
+                                        <DownloadIcon />
+                                        <div className={classes.main7}>
+                                          Dowload CV
+                                        </div>
+                                      </a>
+                                      <div
+                                        className={classes.main8}
+                                        onClick={() => handleDeleteCV(cv.id)}
+                                      >
+                                        {deletingId === cv.id ? (
+                                          <>Please wait a second...</>
+                                        ) : (
+                                          <div style={{ cursor: "pointer" }}>
+                                            <DeleteOutlineOutlinedIcon
+                                            // sx={{ color: "blue" }}
+                                            />
+                                          </div>
+                                        )}
+                                        <div className={classes.main9}>
+                                          Delete
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
                             </div>
                           )
                         )}
                       </div>
                     )}
+
+                    {/* {dataCVS.map((cv) => (
+                      <div key={cv.id} className={classes.formupload}>
+                        <div className={classes.check}>
+                          <FormGroup>
+                            <FormControlLabel
+                              control={
+                                <Checkbox
+                                  checked={selectedCvId === cv.id}
+                                  onChange={() => handleCVSelect(cv.id)}
+                                  name="form"
+                                />
+                              }
+                              label="Use This CV"
+                            />
+                          </FormGroup>
+                        </div>
+                        <div className={classes.file}>
+                          <div className={classes.upload5}>
+                            <div className={classes.filename}>
+                              <a
+                                href={cv.url}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  textDecoration: "none",
+                                  color: "blue",
+                                }}
+                                className={classes.a}
+                              >
+                                {cv.name}
+                              </a>
+                              <a
+                                href={cv.url}
+                                download
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={{
+                                  textDecoration: "none",
+                                  color: "blue",
+                                }}
+                                className={classes.a}
+                              >
+                                <VisibilityIcon style={{ color: "blue" }} />
+                              </a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))} */}
                   </Box>
                 </div>
               </div>
@@ -284,8 +408,10 @@ export default function ManageCV() {
           </div>
           {isCreatingNewChallenge ? (
             <div style={{ display: "block" }}>
-              <span className={classes.text}
-              style={{ fontFamily: "Lexend, sans-serif",}}>
+              <span
+                className={classes.text}
+                style={{ fontFamily: "Lexend, sans-serif" }}
+              >
                 Tips: Start by describing what you bring to the table and why
                 this job excites you
               </span>
@@ -316,7 +442,12 @@ export default function ManageCV() {
             <div className={classes.content}>
               <Typography
                 variant="body1"
-                sx={{ fontSize: "16px", fontWeight: 400, lineHeight: 1.8, fontFamily: "Lexend, sans-serif", }}
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: 1.8,
+                  fontFamily: "Lexend, sans-serif",
+                }}
               >
                 Introduce yourself and why you'd make a great hire
               </Typography>
