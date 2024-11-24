@@ -13,7 +13,7 @@ import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 
-export default function ChooseCompany() {
+const ChooseCompany:React.FC=()=> {
   const userId = localStorage.getItem("userId");
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [open, setOpen] = useState(false); 
@@ -145,3 +145,5 @@ export default function ChooseCompany() {
     </div>
   );
 }
+
+export default ChooseCompany

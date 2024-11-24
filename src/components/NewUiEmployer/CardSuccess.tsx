@@ -14,7 +14,7 @@ interface props {
   status?: string | null;
 }
 
-export default function CardSuccess({ status }: props) {
+const CardSuccess: React.FC<props> = ({ status }) => {
   // const location = useLocation();
   // const queryParams = new URLSearchParams(location.search);
   // const status = queryParams.get("status");
@@ -107,4 +107,6 @@ export default function CardSuccess({ status }: props) {
       </div>
     </div>
   );
-}
+};
+
+export default CardSuccess;

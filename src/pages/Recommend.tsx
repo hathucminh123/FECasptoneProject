@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 //   recommendationText: string;
 // }
 
-export default function Recommend() {
+const  Recommend:React.FC =()=> {
   // Company data with type annotation
   // const companyData: Company[] = [
   //   {
@@ -296,3 +296,4 @@ export default function Recommend() {
     </main>
   );
 }
+export default Recommend

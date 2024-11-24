@@ -6,15 +6,13 @@ import classes from "./ModalSroreSeeker.module.css";
 import Typography from "@mui/material/Typography";
 import PercentileChart from "./NewUiEmployer/PercentileChart";
 import { NavLink } from "react-router-dom";
-import {  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
 import moment from "moment";
 import Rating from "@mui/material/Rating";
 
 import Box from "@mui/material/Box";
 interface EducationDetail {
-
-
   id: number;
   name: string;
   institutionName: string;
@@ -59,86 +57,124 @@ interface UserProfile {
 }
 
 interface SeekersByJobPost {
-    id: number;
-    userName: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: number;
-    cvId: number;
-    cvPath: string;
-    jobPostActivityId: number;
-    status: string;
-    jobPostActivityComments: Comment[];
-    analyzedResult: AnalyzedResult; // Integrating AnalyzedResult here
-  }
-  
-  interface Comment {
-    id: number;
-    commentText: string;
-    commentDate: string;
-    rating: number;
-  }
-  
-  interface AnalyzedResult {
-    success: boolean;
-    processingTime: number;
-    deviceUsed: string;
-    matchDetails: MatchDetails;
-  }
-  
-  interface MatchDetails {
-    jobId: number;
-    jobTitle: string;
-    candidateName: string;
-    candidateEmail: string;
-    scores: Scores;
-    skillAnalysis: SkillAnalysis;
-    experienceAnalysis: ExperienceAnalysis;
-    recommendation: Recommendation;
-  }
-  
-  interface Scores {
-    overallMatch: number;
-    skillMatch: number;
-    experienceMatch: number;
-    contentSimilarity: number;
-  }
-  
-  interface SkillAnalysis {
-    matchingSkills: string[];
-    missingSkills: string[];
-    additionalSkills: string[];
-  }
-  
-  interface ExperienceAnalysis {
-    requiredYears: number;
-    candidateYears: number;
-    meetsRequirement: boolean;
-  }
-  
-  interface Recommendation {
-    category: string;
-    action: string;
-  }
-  
+  id: number;
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string; // Số điện thoại lưu dưới dạng chuỗi
+  cvId: number;
+  cvPath: string;
+  jobPostActivityId: number;
+  status: string;
+  jobPostActivityComments: Comment[];
+  extractedCVInfo: ExtractedCVInfo; // Thêm extractedCVInfo
+  analyzedResult: AnalyzedResult;
+}
+
+interface Comment {
+  id: number;
+  commentText: string;
+  commentDate: string;
+  rating: number;
+}
+
+interface ExtractedCVInfo {
+  success: boolean;
+  data: ExtractedData[];
+}
+
+interface ExtractedData {
+  personal: PersonalInfo;
+  professional: ProfessionalInfo;
+}
+
+interface PersonalInfo {
+  contact: string[];
+  email: string[];
+  github: string[];
+  linkedin: string[];
+  location: string[];
+  name: string[];
+}
+
+interface ProfessionalInfo {
+  education: Education[];
+  experience: Experience[];
+  technical_skills: string[];
+  non_technical_skills: string[];
+  tools: string[];
+}
+
+interface Education {
+  qualification: string | null;
+  university: string[];
+}
+
+interface Experience {
+  company: string[];
+  role: string[];
+  years: string[];
+  project_experience: string[];
+}
+
+interface AnalyzedResult {
+  success: boolean;
+  processingTime: number;
+  deviceUsed: string;
+  matchDetails: MatchDetails;
+}
+
+interface MatchDetails {
+  jobId: number;
+  jobTitle: string;
+  candidateName: string;
+  candidateEmail: string;
+  scores: Scores;
+  skillAnalysis: SkillAnalysis;
+  experienceAnalysis: ExperienceAnalysis;
+  recommendation: Recommendation;
+}
+
+interface Scores {
+  overallMatch: number;
+  skillMatch: number;
+  experienceMatch: number;
+  contentSimilarity: number;
+}
+
+interface SkillAnalysis {
+  matchingSkills: string[];
+  missingSkills: string[];
+  additionalSkills: string[];
+}
+
+interface ExperienceAnalysis {
+  requiredYears: number;
+  candidateYears: number;
+  meetsRequirement: boolean;
+}
+
+interface Recommendation {
+  category: string;
+  action: string;
+}
+
 interface props {
   onClose?: () => void;
   profile?: UserProfile | null;
   id?: number | null;
-  idJob?: string |number;
-  feedBackUserJob:SeekersByJobPost|undefined
+  idJob?: string | number;
+  feedBackUserJob: SeekersByJobPost | undefined;
 }
-export default function ModalSroreSeeker({
+const ModalSroreSeeker: React.FC<props> = ({
   onClose,
   profile,
   id,
   idJob,
   feedBackUserJob,
-}: props) {
-
+}) => {
   const [openExp, setOpenExp] = useState<boolean>(false);
- 
 
   const {
     data: SeekerApply,
@@ -160,9 +196,6 @@ export default function ModalSroreSeeker({
   //   experienceMatch: 0,
   //   contentSimilarity: 41.73,
   // };
-
- 
-
 
   if (!modalRoot) {
     return null;
@@ -301,7 +334,10 @@ export default function ModalSroreSeeker({
                               {profile?.experienceDetails &&
                               profile?.educationDetails.length > 0
                                 ? profile.experienceDetails.map((exp) => (
-                                    <div className={classes.main155}>
+                                    <div
+                                      className={classes.main155}
+                                      key={exp.id}
+                                    >
                                       <div className={classes.main166}>
                                         <div className={classes.main177}>
                                           <div className={classes.main188}>
@@ -443,7 +479,10 @@ export default function ModalSroreSeeker({
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
-                                    <div className={classes.main30}>
+                                    <div
+                                      className={classes.main30}
+                                      key={skill.id}
+                                    >
                                       <div className={classes.main31}>
                                         <span>{skill.name}</span>
                                       </div>
@@ -482,7 +521,7 @@ export default function ModalSroreSeeker({
                             </div>
                           </div>
                         </div> */}
-                            <div className={classes.main27}>
+                        <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.titleChart}>
                               Matching Details
@@ -536,21 +575,23 @@ export default function ModalSroreSeeker({
                             </div>
                           </div>
                         </div> */}
-                          <div className={classes.main27}>
+                        <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>
                               Skills matching
                             </div>
-                            {
-                               profileResult?.analyzedResult.matchDetails && (
-                                <div className={classes.main29}>
+                            {profileResult?.analyzedResult.matchDetails && (
+                              <div className={classes.main29}>
                                 {profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.matchingSkills &&
                                 profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.matchingSkills.length > 0
                                   ? profileResult?.analyzedResult.matchDetails.skillAnalysis.matchingSkills.map(
-                                      (item) => (
-                                        <div className={classes.main30}>
+                                      (item, index) => (
+                                        <div
+                                          className={classes.main30}
+                                          key={index}
+                                        >
                                           <div className={classes.matching}>
                                             <span>{item}</span>
                                           </div>
@@ -559,9 +600,7 @@ export default function ModalSroreSeeker({
                                     )
                                   : undefined}
                               </div>
-                              )
-                            }
-                          
+                            )}
                           </div>
                         </div>
                         {/* <div className={classes.main27}>
@@ -585,19 +624,21 @@ export default function ModalSroreSeeker({
                             </div>
                           </div>
                         </div> */}
-                          <div className={classes.main27}>
+                        <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>Skills Missing</div>
-                            {
-                              profileResult?.analyzedResult .matchDetails&& (
-                                <div className={classes.main29}>
+                            {profileResult?.analyzedResult.matchDetails && (
+                              <div className={classes.main29}>
                                 {profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.missingSkills &&
                                 profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.missingSkills.length > 0
                                   ? profileResult.analyzedResult.matchDetails.skillAnalysis.missingSkills.map(
-                                      (item) => (
-                                        <div className={classes.main30}>
+                                      (item, index) => (
+                                        <div
+                                          className={classes.main30}
+                                          key={index}
+                                        >
                                           <div className={classes.missing}>
                                             <span>{item}</span>
                                           </div>
@@ -606,9 +647,7 @@ export default function ModalSroreSeeker({
                                     )
                                   : undefined}
                               </div>
-                              )
-                            }
-                         
+                            )}
                           </div>
                         </div>
                         {/* <div className={classes.main27}>
@@ -635,21 +674,23 @@ export default function ModalSroreSeeker({
                             </div>
                           </div>
                         </div> */}
-                         <div className={classes.main27}>
+                        <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>
                               Additional Skills
                             </div>
-                            {
-                               profileResult?.analyzedResult.matchDetails && (
-                                <div className={classes.main29}>
+                            {profileResult?.analyzedResult.matchDetails && (
+                              <div className={classes.main29}>
                                 {profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.additionalSkills &&
                                 profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.additionalSkills.length > 0
                                   ? profileResult.analyzedResult.matchDetails.skillAnalysis.additionalSkills.map(
-                                      (item) => (
-                                        <div className={classes.main30}>
+                                      (item, index) => (
+                                        <div
+                                          className={classes.main30}
+                                          key={index}
+                                        >
                                           <div className={classes.additional}>
                                             <span>{item}</span>
                                           </div>
@@ -663,9 +704,7 @@ export default function ModalSroreSeeker({
                                   </div>
                                 </div> */}
                               </div>
-                              )
-                            }
-                         
+                            )}
                           </div>
                         </div>
                         {profileResult?.extractedCVInfo ? (
@@ -679,9 +718,9 @@ export default function ModalSroreSeeker({
                               {profileResult.extractedCVInfo.data &&
                               profileResult.extractedCVInfo.data.length > 0
                                 ? profileResult.extractedCVInfo.data.map(
-                                    (item) => {
+                                    (item, index) => {
                                       return (
-                                        <div>
+                                        <div key={index}>
                                           <div className={classes.main2222}>
                                             Contact:
                                             <div className={classes.main29}>
@@ -778,8 +817,9 @@ export default function ModalSroreSeeker({
                                               item.professional.experience
                                                 .length > 0
                                                 ? item.professional.experience.map(
-                                                    (exp) => (
+                                                    (exp, index) => (
                                                       <div
+                                                        key={index}
                                                         className={
                                                           classes.main155
                                                         }
@@ -970,36 +1010,43 @@ export default function ModalSroreSeeker({
                       //   onSubmit={handleSendEmail}
                     >
                       <Box component="div" className={classes.commentContainer}>
-                        {feedBackUserJob && feedBackUserJob.jobPostActivityComments.length > 0 ? (
-                        feedBackUserJob?.jobPostActivityComments.map((comment) => (
-                            <div key={comment.id} className={classes.comment}>
-                              <Typography variant="body1" component="p">
-                                <strong>Comment:</strong> {comment.commentText}
-                              </Typography>
-                              <Typography variant="body2" color="textSecondary">
-                                <strong>Date:</strong>{" "}
-                                {new Date(
-                                  comment.commentDate
-                                ).toLocaleDateString()}
-                              </Typography>
-                              <Box display="flex" alignItems="center">
+                        {feedBackUserJob &&
+                        feedBackUserJob.jobPostActivityComments.length > 0 ? (
+                          feedBackUserJob?.jobPostActivityComments.map(
+                            (comment) => (
+                              <div key={comment.id} className={classes.comment}>
+                                <Typography variant="body1" component="p">
+                                  <strong>Comment:</strong>{" "}
+                                  {comment.commentText}
+                                </Typography>
                                 <Typography
                                   variant="body2"
                                   color="textSecondary"
                                 >
-                                  <strong>Rating:</strong>
+                                  <strong>Date:</strong>{" "}
+                                  {new Date(
+                                    comment.commentDate
+                                  ).toLocaleDateString()}
                                 </Typography>
-                                <Rating
-                                  name={`rating-${comment.id}`}
-                                  value={comment.rating}
-                                  readOnly
-                                  precision={0.5}
-                                  sx={{ ml: 1 }}
-                                />
-                              </Box>
-                              <hr className={classes.commentSeparator} />
-                            </div>
-                          ))
+                                <Box display="flex" alignItems="center">
+                                  <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                  >
+                                    <strong>Rating:</strong>
+                                  </Typography>
+                                  <Rating
+                                    name={`rating-${comment.id}`}
+                                    value={comment.rating}
+                                    readOnly
+                                    precision={0.5}
+                                    sx={{ ml: 1 }}
+                                  />
+                                </Box>
+                                <hr className={classes.commentSeparator} />
+                              </div>
+                            )
+                          )
                         ) : (
                           <Typography variant="body2" color="textSecondary">
                             No comments available.
@@ -1017,4 +1064,6 @@ export default function ModalSroreSeeker({
     </div>,
     modalRoot
   );
-}
+};
+
+export default ModalSroreSeeker;

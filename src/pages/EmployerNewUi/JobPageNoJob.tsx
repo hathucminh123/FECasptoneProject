@@ -7,7 +7,7 @@ import NoJob from "../../components/NewUiEmployer/NoJob";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "../../components/NewUiEmployer/PaymentModal";
 
-export default function JobPageNoJob() {
+const  JobPageNoJob:React.FC =()=> {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const IsPremium = localStorage.getItem("IsPremium");
@@ -91,3 +91,6 @@ export default function JobPageNoJob() {
     </div>
   );
 }
+
+
+export default JobPageNoJob

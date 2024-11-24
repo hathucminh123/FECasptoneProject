@@ -33,7 +33,7 @@ import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 //   companyImage?: string; 
 // }
 
-export default function SaveJobs() {
+const  SaveJobs:React.FC =()=> {
   // const data = useAppSelector((state) => state.favorite.item);
   // const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -204,3 +204,4 @@ export default function SaveJobs() {
     </div>
   );
 }
+export default SaveJobs

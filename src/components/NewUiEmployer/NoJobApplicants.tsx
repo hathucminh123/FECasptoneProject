@@ -4,14 +4,15 @@ import classes from "./NoJobApplicants.module.css";
 // import WorkIcon from '@mui/icons-material/Work';
 
 interface props {
-    text?:string
+  text?: string;
 }
-export default function NoJobApplicants({text}:props) {
+const NoJobApplicants: React.FC<props> = ({ text }) => {
   return (
     <div className={classes.main}>
       <p className={classes.p}>{text}</p>
       <p className={classes.p1}>
-      Your next hire is waiting for you. There are a lot of people using Amazing Job to find their next job.
+        Your next hire is waiting for you. There are a lot of people using
+        Amazing Job to find their next job.
       </p>
       <div className={classes.main1}>
         {/* <div className={classes.main2}>
@@ -35,4 +36,5 @@ export default function NoJobApplicants({text}:props) {
       </div>
     </div>
   );
-}
+};
+export default NoJobApplicants;

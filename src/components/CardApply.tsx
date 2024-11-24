@@ -74,7 +74,7 @@ interface props {
   activity: UserJobActivity;
 }
 
-export default function CardApply({ company, job, activity }: props) {
+ const CardApply: React.FC<props> = ({ company, job, activity }) => {
   const pendingJobsArray = [];
   pendingJobsArray.push(job);
   const city = pendingJobsArray?.map((city) => city?.jobLocationCities);
@@ -295,3 +295,6 @@ export default function CardApply({ company, job, activity }: props) {
     </div>
   );
 }
+
+
+export default CardApply

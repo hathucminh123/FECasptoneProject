@@ -150,6 +150,7 @@
   display: flex;
   color: #a6a6a6 !important;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .button {

@@ -66,7 +66,7 @@ interface UserProfile {
   cvs: CVs[];
   skillSets: SkillSet[];
 }
-export default function PassedApplicants() {
+const  PassedApplicants:React.FC =()=> {
   const { id } = useParams();
   const JobId = Number(id);
   const [openExp, setOpenExp] = useState<boolean>(false);
@@ -221,7 +221,7 @@ export default function PassedApplicants() {
                 if (!profile) return null;
 
                 return (
-                  <div className={classes.main4}>
+                  <div className={classes.main4} key={data.id}>
                     <div className={classes.main5}>
                       <div className={classes.main6}>
                         {/* <img src="" alt="" className={classes.img} /> */}
@@ -275,7 +275,7 @@ export default function PassedApplicants() {
                           {profile.experienceDetails &&
                           profile.educationDetails.length > 0
                             ? profile.experienceDetails.map((exp) => (
-                                <div className={classes.main15}>
+                                <div className={classes.main15} key={exp.id}>
                                   <div className={classes.main16}>
                                     <div className={classes.main17}>
                                       <div className={classes.main18}>
@@ -401,7 +401,7 @@ export default function PassedApplicants() {
 
                         <div className={classes.main28} >
                           {profile.skillSets.map((skill) => (
-                            <div className={classes.main29}>
+                            <div className={classes.main29} key={skill.id}>
                               <span>{skill.name}</span>
                             </div>
                           ))}
@@ -503,3 +503,4 @@ export default function PassedApplicants() {
     </div>
   );
 }
+export default PassedApplicants

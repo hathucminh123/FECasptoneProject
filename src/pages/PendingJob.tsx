@@ -48,7 +48,7 @@ interface JobPost {
   jobLocationAddressDetail: string[];
   skillSets: string[];
 }
-export default function PendingJob() {
+const PendingJob:React.FC =()=> {
   //   const data = useAppSelector((state) => state.favorite.item);
   //   const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -242,3 +242,4 @@ export default function PendingJob() {
     </div>
   );
 }
+export default PendingJob

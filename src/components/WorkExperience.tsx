@@ -33,7 +33,7 @@ const months = [
   { value: "December", label: "December" },
 ];
 
-const years = Array.from(new Array(60), (val, index) => index + 1970).map(
+const years = Array.from(new Array(60), ( index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
@@ -52,7 +52,7 @@ const monthMap: { [key: string]: number } = {
   December: 12,
 };
 
-export default function WorkExperience({ onDone }: Props) {
+const WorkExperience: React.FC<Props> = ({ onDone }) => {
   // const [value, setValue] = useState<string>("");
   // const [valueProject, setValueProject] = useState<string>("");
   const [formData, setFormData] = useState({
@@ -70,12 +70,15 @@ export default function WorkExperience({ onDone }: Props) {
   const { mutate, isPending } = useMutation({
     mutationFn: PostExperienceDetails,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['ExperienceDetails'] ,refetchType:"active"});
+      queryClient.invalidateQueries({
+        queryKey: ["ExperienceDetails"],
+        refetchType: "active",
+      });
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
         refetchType: "active",
       });
-      navigate('#');
+      navigate("#");
       setFormData({
         companyName: "",
         position: "",
@@ -95,7 +98,12 @@ export default function WorkExperience({ onDone }: Props) {
   });
 
   const handleSubmit = () => {
-    if (!formData.startYear || !formData.startMonth || !formData.endYear || !formData.endMonth) {
+    if (
+      !formData.startYear ||
+      !formData.startMonth ||
+      !formData.endYear ||
+      !formData.endMonth
+    ) {
       message.error("Please fill in all date fields");
       return;
     }
@@ -109,8 +117,16 @@ export default function WorkExperience({ onDone }: Props) {
     const startMonthNumber = monthMap[formData.startMonth];
     const endMonthNumber = monthMap[formData.endMonth];
 
-    const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
-    const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
+    const startDate = new Date(
+      Number(formData.startYear),
+      startMonthNumber - 1,
+      1
+    ).toISOString();
+    const endDate = new Date(
+      Number(formData.endYear),
+      endMonthNumber - 1,
+      1
+    ).toISOString();
 
     // Call mutation API with the form data
     mutate({
@@ -126,14 +142,22 @@ export default function WorkExperience({ onDone }: Props) {
   };
 
   return (
-    <Modal text="Save" title="Work Experience" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
+    <Modal
+      text="Save"
+      title="Work Experience"
+      onClose={onDone}
+      isPending={isPending}
+      onClickSubmit={handleSubmit}
+    >
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>
             <TextField
               label="Company Name"
               value={formData.companyName}
-              onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, companyName: e.target.value })
+              }
               required
               variant="outlined"
               className={classes.inputGroup}
@@ -141,7 +165,9 @@ export default function WorkExperience({ onDone }: Props) {
             <TextField
               label="Position"
               value={formData.position}
-              onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, position: e.target.value })
+              }
               required
               variant="outlined"
               className={classes.inputGroup}
@@ -153,7 +179,9 @@ export default function WorkExperience({ onDone }: Props) {
                   select
                   label="From Month"
                   value={formData.startMonth}
-                  onChange={(e) => setFormData({ ...formData, startMonth: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startMonth: e.target.value })
+                  }
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -168,7 +196,9 @@ export default function WorkExperience({ onDone }: Props) {
                   select
                   label="From Year"
                   value={formData.startYear}
-                  onChange={(e) => setFormData({ ...formData, startYear: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, startYear: e.target.value })
+                  }
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -187,7 +217,9 @@ export default function WorkExperience({ onDone }: Props) {
                   select
                   label="To Month"
                   value={formData.endMonth}
-                  onChange={(e) => setFormData({ ...formData, endMonth: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endMonth: e.target.value })
+                  }
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -202,7 +234,9 @@ export default function WorkExperience({ onDone }: Props) {
                   select
                   label="To Year"
                   value={formData.endYear}
-                  onChange={(e) => setFormData({ ...formData, endYear: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, endYear: e.target.value })
+                  }
                   required
                   variant="outlined"
                   className={classes.inputGroup2}
@@ -220,18 +254,22 @@ export default function WorkExperience({ onDone }: Props) {
               <Typography variant="h6">Responsibilities</Typography>
               <ReactQuill
                 value={formData.responsibilities}
-                onChange={(value) => setFormData({ ...formData, responsibilities: value })}
+                onChange={(value) =>
+                  setFormData({ ...formData, responsibilities: value })
+                }
                 placeholder="Describe your responsibilities"
-                style={{height:200}}
+                style={{ height: 200 }}
               />
             </div>
             <div className={classes.description}>
               <Typography variant="h6">Achievements Project</Typography>
               <ReactQuill
                 value={formData.achievements}
-                onChange={(value) => setFormData({ ...formData, achievements: value })}
+                onChange={(value) =>
+                  setFormData({ ...formData, achievements: value })
+                }
                 placeholder="Describe your achievements Project"
-                style={{height:200}}
+                style={{ height: 200 }}
               />
             </div>
           </div>
@@ -242,4 +280,6 @@ export default function WorkExperience({ onDone }: Props) {
       </Box>
     </Modal>
   );
-}
+};
+
+export default WorkExperience;

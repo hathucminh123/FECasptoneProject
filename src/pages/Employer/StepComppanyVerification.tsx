@@ -8,7 +8,7 @@ import { useLocation, NavLink, Outlet } from "react-router-dom";
 
 import classes from "./StepComppanyVerification.module.css";
 
-export default function StepComppanyVerification() {
+const StepComppanyVerification: React.FC = () => {
   const [open, setOpen] = useState<boolean>(true);
   const [nextStep, setNextStep] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<string | null>(
@@ -119,7 +119,7 @@ export default function StepComppanyVerification() {
       </div>
     </body>
   );
-}
+};
 
 const StepIcon = ({ isActive }: { isActive: boolean }) =>
   isActive ? (
@@ -127,3 +127,4 @@ const StepIcon = ({ isActive }: { isActive: boolean }) =>
   ) : (
     <RadioButtonUncheckedIcon fontSize="small" className={classes.svg} />
   );
+export default StepComppanyVerification;

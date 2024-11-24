@@ -48,7 +48,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-export default function CompanyDetailRoot() {
+const CompanyDetailRoot:React.FC =()=> {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const navigate = useNavigate();
   const { CompanyId } = useParams();
@@ -515,3 +515,4 @@ export default function CompanyDetailRoot() {
     </div>
   );
 }
+export default CompanyDetailRoot

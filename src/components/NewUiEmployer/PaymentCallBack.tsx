@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const PaymentCallback = () => {
+const PaymentCallback: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {

@@ -51,16 +51,16 @@ interface Props {
   text?: string;
 }
 
-export default function FormSelectJobPost({
+const FormSelectJobPost: React.FC<Props> = ({
   selectedValue,
   setSelectedValue,
   data = [],
   placeholder = "Select Job Post",
-  padding,
-  height,
+  padding ,
+  height ,
   text,
   width,
-}: Props) {
+}) => {
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -158,3 +158,6 @@ export default function FormSelectJobPost({
     </div>
   );
 }
+
+
+export default FormSelectJobPost

@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./DetailsCV.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import { NavLink, Outlet } from "react-router-dom";
-export default function DetailsCV() {
+const DetailsCV: React.FC = () => {
   return (
     <div className={classes.main}>
       <div className={classes.div}>
@@ -46,10 +46,11 @@ export default function DetailsCV() {
             </div>
           </nav>
           <div className={classes.div1}>
-            <Outlet/>
+            <Outlet />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+export default DetailsCV;

@@ -1,4 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 import { queryClient } from "./Services/mainService";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/HomePage";
@@ -483,7 +484,7 @@ const router = createBrowserRouter([
                 index: true,
                 element: <RecommendTalents />,
               },
-              
+
               // {
               //   path: "Passed",
               //   element: <PassiveTalents />,
@@ -743,7 +744,7 @@ const router = createBrowserRouter([
   },
 ]);
 
-function App() {
+const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
@@ -752,6 +753,6 @@ function App() {
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
-}
+};
 
 export default App;

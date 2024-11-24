@@ -5,7 +5,7 @@ interface props {
     placeholder?:string
 }
 
-export default function FormSearch({placeholder} :props) {
+const FormSearch: React.FC<props> = ({ placeholder}) => {
   return (
     <div className={classes.div}>
       <div className={classes.div1}>
@@ -18,3 +18,5 @@ export default function FormSearch({placeholder} :props) {
     </div>
   );
 }
+
+export default FormSearch

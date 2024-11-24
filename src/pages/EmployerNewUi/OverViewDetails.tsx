@@ -15,7 +15,7 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 import moment from "moment";
-export default function OverViewDetails() {
+const OverViewDetails:React.FC =()=> {
   const { id } = useParams();
   const JobId = Number(id);
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -206,8 +206,8 @@ export default function OverViewDetails() {
                   <dt className={classes.main9}>
                     Address:
                   </dt>
-                  {job?.jobLocationAddressDetail.map((item) => (
-                    <dt className={classes.main9}> {item}</dt>
+                  {job?.jobLocationAddressDetail.map((item,index) => (
+                    <dt className={classes.main9} key={index}> {item}</dt>
                   ))}
 
                   <dt className={classes.main9}>
@@ -240,8 +240,8 @@ export default function OverViewDetails() {
                 <div className={classes.main7}>
                   <dt className={classes.main8}>skills</dt>
                   <dt className={classes.main9}>
-                    {job?.skillSets.map((item) => (
-                      <span className={classes.span}>{item}</span>
+                    {job?.skillSets.map((item,index) => (
+                      <span className={classes.span} key={index}>{item}</span>
                     ))}
                     {/* <span className={classes.span}>sdf</span>{" "}
                     <span className={classes.span}>sdf</span> */}
@@ -296,3 +296,4 @@ export default function OverViewDetails() {
     </div>
   );
 }
+export default OverViewDetails

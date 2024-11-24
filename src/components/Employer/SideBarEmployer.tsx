@@ -30,16 +30,16 @@ export interface Notification {
   receiverId: number;
   isRead: boolean;
   jobPostActivityId: number;
-  jobPostActivity: any;
-  userAccount: any;
+  // jobPostActivity: any;
+  // userAccount: any;
   createdDate: string;
-  modifiedDate: any;
-  createdBy: any;
-  modifiedBy: any;
+  // modifiedDate: any;
+  // createdBy: any;
+  // modifiedBy: any;
   isDeleted: boolean;
 }
-
-export default function SideBarEmployer({ open,token,notifications,setNotifications }: props) {
+// export default function SideBarEmployer({ open,token,notifications,setNotifications }: props) {
+  const SideBarEmployer: React.FC<props> = ({ open, token, notifications, setNotifications }) => {
   const [drop, setDrop] = useState<boolean>(false);
   // const [notifications, setNotifications] = useState<Notification[]>([]);
 
@@ -322,3 +322,4 @@ export default function SideBarEmployer({ open,token,notifications,setNotificati
     </nav>
   );
 }
+export default SideBarEmployer

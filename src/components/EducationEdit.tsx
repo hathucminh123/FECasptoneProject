@@ -58,11 +58,11 @@ const monthMap: { [key: string]: number } = {
 };
 
 
-const years = Array.from(new Array(60), (val, index) => index + 1970).map(
+const years = Array.from(new Array(60), (_, index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
-export default function EducationEdit({ onDone, data }: Props) {
+const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
   // const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: data?.name || "",
@@ -277,3 +277,5 @@ export default function EducationEdit({ onDone, data }: Props) {
     </Modal>
   );
 }
+
+export default EducationEdit

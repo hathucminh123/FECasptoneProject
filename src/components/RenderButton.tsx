@@ -5,7 +5,7 @@ interface RenderButtonProps {
   iconHovered?: ReactNode;
   textHover?: string;
   icon?: ReactNode;
-  text: string;
+  text?: string |undefined;
   color: string;
   variant: "contained" | "outlined";
   sxOverrides?: Record<string, unknown>;
@@ -13,7 +13,7 @@ interface RenderButtonProps {
   disabled?: boolean;
 }
 
-const RenderButton: React.FC<RenderButtonProps> = ({
+  const RenderButton: React.FC<RenderButtonProps> = ({
   iconHovered,
   textHover,
   icon,
@@ -79,4 +79,4 @@ const RenderButton: React.FC<RenderButtonProps> = ({
   );
 };
 
-export default RenderButton;
+export  default RenderButton

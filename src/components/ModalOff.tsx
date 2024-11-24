@@ -10,7 +10,7 @@ onClose?:()=>void
 onConfirm?:()=>void
 }
 
-export default function ModalOff({onClose,onConfirm}:props) {
+const ModalOff: React.FC<props> = ({ onClose, onConfirm }) => {
   const modalRoot = document.getElementById("modalOff");
   if (!modalRoot) {
     return null;
@@ -93,3 +93,5 @@ export default function ModalOff({onClose,onConfirm}:props) {
     modalRoot
   );
 }
+
+export default ModalOff

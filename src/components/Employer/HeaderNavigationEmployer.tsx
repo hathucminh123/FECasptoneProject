@@ -3,7 +3,7 @@ import classes from "./HeaderNavigationEmployer.module.css";
 import { Link } from "react-router-dom";
 import Image from "./../../assets/image/logo.jpg.webp";
 import Typography from "@mui/material/Typography";
-export default function HeaderNavigationEmployer() {
+const HeaderNavigationEmployer: React.FC = () => {
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
@@ -61,3 +61,4 @@ export default function HeaderNavigationEmployer() {
     </header>
   );
 }
+export default HeaderNavigationEmployer

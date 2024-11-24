@@ -13,7 +13,7 @@ interface props {
   open: boolean;
 }
 
-export default function SideBarAdmin({ open }: props) {
+ const SideBarAdmin: React.FC<props> = ({ open }) => {
   const [drop, setDrop] = useState<boolean>(false);
   const username = localStorage.getItem('name')
   const handleOpen = () => {
@@ -243,3 +243,6 @@ export default function SideBarAdmin({ open }: props) {
     </nav>
   );
 }
+
+
+export default SideBarAdmin

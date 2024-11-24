@@ -86,7 +86,7 @@ const datacities:string[] = [
   "NHA TRANG",
 ];
 
-export default function FilterModal({ onDone, filteredJobs }: Props) {
+const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
   // const JobSalary = filteredJobs?.map((salary) => salary.salary);
   // const flattenedArraySalary = JobSalary?.flat();
 
@@ -560,6 +560,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
           <div className={classes.workingModelButtons}>
             {TypeJob.map((type) => (
               <Button
+                 key={type}
                 variant={selectedType.includes(type) ? "contained" : "outlined"}
                 onClick={() => handleTypeSelect(type)}
                 className={classes.modelButton}
@@ -653,7 +654,7 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
                 ExpJob?.length &&
                 ExpJob?.length > 0 &&
                 ExpJob?.map((comp, index) => (
-                  <div className={classes.dropdown}>
+                  <div className={classes.dropdown} key={index}>
                     <div
                       key={index}
                       className={classes.dropdownItem}
@@ -743,3 +744,5 @@ export default function FilterModal({ onDone, filteredJobs }: Props) {
     </Modal>
   );
 }
+
+export default FilterModal

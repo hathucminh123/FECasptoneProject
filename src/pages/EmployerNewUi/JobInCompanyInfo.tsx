@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import moment from "moment";
-export default function JobInCompanyInfo() {
+const JobInCompanyInfo:React.FC =()=> {
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
@@ -89,7 +89,7 @@ export default function JobInCompanyInfo() {
           <div className={classes.main5}>
             <div className={classes.main6}>
               {jobincompanyData?.map((item) => (
-                <div className={classes.main7}>
+                <div className={classes.main7} key={item.id}>
                   <Link
                     to={`/EmployerJob/listjobs/OverView/${item.id}`}
                     className={classes.link2}
@@ -177,3 +177,5 @@ export default function JobInCompanyInfo() {
     </div>
   );
 }
+
+export default JobInCompanyInfo

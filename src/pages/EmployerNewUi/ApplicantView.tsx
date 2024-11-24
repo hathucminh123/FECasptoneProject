@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
-export default function ApplicantView() {
+const ApplicantView:React.FC =() =>{
   const { id } = useParams();
   const JobId = Number(id);
 
@@ -198,3 +198,4 @@ export default function ApplicantView() {
     </div>
   );
 }
+export default ApplicantView

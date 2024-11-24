@@ -26,7 +26,7 @@ interface FormProps {
   data?: SkillSet[];
 }
 
-export default function CardSkill({
+const CardSkill: React.FC<FormProps> = ({
   title,
   text,
   icon,
@@ -34,8 +34,8 @@ export default function CardSkill({
   icon2,
   onClick,
   data,
-}: FormProps) {
-//   const navigate = useNavigate();
+}) => {
+  //   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const userId = localStorage.getItem("userId");
   const { mutate } = useMutation({
@@ -44,11 +44,10 @@ export default function CardSkill({
       // Invalidate and refetch the cache to ensure the UI is updated immediately
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
-        refetchType: "active", 
+        refetchType: "active",
       });
       message.success("SkillSet Details Deleted Successfully");
-      setDeletingId(null); 
-  
+      setDeletingId(null);
     },
     onError: () => {
       message.error("Failed to delete the skill set");
@@ -58,11 +57,13 @@ export default function CardSkill({
 
   const handleDelete = (id: number) => {
     setDeletingId(id);
-    mutate({ data:{
-      userId:Number(userId),
-      skillSetId:id,
-      proficiencyLevel:""
-    } });
+    mutate({
+      data: {
+        userId: Number(userId),
+        skillSetId: id,
+        proficiencyLevel: "",
+      },
+    });
   };
 
   return (
@@ -71,7 +72,12 @@ export default function CardSkill({
         <div className={classes.main2}>
           <Typography
             variant="h2"
-            sx={{ lineHeight: 1.5, fontSize: "22px", fontWeight: 700,fontFamily: "Lexend, sans-serif", }}
+            sx={{
+              lineHeight: 1.5,
+              fontSize: "22px",
+              fontWeight: 700,
+              fontFamily: "Lexend, sans-serif",
+            }}
           >
             {title}
           </Typography>
@@ -108,14 +114,19 @@ export default function CardSkill({
                       Skill name: {item?.name}
                     </Typography>
                     {deletingId === item.id ? (
-                      <>Please wait a second...</> 
+                      <>Please wait a second...</>
                     ) : (
-                      <div style={{cursor:'pointer'}} onClick={() => handleDelete(item.id)}>
+                      <div
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDelete(item.id)}
+                      >
                         <DeleteIcon />
                       </div>
                     )}
                   </div>
-                  <div className={classes.main6}>Short Hand: {item.shorthand}</div>
+                  <div className={classes.main6}>
+                    Short Hand: {item.shorthand}
+                  </div>
                   <div
                     className={classes.main7}
                     dangerouslySetInnerHTML={{ __html: item.description }}
@@ -125,7 +136,14 @@ export default function CardSkill({
             </div>
           ))
         ) : (
-          <Typography variant="h3"  sx={{ lineHeight: 1.5, fontSize: "22px" ,fontFamily: "Lexend, sans-serif",}}>
+          <Typography
+            variant="h3"
+            sx={{
+              lineHeight: 1.5,
+              fontSize: "22px",
+              fontFamily: "Lexend, sans-serif",
+            }}
+          >
             {text}
           </Typography>
         )}
@@ -139,4 +157,6 @@ export default function CardSkill({
       </div>
     </div>
   );
-}
+};
+
+export default CardSkill;

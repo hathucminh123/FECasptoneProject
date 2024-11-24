@@ -305,7 +305,7 @@ import { fetchCompaniesById } from "../Services/CompanyService/GetCompanyById";
 import { GetBusinessStream } from "../Services/BusinessStreamService/GetBusinessStream";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import LanguageIcon from "@mui/icons-material/Language";
-export default function CompanyDetail() {
+const CompanyDetail:React.FC=() =>{
   const { CompanyId } = useParams();
 
   const { data: CompanyData } = useQuery({
@@ -508,7 +508,7 @@ export default function CompanyDetail() {
             fontFamily: "Lexend, sans-serif",
           }}
         >
-          Why you'll love working here
+          Why you will love working here
         </Typography>
         <Typography
           variant="body2"
@@ -534,3 +534,4 @@ export default function CompanyDetail() {
     </>
   );
 }
+export default CompanyDetail

@@ -12,7 +12,7 @@ interface props {
   scroll: boolean;
 }
 
-export default function Footer({ onClick, scroll }: props) {
+const Footer: React.FC<props> = ({ onClick, scroll }) => {
   return (
     <div className={classes.container}>
       {/* <div className={classes.content}>
@@ -200,3 +200,6 @@ export default function Footer({ onClick, scroll }: props) {
     </div>
   );
 }
+
+
+export default Footer

@@ -66,7 +66,7 @@ const AppliedCV: React.FC = () => {
   const handleNext = () => {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
-        ? steps.findIndex((step, i) => !(i in completed))
+        ? steps.findIndex((_, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
@@ -272,7 +272,7 @@ const AppliedCV: React.FC = () => {
           {allStepsCompleted() ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you're finished
+                All steps completed - you are finished
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Box sx={{ flex: "1 1 auto" }} />
@@ -294,7 +294,7 @@ const AppliedCV: React.FC = () => {
                   <Rating
                     name="simple-controlled"
                     value={value}
-                    onChange={(event, newValue) => setValue(newValue)}
+                    onChange={(_, newValue) => setValue(newValue)}
                   />
                 </React.Fragment>
               ) : (

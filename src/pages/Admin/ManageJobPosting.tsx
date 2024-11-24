@@ -41,7 +41,7 @@ const jobData = [
   },
 ];
 
-export default function ManageJobPosting() {
+const  ManageJobPosting:React.FC =()=> {
   const [selectStatus, setSelectStatus] = useState<string>("");
   const [selectJobType, setSelectJobType] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
@@ -209,3 +209,6 @@ export default function ManageJobPosting() {
     </div>
   );
 }
+
+
+export default ManageJobPosting

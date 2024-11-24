@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
-export default function OverViewCompany() {
+const  OverViewCompany:React.FC =()=> {
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
@@ -108,7 +108,7 @@ export default function OverViewCompany() {
               </Link>
             </div>
             {jobincompanyData?.map((item) => (
-              <div className={classes.main14}>
+              <div className={classes.main14} key={item.id}>
                 <div className={classes.main15}>
                   <Link
                     to={`/EmployerJob/listjobs/OverView/${item.id}`}
@@ -148,3 +148,4 @@ export default function OverViewCompany() {
     </div>
   );
 }
+export default OverViewCompany

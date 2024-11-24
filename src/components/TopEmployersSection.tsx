@@ -8,7 +8,7 @@ import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 import { useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 
-export default function TopEmployersSection() {
+const TopEmployersSection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
   const itemsPerPage = 6; // Page size
@@ -40,7 +40,7 @@ export default function TopEmployersSection() {
   const totalCount = data?.totalCount || 0;
 
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
+    _: React.ChangeEvent<unknown>,
     page: number
   ) => {
     setDirection(page > currentPage ? 1 : -1); // Determine direction based on page number
@@ -146,3 +146,6 @@ export default function TopEmployersSection() {
     </main>
   );
 }
+
+
+export default TopEmployersSection

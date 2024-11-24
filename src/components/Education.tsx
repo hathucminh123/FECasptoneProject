@@ -45,11 +45,11 @@ const monthMap: { [key: string]: number } = {
   December: 12,
 };
 
-const years = Array.from(new Array(70), (val, index) => index + 1970).map(
+const years = Array.from(new Array(70), (_, index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
-export default function Education({ onDone }: Props) {
+const Education: React.FC<Props> = ({ onDone }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -277,3 +277,6 @@ export default function Education({ onDone }: Props) {
     </Modal>
   );
 }
+
+
+export default Education

@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 // import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostActivity";
 
-export default function HeaderJobStatus() {
+const HeaderJobStatus: React.FC = () => {
   // const {
   //     data: JobPosts,
   //     // isLoading: isJobLoading,
@@ -113,3 +113,5 @@ export default function HeaderJobStatus() {
     </div>
   );
 }
+
+export default HeaderJobStatus

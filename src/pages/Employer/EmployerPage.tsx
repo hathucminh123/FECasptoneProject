@@ -4,7 +4,7 @@ import Image from "./../../assets/image/empoyer.png.webp";
 import  Typography  from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 
-export default function EmployerPage() {
+const EmployerPage:React.FC =()=> {
 
   const navigate =useNavigate()
 
@@ -42,3 +42,4 @@ export default function EmployerPage() {
     </section>
   );
 }
+export default EmployerPage

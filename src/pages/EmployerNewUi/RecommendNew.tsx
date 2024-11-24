@@ -7,7 +7,7 @@ import {  NavLink, Outlet,
 import { useQuery } from "@tanstack/react-query";
 // import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
-export default function RecommendNew() {
+const  RecommendNew:React.FC =()=> {
   // const { id } = useParams();
   // const JobId = Number(id);
   // const {
@@ -169,3 +169,4 @@ export default function RecommendNew() {
     </div>
   );
 }
+export default RecommendNew

@@ -8,7 +8,7 @@ import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import moment from "moment";
 import html2pdf from "html2pdf.js";
 
-export default function ProfileSystem() {
+const ProfileSystem:React.FC=()=> {
   const { ProfileId } = useParams();
 
   const cvRef = useRef<HTMLDivElement>(null);
@@ -81,7 +81,7 @@ export default function ProfileSystem() {
                         <div className={classes.main14}>
                           <ul className={classes.ul}>
                             {UserProfileData?.skillSets.map((skill) => (
-                              <li className={classes.li}>
+                              <li key={skill.id} className={classes.li}>
                                 <span className={classes.span}>
                                   <strong className={classes.strong}>
                                     {skill.name}
@@ -109,6 +109,7 @@ export default function ProfileSystem() {
                           <div
                             className={classes.edu3}
                             style={{ marginBottom: "20px" }}
+                            key={edu.id}
                           >
                             <div>
                               <strong>
@@ -132,7 +133,7 @@ export default function ProfileSystem() {
                         <div className={classes.edu2}>Experience</div>
                         <hr className={classes.hr} />
                         {UserProfileData?.experienceDetails.map((exp) => (
-                          <div>
+                          <div key={exp.id}>
                             <div className={classes.exp2}>
                               {" "}
                               From:{""}
@@ -181,3 +182,4 @@ export default function ProfileSystem() {
     </div>
   );
 }
+export default ProfileSystem

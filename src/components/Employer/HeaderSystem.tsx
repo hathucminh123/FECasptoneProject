@@ -14,15 +14,15 @@ interface props {
   pending?: boolean;
 }
 
-export default function HeaderSystem({
+const HeaderSystem: React.FC<props> = ({
   title,
   icon,
   buttonstring,
   url,
-  appear,
-  pending,
+  appear = true,
+  pending = false,
   onclick,
-}: props) {
+}) => {
   return (
     <div className={classes.div1}>
       <Typography
@@ -51,3 +51,6 @@ export default function HeaderSystem({
     </div>
   );
 }
+
+
+export default HeaderSystem

@@ -27,10 +27,10 @@ const months = [
 interface Props {
   onDone?: () => void;
 }
-const years = Array.from(new Array(50), (val, index) => index + 1970).map(
+const years = Array.from(new Array(50), (_, index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
-export default function Certificates({ onDone }: Props) {
+const Certificates: React.FC<Props> = ({ onDone }) => {
   const [value, setValue] = useState<string>("");
   // const [valueProject, setValueProject] = useState<string>("");
   const maxLength = 2500;
@@ -44,7 +44,7 @@ export default function Certificates({ onDone }: Props) {
 
   const remainingChars = maxLength - stripHTML(value).length;
   return (
-    <Modal title="Personal Project" onClose={onDone}>
+    <Modal  title="Personal Project" onClose={onDone}>
       {" "}
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
@@ -254,3 +254,6 @@ export default function Certificates({ onDone }: Props) {
     </Modal>
   );
 }
+
+
+export default Certificates

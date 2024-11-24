@@ -40,7 +40,7 @@ const data = [
   },
 ];
 
-export default function ManageAccount() {
+const ManageAccount: React.FC = () => {
   const [selectRole, setSelectRole] = useState<string>("");
   const [selectStatus, setSelectStatus] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
@@ -83,7 +83,7 @@ export default function ManageAccount() {
         {row.Status}
       </span>
     ),
-    Action: (row: { [key: string]: string }, index: number) => {
+    Action: (_: { [key: string]: string }, index: number) => {
       return (
         <div className={classes.right1}>
           <Tooltip title="Edit">
@@ -186,3 +186,4 @@ export default function ManageAccount() {
     </div>
   );
 }
+export default ManageAccount

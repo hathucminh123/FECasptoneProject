@@ -54,7 +54,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-export default function JobPage() {
+const JobPage:React.FC=()=> {
   const statusOptions = ["All", "Approved", "Pending", "Failed"];
   const [state, setState] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
@@ -293,7 +293,7 @@ export default function JobPage() {
                                   to={`Detail/CV/AppliedCV/${job.id}`}
                                   className={classes.link1}
                                 >
-                                  View Candidate's CV
+                                  View Candidate  CV
                                 </Link>
                               </div>
                               <div
@@ -445,3 +445,4 @@ export default function JobPage() {
     </div>
   );
 }
+export default JobPage

@@ -9,7 +9,7 @@ import { AnimatePresence } from "framer-motion";
 import ModalOff from "../components/ModalOff";
 import classes from "./Settings.module.css";
 
-export default function Settings() {
+const Settings:React.FC =()=> {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [pendingUpdate, setPendingUpdate] = useState<boolean | null>(null); // Trạng thái cần cập nhật sau khi modal đóng
@@ -227,3 +227,4 @@ export default function Settings() {
     </div>
   );
 }
+export default Settings

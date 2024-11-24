@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import classes from "./NoJob.module.css";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import WorkIcon from "@mui/icons-material/Work";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "./PaymentModal";
-export default function NoJob() {
+const NoJob: React.FC = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const IsPremium = localStorage.getItem("IsPremium");
-
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);
@@ -17,7 +16,6 @@ export default function NoJob() {
   const handlePostJobs = () => {
     if (IsPremium === "True") {
       navigate("/EmployerJob/jobs/create");
-     
     } else {
       setOpenModal(true);
     }
@@ -36,7 +34,7 @@ export default function NoJob() {
       </AnimatePresence>
       <p className={classes.p}>No Jobs</p>
       <p className={classes.p1}>
-        You don't need to post a job to start reaching out to candidates.
+        You do not need to post a job to start reaching out to candidates.
       </p>
       <div className={classes.main1}>
         <div className={classes.main2}>
@@ -65,4 +63,6 @@ export default function NoJob() {
       </div>
     </div>
   );
-}
+};
+
+export default NoJob;

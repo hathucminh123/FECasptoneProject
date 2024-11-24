@@ -6,8 +6,10 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import ApartmentIcon from "@mui/icons-material/Apartment";
 
-export default function ProfileEmployer() {
-  const [companyId, setCompanyId] = useState<string | null>(localStorage.getItem("CompanyId"));
+const ProfileEmployer: React.FC = () => {
+  const [companyId, setCompanyId] = useState<string | null>(
+    localStorage.getItem("CompanyId")
+  );
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("CompanyId");
@@ -35,11 +37,18 @@ export default function ProfileEmployer() {
                 Change Password
               </NavLink>
               <NavLink
-                to={companyId === "null" || !companyId ? "Choosecompany" : "company"}
+                to={
+                  companyId === "null" || !companyId
+                    ? "Choosecompany"
+                    : "company"
+                }
                 className={getNavLinkClass}
                 end
               >
-                <ApartmentIcon fontSize="small" sx={{ marginRight: "0.57rem" }} />
+                <ApartmentIcon
+                  fontSize="small"
+                  sx={{ marginRight: "0.57rem" }}
+                />
                 Company Information
               </NavLink>
             </div>
@@ -49,4 +58,6 @@ export default function ProfileEmployer() {
       </div>
     </div>
   );
-}
+};
+
+export default ProfileEmployer;

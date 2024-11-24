@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./VerifiEmployee.module.css";
-export default function VerifiEmployee() {
+const VerifiEmployee:React.FC=()=> {
   return (
     <div className={classes.main}>
       <div className={classes.main1}></div>
@@ -12,3 +12,5 @@ export default function VerifiEmployee() {
     </div>
   );
 }
+
+export default VerifiEmployee

@@ -53,7 +53,7 @@ interface props {
   jobs: JobPost[] | undefined;
 }
 
-export default function CompanyCard({ company, onChoose, jobs }: props) {
+const CompanyCard: React.FC<props> = ({ company, onChoose, jobs }) => {
   const skills = jobs?.map((skill) => skill.skillSets);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
@@ -103,3 +103,6 @@ export default function CompanyCard({ company, onChoose, jobs }: props) {
     </div>
   );
 }
+
+
+export default CompanyCard

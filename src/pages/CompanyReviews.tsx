@@ -8,7 +8,7 @@ import { Rate } from "antd";
 import { companyData } from "../assets/data/CompanyData";
 import { Link } from "react-router-dom";
 
-export default function CompanyReviews() {
+const CompanyReviews:React.FC =()=> {
   // Dữ liệu review để tránh trùng lặp mã
   // const reviewData = [
   //   {
@@ -443,3 +443,4 @@ export default function CompanyReviews() {
     </main>
   );
 }
+export default CompanyReviews

@@ -11,7 +11,7 @@ interface Props {
   onDone?: () => void;
 }
 
-export default function AboutMe({ onDone }: Props) {
+const AboutMe: React.FC<Props> = ({ onDone }) => {
   const [value, setValue] = useState<string>("");
   const maxLength = 2500;
 
@@ -65,3 +65,5 @@ export default function AboutMe({ onDone }: Props) {
     </Modal>
   );
 }
+
+export default AboutMe;

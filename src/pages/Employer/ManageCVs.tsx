@@ -85,7 +85,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-export default function ManageCVs() {
+ const ManageCVs:React.FC=()=> {
   const [selectedJob, setSelectedJob] = useState<JobPost | null>(null);
   const [selectedState, setSelectedState] = useState<string>("");
   const [selectedCV, setSelectedCV] = useState<string>("");
@@ -108,7 +108,7 @@ export default function ManageCVs() {
   const handleNext = () => {
     const newActiveStep =
       isLastStep() && !allStepsCompleted()
-        ? steps.findIndex((step, i) => !(i in completed))
+        ? steps.findIndex((_, i) => !(i in completed))
         : activeStep + 1;
     setActiveStep(newActiveStep);
   };
@@ -410,7 +410,7 @@ export default function ManageCVs() {
           {allStepsCompleted() ? (
             <React.Fragment>
               <Typography sx={{ mt: 2, mb: 1 }}>
-                All steps completed - you're finished
+                All steps completed - you are finished
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
                 <Box sx={{ flex: "1 1 auto" }} />
@@ -432,7 +432,7 @@ export default function ManageCVs() {
                   <Rating
                     name="simple-controlled"
                     value={value}
-                    onChange={(event, newValue) => setValue(newValue)}
+                    onChange={(_, newValue) => setValue(newValue)}
                   />
                 </React.Fragment>
               ) : (
@@ -481,3 +481,4 @@ export default function ManageCVs() {
     </div>
   );
 }
+export default ManageCVs

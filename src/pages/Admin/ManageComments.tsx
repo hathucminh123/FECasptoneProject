@@ -42,7 +42,7 @@ const commentData = [
   },
 ];
 
-export default function ManageComments() {
+const ManageComments: React.FC = () => {
   const [selectStatus, setSelectStatus] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -196,3 +196,6 @@ export default function ManageComments() {
     </div>
   );
 }
+
+
+export default ManageComments

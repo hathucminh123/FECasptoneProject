@@ -29,7 +29,7 @@ interface FormProps {
    selectedCvId?: number| null
 }
 
-export default function CardSkillModal({
+ const CardSkillModal: React.FC<FormProps> = ({
   title,
   text,
   icon,
@@ -39,7 +39,7 @@ export default function CardSkillModal({
   setSelectedCvId,
   onClick,
   data,
-}: FormProps) {
+}) => {
   //   const navigate = useNavigate();
   const [deletingId, setDeletingId] = useState<number | null>(null);
 //   const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
@@ -160,3 +160,4 @@ export default function CardSkillModal({
     </div>
   );
 }
+export default CardSkillModal

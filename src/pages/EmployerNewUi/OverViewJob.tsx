@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 
 
-export default function OverViewJob() {
+const OverViewJob:React.FC =()=> {
   const { id } = useParams();
 
   // const [searchParams] = useSearchParams();
@@ -86,3 +86,4 @@ export default function OverViewJob() {
     </div>
   );
 }
+export default OverViewJob

@@ -80,14 +80,13 @@ interface MyComponentProps {
   applied?: UserJobActivity;
 }
 
-export default function CardJobSearch({
+const CardJobSearch: React.FC<MyComponentProps> = ({
   data,
   onclick,
-  // img,
   company,
   selectedJob,
   applied,
-}: MyComponentProps) {
+}) => {
   console.log("cố lenasd", company);
   // const getJobLocation = (
   //   jobLocation: JobLocation | string | null | undefined
@@ -281,6 +280,7 @@ export default function CardJobSearch({
           <div className={classes.skill}>
             {data?.skillSets.map((item) => (
               <button
+                key={item}
                 style={{ fontFamily: "Lexend, sans-serif" }}
                 className={classes.button}
               >
@@ -318,4 +318,5 @@ export default function CardJobSearch({
       ) : undefined}
     </div>
   );
-}
+};
+export default CardJobSearch;

@@ -7,7 +7,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "../../components/NewUiEmployer/PaymentModal";
 
-export default function Complete() {
+const Complete:React.FC =()=> {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const IsPremium = localStorage.getItem("IsPremium");
@@ -75,3 +75,4 @@ export default function Complete() {
     </section>
   );
 }
+export default Complete

@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./RootSetting.module.css";
 import { NavLink, Outlet } from "react-router-dom";
-export default function RootSetting() {
+const RootSetting:React.FC =()=> {
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -31,3 +31,4 @@ export default function RootSetting() {
     </div>
   );
 }
+export default RootSetting

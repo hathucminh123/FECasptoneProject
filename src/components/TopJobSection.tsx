@@ -36,7 +36,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-export default function TopJobSection() {
+const TopJobSection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
   const itemsPerPage = 8;
@@ -76,7 +76,7 @@ export default function TopJobSection() {
     });
   }, [currentPage, mutateAsync]);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     setDirection(page > currentPage ? 1 : -1); // Determine direction based on page number
     setCurrentPage(page);
     scrollToTop();
@@ -124,7 +124,7 @@ export default function TopJobSection() {
                 color: "#121212",
               }}
             >
-              IT Jobs "Chất" for user
+              IT Jobs {"Chất"} for user
             </Typography>
           </div>
 
@@ -171,3 +171,6 @@ export default function TopJobSection() {
     </main>
   );
 }
+
+
+export default TopJobSection

@@ -26,11 +26,11 @@ interface CommentModalProps {
   selectedIdJobPostActivity?: number | null;
 }
 
-export default function CommentModal({
+const CommentModal: React.FC<CommentModalProps> = ({
   open,
   onClose,
   selectedIdJobPostActivity,
-}: CommentModalProps) {
+}) => {
   const [commentText, setCommentText] = useState<string>("");
   const [ratingValue, setRatingValue] = useState<number | null>(2); // Default rating
 
@@ -184,7 +184,7 @@ export default function CommentModal({
         <Rating
           name="rating"
           value={ratingValue}
-          onChange={(event, newValue) => {
+          onChange={(_, newValue) => {
             setRatingValue(newValue);
           }}
           precision={0.5} // Allows half-star ratings
@@ -229,3 +229,6 @@ export default function CommentModal({
     </Dialog>
   );
 }
+
+
+export default CommentModal

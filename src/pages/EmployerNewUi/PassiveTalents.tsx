@@ -7,7 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { useParams } from "react-router-dom";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
-import {  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import moment from "moment";
 import CheckIcon from "@mui/icons-material/Check";
@@ -62,7 +62,7 @@ interface UserProfile {
   cvs: CVs[];
   skillSets: SkillSet[];
 }
-export default function PassiveTalents() {
+const PassiveTalents: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
   const [openExp, setOpenExp] = useState<boolean>(false);
@@ -119,44 +119,44 @@ export default function PassiveTalents() {
     fetchProfileApply();
   }, [fetchProfileApply]);
 
-//   const { mutate } = useMutation({
-//     mutationFn: PutJobPostActivityStatus,
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({
-//         queryKey: ["SeekerApply"],
-//         refetchType: "active",
-//       });
-//       message.success("Status Details Update Successfully");
-//     },
-//     onError: () => {
-//       message.error("Failed to Update the status set");
-//     },
-//   });
+  //   const { mutate } = useMutation({
+  //     mutationFn: PutJobPostActivityStatus,
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries({
+  //         queryKey: ["SeekerApply"],
+  //         refetchType: "active",
+  //       });
+  //       message.success("Status Details Update Successfully");
+  //     },
+  //     onError: () => {
+  //       message.error("Failed to Update the status set");
+  //     },
+  //   });
 
-//   const handlePutStatusPassed = (id: number) => {
-//     mutate({
-//       data: {
-//         jobPostActivityId: id,
-//         status: 3,
-//       },
-//     });
-//   };
-//   const handlePutStatusRejected = (id: number) => {
-//     mutate({
-//       data: {
-//         jobPostActivityId: id,
-//         status: 2,
-//       },
-//     });
-//   };
-//   const handlePutStatusInterView = (id: number) => {
-//     mutate({
-//       data: {
-//         jobPostActivityId: id,
-//         status: 5,
-//       },
-//     });
-//   };
+  //   const handlePutStatusPassed = (id: number) => {
+  //     mutate({
+  //       data: {
+  //         jobPostActivityId: id,
+  //         status: 3,
+  //       },
+  //     });
+  //   };
+  //   const handlePutStatusRejected = (id: number) => {
+  //     mutate({
+  //       data: {
+  //         jobPostActivityId: id,
+  //         status: 2,
+  //       },
+  //     });
+  //   };
+  //   const handlePutStatusInterView = (id: number) => {
+  //     mutate({
+  //       data: {
+  //         jobPostActivityId: id,
+  //         status: 5,
+  //       },
+  //     });
+  //   };
 
   return (
     <div className={classes.main}>
@@ -176,7 +176,7 @@ export default function PassiveTalents() {
                 if (!profile) return null;
 
                 return (
-                  <div className={classes.main4}>
+                  <div className={classes.main4} key={data.id}>
                     <div className={classes.main5}>
                       <div className={classes.main6}>
                         {/* <img src="" alt="" className={classes.img} /> */}
@@ -230,7 +230,7 @@ export default function PassiveTalents() {
                           {profile.experienceDetails &&
                           profile.educationDetails.length > 0
                             ? profile.experienceDetails.map((exp) => (
-                                <div className={classes.main15}>
+                                <div className={classes.main15} key={exp.id}>
                                   <div className={classes.main16}>
                                     <div className={classes.main17}>
                                       <div className={classes.main18}>
@@ -356,7 +356,7 @@ export default function PassiveTalents() {
 
                         <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
-                            <div className={classes.main29}>
+                            <div className={classes.main29} key={skill.id}>
                               <span>{skill.name}</span>
                             </div>
                           ))}
@@ -435,4 +435,5 @@ export default function PassiveTalents() {
       </div>
     </div>
   );
-}
+};
+export default PassiveTalents;

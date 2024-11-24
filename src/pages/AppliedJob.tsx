@@ -49,7 +49,7 @@ interface JobPost {
   jobLocationAddressDetail: string[];
   skillSets: string[];
 }
-export default function AppliedJob() {
+const  AppliedJob:React.FC =()=> {
   //   const data = useAppSelector((state) => state.favorite.item);
   //   const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -234,3 +234,6 @@ export default function AppliedJob() {
     </div>
   );
 }
+
+
+export default AppliedJob

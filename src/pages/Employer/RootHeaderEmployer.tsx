@@ -3,7 +3,7 @@ import HeaderNavigationEmployer from "../../components/Employer/HeaderNavigation
 import { Outlet } from "react-router-dom";
 import classes from './RootHeaderEmployer.module.css'
 // import Footer from "../../components/Footer";
-export default function RootHeaderEmployer() {
+const  RootHeaderEmployer:React.FC=() =>{
   return (
     <>
       <HeaderNavigationEmployer />
@@ -16,3 +16,5 @@ export default function RootHeaderEmployer() {
     </>
   );
 }
+
+export default RootHeaderEmployer

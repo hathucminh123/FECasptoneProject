@@ -39,7 +39,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-export default function ApplySuccess() {
+const ApplySuccess:React.FC =()=> {
   const { JobId } = useParams();
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", JobId],
@@ -79,7 +79,7 @@ export default function ApplySuccess() {
   }, [currentPage, mutateAsync]);
 
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
+    _: React.ChangeEvent<unknown>,
     page: number
   ) => {
     // setDirection(page > currentPage ? 1 : -1);
@@ -186,7 +186,7 @@ export default function ApplySuccess() {
                 </Typography>
                 <div className={classes.main12}>
                   {jobSearch?.map((job) => (
-                    <div className={classes.main13}>
+                    <div key={job.id} className={classes.main13}>
                       <div className={classes.main14}>
                         <div className={classes.logojob}>
                           <img
@@ -284,3 +284,6 @@ export default function ApplySuccess() {
     </div>
   );
 }
+
+
+export default ApplySuccess

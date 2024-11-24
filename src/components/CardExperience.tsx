@@ -30,7 +30,7 @@ interface form {
   data?: ExperienceDetail[];
 }
 
-export default function CardExperience({
+ const CardExperience: React.FC<form> = ({
   title,
   text,
   icon,
@@ -38,7 +38,7 @@ export default function CardExperience({
   icon2,
   onClick,
   data,
-}: form) {
+}) => {
   const [openExperience, setOpenExperience] = useState<boolean>(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [selectExperience, setSelectExperience] =
@@ -220,3 +220,5 @@ export default function CardExperience({
     </div>
   );
 }
+
+export default CardExperience

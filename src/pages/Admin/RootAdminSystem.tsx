@@ -6,7 +6,7 @@ import { getTokenDuration } from "../../utils/Auth";
 import HeaderSystemAdmin from "../../components/Admin/HeaderSystemAdmin";
 import SideBarAdmin from "../../components/Admin/SideBarAdmin";
 
-export default function RootAdminSystem() {
+const RootAdminSystem: React.FC = () => {
   // const userRole = localStorage.getItem('role')
   // const navigate =useNavigate();
   const [open, setOpen] = useState<boolean>(true);
@@ -38,3 +38,4 @@ export default function RootAdminSystem() {
     </>
   );
 }
+export default RootAdminSystem

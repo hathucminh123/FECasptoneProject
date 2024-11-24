@@ -2,7 +2,7 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import classes from "./Modal.module.css";
 import Typography from "@mui/material/Typography";
-
+import React from "react";
 import RenderButton from "./RenderButton";
 
 interface ModalProps {
@@ -13,7 +13,7 @@ interface ModalProps {
   onClickReset?: () => void;
   isPending?: unknown;
   disappear?: boolean;
-  text: string;
+  text?: string;
   Appear?: boolean;
 }
 

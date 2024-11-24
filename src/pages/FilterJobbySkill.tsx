@@ -106,7 +106,7 @@ interface UserJobActivity {
   jobPostId: number;
 }
 
-export default function FilterJobbySkill() {
+const FilterJobbySkill:React.FC =()=> {
   // const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
@@ -1320,3 +1320,4 @@ const Content = ({ title, arraylist }: ContentProps) => {
     </div>
   );
 };
+export default FilterJobbySkill

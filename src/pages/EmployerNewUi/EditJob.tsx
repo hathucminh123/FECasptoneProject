@@ -1,7 +1,8 @@
 import React from 'react'
 
-export default function EditJob() {
+const EditJob:React.FC =()=> {
   return (
     <div>EditJob</div>
   )
 }
+export default EditJob

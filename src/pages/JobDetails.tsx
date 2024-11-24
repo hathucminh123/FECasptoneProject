@@ -101,7 +101,7 @@ interface JobPost {
   jobLocationAddressDetail: string[]; // jobLocation là đối tượng JobLocation
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
 }
-export default function JobDetails() {
+const JobDetails:React.FC =()=> {
   useScrollToTop();
   // const [favorite, setFavorite] = useState<boolean>(false);
   const containerLeftRef = useRef<HTMLDivElement | null>(null);
@@ -148,7 +148,7 @@ export default function JobDetails() {
   }, [currentPage, mutateAsync]);
 
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
+    _: React.ChangeEvent<unknown>,
     page: number
   ) => {
     setCurrentPage(page); // Update current page
@@ -593,7 +593,7 @@ export default function JobDetails() {
                       <span className={classes.span1}>
                         Applied Date:{" "}
                         {moment(hasAppliedJobActivity.applicationDate).format(
-                          "DD/MM/YYYY HH:mm"
+                          "DD/MM/YYYY "
                         )}
                       </span>
                       <span className={classes.span1}>
@@ -1289,3 +1289,4 @@ export default function JobDetails() {
     </div>
   );
 }
+export default JobDetails

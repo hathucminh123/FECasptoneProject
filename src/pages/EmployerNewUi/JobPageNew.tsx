@@ -5,7 +5,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 
-export default function JobPageNew() {
+const JobPageNew:React.FC =()=> {
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -59,3 +59,4 @@ export default function JobPageNew() {
     </div>
   );
 }
+export default JobPageNew

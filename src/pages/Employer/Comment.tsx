@@ -21,7 +21,7 @@ interface Comment {
   commentDate: string;
   rating: number;
 }
-export default function Comment() {
+const Comment:React.FC=()=> {
   const [searchParams] = useSearchParams();
   const { commentId } = useParams();
   const currentPage = parseInt(searchParams.get("page") || "1");
@@ -142,7 +142,7 @@ export default function Comment() {
                 <Rating
                   name="edit-rating"
                   value={editedRating}
-                  onChange={(e, newValue) => setEditedRating(newValue)}
+                  onChange={(_, newValue) => setEditedRating(newValue)}
                 />
                 <IconButton onClick={() => handleSave(notification.id)}>
                   <SaveIcon />
@@ -226,3 +226,4 @@ export default function Comment() {
     </div>
   );
 }
+export default Comment

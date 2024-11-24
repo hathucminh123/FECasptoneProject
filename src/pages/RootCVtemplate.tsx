@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import CheckIcon from "@mui/icons-material/Check";
 
 
-export default function RootCVtemplate() {
+const  RootCVtemplate:React.FC =()=> {
 
   return (
     <main className={classes.main}>
@@ -174,3 +174,4 @@ export default function RootCVtemplate() {
     </main>
   );
 }
+export default RootCVtemplate

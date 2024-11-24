@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./AccountSetting.module.css";
 import { NavLink, Outlet } from "react-router-dom";
-export default function AccountSetting() {
+const AccountSetting:React.FC =()=> {
   return (
     <div className={classes.main}>
       <div className={classes.main1}>
@@ -53,3 +53,6 @@ export default function AccountSetting() {
     </div>
   );
 }
+
+
+export default AccountSetting

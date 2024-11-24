@@ -6,7 +6,7 @@ import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 import CardSuccess from "./CardSuccess";
 
-export default function PaymentSuccess() {
+const PaymentSuccess: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const status = queryParams.get("status");
@@ -64,3 +64,4 @@ export default function PaymentSuccess() {
     </div>
   );
 }
+export default PaymentSuccess

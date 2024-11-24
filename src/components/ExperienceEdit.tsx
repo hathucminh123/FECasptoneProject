@@ -43,7 +43,7 @@ const months = [
   { value: "December", label: "December" },
 ];
 
-const years = Array.from(new Array(60), (val, index) => index + 1970).map(
+const years = Array.from(new Array(60), (_, index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
@@ -62,7 +62,7 @@ const monthMap: { [key: string]: number } = {
   December: 12,
 };
 
-export default function ExperienceEdit({ onDone, data }: Props) {
+const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
   const [formData, setFormData] = useState({
     companyName: data?.companyName || "",
     position: data?.position || "",
@@ -269,3 +269,4 @@ export default function ExperienceEdit({ onDone, data }: Props) {
     </Modal>
   );
 }
+export default ExperienceEdit

@@ -21,7 +21,7 @@ import { GetJobActivity } from "../Services/UserJobPostActivity/GetUserJobPostAc
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import CardApply from "../components/CardApply";
 
-export default function RecentViewJob() {
+const  RecentViewJob:React.FC =()=> {
   //   const data = useAppSelector((state) => state.favorite.item);
   //   const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -175,3 +175,4 @@ export default function RecentViewJob() {
     </div>
   );
 }
+export default RecentViewJob

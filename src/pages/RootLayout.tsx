@@ -22,7 +22,7 @@ import { getTokenDuration } from "../utils/Auth";
 // import { message } from "antd";
 // import { queryClient } from "../Services/mainService";
 
-export default function RootLayout() {
+ const RootLayout:React.FC =()=> {
   // const [searchOpen, setSearchOpen] = useState(false);
   // const [searchTerm, setSearchTerm] = useState("");
 
@@ -245,3 +245,4 @@ export default function RootLayout() {
     </>
   );
 }
+export default RootLayout

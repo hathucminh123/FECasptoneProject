@@ -5,7 +5,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { NavLink, Outlet } from "react-router-dom";
 
-export default function CreateCompany() {
+const CreateCompany:React.FC=()=> {
   return (
     <div className={classes.main}>
       <div>
@@ -124,3 +124,4 @@ export default function CreateCompany() {
     </div>
   );
 }
+export default CreateCompany

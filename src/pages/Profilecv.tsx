@@ -226,7 +226,7 @@ export default function Profilecv() {
                     fontWeight: 600,
                   }}
                 >
-                  Upgrade profile to "Excellent" to  Download CV
+                  Upgrade profile to Excellent to  Download CV
                 </Typography>
 
                 <div className={classes.updateprofile}>

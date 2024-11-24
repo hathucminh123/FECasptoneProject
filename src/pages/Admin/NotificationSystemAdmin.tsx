@@ -1,28 +1,64 @@
 import React from "react";
 import { useSearchParams, Link, NavLink } from "react-router-dom";
-import NavigateNextOutlinedIcon from '@mui/icons-material/NavigateNextOutlined';
+import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 import classes from "./NotificationSystemAdmin.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 
 // Giả sử đây là dữ liệu danh sách thông báo
 const notificationsData = [
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
-  { date: "26/9/2024", message: "A candidate has applied for the position at your company" },
-  { date: "27/9/2024", message: "Another candidate has applied for a different position" },
+  {
+    date: "26/9/2024",
+    message: "A candidate has applied for the position at your company",
+  },
+  {
+    date: "27/9/2024",
+    message: "Another candidate has applied for a different position",
+  },
+  {
+    date: "26/9/2024",
+    message: "A candidate has applied for the position at your company",
+  },
+  {
+    date: "27/9/2024",
+    message: "Another candidate has applied for a different position",
+  },
+  {
+    date: "26/9/2024",
+    message: "A candidate has applied for the position at your company",
+  },
+  {
+    date: "27/9/2024",
+    message: "Another candidate has applied for a different position",
+  },
+  {
+    date: "26/9/2024",
+    message: "A candidate has applied for the position at your company",
+  },
+  {
+    date: "27/9/2024",
+    message: "Another candidate has applied for a different position",
+  },
+  {
+    date: "26/9/2024",
+    message: "A candidate has applied for the position at your company",
+  },
+  {
+    date: "27/9/2024",
+    message: "Another candidate has applied for a different position",
+  },
+  {
+    date: "26/9/2024",
+    message: "A candidate has applied for the position at your company",
+  },
+  {
+    date: "27/9/2024",
+    message: "Another candidate has applied for a different position",
+  },
   // Thêm nhiều thông báo khác ở đây...
   // Giả sử chúng ta có nhiều hơn 10 thông báo để test phân trang
 ];
 
-export default function NotificationSystemAdmin() {
+const NotificationSystemAdmin: React.FC = () => {
   const [searchParams] = useSearchParams();
   const currentPage = parseInt(searchParams.get("page") || "1"); // Lấy giá trị page từ query string, mặc định là 1
   const notificationsPerPage = 10; // Số lượng thông báo trên mỗi trang
@@ -60,9 +96,7 @@ export default function NotificationSystemAdmin() {
         <HeaderSystem title="Notification System" appear={true} />
       </div>
       <div className={classes.main1}>
-        <div className={classes.main2}>
-          {renderNotifications()}
-        </div>
+        <div className={classes.main2}>{renderNotifications()}</div>
 
         {/* Điều hướng trang */}
         <nav className={classes.nav}>
@@ -73,7 +107,9 @@ export default function NotificationSystemAdmin() {
                 <NavLink
                   to={`?page=${index + 1}`}
                   className={({ isActive }) =>
-                    currentPage === index + 1  && isActive? classes.active : undefined
+                    currentPage === index + 1 && isActive
+                      ? classes.active
+                      : undefined
                   }
                 >
                   {index + 1}
@@ -84,10 +120,19 @@ export default function NotificationSystemAdmin() {
             {/* Nút chuyển tới trang kế tiếp */}
             <li className={classes.li}>
               <NavLink
-                to={`?page=${currentPage < totalPages ? currentPage + 1 : totalPages}`}
+                to={`?page=${
+                  currentPage < totalPages ? currentPage + 1 : totalPages
+                }`}
                 className={classes.link}
               >
-                <NavigateNextOutlinedIcon fontSize="small" sx={{ fontSize: '10px', display: 'inline-block', height: '12px' }} />
+                <NavigateNextOutlinedIcon
+                  fontSize="small"
+                  sx={{
+                    fontSize: "10px",
+                    display: "inline-block",
+                    height: "12px",
+                  }}
+                />
               </NavLink>
             </li>
           </ul>
@@ -95,4 +140,5 @@ export default function NotificationSystemAdmin() {
       </div>
     </div>
   );
-}
+};
+export default NotificationSystemAdmin;

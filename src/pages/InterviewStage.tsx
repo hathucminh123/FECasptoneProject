@@ -48,7 +48,7 @@ interface JobPost {
   jobLocationAddressDetail: string[];
   skillSets: string[];
 }
-export default function InterviewStage() {
+const  InterviewStage:React.FC =()=> {
   //   const data = useAppSelector((state) => state.favorite.item);
   //   const dispatch = useAppDispatch();
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -237,3 +237,4 @@ export default function InterviewStage() {
     </div>
   );
 }
+export default InterviewStage

@@ -20,7 +20,7 @@ interface Props {
   text?: string;
 }
 
-export default function FormSelectBusinessStream({
+const FormSelectBusinessStream: React.FC<Props> = ({
   selectedValue,
   setSelectedValue,
   data = [],
@@ -29,7 +29,7 @@ export default function FormSelectBusinessStream({
   height,
   text,
   width,
-}: Props) {
+}) => {
   const [isSelectOpen, setIsSelectOpen] = useState<boolean>(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -127,3 +127,6 @@ export default function FormSelectBusinessStream({
     </div>
   );
 }
+
+
+export default FormSelectBusinessStream

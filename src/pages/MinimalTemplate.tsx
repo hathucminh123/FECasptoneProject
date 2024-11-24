@@ -6,7 +6,7 @@ import html2pdf from "html2pdf.js";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
-export default function MinimalTemplate() {
+const  MinimalTemplate:React.FC =()=> {
   const cvRef = useRef<HTMLDivElement>(null);
   const userId = localStorage.getItem("userId");
 
@@ -133,7 +133,7 @@ export default function MinimalTemplate() {
                         Education
                       </Typography>
                       {UserProfileData?.educationDetails.map((edu) => (
-                        <div className={classes.education1}>
+                        <div className={classes.education1} key={edu.id}>
                           <div className={classes.education2} style={{   fontFamily: "Lexend, sans-serif",}}>
                             School name: {edu.institutionName}
                           </div>
@@ -172,7 +172,7 @@ export default function MinimalTemplate() {
                         Skills
                       </Typography>
                       {UserProfileData?.skillSets.map((skills) => (
-                        <div style={{ marginBottom: "30px" }}>
+                        <div style={{ marginBottom: "30px" }} key={skills.id}>
                           <div className={classes.skilldes}>
                             <div className={classes.skill2}>
                               <span className={classes.span1}>
@@ -229,7 +229,7 @@ export default function MinimalTemplate() {
                       </Typography>
 
                       {UserProfileData?.experienceDetails.map((exp) => (
-                        <div className={classes.main13}>
+                        <div className={classes.main13} key={exp.id}>
                           <div className={classes.main14}>
                             <div className={classes.exp2} style={{   fontFamily: "Lexend, sans-serif",}}>
                               Position: {exp.position}
@@ -286,3 +286,4 @@ export default function MinimalTemplate() {
     </div>
   );
 }
+export default MinimalTemplate

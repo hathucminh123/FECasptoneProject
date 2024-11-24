@@ -14,13 +14,14 @@ interface AlertProps {
   link: string;
 }
 
-export default function NotificationAlert({
+
+const NotificationAlert: React.FC<AlertProps> = ({
   showAlert,
   severity,
   notification,
   location,
   link,
-}: AlertProps) {
+}) => {
   return (
     <>
       {showAlert && (
@@ -73,3 +74,4 @@ export default function NotificationAlert({
     </>
   );
 }
+export default NotificationAlert

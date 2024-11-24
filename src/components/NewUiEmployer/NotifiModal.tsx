@@ -5,7 +5,7 @@ import WorkIcon from "@mui/icons-material/Work";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "./PaymentModal";
 
-export default function NotifiModal() {
+const NotifiModal: React.FC = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const IsPremium = localStorage.getItem("IsPremium");
@@ -37,7 +37,7 @@ export default function NotifiModal() {
       </AnimatePresence>
       <p className={classes.p}>Post a job </p>
       <p className={classes.p1}>
-        We have a lot of active job seekers. Let them know you're hiring
+        We have a lot of active job seekers. Let them know you are hiring
       </p>
       <div className={classes.main1}>
         {/* <Link to="/EmployerJob/jobs/create" className={classes.link}>
@@ -64,3 +64,4 @@ export default function NotifiModal() {
     </div>
   );
 }
+export default NotifiModal

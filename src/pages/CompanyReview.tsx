@@ -8,7 +8,7 @@ import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import "react-circular-progressbar/dist/styles.css";
 import CircularProgress from "../components/CircularProgress ";
 
-export default function CompanyReview() {
+const CompanyReview:React.FC=()=> {
   // const location = useLocation();
   // const companyData: Company | null = location.state || null;
 
@@ -183,7 +183,7 @@ export default function CompanyReview() {
                 }}
               >
                 What I love about this company is the comfortable working
-                environment, provided with the company's computer and supporting
+                environment, provided with the company  computer and supporting
                 equipment. Each floor is equipped with a filtered water system
                 and is located in a suitable location. The company has a canteen
                 with designated dishes every day of the week, also categorized
@@ -215,7 +215,7 @@ export default function CompanyReview() {
                 }}
               >
                 What I love about this company is the comfortable working
-                environment, provided with the company's computer and supporting
+                environment, provided with the company computer and supporting
                 equipment. Each floor is equipped with a filtered water system
                 and is located in a suitable location. The company has a canteen
                 with designated dishes every day of the week, also categorized
@@ -298,7 +298,7 @@ export default function CompanyReview() {
                 }}
               >
                 What I love about this company is the comfortable working
-                environment, provided with the company's computer and supporting
+                environment, provided with the company computer and supporting
                 equipment. Each floor is equipped with a filtered water system
                 and is located in a suitable location. The company has a canteen
                 with designated dishes every day of the week, also categorized
@@ -330,7 +330,7 @@ export default function CompanyReview() {
                 }}
               >
                 What I love about this company is the comfortable working
-                environment, provided with the company's computer and supporting
+                environment, provided with the company computer and supporting
                 equipment. Each floor is equipped with a filtered water system
                 and is located in a suitable location. The company has a canteen
                 with designated dishes every day of the week, also categorized
@@ -413,7 +413,7 @@ export default function CompanyReview() {
                 }}
               >
                 What I love about this company is the comfortable working
-                environment, provided with the company's computer and supporting
+                environment, provided with the company computer and supporting
                 equipment. Each floor is equipped with a filtered water system
                 and is located in a suitable location. The company has a canteen
                 with designated dishes every day of the week, also categorized
@@ -445,7 +445,7 @@ export default function CompanyReview() {
                 }}
               >
                 What I love about this company is the comfortable working
-                environment, provided with the company's computer and supporting
+                environment, provided with the company  computer and supporting
                 equipment. Each floor is equipped with a filtered water system
                 and is located in a suitable location. The company has a canteen
                 with designated dishes every day of the week, also categorized
@@ -458,3 +458,4 @@ export default function CompanyReview() {
     </>
   );
 }
+export default CompanyReview

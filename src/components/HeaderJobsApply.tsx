@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./HeaderJobsApply.module.css"
 import { NavLink } from "react-router-dom";
 
-export default function HeaderJobsApply() {
+const HeaderJobsApply: React.FC = () => {
   
   return (
 
@@ -49,3 +49,5 @@ export default function HeaderJobsApply() {
 
   );
 }
+
+export default HeaderJobsApply

@@ -5,9 +5,11 @@ interface props{
     text:string;
 }
 
-export default function Button({text}:props) {
+const Button: React.FC<props> = ({ text }) => {
   return (
     <button className={classes.div} type='submit'>{text}</button>
   )
 }
+
+export default Button
 

@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./HeaderProfile.module.css"
 import { NavLink } from "react-router-dom";
 
-export default function HeaderProfile() {
+const HeaderProfile: React.FC = () => {
   return (
 
       <div className={classes.header}>
@@ -47,3 +47,4 @@ export default function HeaderProfile() {
 
   );
 }
+export default HeaderProfile

@@ -20,7 +20,7 @@ export interface Notification {
   isDeleted: boolean;
 }
 
-export default function RootSystem() {
+const RootSystem:React.FC=()=> {
   const [open, setOpen] = useState<boolean>(true);
   // const userRole = localStorage.getItem('role')
   // const navigate =useNavigate();
@@ -75,3 +75,4 @@ export default function RootSystem() {
     </>
   );
 }
+export default RootSystem

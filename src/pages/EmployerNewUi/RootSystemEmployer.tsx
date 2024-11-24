@@ -18,7 +18,7 @@ export interface Notification {
   // modifiedBy: any;
   isDeleted: boolean;
 }
-export default function RootSystemEmployer() {
+const RootSystemEmployer:React.FC =()=>{
 
   const [selectJobId,setSelectJobId]=useState<number|null>()
   const token = useRouteLoaderData("root3");
@@ -47,3 +47,4 @@ export default function RootSystemEmployer() {
     </div>
   );
 }
+export default RootSystemEmployer

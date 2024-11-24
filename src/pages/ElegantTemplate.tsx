@@ -6,7 +6,7 @@ import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
-export default function ElegantTemplate() {
+const ElegantTemplate:React.FC=()=> {
   const cvRef = useRef<HTMLDivElement>(null);
   const userId = localStorage.getItem("userId");
 
@@ -83,7 +83,7 @@ export default function ElegantTemplate() {
 
                   <div className={classes.education2}>
                     {UserProfileData?.educationDetails.map((edu) => (
-                      <div className={classes.education3}>
+                      <div className={classes.education3} key={edu.id}>
                         <span className={classes.span} style={{fontFamily: "Lexend, sans-serif",}}>
                           School name: {edu.institutionName}
                         </span>
@@ -114,7 +114,7 @@ export default function ElegantTemplate() {
                         <div className={classes.skill4} style={{fontFamily: "Lexend, sans-serif",}}>Skill Name</div>
                         <div className={classes.skill5}>
                           {UserProfileData?.skillSets.map((skill) => (
-                            <span style={{fontFamily: "Lexend, sans-serif",}} className={classes.spanskill}>
+                            <span key={skill.id} style={{fontFamily: "Lexend, sans-serif",}} className={classes.spanskill}>
                               {skill.name}
                             </span>
                           ))}
@@ -140,7 +140,7 @@ export default function ElegantTemplate() {
 
                   <div className={classes.experience2}>
                     {UserProfileData?.experienceDetails.map((exp) => (
-                      <div className={classes.experience3}>
+                      <div className={classes.experience3} key={exp.id}>
                         <div className={classes.experience4} style={{fontFamily: "Lexend, sans-serif",}}>
                           {" "}
                           From:{""}
@@ -209,3 +209,4 @@ export default function ElegantTemplate() {
     </div>
   );
 }
+export default ElegantTemplate
