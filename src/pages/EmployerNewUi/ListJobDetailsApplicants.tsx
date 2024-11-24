@@ -70,7 +70,8 @@ export default function ListJobDetailsApplicants() {
     const expirationDate = new Date(expireDate);
     const currentDate = new Date();
 
-    return expirationDate < currentDate;
+    // return expirationDate < currentDate;
+    return expirationDate.getTime() < currentDate.getTime();
   };
 
   const handleCloseModalPayment = () => {

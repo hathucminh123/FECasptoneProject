@@ -848,3 +848,17 @@
   border-width: 0;
     border-style: solid;
 }
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    height: auto;
+  }
+  .header1 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .link2 {
+    margin-right: 8px;
+    font-size: 12px;
+  }
+}

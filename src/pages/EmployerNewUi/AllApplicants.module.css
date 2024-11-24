@@ -185,12 +185,14 @@
 
 .main13 {
   color: #717584;
-  font-size: 12px;
+  /* font-size: 12px; */
+  font-size: clamp(12px, 2vw, 16px);
   line-height: 20px;
   margin-bottom: 8px;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
+  
 }
 
 .button1 {
@@ -660,3 +662,126 @@
     border-style: solid;
 }
 
+@media (max-width: 1200px) {
+  .main3 {
+    max-width: 95%;
+    padding: 0 16px;
+  }
+
+  .main4 {
+    margin-bottom: 32px;
+  }
+
+  .main5 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main6 {
+    flex-direction: column;
+  }
+
+  .main7 {
+    margin-top: 16px;
+  }
+
+  .main10 {
+    padding: 0 16px;
+  }
+
+  .button {
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    flex-direction: column;
+  }
+
+  .main1 {
+    width: 100%;
+    padding: 0 16px;
+  }
+
+  .main3 {
+    max-width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .main5 {
+    padding: 12px 16px;
+  }
+
+  .main9 {
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
+  .main10,
+  .main11 {
+    padding: 0 16px;
+  }
+
+  .button1 {
+    font-size: 10px;
+  }
+
+  .main33 {
+    top: 120px;
+  }
+
+  .button5,
+  .button6 {
+    width: 28px;
+    height: 28px;
+  }
+
+  .spanicon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main3 {
+    padding: 0 8px;
+  }
+
+  .main4 {
+    margin-bottom: 16px;
+  }
+
+  .main5 {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .main6 {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main10 {
+    padding: 0 8px;
+  }
+
+  .button {
+    font-size: 10px;
+    padding: 4px 6px;
+  }
+
+  .button3,
+  .button4 {
+    font-size: 10px;
+    padding: 4px 12px;
+  }
+
+  .button5,
+  .button6 {
+    width: 24px;
+    height: 24px;
+  }
+}

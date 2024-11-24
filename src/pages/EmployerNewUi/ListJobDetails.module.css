@@ -309,3 +309,76 @@
     border-width: 0;
     border-style: solid;
 }
+/* For mobile phones */
+@media (max-width: 768px) {
+  .main2 {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+  }
+
+  .main3 {
+    width: 100%; /* Use full width */
+  }
+
+  .main4 {
+    position: static; /* Remove sticky behavior */
+    height: auto;
+  }
+
+  .input {
+    font-size: 12px;
+    padding: 4px 8px; /* Adjust input padding */
+  }
+
+  .link1 {
+    font-size: 10px;
+  }
+
+  .main14 {
+    flex-direction: column; /* Stack date and job title vertically */
+    gap: 8px;
+  }
+
+  .p {
+    font-size: 12px; /* Adjust job name font size */
+  }
+
+  .p1 {
+    font-size: 10px; /* Adjust location font size */
+  }
+}
+.link:hover {
+  color: #0a58ca; /* Darken link color on hover */
+  text-decoration: underline; /* Add underline for emphasis */
+}
+
+.input:focus {
+  outline: 2px solid #143fcd; /* Highlight input on focus */
+}
+
+@media (max-width: 768px) {
+  .main8 {
+    display: none; /* Hide navigation */
+  }
+
+  .hamburger {
+    display: block;
+    cursor: pointer;
+  }
+
+  .menu {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    width: 100%;
+    background-color: #fafafa;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .menu a {
+    padding: 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}

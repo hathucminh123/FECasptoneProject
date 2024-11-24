@@ -200,3 +200,46 @@
   font-weight: bold;
 }
 
+@media (max-width: 1200px) {
+  .container1 {
+    padding: 0 5%;
+  }
+
+  .card {
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .cardJob {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .divtitle {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cardJob {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .container1 {
+    padding: 0 10px;
+  }
+
+  .pagination {
+    padding: 10px 0;
+  }
+}
+
+
