@@ -5,7 +5,7 @@ import FormSearch from "../components/FormSearch";
 import CardService from "../components/CardService";
 // import CardEmployer from "../components/CardEmployer";
 // import CardJob from "../components/CardJob";
-
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -55,7 +55,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-export default function HomePage() {
+const HomePage:React.FC =()=> {
   const navigate = useNavigate();
 
   // Handling profile navigation
@@ -287,7 +287,7 @@ export default function HomePage() {
                 color: "#fff",
               }}
             >
-              {JobPostsdata?.length} IT Jobs For "Chất" Developers
+              {JobPostsdata?.length} IT Jobs For {"Chất"} Developers
             </Typography>
 
             <div style={{ display: "block" }}>
@@ -494,3 +494,4 @@ export default function HomePage() {
     </>
   );
 }
+export default HomePage

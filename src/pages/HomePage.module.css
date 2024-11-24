@@ -186,6 +186,12 @@
     justify-content: center;
     width: 100%;
   }
+  .cardJob {
+    grid-template-columns: 1fr;
+  }
+  .pagination {
+    flex-direction: column;
+  }
 }
 .pagination {
   display: flex;

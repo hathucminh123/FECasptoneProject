@@ -1,11 +1,11 @@
-// import React from 'react'
+import React from 'react'
 
 import { Outlet } from "react-router-dom";
 
 import classes from "./RootJobs.module.css";
 import HeaderJobStatus from "../components/HeaderJobStatus";
 
-export default function RootJobsStatus() {
+const RootJobsStatus:React.FC =()=> {
     
   return (
     <div
@@ -23,3 +23,4 @@ export default function RootJobsStatus() {
     </div>
   );
 }
+export default RootJobsStatus

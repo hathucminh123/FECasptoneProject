@@ -203,3 +203,25 @@
   flex-shrink: 1;
   padding-left: 8px;
 }
+@media (max-width: 768px) {
+  .card_main {
+    width: 100%;
+    margin: 10px 0;
+  }
+  .button_icon {
+    flex-direction: column;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .job {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .money {
+    font-size: 14px;
+    gap: 3px;
+  }
+}
