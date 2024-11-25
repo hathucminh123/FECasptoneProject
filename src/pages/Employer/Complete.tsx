@@ -18,11 +18,11 @@ const Complete:React.FC =()=> {
   };
 
   const handlePostJobs = () => {
-    if (IsPremium === "True") {
-      navigate("/EmployerJob/jobs/create");
-    } else {
-      setOpenModal(true);
-    }
+    // if (IsPremium === "True") {
+      navigate("/EmployerJob");
+    // } else {
+    //   setOpenModal(true);
+    // }
   };
   return (
     <section className={classes.section}>

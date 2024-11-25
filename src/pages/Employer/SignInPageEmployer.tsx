@@ -256,7 +256,7 @@ export default function SignInPageEmployer() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    "Access denied. This page is for Employer account only."
+                    Access denied. This page is for Employer account only.
                   </Typography>
                 </div>
               </div>
