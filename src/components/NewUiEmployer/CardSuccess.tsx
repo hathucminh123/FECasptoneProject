@@ -98,7 +98,7 @@ const CardSuccess: React.FC<props> = ({ status }) => {
           <div className={classes.main1}>
             <div className={classes.main2}>
               <div className={classes.link2} onClick={() => setOpenModal(true)}>
-                <PaymentIcon />
+                <PaymentIcon/>
                 Payment Again
               </div>
             </div>
