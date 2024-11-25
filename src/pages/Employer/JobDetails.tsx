@@ -598,6 +598,7 @@ const navigate =useNavigate()
                         </div>
                         {JobTypeDatas?.map((item) => (
                           <div
+                          key={item.id}
                             className={`${
                               selectedTopTypeID === item.id
                                 ? classes.formupload1

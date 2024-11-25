@@ -212,7 +212,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
           queryKey: ["SeekerApply"],
           refetchType: "active",
         });
-        message.success('Add user To InterView sucessfully')
+        message.success("Add user To InterView sucessfully");
       } catch {
         message.error("Failed to apply CV after adding user to interview.");
       }
@@ -275,7 +275,11 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
       message.warning("Please select a CV to apply.");
     }
   };
+  const expiryDate = job?.expiryDate ? new Date(job?.expiryDate) : null;
+  const today = new Date();
 
+  const isExpired = expiryDate ? expiryDate < today : undefined;
+console.log('eku',isExpired)
   if (!modalRoot) {
     return null;
   }
@@ -413,7 +417,10 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                               {profile?.experienceDetails &&
                               profile?.educationDetails.length > 0
                                 ? profile.experienceDetails.map((exp) => (
-                                    <div className={classes.main155}>
+                                    <div
+                                      className={classes.main155}
+                                      key={exp.id}
+                                    >
                                       <div className={classes.main166}>
                                         <div className={classes.main177}>
                                           <div className={classes.main188}>
@@ -555,7 +562,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
-                                    <div className={classes.main30}>
+                                    <div className={classes.main30} key={skill.id}>
                                       <div className={classes.main31}>
                                         <span>{skill.name}</span>
                                       </div>
@@ -806,6 +813,10 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                           ) : feedBackUserJob ? (
                             <button type="button" className={classes.main54}>
                               Status: {feedBackUserJob.status}
+                            </button>
+                          ) : isExpired ? (
+                            <button disabled={true} className={classes.main544}>
+                             Application deadline
                             </button>
                           ) : (
                             <button type="submit" className={classes.main54}>
