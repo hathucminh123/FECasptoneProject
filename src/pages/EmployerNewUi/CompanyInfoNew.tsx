@@ -237,7 +237,7 @@ export default function CompanyInfoNew() {
                             overflow: "hidden",
                           }}
                         >
-                          Recruit for  {CompanyEmployer?.companyName}
+                          Recruit for {CompanyEmployer?.companyName}
                         </Typography>
                         <span className={classes.spanicon}>
                           <svg viewBox="0 0 24 24" className={classes.svg}>
@@ -337,9 +337,12 @@ export default function CompanyInfoNew() {
                             {CompanyEmployer?.numberOfEmployees} employees
                           </dt>
                           <dd className={classes.main31}>Company Type</dd>
-                          <dt className={classes.main32}>
-                            {CompanyEmployer?.businessStream.businessStreamName}
-                          </dt>
+
+                          {CompanyEmployer?.businessStream && (
+                            <dt className={classes.main32}>
+                             {CompanyEmployer?.businessStream.businessStreamName}
+                            </dt>
+                          )}
                         </dl>
                       </div>
                     </div>
