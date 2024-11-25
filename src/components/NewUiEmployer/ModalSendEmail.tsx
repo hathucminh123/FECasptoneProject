@@ -279,7 +279,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
   const today = new Date();
 
   const isExpired = expiryDate ? expiryDate < today : undefined;
-console.log('eku',isExpired)
+
   if (!modalRoot) {
     return null;
   }

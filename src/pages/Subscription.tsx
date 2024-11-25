@@ -140,7 +140,7 @@ export default function Subscription() {
     },
   });
 
-  const { mutate: DeleteUserAlert } = useMutation({
+  const { mutate: DeleteUserAlert, isPending: PendingAlert } = useMutation({
     mutationFn: DeleteUserJobAlertCriteria,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -239,6 +239,7 @@ export default function Subscription() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [selectCompany, setSelectCompany] = useState<Company | null>(null);
   const [companyId, setCompanyId] = useState<number | null>(null);
+  console.log("ok", companyId);
   //skills
   const [selectSkills, setSelectSkills] = useState<SkillSet | null>(null);
   const [skills, setSkills] = useState<string>("");
@@ -288,6 +289,7 @@ export default function Subscription() {
     const inputValue = e.target.value;
     setCompany(inputValue);
     setSelectCompany(null);
+    setCompanyId(null);
 
     if (inputValue) {
       setFilteredCompanies(
@@ -305,14 +307,15 @@ export default function Subscription() {
     const inputValue = e.target.value;
     setSkills(inputValue);
     setSelectSkills(null);
+    setSkillId(null);
 
     if (inputValue) {
+      setDropdownOpenSkills(true);
       setFilteredSkills(
         SkillSetdataa?.filter((comp) =>
           comp.name.toLowerCase().includes(inputValue.toLowerCase())
         )
       );
-      setDropdownOpenSkills(true);
     } else {
       setFilteredSkills([]);
       setDropdownOpenSkills(false);
@@ -322,6 +325,7 @@ export default function Subscription() {
     const inputValue = e.target.value;
     setJobType(inputValue);
     setSelectJobType(null);
+    setJobTypeId(null);
 
     if (inputValue) {
       setFilteredJobType(
@@ -339,6 +343,7 @@ export default function Subscription() {
     const inputValue = e.target.value;
     setLocation(inputValue);
     setSelectLocation(null);
+    setLocationId(null);
 
     if (inputValue) {
       setFilteredLocation(
@@ -353,17 +358,18 @@ export default function Subscription() {
     }
   };
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setDropdownOpen(false);
-    }
-  };
-
   useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
+
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
@@ -406,7 +412,7 @@ export default function Subscription() {
       message.error(`Failed to Follow ${selectCompany?.companyName} `);
     },
   });
-  const { mutate: Unfollow } = useMutation({
+  const { mutate: Unfollow, isPending: pendingunfollow } = useMutation({
     mutationFn: DeleteFollowCompany,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -511,7 +517,7 @@ export default function Subscription() {
                                   selectSkills ? selectSkills?.name : skills
                                 }
                                 onChange={handleChangeSkills}
-                                onFocus={() => setDropdownOpenSkills(true)}
+                                // onFocus={() => setDropdownOpenSkills(true)}
                                 type="text"
                                 className={classes.input}
                                 autoComplete="off"
@@ -530,6 +536,7 @@ export default function Subscription() {
                                   filteredSkills.length > 0 ? (
                                     filteredSkills.map((item) => (
                                       <div
+                                        key={item.id}
                                         onMouseEnter={() =>
                                           handleMouseEnter(item.id)
                                         }
@@ -603,7 +610,7 @@ export default function Subscription() {
                                     : location
                                 }
                                 onChange={handleChangeLocation}
-                                onFocus={() => setDropdownOpenLocation(true)}
+                                // onFocus={() => setDropdownOpenLocation(true)}
                                 type="text"
                                 className={classes.input}
                                 autoComplete="off"
@@ -622,6 +629,7 @@ export default function Subscription() {
                                   filteredLocation.length > 0 ? (
                                     filteredLocation.map((item) => (
                                       <div
+                                        key={item.Id}
                                         onMouseEnter={() =>
                                           handleMouseEnter(item.Id)
                                         }
@@ -695,7 +703,7 @@ export default function Subscription() {
                                   selectJobType ? selectJobType?.name : jobType
                                 }
                                 onChange={handleChangeJobType}
-                                onFocus={() => setDropdownOpenJobType(true)}
+                                // onFocus={() => setDropdownOpenJobType(true)}
                                 type="text"
                                 className={classes.input}
                                 autoComplete="off"
@@ -714,6 +722,7 @@ export default function Subscription() {
                                   filteredJobType.length > 0 ? (
                                     filteredJobType.map((item) => (
                                       <div
+                                        key={item.id}
                                         onMouseEnter={() =>
                                           handleMouseEnter(item.id)
                                         }
@@ -764,7 +773,8 @@ export default function Subscription() {
                         {AlertPending ? (
                           <button
                             className={classes.button}
-                            type="button"
+                            // type="button"
+                            disabled={true}
                             //   style={{ fontWeight: 1000 }}
                           >
                             Wait a seconds
@@ -782,7 +792,7 @@ export default function Subscription() {
                     </form>
                   </div>
                   {AlertData?.map((item) => (
-                    <div className={classes.main21}>
+                    <div className={classes.main21} key={item.id}>
                       <div className={classes.main22}>
                         <div className={classes.main23}>
                           <span className={classes.span1}>
@@ -829,23 +839,43 @@ export default function Subscription() {
                         <div className={classes.main26}>
                           <span className={classes.span2}>Subscribed</span>
                         </div>
-                        <div className={classes.main27}>
-                          <div className={classes.main28}>
-                            <Link
-                              to=""
-                              className={classes.link2}
-                              onClick={() => handleUnSubscide(item?.id)}
-                            >
-                              <span>
-                                <div className={classes.main29}>
-                                  <svg className={classes.svg1}>
-                                    <DeleteOutlineIcon />
-                                  </svg>
-                                </div>
-                              </span>
-                            </Link>
+                        {PendingAlert ? (
+                          <div className={classes.main27}>
+                            <div className={classes.main28}>
+                              <Link
+                                to=""
+                                className={classes.link2}
+                                // onClick={() => handleUnSubscide(item?.id)}
+                              >
+                                <span>
+                                  <div className={classes.main29}>
+                                    {/* <svg className={classes.svg1}> */}
+                                    {/* <DeleteOutlineIcon /> */} wait a seconds
+                                    {/* </svg> */}
+                                  </div>
+                                </span>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className={classes.main27}>
+                            <div className={classes.main28}>
+                              <Link
+                                to=""
+                                className={classes.link2}
+                                onClick={() => handleUnSubscide(item?.id)}
+                              >
+                                <span>
+                                  <div className={classes.main29}>
+                                    <svg className={classes.svg1}>
+                                      <DeleteOutlineIcon />
+                                    </svg>
+                                  </div>
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -900,7 +930,7 @@ export default function Subscription() {
                                     : company
                                 }
                                 onChange={handleChange}
-                                onFocus={() => setDropdownOpen(true)}
+                                // onFocus={() => setDropdownOpen(true)}
                                 type="text"
                                 className={classes.input}
                                 autoComplete="off"
@@ -919,6 +949,7 @@ export default function Subscription() {
                                   filteredCompanies.length > 0 ? (
                                     filteredCompanies.map((item) => (
                                       <div
+                                        key={item.id}
                                         onMouseEnter={() =>
                                           handleMouseEnter(item.id)
                                         }
@@ -968,7 +999,8 @@ export default function Subscription() {
                         {isPending ? (
                           <button
                             className={classes.button2}
-                            type="button"
+                            // type="button"
+                            disabled={true}
                             //   style={{ fontWeight: 1000 }}
                           >
                             wait a seconds
@@ -986,7 +1018,7 @@ export default function Subscription() {
                     </form>
                   </div>
                   {FollowCompanydata?.map((item) => (
-                    <div className={classes.main21}>
+                    <div className={classes.main21} key={item.id}>
                       <div className={classes.main22}>
                         <div className={classes.main23}>
                           <span className={classes.span1}>
@@ -1004,23 +1036,44 @@ export default function Subscription() {
                         <div className={classes.main26}>
                           <span className={classes.span2}>Followed</span>
                         </div>
-                        <div className={classes.main27}>
-                          <div className={classes.main28}>
-                            <Link
-                              to=""
-                              className={classes.link2}
-                              onClick={() => handleUnFollow(item.id)}
-                            >
-                              <span>
-                                <div className={classes.main29}>
-                                  <svg className={classes.svg1}>
+                        {pendingunfollow ? (
+                          <div className={classes.main27}>
+                            <div className={classes.main28}>
+                              <Link
+                                to=""
+                                className={classes.link2}
+                                // onClick={() => handleUnFollow(item.id)}
+                              >
+                                <span>
+                                  <div className={classes.main29}>
+                                    {/* <svg className={classes.svg1}>
                                     <DeleteOutlineIcon />
-                                  </svg>
-                                </div>
-                              </span>
-                            </Link>
+                                  </svg> */}
+                                    wait a seconds
+                                  </div>
+                                </span>
+                              </Link>
+                            </div>
                           </div>
-                        </div>
+                        ) : (
+                          <div className={classes.main27}>
+                            <div className={classes.main28}>
+                              <Link
+                                to=""
+                                className={classes.link2}
+                                onClick={() => handleUnFollow(item.id)}
+                              >
+                                <span>
+                                  <div className={classes.main29}>
+                                    <svg className={classes.svg1}>
+                                      <DeleteOutlineIcon />
+                                    </svg>
+                                  </div>
+                                </span>
+                              </Link>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   ))}
