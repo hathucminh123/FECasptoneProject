@@ -33,7 +33,7 @@ const months = [
   { value: "December", label: "December" },
 ];
 
-const years = Array.from(new Array(60), ( index) => index + 1970).map(
+const years = Array.from(new Array(60), (_,index) => index + 1970).map(
   (year) => ({ value: year, label: year })
 );
 
