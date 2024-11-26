@@ -35,7 +35,7 @@ const StepComppanyVerification: React.FC = () => {
   };
 
   const isCompletePage = location.pathname.includes("Complete");
-  const isInvitePage = location.pathname.includes("inviteYourTeam");
+  // const isInvitePage = location.pathname.includes("inviteYourTeam");
 
   return (
     <body className={classes.body}>
@@ -86,7 +86,7 @@ const StepComppanyVerification: React.FC = () => {
                   <span className={classes.span}>Set up your Account</span>
                 </NavLink>
 
-                <NavLink
+                {/* <NavLink
                   to={nextStep && isInvitePage ? "inviteYourTeam" : "#"}
                   className={({ isActive }) =>
                     isActive &&
@@ -98,7 +98,7 @@ const StepComppanyVerification: React.FC = () => {
                 >
                   <StepIcon isActive={isCompletePage} />
                   <span className={classes.span}>Invite Your Team</span>
-                </NavLink>
+                </NavLink> */}
 
                 <NavLink
                   to={nextStep && isCompletePage ? "Complete" : "#"}

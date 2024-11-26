@@ -26,6 +26,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { PostCompanies } from "../../Services/CompanyService/PostCompanies";
 import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
 import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
+
 interface BusinessStreamprops {
   id: number;
   businessStreamName: string;
@@ -286,7 +287,8 @@ export default function VerifiCompany() {
           companyId: Number(data.result),
         },
       });
-      navigate("/onboarding/recruit/inviteYourTeam");
+      // navigate("/onboarding/recruit/inviteYourTeam");
+      navigate("/onboarding/recruit/Complete");
       setNextStep(true);
     },
     onError: () => {
@@ -402,7 +404,7 @@ export default function VerifiCompany() {
         </Typography>
         <p className={classes.p}>
           Please Enter your code verification of company to confirm you’re an
-          employee, and if any coworkers are also recruiting on Wellfound, we'll
+          employee, and if any coworkers are also recruiting on Wellfound, we will
           let them know you’re set up.
         </p>
         <div className={classes.verify}>
@@ -461,7 +463,7 @@ export default function VerifiCompany() {
           borderStyle: "none",
         }}
       >
-        Let's Create Your Account
+        Let  Create Your Account
       </Typography>
 
       <form action="" className={classes.form} onSubmit={handleSubmit}>
@@ -768,7 +770,7 @@ export default function VerifiCompany() {
                         className={classes.createNewCompany}
                         onClick={handleOpenRegister}
                       >
-                        <span>Create new company "{company}"</span>
+                        <span>Create new company {company}</span>
                       </div>
                     )}
                   </div>
@@ -908,7 +910,7 @@ export default function VerifiCompany() {
                         className={classes.createNewCompany}
                         onClick={handleOpenRegister}
                       >
-                        <span>Create new company "{company}"</span>
+                        <span>Create new company company</span>
                       </div>
                     )}
                   </div>
@@ -1001,11 +1003,11 @@ export default function VerifiCompany() {
           borderStyle: "none",
         }}
       >
-        Let's find your Company
+        Let find your Company
       </Typography>
       <p className={classes.p}>
-        We'll look for yours, and if you use an applicant tracking system, we'll
-        help find the jobs you've already posted.
+        We  look for yours, and if you use an applicant tracking system, we will
+        help find the jobs you  already posted.
       </p>
       <form action="" className={classes.form}>
         <div className={classes.div1} aria-expanded="false">
@@ -1081,7 +1083,7 @@ export default function VerifiCompany() {
                       className={classes.createNewCompany}
                       onClick={handleOpenRegister}
                     >
-                      <span>Create new company "{company}"</span>
+                      <span>Create new company {company}</span>
                     </div>
                   )}
                 </div>

@@ -4,6 +4,8 @@ import { QueryClient } from "@tanstack/react-query";
 
 // const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
 const baseURL = "https://finalcapstonebe-nd0l.onrender.com/api";
+// const baseURL = "https://12e3-116-109-208-219.ngrok-free.app/api";
+// const baseURL ="https://6e7c-14-187-237-206.ngrok-free.app/api"
 // const baseURLL = "https://finalcapstonebe-aib5.onrender.com";
 const baseURLL = "https://finalcapstonebe-nd0l.onrender.com";
 // const baseURL = "https://946a-14-187-150-194.ngrok-free.app/api";
