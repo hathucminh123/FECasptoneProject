@@ -347,9 +347,9 @@ const MinimalTemplate: React.FC = () => {
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor("#121212");
-      doc.text(`Phone: ${UserProfileData?.phoneNumber || "N/A"}`, marginLeft, leftY);
+      doc.text(`Phone: ${UserProfileData?.phoneNumber || "No Phone Yet"}`, marginLeft, leftY);
       leftY += 6;
-      doc.text(`Email: ${UserProfileData?.email || "N/A"}`, marginLeft, leftY);
+      doc.text(`Email: ${UserProfileData?.email || "No Email Yet"}`, marginLeft, leftY);
       leftY += 12;
   
       // Check for page break
@@ -369,8 +369,8 @@ const MinimalTemplate: React.FC = () => {
         doc.text(`School: ${edu.institutionName}`, marginLeft, leftY);
         leftY += 6;
         doc.text(`Major: ${edu.fieldOfStudy}`, marginLeft, leftY);
-        leftY += 6;
-        doc.text(`From: ${edu.startDate} To: ${edu.endDate || "Present"}`, marginLeft, leftY);
+        leftY += 6
+        doc.text(`From: ${moment(edu.startDate).format("DD-MM-YYYY")} To: ${moment(edu.endDate).format("DD-MM-YYYY") || "Present"}`, marginLeft, leftY);
         leftY += 6;
         doc.text(`Degree: ${edu.degree}`, marginLeft, leftY);
         leftY += 12;
@@ -419,14 +419,14 @@ const MinimalTemplate: React.FC = () => {
         doc.text(`Company: ${exp.companyName}`, startXRight, rightY);
         rightY += 6;
   
-        doc.text(`From: ${exp.startDate} To: ${exp.endDate || "Present"}`, startXRight, rightY);
+        doc.text(`From: ${moment( exp.startDate).format("DD-MM-YYYY")} To: ${moment(exp.endDate).format("DD-MM-YYYY") || "Present"}`, startXRight, rightY);
         rightY += 6;
   
         doc.text("Responsibilities:", startXRight, rightY);
         rightY += 6;
   
         const responsibilities = doc.splitTextToSize(
-          extractTextFromHTML(exp.responsibilities || "N/A"),
+          extractTextFromHTML(exp.responsibilities || ""),
           columnWidth
         );
         responsibilities.forEach((task:string) => {
@@ -438,7 +438,7 @@ const MinimalTemplate: React.FC = () => {
         });
   
         const achievements = doc.splitTextToSize(
-          extractTextFromHTML(exp.achievements || "N/A"),
+          extractTextFromHTML(exp.achievements || ""),
           columnWidth
         );
         achievements.forEach((ach:string) => {

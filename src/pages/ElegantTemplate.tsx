@@ -8,6 +8,22 @@ import moment from "moment";
 
 import jsPDF from "jspdf";
 
+interface SkillSet {
+  id: number;
+  name: string;
+  shorthand: string;
+  description: string;
+}
+interface EducationDetail {
+  id: number;
+  name: string;
+  institutionName: string;
+  degree: string;
+  fieldOfStudy: string;
+  startDate: string;
+  endDate: string;
+  gpa: number;
+}
 const ElegantTemplate: React.FC = () => {
   const cvRef = useRef<HTMLDivElement>(null);
   const userId = localStorage.getItem("userId");
@@ -53,8 +69,9 @@ const ElegantTemplate: React.FC = () => {
     // Contact Details
     doc.setFontSize(12);
     doc.setTextColor(255, 255, 255);
-    doc.text(`Phone: ${UserProfileData?.phoneNumber || "N/A"}`, marginLeft, 35);
-    doc.text(`Email: ${UserProfileData?.email || "N/A"}`, marginLeft + 80, 35);
+    doc.text(`Phone Number : ${UserProfileData?.phoneNumber || "No Phone Number"}`, marginLeft, 35);
+    
+    doc.text(`Email: ${UserProfileData?.email || "No Email Yet"}`, marginLeft +80 , 35);
 
     currentY = 50; // Move below the header
 
@@ -65,64 +82,141 @@ const ElegantTemplate: React.FC = () => {
       doc.setTextColor(33, 33, 33); // Dark font color
       doc.text(title, marginLeft, currentY);
       currentY += 5;
+
+      
       doc.setDrawColor(200, 200, 200); // Light gray line
       doc.setLineWidth(0.5);
       doc.line(marginLeft, currentY, pageWidth - marginLeft, currentY);
-      currentY += 10;
+      currentY += 5;
     };
-
+    const addEducationSection = (educationDetails:EducationDetail[]) => {
+      // Title for Education Section
+      addSectionTitle("Education");
+  
+      // Iterate through each education detail
+      educationDetails.forEach((edu) => {
+          // School Name and Major on the same line
+          doc.setFont("Helvetica", "bold");
+          doc.setFontSize(12);
+          doc.text(`School name: ${edu?.institutionName || "Not Provided"}`, marginLeft, currentY);
+          
+          // Display Date Range, Vertical Bar, and Major
+          const dateRange = `From: ${moment(edu.startDate).format("DD-MM-YYYY")} - To: ${moment(edu.endDate).format("DD-MM-YYYY")}`;
+          const major = `Major: ${edu?.fieldOfStudy || "Not Provided"}`;
+          const separator = " | ";
+  
+          const combinedText = `${dateRange}${separator}${major}`;
+          doc.setFontSize(12);
+          doc.setFont("Helvetica", "normal");
+          doc.text(combinedText, marginLeft, currentY + 6);
+  
+          // Degree
+          currentY += 12;
+          doc.text(`Degree: ${edu.degree || "Not Provided"}`, marginLeft, currentY);
+          currentY += 12; // Add spacing for the next section
+      });
+  };
+  
+  // Example call for the above function
+  addEducationSection(UserProfileData?.educationDetails || []);
+  
     // Add Education Section
-    addSectionTitle("Education");
-    doc.setFont("Helvetica", "normal");
-    doc.setFontSize(12);
-    doc.text(
-      `School: ${
-        UserProfileData?.educationDetails[0]?.institutionName || "N/A"
-      }`,
-      marginLeft,
-      currentY
-    );
-    currentY += 6;
-    doc.text(
-      `Major: ${UserProfileData?.educationDetails[0]?.fieldOfStudy || "N/A"}`,
-      marginLeft,
-      currentY
-    );
-    currentY += 6;
-    doc.text(
-      `From: ${UserProfileData?.educationDetails[0]?.startDate || "N/A"} To: ${
-        UserProfileData?.educationDetails[0]?.endDate || "Present"
-      }`,
-      marginLeft,
-      currentY
-    );
-    currentY += 6;
-    doc.text(
-      `Degree: ${UserProfileData?.educationDetails[0]?.degree || "N/A"}`,
-      marginLeft,
-      currentY
-    );
-    currentY += 12;
+    // addSectionTitle("Education");
 
-    // Add Skills Section
-    addSectionTitle("Skills");
-    doc.setFont("Helvetica", "normal");
-    UserProfileData?.skillSets.forEach((skill) => {
-      doc.text(`- ${skill.name}`, marginLeft, currentY);
-      currentY += 6;
-    });
-    currentY += 10;
+    // UserProfileData?.educationDetails.forEach((edu) => {
+    //   doc.setFont("Helvetica", "normal");
+    //   doc.setFontSize(12);
+    //   doc.text(`School: ${edu?.institutionName || ""}`, marginLeft, currentY);
+    //   currentY += 6;
+    //   doc.text(`Major: ${edu?.fieldOfStudy || ""}`, marginLeft, currentY);
+    //   currentY += 6;
+    //   doc.text(
+    //     `From: ${moment(edu.startDate).format("DD-MM-YYYY") || ""} To: ${moment(
+    //       edu.endDate
+    //     ).format("DD-MM-YYYY") || "Present"
+    //       }`,
+    //     marginLeft,
+    //     currentY
+    //   );
+    //   currentY += 6;
+    //   doc.text(
+    //     `Degree:${edu.degree || ""}`,
+    //     marginLeft,
+    //     currentY
+    //   );
+    //   currentY += 12;
+
+    //   // Add Skills Section
+      
+    // });
+    // addSectionTitle("Skills");
+    //   doc.setFont("Helvetica", "normal");
+    //   UserProfileData?.skillSets.forEach((skill) => {
+    //     doc.text(`- ${skill.name}`, marginLeft, currentY);
+    //     currentY += 6;
+    //   });
+    //   currentY += 10;
+    const addSkillsSection = (skillSets:SkillSet[]) => {
+      // Add Skills Title
+      addSectionTitle("Skills");
+
+      const boxHeight = 8; // Height of each skill box
+      const boxPadding = 3; // Padding inside the box for text
+      const boxMargin = 5; // Space between boxes
+      let currentX = marginLeft; // Start from the left margin
+      const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
+  
+       // Reduce the vertical gap after the title (smaller than before)
+  
+      skillSets.forEach((skill) => {
+          const skillText = skill.name || "Skill";
+          const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
+  
+          // Wrap to next row if it exceeds the page width
+          if (currentX + textWidth > maxWidth) {
+              currentX = marginLeft; // Reset X position
+              currentY += boxHeight + boxMargin; // Move to the next row
+          }
+  
+          // Draw the rectangle for the skill
+          doc.setDrawColor(200, 200, 200); // Light gray border color
+          doc.setFillColor(240, 240, 240); // Light background color
+          doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
+  
+          // Add the skill text inside the rectangle
+          doc.setFont("Helvetica", "normal");
+          doc.setFontSize(10);
+          doc.setTextColor(33, 33, 33); // Dark text color
+          doc.text(skillText, currentX + boxPadding, currentY + boxHeight / 2 + 2.5); // Center text vertically
+  
+          // Update X position for the next box
+          currentX += textWidth + boxMargin;
+      });
+  
+      // Update Y position for the next section
+      currentY +=20;
+  };
+  
+  // Example call for the above function
+  addSkillsSection(UserProfileData?.skillSets || []);
+  
 
     // Add Work Experience Section
 
     addSectionTitle("Work Experience");
     UserProfileData?.experienceDetails.forEach((exp) => {
       doc.setFont("Helvetica", "bold");
-      doc.text(`${exp.position} | ${exp.companyName}`, marginLeft, currentY);
+      doc.text(
+        `Position: ${exp.position} | CompanyName:${exp.companyName}`,
+        marginLeft,
+        currentY
+      );
       currentY += 6;
       doc.setFont("Helvetica", "normal");
       doc.text(
-        `From: ${exp.startDate} To: ${exp.endDate || "Present"}`,
+        `From: ${moment(exp.startDate).format("DD-MM-YYYY")} To: ${
+          moment(exp.endDate).format("DD-MM-YYYY") || "Present"
+        }`,
         marginLeft,
         currentY
       );
@@ -134,10 +228,10 @@ const ElegantTemplate: React.FC = () => {
       const extractTextFromHTML = (htmlString: string) => {
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = htmlString;
-        return tempDiv.textContent || tempDiv.innerText || "N/A";
+        return tempDiv.textContent || tempDiv.innerText || "";
       };
       const responsibilitiesText = extractTextFromHTML(
-        exp.responsibilities || "N/A"
+        exp.responsibilities || ""
       );
       const responsibilities = doc.splitTextToSize(
         responsibilitiesText,
@@ -152,9 +246,9 @@ const ElegantTemplate: React.FC = () => {
       currentY += 6;
 
       // Handle achievements (convert to array if it's a string)
-      const achievementsText = extractTextFromHTML(exp.achievements || "N/A");
+      const achievementsText = extractTextFromHTML(exp.achievements || "");
       const achievements = doc.splitTextToSize(achievementsText, sectionWidth);
-      achievements.forEach((ach:string) => {
+      achievements.forEach((ach: string) => {
         doc.text(`- ${ach.trim()}`, marginLeft + 5, currentY);
         currentY += 6;
       });
