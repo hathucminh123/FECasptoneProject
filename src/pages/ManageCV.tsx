@@ -20,6 +20,7 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import DownloadIcon from "@mui/icons-material/Download";
 
+
 export default function ManageCV() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [value, setValue] = useState("");
@@ -52,6 +53,7 @@ export default function ManageCV() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["CVs"] });
       message.success("CV uploaded successfully!");
+      setSelectedFile(null)
     },
     onError: () => {
       message.error("Failed to upload CV.");
@@ -449,7 +451,7 @@ export default function ManageCV() {
                   fontFamily: "Lexend, sans-serif",
                 }}
               >
-                Introduce yourself and why you'd make a great hire
+                Introduce yourself and why you will make a great hire
               </Typography>
             </div>
           )}

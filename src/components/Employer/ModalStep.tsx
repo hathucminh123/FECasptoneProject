@@ -2,7 +2,7 @@ import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import classes from "./ModalStep.module.css";
 import Typography from "@mui/material/Typography";
-
+import React from "react";
 // import RenderButton from "./RenderButton";
 
 interface ModalProps {
@@ -79,7 +79,7 @@ ModalProps) {
                   </p>
                   <ol className={classes.ol}>
                     <li className={classes.li}>Set up your account</li>
-                    <li className={classes.li}>Invite your team</li>
+                    {/* <li className={classes.li}>Invite your team</li> */}
                     <li className={classes.li}>Start recruiting</li>
                   </ol>
                   <div className={classes.button} >

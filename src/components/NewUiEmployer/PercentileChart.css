@@ -4,6 +4,8 @@
     align-items: center;
     font-family: Arial, sans-serif;
     color: #717584;
+    justify-content: center;
+    margin-left: 15px;
 }
 
 .chart-title {
@@ -15,7 +17,7 @@
 
 .chart-bars {
     display: flex;
-    gap: 16px; /* Spacing between each bar */
+    gap: 20px; /* Spacing between each bar */
     margin-bottom: 10px;
 }
 

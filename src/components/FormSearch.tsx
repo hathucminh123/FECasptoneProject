@@ -48,8 +48,8 @@ interface JobPost {
 }
 
 interface FormSearchProps {
-  setJobSearch: React.Dispatch<React.SetStateAction<JobPost[]>>;
-  jobSearch: JobPost[];
+  setJobSearch: React.Dispatch<React.SetStateAction<JobPost[] |undefined>>;
+  jobSearch: JobPost[] |undefined;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
   onClick: () => void;

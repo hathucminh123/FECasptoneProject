@@ -961,7 +961,7 @@ export default function VerifiCompany() {
                 style={{ marginLeft: 10 }}
                 type="submit"
               >
-                Next up: Invite Your Team
+                Next up: Post Jobs
               </button>
             )}
           </div>

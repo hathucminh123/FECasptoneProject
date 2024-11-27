@@ -577,7 +577,7 @@ export default function FormCreateEmployer() {
                     JobTypeDatas?.length &&
                     JobTypeDatas?.length > 0 &&
                     JobTypeDatas?.map((comp, index) => (
-                      <div className={classes.dropdown}>
+                      <div className={classes.dropdown} key={comp.id}>
                         <div
                           key={index}
                           className={classes.dropdownItem}
@@ -729,8 +729,9 @@ export default function FormCreateEmployer() {
                     experienceLevels?.length &&
                     experienceLevels?.length > 0 &&
                     experienceLevels?.map((comp, index) => (
-                      <div className={classes.dropdown}>
+                      <div className={classes.dropdown} key={index}>
                         <div
+                      
                           key={index}
                           className={classes.dropdownItem}
                           onClick={() => handleSelectExp(comp)}
@@ -766,6 +767,7 @@ export default function FormCreateEmployer() {
                   <div className={classes.main24}>
                     {skills.map((skills) => (
                       <span
+                      key={skills.id}
                         className={classes.span2}
                         onClick={() => handleRemoveSkill(skills)}
                       >
@@ -827,7 +829,7 @@ export default function FormCreateEmployer() {
                               onClick={handleOpen}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>Create new Skills "{inputSkill}"</span>
+                              <span>Create new Skills {inputSkill}</span>
                             </div>
                           )}
                         </div>

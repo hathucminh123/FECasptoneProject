@@ -67,7 +67,7 @@ const HomePage:React.FC =()=> {
       navigate("/profile-cv");
     }
   };
-  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+  const [jobSearch, setJobSearch] = useState<JobPost[] |undefined>([]);
 
   const [text, setText] = useState<string>("");
   const [location, setLocation] = useState<string>("All");

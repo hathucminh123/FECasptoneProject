@@ -131,18 +131,15 @@ const FilterJobbySkill:React.FC =()=> {
   console.log("JobSearchPass", jobSearchPass);
   // console.log("text", TextPass);
 
-  const [jobSearch, setJobSearch] = useState<JobPost[]>(
+  const [jobSearch, setJobSearch] = useState<JobPost[]|undefined>(
     location.state?.jobSearch || []
   );
   const auth = localStorage.getItem("Auth");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    if (location.state?.jobSearch) {
-      setJobSearch(location.state.jobSearch);
-    }
-  }, [location.state?.jobSearch]);
+
+
   function handleStartAddNewChallenge() {
     setIsCreatingNewChallenge(true);
   }
@@ -152,8 +149,25 @@ const FilterJobbySkill:React.FC =()=> {
   }
 
   // const filteredJobs = useAppSelector(TodoListSelector);
-  const filteredJobs = jobSearch;
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+  const JobPostsdata = JobPosts?.JobPosts;
 
+  useEffect(() => {
+    if (location.state?.jobSearch) {
+      setJobSearch(location.state.jobSearch);
+    }else
+    setJobSearch(JobPostsdata)
+
+  }, [location.state?.jobSearch ,JobPostsdata]);
+    const filteredJobs =jobSearch  
   const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
   console.log("fe", dataa);
 
@@ -172,15 +186,7 @@ const FilterJobbySkill:React.FC =()=> {
     queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
     staleTime: 5000,
   });
-  const {
-    data: JobPosts,
-    // isLoading: isJobLoading,
-    // isError: isJobError,
-  } = useQuery({
-    queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
-    staleTime: 5000,
-  });
+
   const {
     data: JobPostActivity,
     // isLoading: isJobLoading,
@@ -191,7 +197,7 @@ const FilterJobbySkill:React.FC =()=> {
     staleTime: 5000,
   });
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
-  const JobPostsdata = JobPosts?.JobPosts;
+
 
   const Companiesdata = Company?.Companies;
   useEffect(() => {
@@ -202,7 +208,7 @@ const FilterJobbySkill:React.FC =()=> {
   }, [Companiesdata, JobPostsdata, dispatch]);
 
   useEffect(() => {
-    if (filteredJobs.length > 0) {
+    if (filteredJobs&& filteredJobs.length > 0) {
       if (
         !selectedJob ||
         !filteredJobs.some((job) => job.id === selectedJob.id)
@@ -639,9 +645,9 @@ const FilterJobbySkill:React.FC =()=> {
                       marginBottom: 0,
                     }}
                   >
-                    Jobs IT in Vietnam{" "}
+                   {filteredJobs?.length}  Jobs IT in Vietnam{" "}
                   </Typography>
-                  {filteredJobs.length && filteredJobs.length > 0 ? (
+                  {filteredJobs && filteredJobs.length && filteredJobs.length > 0 ? (
                     <div className={classes.filter}>
                       <div className={classes.btn}>
                         <Button
@@ -711,7 +717,7 @@ const FilterJobbySkill:React.FC =()=> {
                 </div>
                 <div className={classes.detail}>
                   <div className={classes.detailleft}>
-                    {filteredJobs.map((job) => {
+                    {filteredJobs?.map((job) => {
                       const companys = Companiesdata?.find(
                         (item) => item.id === job.companyId
                       );
@@ -745,7 +751,7 @@ const FilterJobbySkill:React.FC =()=> {
                       );
                     })}
                   </div>
-                  {filteredJobs.length > 0 && jobDetails && detailsCompany ? (
+                  {filteredJobs &&filteredJobs.length > 0 && jobDetails && detailsCompany ? (
                     <div className={classes.detailRight}>
                       <AnimatePresence>
                         {isCreatingNewChallenge && (

@@ -42,7 +42,7 @@ export default function Apply() {
 
   const UserProfileData = UserProfile?.UserProfiles;
 
-  console.log("userId",UserProfileData)
+  console.log("userId", UserProfileData);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -56,7 +56,9 @@ export default function Apply() {
         queryKey: ["CVs"],
         refetchType: "active",
       });
+
       message.success("CV uploaded successfully!");
+      setSelectedFile(null);
     },
     onError: () => {
       message.error("Failed to upload CV.");
@@ -140,7 +142,7 @@ export default function Apply() {
             jobPostId: job?.id,
             url: selectedCv?.url ?? "",
             cvId: selectedCv?.id,
-            userId:UserProfileData?.id,
+            userId: UserProfileData?.id,
           },
         });
         message.success(`CV Apply to ${job?.jobTitle} successfully!`);

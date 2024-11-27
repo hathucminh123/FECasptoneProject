@@ -12,6 +12,7 @@ import moment from "moment";
 import { CustomEmail } from "../../Services/CustomEmail/CustomEmail";
 import { message } from "antd";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
+import GradientCircularProgress from "./GradientCircularProgress";
 interface EducationDetail {
   id: number;
   name: string;
@@ -277,7 +278,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               {profile?.experienceDetails &&
                               profile?.educationDetails.length > 0
                                 ? profile.experienceDetails.map((exp) => (
-                                    <div className={classes.main155}>
+                                    <div className={classes.main155} key={exp.id}>
                                       <div className={classes.main166}>
                                         <div className={classes.main177}>
                                           <div className={classes.main188}>
@@ -419,7 +420,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
-                                    <div className={classes.main30}>
+                                    <div className={classes.main30} key={skill.id}>
                                       <div className={classes.main31}>
                                         <span>{skill.name}</span>
                                       </div>
@@ -435,7 +436,18 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                             <div className={classes.titleChart}>
                               Matching Details
                             </div>
-                            <div>
+                            <div className={classes.titleChart}>
+                            {profileResult?.analyzedResult.matchDetails && (
+                              <GradientCircularProgress
+                                percentage={
+                                  profileResult?.analyzedResult.matchDetails
+                                    .scores.overallMatch
+                                }
+                              />
+                              
+                            )}
+                            </div>
+                            <div className={classes.titleChart}>
                               {profileResult?.analyzedResult.matchDetails && (
                                 <PercentileChart
                                   profileResult={profileResult}
@@ -474,8 +486,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                 profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.matchingSkills.length > 0
                                   ? profileResult?.analyzedResult.matchDetails.skillAnalysis.matchingSkills.map(
-                                      (item) => (
-                                        <div className={classes.main30}>
+                                      (item,index) => (
+                                        <div className={classes.main30} key={index}>
                                           <div className={classes.matching}>
                                             <span>{item}</span>
                                           </div>
@@ -500,8 +512,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                 profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.missingSkills.length > 0
                                   ? profileResult.analyzedResult.matchDetails.skillAnalysis.missingSkills.map(
-                                      (item) => (
-                                        <div className={classes.main30}>
+                                      (item,index) => (
+                                        <div className={classes.main30} key={index}>
                                           <div className={classes.missing}>
                                             <span>{item}</span>
                                           </div>
@@ -528,8 +540,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                 profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.additionalSkills.length > 0
                                   ? profileResult.analyzedResult.matchDetails.skillAnalysis.additionalSkills.map(
-                                      (item) => (
-                                        <div className={classes.main30}>
+                                      (item,index) => (
+                                        <div className={classes.main30} key={index}>
                                           <div className={classes.additional}>
                                             <span>{item}</span>
                                           </div>
@@ -559,9 +571,9 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               {profileResult.extractedCVInfo.data &&
                               profileResult.extractedCVInfo.data.length > 0
                                 ? profileResult.extractedCVInfo.data.map(
-                                    (item) => {
+                                    (item,index) => {
                                       return (
-                                        <div>
+                                        <div key={index}>
                                           <div className={classes.main2222}>
                                             Contact:
                                             <div className={classes.main29}>
@@ -658,8 +670,9 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                               item.professional.experience
                                                 .length > 0
                                                 ? item.professional.experience.map(
-                                                    (exp) => (
+                                                    (exp,index) => (
                                                       <div
+                                                      key={index}
                                                         className={
                                                           classes.main155
                                                         }

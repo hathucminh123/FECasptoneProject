@@ -106,22 +106,23 @@ interface Recommendation {
 }
 
 interface PercentileChartProps {
-  overallMatch: number | undefined;
-  skillMatch: number | undefined;
-  experienceMatch: number | undefined;
-  contentSimilarity: number | undefined;
+  overallMatch?: number | undefined;
+  skillMatch?: number | undefined;
+  experienceMatch?: number | undefined;
+  contentSimilarity?: number | undefined;
   profileResult?: SeekersByJobPost|undefined;
 }
 
 const PercentileChart: React.FC<PercentileChartProps> = ({
-  overallMatch,
+  // overallMatch,
   skillMatch,
   experienceMatch,
   contentSimilarity,
   profileResult,
 }) => {
+  console.log("okchua",profileResult?.analyzedResult.matchDetails.experienceAnalysis.requiredYears)
   const metrics = [
-    { label: "Overall Match", value: overallMatch },
+    // { label: "Overall Match", value: overallMatch },
     { label: "Skill Match", value: skillMatch },
     { label: "Experience Match", value: experienceMatch },
     { label: "Content Similarity", value: contentSimilarity },
@@ -133,10 +134,11 @@ const PercentileChart: React.FC<PercentileChartProps> = ({
       <div className="chart-bars">
         {metrics.map((metric, index) => (
           <div
+           key={index}
             className="ok"
             title={
               metric.label === "Experience Match"
-                ? `${metric.label}: ${metric.value}%  - RequiredYears: ${profileResult?.analyzedResult.matchDetails.experienceAnalysis.requiredYears} years - CandidateYears: ${profileResult?.analyzedResult.matchDetails.experienceAnalysis.candidateYears} years`
+                ? `RequiredYears: ${profileResult?.analyzedResult.matchDetails.experienceAnalysis.requiredYears} years - CandidateYears: ${profileResult?.analyzedResult.matchDetails.experienceAnalysis.candidateYears} years`
                 : `${metric.label}: ${metric.value}%`
             }
           >
@@ -153,11 +155,11 @@ const PercentileChart: React.FC<PercentileChartProps> = ({
                       ? "#3b82f6"
                       : "#d1d5db",
                 }}
-                title={
-                  metric.label === "Experience Match"
-                    ? `${metric.label}: ${metric.value}% sadasdsad`
-                    : `${metric.label}: ${metric.value}%`
-                }
+                // title={
+                //   metric.label === "Experience Match"
+                //     ? `${metric.label}: ${metric.value}% `
+                //     : `${metric.label}: ${metric.value}%`
+                // }
               ></div>
               {/* Metric label and value displayed below the bar */}
             </div>

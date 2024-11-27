@@ -54,6 +54,7 @@ interface FetchError extends Error {
 interface ListSeekersParams {
   pageIndex?: number;
   pageSize?: number;
+  jobPostId?:number
   signal?: AbortSignal;
 }
 
@@ -62,18 +63,20 @@ interface PaginatedResponse<T> {
   pageSize?: number;
   totalCount: number;
   totalPages: number;
+  jobPostId?:number
   items: T[];
 }
 
 export const ListSeekers = async ({
   pageIndex,
   pageSize,
+  jobPostId,
   signal,
 }: ListSeekersParams): Promise<PaginatedResponse<UserProfile>> => {
   try {
     const response = await httpClient.get({
       url: `${apiLinks.GetSeekers.GET}`,
-      params: { pageIndex, pageSize },
+      params: { jobPostId, pageIndex, pageSize },
       signal,
     });
 

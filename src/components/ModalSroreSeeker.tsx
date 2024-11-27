@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
 import moment from "moment";
 import Rating from "@mui/material/Rating";
-
+import GradientCircularProgress from "../components/NewUiEmployer/GradientCircularProgress";
 import Box from "@mui/material/Box";
 interface EducationDetail {
   id: number;
@@ -525,6 +525,16 @@ const ModalSroreSeeker: React.FC<props> = ({
                           <div className={classes.main16}>
                             <div className={classes.titleChart}>
                               Matching Details
+                            </div>
+                            <div className={classes.titleChart}>
+                              {profileResult?.analyzedResult.matchDetails && (
+                                <GradientCircularProgress
+                                  percentage={
+                                    profileResult?.analyzedResult.matchDetails
+                                      .scores.overallMatch
+                                  }
+                                />
+                              )}
                             </div>
                             <div>
                               {profileResult?.analyzedResult.matchDetails && (

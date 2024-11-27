@@ -147,6 +147,7 @@ export default function ListTalent() {
                       const cityColumn = uniqueArrayCity;
                       return (
                         <NavLink
+                        key={job.id}
                           to={`talent/${job.id}`}
                           // className={({ isActive }) =>
                           //   isActive ? classes.active : undefined
@@ -187,6 +188,13 @@ export default function ListTalent() {
                               {companyDataa?.city}
                             </p>
                           )}
+                           <p className={classes.p1}>Skills: </p>
+                          <div style={{display:'flex',alignItems:'center' ,gap:10,flexWrap:'wrap',boxSizing:'border-box'}}>
+                          
+                            {job.skillSets.map((skill,index)=>(
+                               <p className={classes.p1} key={index}>  {skill}{index < job.skillSets.length - 1 && " -"}</p>
+                            ))}
+                          </div>
                         </NavLink>
                       );
                     })

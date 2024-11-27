@@ -151,6 +151,7 @@ export default function ListJobDetails() {
                       return (
                         <NavLink
                           to={`OverView/${job.id}`}
+                          key={job.id}
                           // className={({ isActive }) =>
                           //   isActive ? classes.active : undefined
                           // }
@@ -190,6 +191,13 @@ export default function ListJobDetails() {
                               {companyDataa?.city}
                             </p>
                           )}
+                             <p className={classes.p1}>Skills: </p>
+                          <div style={{display:'flex',alignItems:'center' ,gap:10,flexWrap:'wrap',boxSizing:'border-box'}}>
+                          
+                            {job.skillSets.map((skill,index)=>(
+                               <p className={classes.p1} key={index}>  {skill}{index < job.skillSets.length - 1 && " -"}</p>
+                            ))}
+                          </div>
                         </NavLink>
                       );
                     })
