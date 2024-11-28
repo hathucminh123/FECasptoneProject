@@ -70,6 +70,8 @@ const HomePage:React.FC =()=> {
   const [jobSearch, setJobSearch] = useState<JobPost[] |undefined>([]);
 
   const [text, setText] = useState<string>("");
+  const [totalJobs, setTotalJobs] = useState<number>(0);
+  console.log('total',totalJobs)
   const [location, setLocation] = useState<string>("All");
   const { mutateAsync, isPending } = useMutation({
     mutationFn: GetJobSearch,
@@ -78,17 +80,21 @@ const HomePage:React.FC =()=> {
 
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
+        const total =data.result.totalCount
         setJobSearch(data.result.items);
+        setTotalJobs(data.result.totalCount);
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             text: text || "",
             location: location,
+            total:total
+            
           },
         });
       } else {
         navigate("/it_jobs", {
-          state: { text: text || "", location: location, jobSearch: [] },
+          state: { text: text || "", location: location, jobSearch: [] ,total :0},
         });
       }
 
@@ -121,6 +127,8 @@ const HomePage:React.FC =()=> {
       // experience?: number;
       jobType?: string;
       pageSize: number;
+      pageIndex?: number;
+
     }
 
     // Define searchDataArray with the SearchData[] type
@@ -128,38 +136,38 @@ const HomePage:React.FC =()=> {
 
     if (location === "All" && text === "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9 },
-        { companyName: text, pageSize: 9 },
-        { skillSet: text, pageSize: 9 },
-        { city: text, pageSize: 9 },
-        { location: text, pageSize: 9 },
+        { jobTitle: text, pageSize: 9 ,pageIndex:1},
+        { companyName: text, pageSize: 9,pageIndex:1 },
+        { skillSet: text, pageSize: 9 ,pageIndex:1},
+        { city: text, pageSize: 9 ,pageIndex:1},
+        { location: text, pageSize: 9 ,pageIndex:1},
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9 },
+        { jobType: text, pageSize: 9,pageIndex:1 },
       ];
     } else if (location !== "All" && text === "") {
       searchDataArray = [
-        { city: location, pageSize: 9 },
-        { location: location, pageSize: 9 },
+        { city: location, pageSize: 9,pageIndex:1  },
+        { location: location, pageSize: 9 ,pageIndex:1 },
       ];
     } else if (location !== "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, city: location, pageSize: 9 },
-        { companyName: text, city: location, pageSize: 9 },
-        { skillSet: text, city: location, pageSize: 9 },
+        { jobTitle: text, city: location, pageSize: 9 ,pageIndex:1 },
+        { companyName: text, city: location, pageSize: 9,pageIndex:1  },
+        { skillSet: text, city: location, pageSize: 9,pageIndex:1  },
         { city: text, pageSize: 9 },
-        { location: text, city: location, pageSize: 9 },
+        { location: text, city: location, pageSize: 9 ,pageIndex:1 },
         // { experience: Number(text), city: location, pageSize: 9 },
-        { jobType: text, city: location, pageSize: 9 },
+        { jobType: text, city: location, pageSize: 9,pageIndex:1  },
       ];
     } else if (location == "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9 },
-        { companyName: text, pageSize: 9 },
-        { skillSet: text, pageSize: 9 },
-        { city: text, pageSize: 9 },
-        { location: text, pageSize: 9 },
+        { jobTitle: text, pageSize: 9 ,pageIndex:1 },
+        { companyName: text, pageSize: 9 ,pageIndex:1 },
+        { skillSet: text, pageSize: 9 ,pageIndex:1 },
+        { city: text, pageSize: 9,pageIndex:1  },
+        { location: text, pageSize: 9 ,pageIndex:1 },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9 },
+        { jobType: text, pageSize: 9 ,pageIndex:1 },
       ];
     } else {
       searchDataArray = [];
@@ -178,6 +186,8 @@ const HomePage:React.FC =()=> {
         // If there are results, set them and exit the loop
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
+          // setTotalJobs(result.result.totalCount);
+          // setTotalJobs(result.result.totalCount);
           break;
         }
       } catch (error) {

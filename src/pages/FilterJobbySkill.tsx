@@ -42,7 +42,7 @@ import { GetFavoriteJobs } from "../Services/FavoriteJobs/GetFavoriteJobs";
 import { GetSeekerJobPost } from "../Services/JobsPost/GetSeekerJobPost";
 import { AnimatePresence } from "framer-motion";
 import FeedbackModal from "../components/FeedbackModal";
-import { IconButton } from "@mui/material";
+import { IconButton, Pagination } from "@mui/material";
 import { Comment } from "@mui/icons-material";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import FilterModal from "../components/FilterModal";
@@ -106,11 +106,25 @@ interface UserJobActivity {
   jobPostId: number;
 }
 
-const FilterJobbySkill:React.FC =()=> {
+const FilterJobbySkill: React.FC = () => {
+  const location = useLocation();
   // const [favorite, setFavorite] = useState<boolean>(false);
   const [jobDetails, setJobDetails] = useState<JobPost | null>(null);
   const [openFilter, setOpenFilter] = useState<boolean>(false);
+  // const [totaljobs, setTotalJobs] = useState<number>(0);
+
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [direction, setDirection] = useState(1);
+
+  const itemsPerPage = 9;
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 100,
+      behavior: "smooth",
+    });
+  };
 
   function OpenhandleFilter() {
     setOpenFilter(true);
@@ -124,21 +138,22 @@ const FilterJobbySkill:React.FC =()=> {
 
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
-  const location = useLocation();
+
   const jobSearchPass = location.state?.jobSearch || [];
   const TextPass = location.state?.text || "";
+  const totalJobs = location.state?.total ?? 0;
+
+  console.log("tong job", totalJobs);
   const LocationPass = location.state?.location || [];
   console.log("JobSearchPass", jobSearchPass);
   // console.log("text", TextPass);
 
-  const [jobSearch, setJobSearch] = useState<JobPost[]|undefined>(
+  const [jobSearch, setJobSearch] = useState<JobPost[] | undefined>(
     location.state?.jobSearch || []
   );
   const auth = localStorage.getItem("Auth");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
-
-
 
   function handleStartAddNewChallenge() {
     setIsCreatingNewChallenge(true);
@@ -160,14 +175,7 @@ const FilterJobbySkill:React.FC =()=> {
   });
   const JobPostsdata = JobPosts?.JobPosts;
 
-  useEffect(() => {
-    if (location.state?.jobSearch) {
-      setJobSearch(location.state.jobSearch);
-    }else
-    setJobSearch(JobPostsdata)
-
-  }, [location.state?.jobSearch ,JobPostsdata]);
-    const filteredJobs =jobSearch  
+  const filteredJobs = jobSearch;
   const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
   console.log("fe", dataa);
 
@@ -198,7 +206,6 @@ const FilterJobbySkill:React.FC =()=> {
   });
   const JobPostActivitydata = JobPostActivity?.UserJobActivitys;
 
-
   const Companiesdata = Company?.Companies;
   useEffect(() => {
     if (Companiesdata || JobPostsdata) {
@@ -208,7 +215,7 @@ const FilterJobbySkill:React.FC =()=> {
   }, [Companiesdata, JobPostsdata, dispatch]);
 
   useEffect(() => {
-    if (filteredJobs&& filteredJobs.length > 0) {
+    if (filteredJobs && filteredJobs.length > 0) {
       if (
         !selectedJob ||
         !filteredJobs.some((job) => job.id === selectedJob.id)
@@ -419,41 +426,13 @@ const FilterJobbySkill:React.FC =()=> {
   //   },
   // });
 
-  const { mutateAsync, isPending } = useMutation({
-    mutationFn: GetJobSearch,
-    onSuccess: (data) => {
-      console.log("Search result:", data);
-
-      if (data && data.result && data.result.items.length > 0) {
-        const jobSearchResults = data.result.items;
-        setJobSearch(data.result.items);
-        navigate("/it_jobs", {
-          state: {
-            jobSearch: jobSearchResults,
-            text: text,
-            location: location,
-          },
-        });
-      } else {
-        setJobSearch([]);
-        navigate("/it_jobs", {
-          state: { text: text, location: location, jobSearch: [] },
-        });
-      }
-
-      queryClient.invalidateQueries({
-        queryKey: ["JobSearch"],
-        refetchType: "active",
-      });
-
-      // navigate("/it-jobs",{state : text});
-    },
-    onError: () => {
-      message.error("Failed to Search");
-    },
-  });
-  const handleNavigateJob = async () => {
-    // Define the shape of job data returned by the mutation
+  const handlePageChange = async (
+    _: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    // setDirection(page > currentPage ? 1 : -1);
+    setCurrentPage(page);
+    scrollToTop();
     interface JobSearchResponse {
       result: {
         items: JobPost[];
@@ -470,6 +449,7 @@ const FilterJobbySkill:React.FC =()=> {
       // experience?: number;
       jobType?: string;
       pageSize: number;
+      pageIndex?: number;
     }
 
     // Define searchDataArray with the SearchData[] type
@@ -477,38 +457,63 @@ const FilterJobbySkill:React.FC =()=> {
 
     if (locationne === "All" && text === "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9 },
-        { companyName: text, pageSize: 9 },
-        { skillSet: text, pageSize: 9 },
-        { city: text, pageSize: 9 },
-        { location: text, pageSize: 9 },
+        { jobTitle: text, pageSize: 9, pageIndex: page },
+        { companyName: text, pageSize: 9, pageIndex: page },
+        { skillSet: text, pageSize: 9, pageIndex: page },
+        { city: text, pageSize: 9, pageIndex: page },
+        { location: text, pageSize: 9, pageIndex: page },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9 },
+        { jobType: text, pageSize: 9, pageIndex: page },
       ];
     } else if (locationne !== "All" && text === "") {
       searchDataArray = [
-        { city: locationne, pageSize: 9 },
-        { location: locationne, pageSize: 9 },
+        { city: locationne, pageSize: 9, pageIndex: page },
+        { location: locationne, pageSize: 9, pageIndex: page },
       ];
     } else if (locationne !== "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, city: locationne, pageSize: 9 },
-        { companyName: text, city: locationne, pageSize: 9 },
-        { skillSet: text, city: locationne, pageSize: 9 },
+        {
+          jobTitle: text,
+          city: locationne,
+          pageSize: 9,
+          pageIndex: page,
+        },
+        {
+          companyName: text,
+          city: locationne,
+          pageSize: 9,
+          pageIndex: page,
+        },
+        {
+          skillSet: text,
+          city: locationne,
+          pageSize: 9,
+          pageIndex: page,
+        },
         { city: text, pageSize: 9 },
-        { location: text, city: locationne, pageSize: 9 },
+        {
+          location: text,
+          city: locationne,
+          pageSize: 9,
+          pageIndex: page,
+        },
         // { experience: Number(text), city: locationne, pageSize: 9 },
-        { jobType: text, city: locationne, pageSize: 9 },
+        {
+          jobType: text,
+          city: locationne,
+          pageSize: 9,
+          pageIndex: page,
+        },
       ];
     } else if (locationne == "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9 },
-        { companyName: text, pageSize: 9 },
-        { skillSet: text, pageSize: 9 },
-        { city: text, pageSize: 9 },
-        { location: text, pageSize: 9 },
+        { jobTitle: text, pageSize: 9, pageIndex: page },
+        { companyName: text, pageSize: 9, pageIndex: page },
+        { skillSet: text, pageSize: 9, pageIndex: page },
+        { city: text, pageSize: 9, pageIndex: page },
+        { location: text, pageSize: 9, pageIndex: page },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9 },
+        { jobType: text, pageSize: 9, pageIndex: page },
       ];
     } else {
       searchDataArray = []; // Default to an empty array if no conditions are met
@@ -536,6 +541,157 @@ const FilterJobbySkill:React.FC =()=> {
       }
     }
   };
+
+  const { mutateAsync, isPending } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      console.log("Search result:", data);
+
+      if (data && data.result && data.result.items.length > 0) {
+        const jobSearchResults = data.result.items;
+        const total = data.result.totalCount;
+        setJobSearch(data.result.items);
+        // setCurrentPage(1)
+        // setTotalJobs(data.result.totalCount);
+        navigate("/it_jobs", {
+          state: {
+            jobSearch: jobSearchResults,
+            text: text,
+            location: location,
+            total: total,
+            currentPage: 1,
+          },
+        });
+      } else {
+        setJobSearch([]);
+        navigate("/it_jobs", {
+          state: {
+            text: text,
+            location: location,
+            jobSearch: [],
+            total: 0,
+            currentPage: 0,
+          },
+        });
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["JobSearch"],
+        refetchType: "active",
+      });
+
+      // navigate("/it-jobs",{state : text});
+    },
+    onError: () => {
+      message.error("Failed to Search");
+    },
+  });
+
+  useEffect(() => {
+    if (location.state?.jobSearch) {
+      setJobSearch(location.state.jobSearch);
+    } else
+      mutateAsync({
+        data: {
+          pageIndex: currentPage,
+          pageSize: itemsPerPage,
+        },
+      });
+  }, [
+    location.state?.jobSearch,
+    JobPostsdata,
+    itemsPerPage,
+    currentPage,
+    mutateAsync,
+  ]);
+  const handleNavigateJob = async () => {
+    setCurrentPage(1);
+    // Define the shape of job data returned by the mutation
+    interface JobSearchResponse {
+      result: {
+        items: JobPost[];
+      };
+    }
+
+    // Define the shape of each search data object
+    interface SearchData {
+      jobTitle?: string;
+      companyName?: string;
+      skillSet?: string;
+      city?: string;
+      location?: string;
+      // experience?: number;
+      jobType?: string;
+      pageSize: number;
+
+      pageIndex?: number;
+    }
+
+    // Define searchDataArray with the SearchData[] type
+    let searchDataArray: SearchData[];
+
+    if (locationne === "All" && text === "") {
+      searchDataArray = [
+        { jobTitle: text, pageSize: 9, pageIndex: 1 },
+        { companyName: text, pageSize: 9, pageIndex: 1 },
+        { skillSet: text, pageSize: 9, pageIndex: 1 },
+        { city: text, pageSize: 9, pageIndex: 1 },
+        { location: text, pageSize: 9, pageIndex: 1 },
+        // { experience: Number(text), pageSize: 9 },
+        { jobType: text, pageSize: 9, pageIndex: 1 },
+      ];
+    } else if (locationne !== "All" && text === "") {
+      searchDataArray = [
+        { city: locationne, pageSize: 9, pageIndex: 1 },
+        { location: locationne, pageSize: 9, pageIndex: 1 },
+      ];
+    } else if (locationne !== "All" && text !== "") {
+      searchDataArray = [
+        { jobTitle: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        { companyName: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        { skillSet: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        { city: text, pageSize: 9 },
+        { location: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        // { experience: Number(text), city: locationne, pageSize: 9 },
+        { jobType: text, city: locationne, pageSize: 9, pageIndex: 1 },
+      ];
+    } else if (locationne == "All" && text !== "") {
+      searchDataArray = [
+        { jobTitle: text, pageSize: 9, pageIndex: 1 },
+        { companyName: text, pageSize: 9, pageIndex: 1 },
+        { skillSet: text, pageSize: 9, pageIndex: 1 },
+        { city: text, pageSize: 9, pageIndex: 1 },
+        { location: text, pageSize: 9, pageIndex: 1 },
+        // { experience: Number(text), pageSize: 9 },
+        { jobType: text, pageSize: 9, pageIndex: 1 },
+      ];
+    } else {
+      searchDataArray = []; // Default to an empty array if no conditions are met
+    }
+
+    // Loop through searchDataArray and attempt a job search with each item
+    for (let i = 0; i < searchDataArray.length; i++) {
+      try {
+        console.log("Searching with:", searchDataArray[i]);
+
+        const result: JobSearchResponse = await mutateAsync({
+          data: searchDataArray[i],
+        });
+
+        console.log("Search results:", result.result.items);
+
+        // If there are results, set them and exit the loop
+        if (result && result.result && result.result.items.length > 0) {
+          setJobSearch(result.result.items);
+
+          break;
+        }
+      } catch (error) {
+        console.error("Error during job search:", error);
+      }
+    }
+  };
+
   return (
     <div className={classes.main}>
       {openFilter && (
@@ -645,9 +801,13 @@ const FilterJobbySkill:React.FC =()=> {
                       marginBottom: 0,
                     }}
                   >
-                   {filteredJobs?.length}  Jobs IT in Vietnam{" "}
+                    {/* {filteredJobs?.length} Jobs IT in Vietnam{" "} */}
+                    {totalJobs === 0 ? filteredJobs?.length : totalJobs} Jobs
+                    IT in Vietnam{" "}
                   </Typography>
-                  {filteredJobs && filteredJobs.length && filteredJobs.length > 0 ? (
+                  {filteredJobs &&
+                  filteredJobs.length &&
+                  filteredJobs.length > 0 ? (
                     <div className={classes.filter}>
                       <div className={classes.btn}>
                         <Button
@@ -750,8 +910,25 @@ const FilterJobbySkill:React.FC =()=> {
                         />
                       );
                     })}
+                    <div className={classes.pagination}>
+                      <Pagination
+                        count={Math.ceil(totalJobs / itemsPerPage)}
+                        page={currentPage}
+                        onChange={handlePageChange}
+                        color="primary"
+                        size="large"
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          marginTop: "20px",
+                        }}
+                      />
+                    </div>
                   </div>
-                  {filteredJobs &&filteredJobs.length > 0 && jobDetails && detailsCompany ? (
+                  {filteredJobs &&
+                  filteredJobs.length > 0 &&
+                  jobDetails &&
+                  detailsCompany ? (
                     <div className={classes.detailRight}>
                       <AnimatePresence>
                         {isCreatingNewChallenge && (
@@ -943,7 +1120,7 @@ const FilterJobbySkill:React.FC =()=> {
                                   fontSize: "16px",
                                   fontWeight: "bold",
                                   padding: "11px 24px",
-fontFamily: "Lexend, sans-serif",
+                                  fontFamily: "Lexend, sans-serif",
                                   "&:hover": {
                                     backgroundColor: "#C82222",
 
@@ -1117,7 +1294,7 @@ fontFamily: "Lexend, sans-serif",
                                 </Typography>
                                 {jobDetails?.skillSets.map((item, index) => (
                                   <button
-                                  style={{fontFamily: "Lexend, sans-serif",}}
+                                    style={{ fontFamily: "Lexend, sans-serif" }}
                                     key={index}
                                     className={classes.button}
                                   >
@@ -1275,7 +1452,7 @@ fontFamily: "Lexend, sans-serif",
       </div>
     </div>
   );
-}
+};
 
 interface ContentProps {
   title: string;
@@ -1326,4 +1503,4 @@ const Content = ({ title, arraylist }: ContentProps) => {
     </div>
   );
 };
-export default FilterJobbySkill
+export default FilterJobbySkill;

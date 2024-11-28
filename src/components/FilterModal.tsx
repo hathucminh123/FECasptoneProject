@@ -77,7 +77,7 @@ interface Props {
 //   "8+ years of experience",
 // ];
 
-const datacities:string[] = [
+const datacities: string[] = [
   "HO CHI MINH",
   "HA NOI",
   "DA NANG",
@@ -87,11 +87,12 @@ const datacities:string[] = [
 ];
 
 const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
+  const [totalJobs, setTotalJobs] = useState<number>(0);
+  console.log('duoc di',totalJobs)
   // const JobSalary = filteredJobs?.map((salary) => salary.salary);
   // const flattenedArraySalary = JobSalary?.flat();
 
   // const uniqueArraySalary = [...new Set(flattenedArraySalary)];
- 
 
   // const SalaryJob = uniqueArraySalary;
   // const maxSalaryJob = Math.max(...SalaryJob);
@@ -210,7 +211,7 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
 
   const flattenedArrayCompanyName = CompanyName?.flat();
   const uniqueArrayCompanyName = [...new Set(flattenedArrayCompanyName)];
- 
+
   const CompanyColums = uniqueArrayCompanyName;
 
   const filter = CompanyColums.filter((name) =>
@@ -246,7 +247,6 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
   const skills = SkillSetDatas?.map((skill) => skill.name);
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
- 
 
   const skillsColumns = uniqueArray;
   const filterSkills = skillsColumns.filter((name) =>
@@ -268,7 +268,6 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
   const flattenedArrayType = Jobtype?.flat();
   const uniqueArrayType = [...new Set(flattenedArrayType)];
 
-
   const TypeJob = uniqueArrayType;
   useEffect(() => {
     localStorage.setItem("selectedType", JSON.stringify(selectedType));
@@ -287,7 +286,6 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
   const JobExp = filteredJobs?.map((exp) => exp.experienceRequired);
   const flattenedArrayExp = JobExp?.flat();
   const uniqueArrayExp = [...new Set(flattenedArrayExp)];
-
 
   const ExpJob = uniqueArrayExp;
 
@@ -351,7 +349,8 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
 
     // Build the search object conditionally
     const searchObject: SearchData = {
-     
+      pageSize: 100,
+
       // minSalary: minSalary,
       // maxSalary: maxSalary,
     };
@@ -401,12 +400,14 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
 
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
+        // const total = data.result.totalCount;
         setJobSearch(data.result.items);
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             // text: text,
             // location: location,
+            // total: total,
           },
         });
         onDone?.();
@@ -436,11 +437,13 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
 
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
-          navigate("/it_jobs", {
-            state: {
-              jobSearch: result.result.items,
-            },
-          });
+          setTotalJobs(result.result.totalCount);
+          // navigate("/it_jobs", {
+          //   state: {
+          //     jobSearch: result.result.items,
+          //     total:totalJobs
+          //   },
+          // });
           break;
         }
       }
@@ -560,7 +563,7 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
           <div className={classes.workingModelButtons}>
             {TypeJob.map((type) => (
               <Button
-                 key={type}
+                key={type}
                 variant={selectedType.includes(type) ? "contained" : "outlined"}
                 onClick={() => handleTypeSelect(type)}
                 className={classes.modelButton}
@@ -743,6 +746,6 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
       </Box>
     </Modal>
   );
-}
+};
 
-export default FilterModal
+export default FilterModal;
