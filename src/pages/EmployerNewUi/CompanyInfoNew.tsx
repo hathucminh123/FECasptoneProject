@@ -267,7 +267,7 @@ export default function CompanyInfoNew() {
                           </svg>
                         </div>
                       </Link>
-                      <Link
+                      {/* <Link
                         to=""
                         className={classes.link3}
                         onClick={() => setOnenModal(true)}
@@ -287,7 +287,7 @@ export default function CompanyInfoNew() {
                             <path d="M8 21a.997.997 0 00.707-.293l8-8a.999.999 0 000-1.414l-8-8a.999.999 0 10-1.414 1.414L14.586 12l-7.293 7.293A.999.999 0 008 21z"></path>
                           </svg>
                         </div>
-                      </Link>
+                      </Link> */}
                     </div>
                     <div className={classes.main27}>
                       <div className={classes.main28}>

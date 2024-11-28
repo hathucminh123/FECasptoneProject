@@ -351,7 +351,7 @@ export default function HeaderEmployerSystem({
                           <span className={classes.span7}>Billing</span>
                         </Link>
                       </li>
-                      <li
+                      {/* <li
                         className={classes.li6}
                         onClick={() => setOnpenModalEmail(true)}
                       >
@@ -360,7 +360,7 @@ export default function HeaderEmployerSystem({
                             Invite Team member
                           </span>
                         </button>
-                      </li>
+                      </li> */}
                     </ul>
                   </div>
                 </div>

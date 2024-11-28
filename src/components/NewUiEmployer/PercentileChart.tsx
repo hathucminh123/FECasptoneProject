@@ -149,11 +149,12 @@ const PercentileChart: React.FC<PercentileChartProps> = ({
                 style={{
                   height: `${metric.value}%`,
                   backgroundColor:
-                    metric.value && metric.value >= 80
-                      ? "#22c55e"
-                      : metric.value && metric.value >= 50
-                      ? "#3b82f6"
-                      : "#d1d5db",
+                    // metric.value && metric.value >= 80
+                    //   ? "#22c55e"
+                      // : metric.value && metric.value >= 50
+                      // ? 
+                      "#3b82f6"
+                      // : "#d1d5db",
                 }}
                 // title={
                 //   metric.label === "Experience Match"

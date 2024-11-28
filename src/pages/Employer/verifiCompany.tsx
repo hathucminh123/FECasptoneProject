@@ -303,7 +303,7 @@ export default function VerifiCompany() {
     try {
       if (!selectedFile) {
         console.error("No file selected");
-        message.warning("Please select a file to upload.");
+        // message.warning("Please select a file to upload.");
         return;
       }
 
@@ -1003,11 +1003,10 @@ export default function VerifiCompany() {
           borderStyle: "none",
         }}
       >
-        Let find your Company
+        Let create your Company
       </Typography>
       <p className={classes.p}>
-        We  look for yours, and if you use an applicant tracking system, we will
-        help find the jobs you  already posted.
+      You can manage your jobs post .Our platform ensures that you find the right candidates efficiently 
       </p>
       <form action="" className={classes.form}>
         <div className={classes.div1} aria-expanded="false">
@@ -1054,8 +1053,18 @@ export default function VerifiCompany() {
                   />
                 </div>
               )}
-
-              {dropdownOpen && (
+              {
+                dropdownOpen && (
+                  <div
+                  ref={dropdownRef}
+                  className={classes.createNewCompany}
+                  onClick={handleOpenRegister}
+                >
+                  <span>Create new company: {company}</span>
+                </div>
+                )
+              }
+              {/* {dropdownOpen && (
                 <div className={classes.dropdown} ref={dropdownRef}>
                   {filteredCompanies?.length &&
                   filteredCompanies?.length > 0 ? (
@@ -1087,12 +1096,12 @@ export default function VerifiCompany() {
                     </div>
                   )}
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>
       </form>
-      {selectCompany && (
+      {/* {selectCompany && (
         <form
           action=""
           style={{
@@ -1110,7 +1119,7 @@ export default function VerifiCompany() {
             </button>
           </Link>
         </form>
-      )}
+      )} */}
     </section>
   );
 }

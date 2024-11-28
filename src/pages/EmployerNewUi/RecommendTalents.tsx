@@ -21,6 +21,7 @@ import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
 import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
+import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 // import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -261,6 +262,10 @@ export default function RecommendTalents() {
 
   if (isError) {
     return <div className={classes.error}>Error loading talents.</div>;
+  }
+
+  if(ListSeekrData.length === 0){
+    return <NoJobApplicants text="There are no  Talents avalable For Job Yet"/>
   }
 
   return (

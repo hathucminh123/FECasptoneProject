@@ -595,20 +595,22 @@ const ModalSroreSeeker: React.FC<props> = ({
                                 {profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.matchingSkills &&
                                 profileResult?.analyzedResult.matchDetails
-                                  .skillAnalysis.matchingSkills.length > 0
-                                  ? profileResult?.analyzedResult.matchDetails.skillAnalysis.matchingSkills.map(
-                                      (item, index) => (
-                                        <div
-                                          className={classes.main30}
-                                          key={index}
-                                        >
-                                          <div className={classes.matching}>
-                                            <span>{item}</span>
-                                          </div>
+                                  .skillAnalysis.matchingSkills.length > 0 ? (
+                                  profileResult?.analyzedResult.matchDetails.skillAnalysis.matchingSkills.map(
+                                    (item, index) => (
+                                      <div
+                                        className={classes.main30}
+                                        key={index}
+                                      >
+                                        <div className={classes.matching}>
+                                          <span>{item}</span>
                                         </div>
-                                      )
+                                      </div>
                                     )
-                                  : undefined}
+                                  )
+                                ) : (
+                                  <>No skills Matching</>
+                                )}
                               </div>
                             )}
                           </div>
@@ -642,20 +644,22 @@ const ModalSroreSeeker: React.FC<props> = ({
                                 {profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.missingSkills &&
                                 profileResult?.analyzedResult.matchDetails
-                                  .skillAnalysis.missingSkills.length > 0
-                                  ? profileResult.analyzedResult.matchDetails.skillAnalysis.missingSkills.map(
-                                      (item, index) => (
-                                        <div
-                                          className={classes.main30}
-                                          key={index}
-                                        >
-                                          <div className={classes.missing}>
-                                            <span>{item}</span>
-                                          </div>
+                                  .skillAnalysis.missingSkills.length > 0 ? (
+                                  profileResult.analyzedResult.matchDetails.skillAnalysis.missingSkills.map(
+                                    (item, index) => (
+                                      <div
+                                        className={classes.main30}
+                                        key={index}
+                                      >
+                                        <div className={classes.missing}>
+                                          <span>{item}</span>
                                         </div>
-                                      )
+                                      </div>
                                     )
-                                  : undefined}
+                                  )
+                                ) : (
+                                  <>No skills missing</>
+                                )}
                               </div>
                             )}
                           </div>
@@ -694,20 +698,22 @@ const ModalSroreSeeker: React.FC<props> = ({
                                 {profileResult?.analyzedResult.matchDetails
                                   .skillAnalysis.additionalSkills &&
                                 profileResult?.analyzedResult.matchDetails
-                                  .skillAnalysis.additionalSkills.length > 0
-                                  ? profileResult.analyzedResult.matchDetails.skillAnalysis.additionalSkills.map(
-                                      (item, index) => (
-                                        <div
-                                          className={classes.main30}
-                                          key={index}
-                                        >
-                                          <div className={classes.additional}>
-                                            <span>{item}</span>
-                                          </div>
+                                  .skillAnalysis.additionalSkills.length > 0 ? (
+                                  profileResult.analyzedResult.matchDetails.skillAnalysis.additionalSkills.map(
+                                    (item, index) => (
+                                      <div
+                                        className={classes.main30}
+                                        key={index}
+                                      >
+                                        <div className={classes.additional}>
+                                          <span>{item}</span>
                                         </div>
-                                      )
+                                      </div>
                                     )
-                                  : undefined}
+                                  )
+                                ) : (
+                                  <>No Additional Skills</>
+                                )}
                                 {/* <div className={classes.main30}>
                                   <div className={classes.additional}>
                                     <span>React</span>
