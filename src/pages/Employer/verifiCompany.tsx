@@ -3,7 +3,7 @@ import classes from "./verifiCompany.module.css";
 import Typography from "@mui/material/Typography";
 import SearchIcon from "@mui/icons-material/Search";
 
-import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
+// import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import {
@@ -25,7 +25,7 @@ import { storage } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { PostCompanies } from "../../Services/CompanyService/PostCompanies";
 import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
-import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
+// import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
 
 interface BusinessStreamprops {
   id: number;
@@ -88,16 +88,16 @@ type OutletContextType = {
 };
 
 export default function VerifiCompany() {
-  const {
-    data: Company,
-    // isLoading: isCompanyLoading,
-    // isError: isCompanyError,
-  } = useQuery({
-    queryKey: ["Company"],
-    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
-    staleTime: 5000,
-  });
-  const Companiesdata = Company?.Companies;
+  // const {
+  //   data: Company,
+  //   // isLoading: isCompanyLoading,
+  //   // isError: isCompanyError,
+  // } = useQuery({
+  //   queryKey: ["Company"],
+  //   queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+  //   staleTime: 5000,
+  // });
+  // const Companiesdata = Company?.Companies;
   const [company, setCompany] = useState<string>("");
   const [websiteURL, setWebsiteURL] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -108,7 +108,7 @@ export default function VerifiCompany() {
   const [description, setDescription] = useState<string>("");
   const [numberOfEmployees, setNumberOfEmployees] = useState<string>("");
 
-  const [filteredCompanies, setFilteredCompanies] = useState(Companiesdata);
+  // const [filteredCompanies, setFilteredCompanies] = useState(Companiesdata);
 
   const [country, setCountry] = useState<string>("");
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
@@ -123,7 +123,7 @@ export default function VerifiCompany() {
   const [dropdownOpenBu, setDropdownOpenBu] = useState<boolean>(false);
 
   const [selectCompany, setSelectCompany] = useState<Company | null>(null);
-  const [companyId, setCompanyId] = useState<number | null>(null);
+  // const [companyId, setCompanyId] = useState<number | null>(null);
   const [openRegister, setOpenRegister] = useState<boolean>(false);
   const [businessStreamName, setBusinessStreamName] = useState<string>("");
   const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
@@ -131,7 +131,7 @@ export default function VerifiCompany() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
   const isVerification = searchParams.get("mode") === "verification";
-  const userId = localStorage.getItem("userId");
+  // const userId = localStorage.getItem("userId");
   const [verificationCode, setVerificationCode] = useState<string>("");
   const { setNextStep } = useOutletContext<OutletContextType>();
 
@@ -189,14 +189,14 @@ export default function VerifiCompany() {
     const inputValue = e.target.value;
     setCompany(inputValue);
     if (inputValue) {
-      setFilteredCompanies(
-        Companiesdata?.filter((comp) =>
-          comp.companyName.toLowerCase().includes(inputValue.toLowerCase())
-        )
-      );
+      // setFilteredCompanies(
+      //   Companiesdata?.filter((comp) =>
+      //     comp.companyName.toLowerCase().includes(inputValue.toLowerCase())
+      //   )
+      // );
       setDropdownOpen(true);
     } else {
-      setFilteredCompanies([]);
+      // setFilteredCompanies([]);
       setDropdownOpen(false);
     }
   };
@@ -237,11 +237,11 @@ export default function VerifiCompany() {
     };
   }, []);
 
-  const handleSelect = (comp: Company) => {
-    setCompanyId(comp.id);
-    setSelectCompany(comp);
-    setDropdownOpen(false);
-  };
+  // const handleSelect = (comp: Company) => {
+  //   setCompanyId(comp.id);
+  //   setSelectCompany(comp);
+  //   setDropdownOpen(false);
+  // };
 
   const handleSelectCountry = (country: string) => {
     setSelectedCountry(country);
@@ -340,42 +340,40 @@ export default function VerifiCompany() {
     // }
   };
 
-  const { mutate: verifi,  isPending:IsVerifi } = useMutation({
-    mutationFn: SelectCompany,
-    onSuccess: () => {
-      message.success("Choose Company Successfully");
-      localStorage.setItem("CompanyId", companyId?.toString() || "");
-      queryClient.invalidateQueries({
-        queryKey: ["Company"],
-        refetchType: "active",
-      });
+  // const { mutate: verifi,  isPending:IsVerifi } = useMutation({
+  //   mutationFn: SelectCompany,
+  //   onSuccess: () => {
+  //     message.success("Choose Company Successfully");
+  //     localStorage.setItem("CompanyId", companyId?.toString() || "");
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["Company"],
+  //       refetchType: "active",
+  //     });
 
-   
-      navigate("/onboarding/recruit/Complete");
-      setNextStep(true);
+  //     navigate("/onboarding/recruit/Complete");
+  //     setNextStep(true);
 
-  
-      // window.location.reload();
-    },
-    onError: () => {
-      message.error("Failed to Choose the Company");
-    },
-  });
+  //     // window.location.reload();
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Choose the Company");
+  //   },
+  // });
 
-  const handleSubmitVerification = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (companyId) {
-      verifi({
-        data: {
-          companyId: companyId,
-          employeeId: Number(userId),
-          verificationCode: verificationCode,
-        },
-      });
+  // const handleSubmitVerification = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   if (companyId) {
+  //     verifi({
+  //       data: {
+  //         companyId: companyId,
+  //         employeeId: Number(userId),
+  //         verificationCode: verificationCode,
+  //       },
+  //     });
 
-      // setOpen(false);
-    }
-  };
+  //     // setOpen(false);
+  //   }
+  // };
 
   return isVerification ? (
     <section className={classes.section}>
@@ -404,8 +402,8 @@ export default function VerifiCompany() {
         </Typography>
         <p className={classes.p}>
           Please Enter your code verification of company to confirm you’re an
-          employee, and if any coworkers are also recruiting on Wellfound, we will
-          let them know you’re set up.
+          employee, and if any coworkers are also recruiting on Wellfound, we
+          will let them know you’re set up.
         </p>
         <div className={classes.verify}>
           <form action="" className={classes.form}>
@@ -429,13 +427,9 @@ export default function VerifiCompany() {
           <Link to="/onboarding/recruit" className={classes.btn2}>
             Back
           </Link>
-          {IsVerifi ? (
-            <button
-              className={classes.btn3}
-            
-            >
-              Wait a seconds
-            </button>
+          <>
+          {/* {IsVerifi ? (
+            <button className={classes.btn3}>Wait a seconds</button>
           ) : (
             <button
               className={classes.btn3}
@@ -443,7 +437,8 @@ export default function VerifiCompany() {
             >
               Continue
             </button>
-          )}
+          )} */}
+          </>
         </div>
       </div>
     </section>
@@ -463,7 +458,7 @@ export default function VerifiCompany() {
           borderStyle: "none",
         }}
       >
-        Let  Create Your Account
+        Let Create Your Account
       </Typography>
 
       <form action="" className={classes.form} onSubmit={handleSubmit}>
@@ -1006,7 +1001,8 @@ export default function VerifiCompany() {
         Let create your Company
       </Typography>
       <p className={classes.p}>
-      You can manage your jobs post .Our platform ensures that you find the right candidates efficiently 
+        You can manage your jobs post .Our platform ensures that you find the
+        right candidates efficiently
       </p>
       <form action="" className={classes.form}>
         <div className={classes.div1} aria-expanded="false">
@@ -1053,17 +1049,15 @@ export default function VerifiCompany() {
                   />
                 </div>
               )}
-              {
-                dropdownOpen && (
-                  <div
+              {dropdownOpen && (
+                <div
                   ref={dropdownRef}
                   className={classes.createNewCompany}
                   onClick={handleOpenRegister}
                 >
                   <span>Create new company: {company}</span>
                 </div>
-                )
-              }
+              )}
               {/* {dropdownOpen && (
                 <div className={classes.dropdown} ref={dropdownRef}>
                   {filteredCompanies?.length &&
