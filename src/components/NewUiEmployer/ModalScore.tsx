@@ -674,7 +674,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                           </div>
                                           <div className={classes.main28}>
                                             Experience:
-                                            <div className={classes.main29} style={{backgroundColor:'#fafafa'}}>
+                                            <div className={classes.main29} style={{backgroundColor:'#fafafa',marginBottom:'15px'}}>
                                               {Array.isArray(
                                                 item.professional.experience
                                               ) &&
