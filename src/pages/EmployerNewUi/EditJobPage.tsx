@@ -284,6 +284,12 @@ export default function EditJobPage() {
 
   const handleSubmitJobtype = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!nameType || !descriptionType) {
+      message.error("Please fill in both the name and description!");
+      return;
+    }
+
     JobType({ data: { name: nameType, description: descriptionType } });
   };
 
@@ -341,21 +347,17 @@ export default function EditJobPage() {
   });
   const handleOnCreate = async () => {
     try {
-      // Kiểm tra nếu `selectedFile` tồn tại trước khi tiếp tục
-      if (!selectedFile) {
-        console.error("No file selected");
-        message.warning("Please select a file to upload.");
-        return;
+      let uploadedFileUrl = fileUrl;
+
+      if (selectedFile) {
+        const fileName = `${uuidv4()}-${selectedFile.name}`;
+        const fileRef = ref(storage, fileName);
+
+        await uploadBytes(fileRef, selectedFile);
+
+        uploadedFileUrl = await getDownloadURL(fileRef);
+        setFileUrl(uploadedFileUrl);
       }
-
-      const fileName = `${uuidv4()}-${selectedFile.name}`;
-      const fileRef = ref(storage, fileName);
-
-      await uploadBytes(fileRef, selectedFile);
-
-      const fileUrl = await getDownloadURL(fileRef);
-
-      setFileUrl(fileUrl);
 
       const data = {
         jobtitle: jobTitle || job?.jobTitle,
@@ -441,20 +443,20 @@ export default function EditJobPage() {
                 </div>
                 <div className={classes.input6}>
                   <div className={classes.input7}>
-                  <div className={classes.img1}>
-                          <img
-                            src={fileUrl}
-                            alt={selectedFile?.name}
-                            className={classes.img2}
-                          />
-                        </div>
-                        <button
-                        className={classes.input8}
-                        onClick={handleUploadClick}
-                      >
-                        <CloudUploadIcon />
-                        Upload Logo/Image
-                      </button>
+                    <div className={classes.img1}>
+                      <img
+                        src={fileUrl}
+                        alt={selectedFile?.name}
+                        className={classes.img2}
+                      />
+                    </div>
+                    <button
+                      className={classes.input8}
+                      onClick={handleUploadClick}
+                    >
+                      <CloudUploadIcon />
+                      Upload Logo/Image
+                    </button>
                     {/* {selectedFile ? (
                       <>
                         <div className={classes.img1}>
@@ -620,9 +622,8 @@ export default function EditJobPage() {
                     JobTypeDatas?.length &&
                     JobTypeDatas?.length > 0 &&
                     JobTypeDatas?.map((comp, index) => (
-                      <div className={classes.dropdown}>
+                      <div className={classes.dropdown} key={index}>
                         <div
-                          key={index}
                           className={classes.dropdownItem}
                           onClick={() => handleSelectType(comp)}
                         >
@@ -771,7 +772,7 @@ export default function EditJobPage() {
                     experienceLevels?.length &&
                     experienceLevels?.length > 0 &&
                     experienceLevels?.map((comp, index) => (
-                      <div className={classes.dropdown}>
+                      <div className={classes.dropdown} key={index}>
                         <div
                           key={index}
                           className={classes.dropdownItem}
@@ -808,6 +809,7 @@ export default function EditJobPage() {
                   <div className={classes.main24}>
                     {skills.map((skills) => (
                       <span
+                      key={skills.id}
                         className={classes.span2}
                         onClick={() => handleRemoveSkill(skills)}
                       >
@@ -869,7 +871,7 @@ export default function EditJobPage() {
                               onClick={handleOpen}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>Create new Skills "{inputSkill}"</span>
+                              <span>Create new Skills {inputSkill}</span>
                             </div>
                           )}
                         </div>
@@ -952,13 +954,15 @@ export default function EditJobPage() {
               </label>
               {PostPending ? (
                 <div className={classes.main1}>
-                  <button className={classes.link} >
-                   Saving
-                  </button>
+                  <button className={classes.link}>Saving</button>
                 </div>
               ) : (
                 <div className={classes.main1}>
-                  <button className={classes.link} type="button" onClick={handleOnCreate}>
+                  <button
+                    className={classes.link}
+                    type="button"
+                    onClick={handleOnCreate}
+                  >
                     Save Change
                   </button>
                 </div>

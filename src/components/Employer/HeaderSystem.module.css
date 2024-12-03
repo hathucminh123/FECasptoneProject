@@ -4,7 +4,7 @@
     background: #fff;
     position: sticky;
     top: 64px;
-    z-index: 999;
+    z-index: 0;
     height: 64px;
     padding-left: 20px;
     padding-right: 20px;

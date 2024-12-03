@@ -66,16 +66,19 @@ interface UserProfile {
   cvs: CVs[];
   skillSets: SkillSet[];
 }
-const  InterViewApplicants:React.FC =()=> {
+const InterViewApplicants: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
-  const [openExp, setOpenExp] = useState<boolean>(false);
+  // const [openExp, setOpenExp] = useState<boolean>(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [jobProfileCounts, setJobProfileCounts] = useState<
     Record<number, UserProfile>
   >({});
-
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const handleExpandClick = (id: number) => {
+    setExpandedId((prevId) => (prevId === id ? null : id));
+  };
   const [openModal, setOpenModal] = useState<boolean>(false);
 
   const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
@@ -95,7 +98,7 @@ const  InterViewApplicants:React.FC =()=> {
   const handleCloseModal = () => {
     setOpenModal(false);
   };
- 
+
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,
@@ -270,10 +273,11 @@ const  InterViewApplicants:React.FC =()=> {
                             <button
                               type="button"
                               className={classes.button1}
-                              onClick={() => setOpenExp((prev) => !prev)}
+                              // onClick={() => setOpenExp((prev) => !prev)}
+                              onClick={() => handleExpandClick(data.id)}
                             >
                               {" "}
-                              - View More
+                              {expandedId === data.id ? "Hide" : "View More"}
                             </button>
                           </div>
                         </div>
@@ -307,7 +311,7 @@ const  InterViewApplicants:React.FC =()=> {
                                         {/* {". "}
                                         <span>asdasdas</span> */}
                                       </div>
-                                      {openExp && (
+                                      {expandedId === data.id && (
                                         <>
                                           <div className={classes.main20}>
                                             <span>
@@ -509,5 +513,5 @@ const  InterViewApplicants:React.FC =()=> {
       </div>
     </div>
   );
-}
-export default InterViewApplicants
+};
+export default InterViewApplicants;

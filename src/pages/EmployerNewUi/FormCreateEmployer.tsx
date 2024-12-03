@@ -249,6 +249,12 @@ export default function FormCreateEmployer() {
 
   const handleSubmitJobtype = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!nameType || !descriptionType) {
+      message.error("Please fill in both the name and description!");
+      return;
+    }
+
     JobType({ data: { name: nameType, description: descriptionType } });
   };
 
@@ -282,7 +288,7 @@ export default function FormCreateEmployer() {
   });
   const JobPostsdata = JobPosts?.JobPosts;
   // const { selectJobId, setSelectJobId } = useOutletContext<JobContextType>();
-  const [selectJobId,setSelectJobId]=useState<number|null>()
+  const [selectJobId, setSelectJobId] = useState<number | null>();
   const jobincompanyData = JobPostsdata?.filter(
     (item) => item.companyId === Number(companyId)
   );
@@ -295,7 +301,7 @@ export default function FormCreateEmployer() {
   const { mutate: JobPost, isPending: PostPending } = useMutation({
     mutationFn: PostJobPosts,
     onSuccess: (data) => {
-      const idJob=data.result.jobPost
+      const idJob = data.result.jobPost;
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       message.success("Post Job successfully.");
       navigate(`/EmployerJob/listjobs/OverView/${idJob}`);
@@ -376,7 +382,8 @@ export default function FormCreateEmployer() {
           <NavLink to="" className={classes.link2}>
             <div className={classes.main5}>
               <span>Edit Job</span>{" "}
-            </div>{""}
+            </div>
+            {""}
           </NavLink>
           <NavLink
             to=" "
@@ -731,7 +738,6 @@ export default function FormCreateEmployer() {
                     experienceLevels?.map((comp, index) => (
                       <div className={classes.dropdown} key={index}>
                         <div
-                      
                           key={index}
                           className={classes.dropdownItem}
                           onClick={() => handleSelectExp(comp)}
@@ -767,7 +773,7 @@ export default function FormCreateEmployer() {
                   <div className={classes.main24}>
                     {skills.map((skills) => (
                       <span
-                      key={skills.id}
+                        key={skills.id}
                         className={classes.span2}
                         onClick={() => handleRemoveSkill(skills)}
                       >

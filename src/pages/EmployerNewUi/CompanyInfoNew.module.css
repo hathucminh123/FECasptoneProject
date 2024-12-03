@@ -578,3 +578,37 @@
     border-width: 0;
     border-style: solid;
 }
+
+.button1{
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 500;
+    display: block;
+    white-space: nowrap;
+    color: #143fcd;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-family: "Lexend", sans-serif;
+    box-sizing: border-box;
+}
+
+.svg1{
+    height: 10px;
+    width: 11px;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.span1{
+    display: inline-block;
+    margin-left: 4px;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+   
+}

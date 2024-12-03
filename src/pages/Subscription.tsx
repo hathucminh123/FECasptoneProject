@@ -267,6 +267,13 @@ export default function Subscription() {
 
   const handleAlert = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    // Kiểm tra nếu SkillId hoặc selectSkills.name không có giá trị
+    if (!SkillId || !selectSkills?.name) {
+      message.error("Please select a valid skill ");
+      return;
+    }
+
     PostAlert({
       data: {
         jobTitle: selectSkills?.name,
@@ -426,8 +433,22 @@ export default function Subscription() {
       message.error(`Failed to UnFollow ${selectCompany?.companyName} `);
     },
   });
+  // const handleSaveCompany = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   mutate({
+  //     data: {
+  //       companyId: Number(companyId),
+  //     },
+  //   });
+  // };
   const handleSaveCompany = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!companyId || isNaN(Number(companyId))) {
+      message.error("Please select a valid Company !");
+      return;
+    }
+
     mutate({
       data: {
         companyId: Number(companyId),

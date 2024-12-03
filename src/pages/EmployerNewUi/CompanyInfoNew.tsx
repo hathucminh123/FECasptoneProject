@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from "react";
 import classes from "./CompanyInfoNew.module.css";
-import { Link, NavLink, Outlet, useOutletContext } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Outlet,
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { useQuery } from "@tanstack/react-query";
@@ -73,6 +79,11 @@ export default function CompanyInfoNew() {
 
   const { notifications, setNotifications } =
     useOutletContext<OutletContextType>();
+
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/employerJob/company/Settings");
+  };
   return (
     <div className={classes.main}>
       <ModalEmail open={openModal} onClose={handleClose} />
@@ -215,6 +226,49 @@ export default function CompanyInfoNew() {
                             </>
                           )}
                         </NavLink>
+                        <NavLink
+                          to="Settings"
+                          className={({ isActive }) =>
+                            isActive ? classes.active : undefined
+                          }
+                          end
+                        >
+                          {({ isActive }) => (
+                            <>
+                              <div
+                                className={classes.main19}
+                                style={{ marginLeft: 30 }}
+                              >
+                                <span
+                                  style={
+                                    isActive ? { color: "#050c26" } : undefined
+                                  }
+                                >
+                                  Settings
+                                </span>
+                              </div>
+                              {/* <div className={classes.main37}>
+                                <div className={classes.main38}>
+                                  <span>
+                                    {" "}
+                                    {notifications &&
+                                      notifications.some(
+                                        (notify) => !notify.isRead
+                                      ) && (
+                                        <span className={classes.span5}>
+                                          {
+                                            notifications.filter(
+                                              (notify) => !notify.isRead
+                                            )?.length
+                                          }
+                                        </span>
+                                      )}
+                                  </span>
+                                </div>
+                              </div> */}
+                            </>
+                          )}
+                        </NavLink>
                       </nav>
                     </div>
                     <Outlet context={{ notifications, setNotifications }} />
@@ -306,6 +360,28 @@ export default function CompanyInfoNew() {
                           >
                             About {CompanyEmployer?.companyName}
                           </Typography>
+                          <button
+                            className={classes.button1}
+                            onClick={handleNavigate}
+                          >
+                            <svg
+                              className={classes.svg1}
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M21 20a1 1 0 110 2H3a1 1 0 110-2h18zM6.293 13.293l11-11a1 1 0 011.32-.083l.094.083 3 3a1 1 0 01.083 1.32l-.083.094-11 11a1 1 0 01-.576.284L10 18H7a1 1 0 01-.993-.883L6 17v-3a1 1 0 01.206-.608l.087-.1 11-11-11 11zM18 4.414l-10 10V16h1.586l10-10L18 4.414z"
+                              ></path>
+                            </svg>
+                            <span className={classes.span1}>Edit</span>
+                          </button>
                         </div>
                         <dl className={classes.main30}>
                           <dd className={classes.main31}>Website</dd>
@@ -340,7 +416,10 @@ export default function CompanyInfoNew() {
 
                           {CompanyEmployer?.businessStream && (
                             <dt className={classes.main32}>
-                             {CompanyEmployer?.businessStream.businessStreamName}
+                              {
+                                CompanyEmployer?.businessStream
+                                  .businessStreamName
+                              }
                             </dt>
                           )}
                         </dl>

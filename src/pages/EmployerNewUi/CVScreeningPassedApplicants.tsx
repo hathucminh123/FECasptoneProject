@@ -71,7 +71,7 @@ interface UserProfile {
 const CVScreeningPassedApplicants: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
-  const [openExp, setOpenExp] = useState<boolean>(false);
+  // const [openExp, setOpenExp] = useState<boolean>(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [jobProfileCounts, setJobProfileCounts] = useState<
@@ -88,6 +88,11 @@ const CVScreeningPassedApplicants: React.FC = () => {
   >(null);
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
+
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const handleExpandClick = (id: number) => {
+    setExpandedId((prevId) => (prevId === id ? null : id)); 
+  };
 
   const handleOpenModal = (id: number) => {
     setOpenModal(true);
@@ -270,10 +275,11 @@ const CVScreeningPassedApplicants: React.FC = () => {
                             <button
                               type="button"
                               className={classes.button1}
-                              onClick={() => setOpenExp((prev) => !prev)}
+                              // onClick={() => setOpenExp((prev) => !prev)}
+                              onClick={()=>handleExpandClick(data.id)}
                             >
                               {" "}
-                              - View More
+                              {expandedId === data.id ? "Hide" : "View More"}
                             </button>
                           </div>
                         </div>
@@ -307,7 +313,7 @@ const CVScreeningPassedApplicants: React.FC = () => {
                                         {/* {". "}
                                         <span>asdasdas</span> */}
                                       </div>
-                                      {openExp && (
+                                      {expandedId === data.id  && (
                                         <>
                                           <div className={classes.main20}>
                                             <span>

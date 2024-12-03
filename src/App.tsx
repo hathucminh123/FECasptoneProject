@@ -114,6 +114,7 @@ import RootSetting from "./pages/EmployerNewUi/RootSetting";
 import Billing from "./pages/EmployerNewUi/Billing";
 import ListTalent from "./pages/EmployerNewUi/ListTalent";
 import Settings from "./pages/Settings";
+import EditInfoCompany from "./pages/EmployerNewUi/EditInfoCompany";
 
 const router = createBrowserRouter([
   {
@@ -534,6 +535,10 @@ const router = createBrowserRouter([
           {
             path: "Notifications",
             element: <NotificationSystemNew />,
+          },
+          {
+            path: "Settings",
+            element: <EditInfoCompany/>,
           },
         ],
       },

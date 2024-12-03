@@ -37,6 +37,7 @@ const Settings:React.FC =()=> {
       queryClient.invalidateQueries({ queryKey: ["Profile"], refetchType: "active" });
       queryClient.invalidateQueries({ queryKey: ["JobSeekerRole"], refetchType: "active" });
       queryClient.invalidateQueries({ queryKey: ["UserProfile"], refetchType: "active" });
+      queryClient.invalidateQueries({ queryKey: ["JobSeekerRole"], refetchType: "active" });
       message.success("Notification settings updated successfully");
     },
     onError: () => {

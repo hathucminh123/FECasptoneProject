@@ -1,15 +1,18 @@
 import React from "react";
 import classes from "./RecommendNew.module.css";
-import {  NavLink, Outlet,
-  //  useParams 
-  } from "react-router-dom";
+import {
+  NavLink,
+  Outlet,
+  useParams,
+  //  useParams
+} from "react-router-dom";
 // import Typography from "@mui/material/Typography";
 import { useQuery } from "@tanstack/react-query";
 // import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
-const  RecommendNew:React.FC =()=> {
-  // const { id } = useParams();
-  // const JobId = Number(id);
+const RecommendNew: React.FC = () => {
+  const { id } = useParams();
+  const JobId = Number(id);
   // const {
   //   data: SeekerApply,
   //   // isLoading: isSeekerLoading,
@@ -24,13 +27,20 @@ const  RecommendNew:React.FC =()=> {
     // isLoading: isSeekerLoading,
     // isError: isSeekerError,
   } = useQuery({
-    queryKey: ["JobSeekerRole"],
-    queryFn: ({ signal }) => ListSeekers({ signal:signal }),
+    queryKey: ["JobSeekerRole", JobId],
+    queryFn: ({ signal }) =>
+      ListSeekers({
+        signal: signal,
+        pageIndex: 1,
+        pageSize: 1000,
+        jobPostId: JobId,
+      }),
+    enabled: !!JobId,
   });
 
   const ListSeekrData = ListSeeker?.items;
 
- 
+  console.log("có length ko ", ListSeekrData?.length);
 
   // const dataSeekerApply = SeekerApply?.GetSeekers;
 
@@ -168,5 +178,5 @@ const  RecommendNew:React.FC =()=> {
       <Outlet />
     </div>
   );
-}
-export default RecommendNew
+};
+export default RecommendNew;

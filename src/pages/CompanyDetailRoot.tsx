@@ -60,7 +60,7 @@ const CompanyDetailRoot:React.FC =()=> {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["Company-details", CompanyId], // Sửa lại tên key cho chính xác
+    queryKey: ["Company-details", CompanyId], 
     queryFn: ({ signal }) =>
       fetchCompaniesById({ id: Number(CompanyId), signal }),
     enabled: !!CompanyId,

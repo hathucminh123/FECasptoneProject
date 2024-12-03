@@ -71,7 +71,7 @@ interface UserProfile {
 const  AllApplicants:React.FC=()=> {
   const { id } = useParams();
   const JobId = Number(id);
-  const [openExp, setOpenExp] = useState<boolean>(false);
+  // const [openExp, setOpenExp] = useState<boolean>(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [jobProfileCounts, setJobProfileCounts] = useState<
@@ -98,6 +98,11 @@ const  AllApplicants:React.FC=()=> {
     setOpenModal(false);
   };
 
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const handleExpandClick = (id: number) => {
+    setExpandedId((prevId) => (prevId === id ? null : id)); 
+  };
+  
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,
@@ -268,10 +273,11 @@ const  AllApplicants:React.FC=()=> {
                             <button
                               type="button"
                               className={classes.button1}
-                              onClick={() => setOpenExp((prev) => !prev)}
+                              // onClick={() => setOpenExp((prev) => !prev)}
+                              onClick={() => handleExpandClick(data.id)}
                             >
                               {" "}
-                              - View More
+                              {expandedId === data.id ? "Hide" : "View More"}
                             </button>
                           </div>
                         </div>
@@ -305,7 +311,7 @@ const  AllApplicants:React.FC=()=> {
                                         {/* {". "}
                                         <span>asdasdas</span> */}
                                       </div>
-                                      {openExp && (
+                                      {expandedId === data.id  && (
                                         <>
                                           <div className={classes.main20}>
                                             <span>

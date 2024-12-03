@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import classes from "./RecommendTalents.module.css";
 import Typography from "@mui/material/Typography";
 
@@ -16,8 +16,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
 import { AnimatePresence } from "framer-motion";
 import ModalSendEmail from "../../components/NewUiEmployer/ModalSendEmail";
-import SearchIcon from "@mui/icons-material/Search";
-import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
+// import SearchIcon from "@mui/icons-material/Search";
+// import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
 import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
@@ -89,78 +89,78 @@ const style = {
 export default function RecommendTalents() {
   const { id } = useParams();
   // const JobId = Number(id);
-  const [openExp, setOpenExp] = useState<boolean>(false);
-  const [openSkills, setOpenSkills] = useState<boolean>(false);
+  // const [openExp, setOpenExp] = useState<boolean>(false);
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  // const [openSkills, setOpenSkills] = useState<boolean>(false);
 
-  const { data: SkillSetdata } = useQuery({
-    queryKey: ["SkillSet"],
-    queryFn: ({ signal }) => GetSkillSets({ signal }),
-    staleTime: 5000,
-  });
-  const SkillSetdataa = SkillSetdata?.SkillSets;
+  // const { data: SkillSetdata } = useQuery({
+  //   queryKey: ["SkillSet"],
+  //   queryFn: ({ signal }) => GetSkillSets({ signal }),
+  //   staleTime: 5000,
+  // });
+  // const SkillSetdataa = SkillSetdata?.SkillSets;
   const [nameSkill, setNameSkill] = useState("");
   const [shorthand, setShorthand] = useState("");
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
-  const [skills, setSkills] = useState<SkillSet[]>([]);
-  const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [skillId, setSkillId] = useState<number[]>([]);
-  const [inputSkill, setInputSkill] = useState<string>("");
+  // const [skills, setSkills] = useState<SkillSet[]>([]);
+  // const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
+  // const [dropdownOpen, setDropdownOpen] = useState(false);
+  // const [skillId, setSkillId] = useState<number[]>([]);
+  // const [inputSkill, setInputSkill] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  // const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setDropdownOpen(false);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-  const handleOpenSkills = () => {
-    setOpenSkills((prev) => !prev);
-  };
-  const handleSkill = (selectedSkill: SkillSet) => {
-    if (
-      !skills.includes(selectedSkill) &&
-      !skillId.includes(selectedSkill.id)
-    ) {
-      setSkills([...skills, selectedSkill]);
-      setSkillId([...skillId, selectedSkill.id]);
-    }
-    setDropdownOpen(false);
-    setInputSkill("");
-  };
+  // const handleClickOutside = (event: MouseEvent) => {
+  //   if (
+  //     dropdownRef.current &&
+  //     !dropdownRef.current.contains(event.target as Node)
+  //   ) {
+  //     setDropdownOpen(false);
+  //   }
+  // };
+  // useEffect(() => {
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, []);
+  // const handleOpenSkills = () => {
+  //   setOpenSkills((prev) => !prev);
+  // };
+  // const handleSkill = (selectedSkill: SkillSet) => {
+  //   if (
+  //     !skills.includes(selectedSkill) &&
+  //     !skillId.includes(selectedSkill.id)
+  //   ) {
+  //     setSkills([...skills, selectedSkill]);
+  //     setSkillId([...skillId, selectedSkill.id]);
+  //   }
+  //   setDropdownOpen(false);
+  //   setInputSkill("");
+  // };
 
   // const handleRemoveSkill = (skillToRemove: SkillSet) => {
   //   setSkills(skills.filter((skill) => skill !== skillToRemove));
   //   setSkillId(skillId.filter((skill) => skill !== skillToRemove.id));
   // };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setInputSkill(inputValue);
-    if (inputValue) {
-      setFilteredSkills(
-        SkillSetdataa?.filter((comp) =>
-          comp.name.toLowerCase().includes(inputValue.toLowerCase())
-        )
-      );
-      setDropdownOpen(true);
-    } else {
-      setFilteredSkills([]);
-      setDropdownOpen(false);
-    }
-  };
-
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const inputValue = e.target.value;
+  //   setInputSkill(inputValue);
+  //   if (inputValue) {
+  //     setFilteredSkills(
+  //       SkillSetdataa?.filter((comp) =>
+  //         comp.name.toLowerCase().includes(inputValue.toLowerCase())
+  //       )
+  //     );
+  //     setDropdownOpen(true);
+  //   } else {
+  //     setFilteredSkills([]);
+  //     setDropdownOpen(false);
+  //   }
+  // };
 
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
@@ -203,6 +203,11 @@ export default function RecommendTalents() {
   //       },
   //     });
   //   };
+
+  const handleExpandClick = (id: number) => {
+    setExpandedId((prevId) => (prevId === id ? null : id)); 
+  };
+  
   const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
     mutationFn: PostSkillSets,
     onSuccess: () => {
@@ -243,8 +248,10 @@ export default function RecommendTalents() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["JobSeekerRole", pageIndex],
-    queryFn: ({ signal }) => ListSeekers({ signal, jobPostId:Number(id), pageIndex, pageSize }),
+    queryKey: ["JobSeekerRole", pageIndex, id],
+    queryFn: ({ signal }) =>
+    ListSeekers({ signal, jobPostId: Number(id), pageIndex, pageSize }),
+    enabled: !!id,
   });
 
   const ListSeekrData = ListSeeker?.items ?? [];
@@ -264,8 +271,10 @@ export default function RecommendTalents() {
     return <div className={classes.error}>Error loading talents.</div>;
   }
 
-  if(ListSeekrData.length === 0){
-    return <NoJobApplicants text="There are no  Talents avalable For Job Yet"/>
+  if (ListSeekrData.length === 0) {
+    return (
+      <NoJobApplicants text="There are no  Talents avalable For Job Yet" />
+    );
   }
 
   return (
@@ -328,10 +337,11 @@ export default function RecommendTalents() {
                           <button
                             type="button"
                             className={classes.button1}
-                            onClick={() => setOpenExp((prev) => !prev)}
+                            onClick={() => handleExpandClick(data.id)}
+                            // onClick={() => setOpenExp((prev) => !prev)}
                           >
                             {" "}
-                            - View More
+                            {expandedId === data.id ? "Hide" : "View More"}
                           </button>
                         </div>
                       </div>
@@ -365,7 +375,7 @@ export default function RecommendTalents() {
                                       {/* {". "}
                                         <span>asdasdas</span> */}
                                     </div>
-                                    {openExp && (
+                                    {expandedId === data.id  && (
                                       <>
                                         <div className={classes.main20}>
                                           <span>
@@ -548,7 +558,7 @@ export default function RecommendTalents() {
           </div>
         </div>
       </div>
-      <div className={classes.main35}>
+      {/* <div className={classes.main35}>
         <div className={classes.main36}>
           <div className={classes.main37}>
             <div className={classes.main38}>
@@ -561,10 +571,9 @@ export default function RecommendTalents() {
           <div>
             <div
               className={classes.main41}
-           
               style={openSkills ? { backgroundColor: "#EAF7E9" } : undefined}
             >
-              <div className={classes.main42}    onClick={handleOpenSkills}>
+              <div className={classes.main42} onClick={handleOpenSkills}>
                 <div className={classes.main43}>
                   <div className={classes.main44}>
                     <div className={classes.main45}>
@@ -602,90 +611,89 @@ export default function RecommendTalents() {
                           </div>
                         </div>
                         {dropdownOpen && (
-                        <div className={classes.dropdown} ref={dropdownRef}>
-                          {filteredSkills?.length &&
-                          filteredSkills?.length > 0 ? (
-                            filteredSkills?.map((comp, index) => (
-                              <div
-                                key={index}
-                                className={classes.dropdownItem}
-                                onClick={() => handleSkill(comp)}
-                              >
-                                {/* <img
+                          <div className={classes.dropdown} ref={dropdownRef}>
+                            {filteredSkills?.length &&
+                            filteredSkills?.length > 0 ? (
+                              filteredSkills?.map((comp, index) => (
+                                <div
+                                  key={index}
+                                  className={classes.dropdownItem}
+                                  onClick={() => handleSkill(comp)}
+                                >
+                                  <img
                           src={comp.imageUrl}
                           alt={comp.companyName}
                           className={classes.logo}
-                        /> */}
-                                <span className={classes.companyName}>
-                                  {comp.name}
-                                </span>
-                                {/* <span className={classes.companyUrl}>
+                        />
+                                  <span className={classes.companyName}>
+                                    {comp.name}
+                                  </span>
+                                  <span className={classes.companyUrl}>
                           {comp.websiteURL}
-                        </span> */}
+                        </span>
+                                </div>
+                              ))
+                            ) : (
+                              <div
+                                className={classes.createNewCompany}
+                                  onClick={handleOpenRegister}
+                                onClick={handleOpen}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <span>Create new Skills {inputSkill}</span>
                               </div>
-                            ))
-                          ) : (
-                            <div
-                              className={classes.createNewCompany}
-                              //   onClick={handleOpenRegister}
-                              onClick={handleOpen}
-                              style={{ cursor: "pointer" }}
-                            >
-                              <span>Create new Skills {inputSkill}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
               )}
-               
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <Modal open={open} onClose={handleClose}>
-          <Box sx={style}>
-            <Typography variant="h6" component="h2">
-              Create Skillset
-            </Typography>
-            <TextField
-              label="Name"
-              value={nameSkill}
-              onChange={(e) => setNameSkill(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Shorthand"
-              value={shorthand}
-              onChange={(e) => setShorthand(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Description"
-              value={descriptionSkillSet}
-              onChange={(e) => setDescriptionSkillSet(e.target.value)}
-              fullWidth
-              multiline
-              rows={4}
-              margin="normal"
-            />
-            <Button
-              variant="contained"
-              onClick={handleSubmitSkillSet}
-              disabled={isLoadingSkillSet}
-            >
-              {isLoadingSkillSet ? "Creating..." : "Create"}
-            </Button>
-            <Button onClick={handleClose} variant="text">
-              Cancel
-            </Button>
-          </Box>
-        </Modal>
+        <Box sx={style}>
+          <Typography variant="h6" component="h2">
+            Create Skillset
+          </Typography>
+          <TextField
+            label="Name"
+            value={nameSkill}
+            onChange={(e) => setNameSkill(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Shorthand"
+            value={shorthand}
+            onChange={(e) => setShorthand(e.target.value)}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            label="Description"
+            value={descriptionSkillSet}
+            onChange={(e) => setDescriptionSkillSet(e.target.value)}
+            fullWidth
+            multiline
+            rows={4}
+            margin="normal"
+          />
+          <Button
+            variant="contained"
+            onClick={handleSubmitSkillSet}
+            disabled={isLoadingSkillSet}
+          >
+            {isLoadingSkillSet ? "Creating..." : "Create"}
+          </Button>
+          <Button onClick={handleClose} variant="text">
+            Cancel
+          </Button>
+        </Box>
+      </Modal>
     </div>
   );
 }

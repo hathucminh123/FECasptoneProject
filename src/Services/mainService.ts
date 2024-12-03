@@ -29,6 +29,7 @@ export const apiLinks = {
   Company: {
     POST: `${baseURL}/Company`,
     GET: `${baseURL}/Company`,
+    PUT: `${baseURL}/Company`,
     DELETE: `${baseURL}/Company`,
     GetCompaniesbyId: `${baseURL}/Company`,
     GetSearch: `${baseURL}/Company/company-name`,

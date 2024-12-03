@@ -663,7 +663,7 @@ export default function VerifiCompany() {
                     ) : (
                       <div
                         className={classes.createNewCompany}
-                        onClick={handleOpenRegister}
+                        // onClick={handleOpenRegister}
                       >
                         <span>Not found</span>
                       </div>
