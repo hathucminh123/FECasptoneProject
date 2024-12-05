@@ -12,6 +12,7 @@ import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlin
 import { Link } from "react-router-dom";
 import moment from "moment";
 import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
+import React from "react";
 
 interface JobType {
   id: number;
@@ -248,7 +249,7 @@ export default function CardJobDetails({
               >
                 {data?.jobLocationCities.map((item) => item)}
               </Typography> */}
-                <div className={classes.location}>
+                {/* <div className={classes.location}>
               <LocationOnOutlinedIcon />
               <span
                className={classes.span}
@@ -273,6 +274,38 @@ export default function CardJobDetails({
                     style={{
                       display: "inline-block",
                       whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {company?.address} {" in "} {company?.city}
+                  </span>
+                )}
+              </span>
+            </div> */}
+            <div className={classes.location}>
+              <LocationOnOutlinedIcon />
+              <span
+               className={classes.span}
+              >
+                {cityColumn.length && cityColumn.length > 0 ? (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "wrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      maxWidth: "100%",
+                    }}
+                  >
+                    {cityColumn.join(", ")}
+                  </span>
+                ) : (
+                  <span
+                    style={{
+                      display: "inline-block",
+                      whiteSpace: "wrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                       maxWidth: "100%",
