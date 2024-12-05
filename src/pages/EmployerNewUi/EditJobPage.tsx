@@ -337,6 +337,7 @@ export default function EditJobPage() {
     mutationFn: PutJobPost,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
+      queryClient.invalidateQueries({ queryKey: ["Job-details"] });
       message.success("Post Job successfully.");
       navigate(`/EmployerJob/listjobs/OverView/${job?.id}`);
       //   setShowAlert(true);

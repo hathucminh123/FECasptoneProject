@@ -96,6 +96,10 @@ const EditInfoCompany: React.FC = () => {
         queryKey: ["Company-details"],
         refetchType: "active",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["Company"],
+        refetchType: "active",
+      });
       message.success(`update Company details successfully!`);
       // navigate(`/thankyou/${job?.id}`);
     },
