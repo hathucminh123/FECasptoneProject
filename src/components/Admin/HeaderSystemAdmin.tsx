@@ -20,7 +20,7 @@ interface props {
 }
 
 // export default function HeaderSystemAdmin({ setOpen, open, token }: props) {
-export default function HeaderSystemAdmin({ setOpen, open, token }: props) {
+  const HeaderSystemAdmin: React.FC<props> = ({ setOpen, open, token }) => {
   const handleOpen = () => {
     if (setOpen) {
       setOpen(!open);
@@ -251,3 +251,4 @@ export default function HeaderSystemAdmin({ setOpen, open, token }: props) {
     </header>
   );
 }
+export default HeaderSystemAdmin
