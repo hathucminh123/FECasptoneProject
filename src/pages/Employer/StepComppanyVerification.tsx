@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ModalStep from "../../components/Employer/ModalStep";
 import { AnimatePresence } from "framer-motion";
-import { Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useLocation, NavLink, Outlet } from "react-router-dom";
@@ -54,7 +55,7 @@ const StepComppanyVerification: React.FC = () => {
         >
           <div className={classes.main}>
             <div className={classes.main1}>
-              <Typography
+              {/* <Typography
                 variant="h2"
                 sx={{
                   lineHeight: 1.5,
@@ -68,7 +69,47 @@ const StepComppanyVerification: React.FC = () => {
                 }}
               >
                 Amazing Job
-              </Typography>
+              </Typography> */}
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Căn giữa theo chiều dọc
+                }}
+              >
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1",
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: "3px",
+                  }}
+                >
+                  A
+                </Box>
+
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  mazingJob
+                </Typography>
+              </Box>
 
               <div className={classes.main2}>
                 <NavLink

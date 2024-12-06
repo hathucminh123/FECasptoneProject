@@ -65,17 +65,17 @@ interface Props {
   filteredJobs?: JobPost[];
 }
 
-// const experienceLevels = [
-//   "0+ years of experience",
-//   "1+ years of experience",
-//   "2+ years of experience",
-//   "3+ years of experience",
-//   "4+ years of experience",
-//   "5+ years of experience",
-//   "6+ years of experience",
-//   "7+ years of experience",
-//   "8+ years of experience",
-// ];
+const experienceLevels = [
+  "0+ years of experience",
+  "1+ years of experience",
+  "2+ years of experience",
+  "3+ years of experience",
+  "4+ years of experience",
+  "5+ years of experience",
+  "6+ years of experience",
+  "7+ years of experience",
+  "8+ years of experience",
+];
 
 const datacities: string[] = [
   "HO CHI MINH",
@@ -86,9 +86,9 @@ const datacities: string[] = [
   "NHA TRANG",
 ];
 
-const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
+const FilterModal: React.FC<Props> = ({ onDone }) => {
   const [totalJobs, setTotalJobs] = useState<number>(0);
-  console.log('duoc di',totalJobs)
+  console.log("duoc di", totalJobs);
   // const JobSalary = filteredJobs?.map((salary) => salary.salary);
   // const flattenedArraySalary = JobSalary?.flat();
 
@@ -154,22 +154,30 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
   };
 
   //exp
-  function getExperienceString(experienceNumber: number | null) {
-    return experienceNumber !== null
-      ? `${experienceNumber}+ years of experience`
-      : null;
-  }
+  // function getExperienceString(experienceNumber: number | null) {
+  //   return experienceNumber !== null
+  //     ? `${experienceNumber}+ years of experience`
+  //     : null;
+  // }
+
+  const getExperienceNumber = (exp: string | null): number => {
+    const match = exp?.match(/\d+/);
+    return match ? parseInt(match[0]) : 0;
+  };
 
   const handleOpenSelectExp = () => {
     setOpenExp((prev) => !prev);
   };
 
-  const handleSelectExp = (exp: number) => {
-    // const experienceNumber = getExperienceNumber(exp);
+  const handleSelectExp = (exp: string) => {
+    const experienceNumber = getExperienceNumber(exp);
 
-    const stringExp = getExperienceString(exp);
-    setSelectExp((prev) => (prev === exp ? null : exp));
-    setSelectExpString((prev) => (prev === stringExp ? " " : stringExp));
+    // const stringExp = getExperienceString(exp);
+    setSelectExp((prev) =>
+      prev === experienceNumber ? null : experienceNumber
+    );
+    // setSelectExpString((prev) => (prev === experienceNumber ? " " : experienceNumber));
+    setSelectExpString((prev) => (prev === exp ? " " : exp));
   };
 
   const handleCheckboxChange = (name: string) => {
@@ -279,15 +287,15 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
     localStorage.setItem("selectedCities", JSON.stringify(selectedCites));
   }, [selectedCites]);
 
-  useEffect(() => {
-    localStorage.setItem("selectExp", JSON.stringify(selectExp));
-  }, [selectExp]);
+  // useEffect(() => {
+  //   localStorage.setItem("selectExp", JSON.stringify(selectExp));
+  // }, [selectExp]);
   //Experience
-  const JobExp = filteredJobs?.map((exp) => exp.experienceRequired);
-  const flattenedArrayExp = JobExp?.flat();
-  const uniqueArrayExp = [...new Set(flattenedArrayExp)];
+  // const JobExp = filteredJobs?.map((exp) => exp.experienceRequired);
+  // const flattenedArrayExp = JobExp?.flat();
+  // const uniqueArrayExp = [...new Set(flattenedArrayExp)];
 
-  const ExpJob = uniqueArrayExp;
+  // const ExpJob = uniqueArrayExp;
 
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
 
@@ -654,9 +662,9 @@ const FilterModal: React.FC<Props> = ({ onDone, filteredJobs }) => {
               </div>
 
               {openExp &&
-                ExpJob?.length &&
-                ExpJob?.length > 0 &&
-                ExpJob?.map((comp, index) => (
+                experienceLevels?.length &&
+                experienceLevels?.length > 0 &&
+                experienceLevels?.map((comp, index) => (
                   <div className={classes.dropdown} key={index}>
                     <div
                       key={index}

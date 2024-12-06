@@ -268,6 +268,7 @@ export default function CardJob({
                     }}
                   >
                     {company?.address} {" in "} {company?.city}
+              
                   </span>
                 )}
               </span>

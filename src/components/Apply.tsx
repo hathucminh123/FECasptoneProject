@@ -287,7 +287,7 @@ export default function Apply() {
                 </div>
               </div>
               <div className={classes.logo}>
-                <Typography
+                {/* <Typography
                   variant="h2"
                   sx={{
                     lineHeight: 1.5,
@@ -301,7 +301,49 @@ export default function Apply() {
                   }}
                 >
                   Amazing Job
+                </Typography> */}
+                 <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Căn giữa theo chiều dọc
+                }}
+              >
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif", 
+                    lineHeight: "1",
+                    width: "32px", 
+                    height: "32px", 
+                    borderRadius: "50%", 
+                    display: "flex",
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    marginRight: "3px", 
+                  }}
+                >
+                  A
+                </Box>
+
+             
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5", 
+
+                  }}
+                >
+                mazingJob
                 </Typography>
+              </Box>
                 {/* <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShDXOd1EUVLnkgF9P9P9ZAGyBSv6f_lmq6CA&s"
                   alt="logo"

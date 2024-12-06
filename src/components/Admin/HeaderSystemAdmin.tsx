@@ -1,15 +1,17 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import classes from "./HeaderSystemAdmin.module.css";
 import MenuIcon from "@mui/icons-material/Menu";
-// import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Link, NavLink } from "react-router-dom";
-import Image from "./../../assets/image/logo.jpg.webp";
+// import Image from "./../../assets/image/logo.jpg.webp";
 import CreateIcon from "@mui/icons-material/Create";
-import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
+// import CircleNotificationsIcon from "@mui/icons-material/CircleNotifications";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
-import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
-// import LogoutIcon from "@mui/icons-material/Logout";
+// import PriorityHighOutlinedIcon from "@mui/icons-material/PriorityHighOutlined";
+// import MoreHorizOutlinedIcon from "@mui/icons-material/MoreHorizOutlined";
+import LogoutIcon from "@mui/icons-material/Logout";
+import Typography  from "@mui/material/Typography";
+import Box  from "@mui/material/Box";
 
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
@@ -17,78 +19,100 @@ interface props {
   token: unknown;
 }
 
-const notifications = [
-  {
-    id: 1,
-    title: "Thông báo từ hệ thống",
-    message: "Bạn quá giỏi nên không có gì thông báo",
-    date: "26/9/2024",
-    isRead: false, // track whether the notification is read or unread
-  },
-  {
-    id: 2,
-    title: "Cập nhật hệ thống",
-    message: "Phiên bản mới đã được phát hành.",
-    date: "27/9/2024",
-    isRead: false,
-  },
-  {
-    id: 3,
-    title: "Lịch bảo trì",
-    message: "Hệ thống sẽ bảo trì vào cuối tuần.",
-    date: "28/9/2024",
-    isRead: true,
-  },
-];
-
 // export default function HeaderSystemAdmin({ setOpen, open, token }: props) {
-export default function HeaderSystemAdmin({ setOpen, open }: props) {
+export default function HeaderSystemAdmin({ setOpen, open, token }: props) {
   const handleOpen = () => {
     if (setOpen) {
       setOpen(!open);
     }
   };
-  //   const [openProfile, setOpenProfile] = useState<boolean>(false);
-  const [readOpen, setReadOpen] = useState<{ [key: number]: boolean }>({});
+  const [openProfile, setOpenProfile] = useState<boolean>(false);
+  // const [readOpen, setReadOpen] = useState<{ [key: number]: boolean }>({});
   const [openModalNotification, setOpenModalNotification] =
     useState<boolean>(false);
-  console.log("quao", readOpen);
 
   // Handle clicking "More" to toggle the "Mark as read" option
-  const handleOpenReadMark = (event: React.MouseEvent, id: number) => {
-    event.stopPropagation(); // Prevent event from closing the modal
-    setReadOpen((prevState) => ({ ...prevState, [id]: !prevState[id] }));
-  };
-
-  // Handle opening/closing the notification modal
-  const handleOpenNotification = (event: React.MouseEvent) => {
-    event.stopPropagation();
-    setOpenModalNotification(!openModalNotification);
-  };
 
   // Close the modal when clicking outside of it
   const handleClickOutside = () => {
     setOpenModalNotification(false);
   };
 
-  //   const handleOpenProfile = () => {
-  //     setOpenProfile(!openProfile);
-  //   };
-  // const navigate =useNavigate()
-  //   const handleLogout =()=>{
-  //     localStorage.removeItem('token');
-  //     localStorage.removeItem('expiration');
-  //     localStorage.clear();
-  //     navigate('/employers/login')
-  //   }
+  const handleOpenProfile = () => {
+    setOpenProfile(!openProfile);
+    console.log("dsdasda");
+  };
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("expiration");
+    localStorage.clear();
+    navigate("/auth/Admin");
+  };
   return (
     <header className={classes.header}>
       <nav className={classes.nav}>
         <button className={classes.logo} onClick={handleOpen}>
           <MenuIcon className={classes.iconMenu} />
         </button>
-        <Link to={"/"} className={classes.link}>
-          <img src={Image} alt="logo" className={classes.img} />
+        <Link to={"#"} className={classes.link} style={{textDecoration:'none'}}>
+        {/* <Typography
+                  variant="h2"
+                  sx={{
+                    lineHeight: 1.5,
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    marginTop: 0,
+                    marginBottom: 0,
+                    boxSizing: "border-box",
+                    display: "block",
+                    color: "#fff",
+                  }}
+                >
+                  Amazing Job
+                </Typography> */}
+                <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Căn giữa theo chiều dọc
+                }}
+              >
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif", 
+                    lineHeight: "1",
+                    width: "32px", 
+                    height: "32px", 
+                    borderRadius: "50%", 
+                    display: "flex",
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    marginRight: "3px", 
+                  }}
+                >
+                  A
+                </Box>
+
+             
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5", 
+
+                  }}
+                >
+                mazingJob
+                </Typography>
+              </Box>
         </Link>
         <div className={classes.div}>
           <ul className={classes.ul}>
@@ -105,12 +129,18 @@ export default function HeaderSystemAdmin({ setOpen, open }: props) {
               </NavLink>
             </li>
             <li className={classes.li}>
-              <NavLink className={classes.navlink} to="Comment">
+              <NavLink className={classes.navlink} to="skillSet">
                 <CreateIcon className={classes.icon} />
-                Manage Reviews
+                Manage SkillSets
               </NavLink>
             </li>
-            <li className={classes.li} onClick={handleOpenNotification}>
+            <li className={classes.li}>
+              <NavLink className={classes.navlink} to="JobType">
+                <CreateIcon className={classes.icon} />
+                Manage JobType
+              </NavLink>
+            </li>
+            {/* <li className={classes.li} onClick={handleOpenNotification}>
               <NavLink className={classes.navlink1} to={"#"}>
                 <CircleNotificationsIcon className={classes.iconNotification} />
                 <span className={classes.span5}>{notifications.length}</span>
@@ -183,9 +213,8 @@ export default function HeaderSystemAdmin({ setOpen, open }: props) {
                   </li>
                 </div>
               )}
-            </li>
-
-            {/* {Boolean(token) && (
+            </li> */}
+            {Boolean(token) && (
               <li className={classes.li} onClick={handleOpenProfile}>
                 <NavLink className={classes.navlink2} to="#">
                   <div className={classes.div1}></div>
@@ -202,15 +231,15 @@ export default function HeaderSystemAdmin({ setOpen, open }: props) {
                   </div>
                 )}
               </li>
-            )} */}
-            <li className={classes.li}>
+            )}
+            {/* <li className={classes.li}>
               <NavLink className={classes.navlink2} to={"#"}>
                 <div className={classes.div1}></div>
                 <ArrowDropDownIcon
                   sx={{ color: "white", marginLeft: ".57rem" }}
                 />
               </NavLink>
-            </li>
+            </li> */}
           </ul>
         </div>
       </nav>

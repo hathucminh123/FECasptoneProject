@@ -115,7 +115,8 @@ import Billing from "./pages/EmployerNewUi/Billing";
 import ListTalent from "./pages/EmployerNewUi/ListTalent";
 import Settings from "./pages/Settings";
 import EditInfoCompany from "./pages/EmployerNewUi/EditInfoCompany";
-
+import SkillSetPage from "./pages/Admin/SkillSetPage";
+import JobTypePage from "./pages/Admin/JobTypePage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -579,6 +580,8 @@ const router = createBrowserRouter([
     element: <PaymentCallback />,
   },
 
+
+
   {
     path: "/employer-verify/jobs",
     element: (
@@ -724,10 +727,52 @@ const router = createBrowserRouter([
     path: "Admin",
     element: <RootAdminSystem />,
     errorElement: <ErrorPage />,
+    loader: tokenLoader,
     id: "root2",
     children: [
       {
-        path: "Account",
+        path: "account",
+        element: <ProfileEmployer />,
+        children: [
+          {
+            index: true,
+            element: <Profile />,
+          },
+          {
+            path: "ChangePassword",
+            element: <ChangePassword />,
+          },
+          // {
+          //   path: "company",
+          //   element: (
+          //     <ProtectedRouteCompany>
+          //       <CompanyInfo />
+          //     </ProtectedRouteCompany>
+          //   ),
+          // },
+
+          {
+            path: "VerifiEmployee",
+            element: <VerifiEmployee />,
+          },
+          {
+            path: "Choosecompany",
+            element: <CreateCompany />,
+            children: [
+              {
+                index: true,
+                element: <ChooseCompany />,
+              },
+              {
+                path: "create",
+                element: <CreateCompanyEmployer />,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "AccountSystem",
         index: true,
         element: <ManageAccount />,
       },
@@ -735,6 +780,14 @@ const router = createBrowserRouter([
         path: "JobPosting",
         // index:true,
         element: <ManageJobPosting />,
+      },
+      {
+        path:"skillSet",
+        element:<SkillSetPage/>
+      },
+      {
+        path:"JobType",
+        element:<JobTypePage/>
       },
       {
         path: "Comment",

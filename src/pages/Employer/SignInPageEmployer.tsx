@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./SignInPageEmployer.module.css";
 import Typography from "@mui/material/Typography";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import TextField from "@mui/material/TextField";
@@ -628,11 +628,11 @@ export default function SignInPageEmployer() {
                           Sign in
                         </button> */}
                       </div>
-                      <div className={classes.forgot}>
+                      {/* <div className={classes.forgot}>
                         <Link to={"/"} className={classes.link}>
                           Forgot Password
                         </Link>
-                      </div>
+                      </div> */}
                     </Box>
                   </div>
                 </div>

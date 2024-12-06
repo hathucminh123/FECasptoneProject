@@ -44,6 +44,7 @@ body, main {
 
 li a{
   text-decoration: none;
+  font-family: "Lexend", sans-serif;;
 }
 
 p{
@@ -56,4 +57,5 @@ p{
 a{
   /* font-family: Roboto, Helvetica, Verdana, Arial, sans-serif; */
   font-family: "Lexend", sans-serif;;
+  /* color: #a6a6a6 !important; */
 }

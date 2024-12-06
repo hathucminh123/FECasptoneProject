@@ -1,4 +1,5 @@
 import classes from "./SignInPage.module.css";
+import React from "react";
 import AuthForm from "../components/AuthForm";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -65,10 +66,10 @@ export default function SignInPage() {
               animate="visible"
               style={{ display: "flex", flexDirection: "column", gap: "1rem" }}
             >
-              <TextFieldForm text="Manage job postings, user reviews, and salary data" />
-              <TextFieldForm text="Monitor user activity and handle complaints" />
-              <TextFieldForm text="Access advanced analytics and reports" />
-              <TextFieldForm text="Control platform settings and security configurations" />
+              <TextFieldForm text="Manage skillSet data" />
+              <TextFieldForm text="Manage JobType Data" />
+              {/* <TextFieldForm text="Access advanced analytics and reports" />
+              <TextFieldForm text="Control platform settings and security configurations" /> */}
             </motion.div>
           </Box>
         </motion.div>

@@ -1,30 +1,48 @@
 import React, { useState } from "react";
-import classes from './SideBarAdmin.module.css'
+import classes from "./SideBarAdmin.module.css";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import SecurityIcon from "@mui/icons-material/Security";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 // import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import NotificationImportantOutlinedIcon from '@mui/icons-material/NotificationImportantOutlined';
-import WorkOutlineOutlinedIcon from '@mui/icons-material/WorkOutlineOutlined';
-import RateReviewOutlinedIcon from '@mui/icons-material/RateReviewOutlined';
+// import NotificationImportantOutlinedIcon from "@mui/icons-material/NotificationImportantOutlined";
+import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
+// import RateReviewOutlinedIcon from "@mui/icons-material/RateReviewOutlined";
+import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
+import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
+import { useQuery } from "@tanstack/react-query";
+
+
+
 interface props {
   open: boolean;
 }
 
- const SideBarAdmin: React.FC<props> = ({ open }) => {
+const SideBarAdmin: React.FC<props> = ({ open }) => {
   const [drop, setDrop] = useState<boolean>(false);
-  const username = localStorage.getItem('name')
+  const userId = localStorage.getItem("userId");
+
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile", userId],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+    enabled: !!Number(userId),
+  });
+
+  // const UserProfileData = UserProfile?.UserProfiles;
+  const userName = `${UserProfile?.UserProfiles?.firstName ?? ""} ${
+    UserProfile?.UserProfiles?.lastName ?? ""
+  }`;
   const handleOpen = () => {
     setDrop(!drop);
   };
-  const navigate =useNavigate()
+  const navigate = useNavigate();
 
-
-  const handleNavigate=()=>{
-    navigate('/employer-verify/jobs/account')
-  }
+  const handleNavigate = () => {
+    navigate("/Admin/account");
+  };
   return (
     <nav
       className={` ${classes.nav}  `}
@@ -42,7 +60,7 @@ interface props {
               <div className={`${open ? classes.div5 : classes.div5Open} `}>
                 <span className={classes.span}>
                   <Link to={"#"} className={classes.link1}>
-               {   username}
+                    {userName}
                   </Link>
                 </span>
                 <span className={classes.span1}>Admin</span>
@@ -81,23 +99,23 @@ interface props {
             <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
-                  to="Account"
+                  to="AccountSystem"
                   className={({ isActive }) =>
                     isActive ? classes.active : undefined
                   }
                   end
-                >   
+                >
                   <>
                     <div className={classes.div9}>
                       <span className={classes.span4}>
-                      <AccountCircleOutlinedIcon
-                        fontSize="large"
-                        sx={{
-                          fontSize: "14px",
-                          display: "block",
-                          fontWeight: 400,
-                        }}
-                      />
+                        <AccountCircleOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
                       </span>
                     </div>
                     <div
@@ -110,6 +128,72 @@ interface props {
                 </NavLink>
               </div>
             </li>
+
+            <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to="skillSet"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <BuildOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>Manage SkillSets</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
+                </NavLink>
+              </div>
+            </li>
+            <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to="JobType"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <WorkOutlineOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>Manage JobType</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
+                </NavLink>
+              </div>
+            </li>
+
             <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
@@ -163,7 +247,7 @@ interface props {
                 </ul>
               )}
             </li>
-            <li className={classes.li}>
+            {/* <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
                   to="Comment"
@@ -191,16 +275,20 @@ interface props {
                       <span className={classes.span5}>Review Management</span>
                     </div>
                     <div className={classes.div11}>
-                      <span       className={`${
-                        open ? classes.span6 : classes.span6Open
-                      } `}>47</span>
+                      <span
+                        className={`${
+                          open ? classes.span6 : classes.span6Open
+                        } `}
+                      >
+                        47
+                      </span>
                     </div>
                     <div className={classes.div11}></div>
                   </>
                 </NavLink>
               </div>
-            </li>
-            <li className={classes.li}>
+            </li> */}
+            {/* <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
                   to="Notification"
@@ -228,21 +316,24 @@ interface props {
                       <span className={classes.span5}>System notification</span>
                     </div>
                     <div className={classes.div11}>
-                      <span       className={`${
-                        open ? classes.span6 : classes.span6Open
-                      } `}>47</span>
+                      <span
+                        className={`${
+                          open ? classes.span6 : classes.span6Open
+                        } `}
+                      >
+                        47
+                      </span>
                     </div>
                     <div className={classes.div11}></div>
                   </>
                 </NavLink>
               </div>
-            </li>
+            </li> */}
           </ul>
         </div>
       </div>
     </nav>
   );
-}
+};
 
-
-export default SideBarAdmin
+export default SideBarAdmin;

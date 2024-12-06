@@ -4,12 +4,13 @@ import HeaderSystem from "../../components/Employer/HeaderSystem";
 import { NavLink, Outlet } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import ApartmentIcon from "@mui/icons-material/Apartment";
+
 
 const ProfileEmployer: React.FC = () => {
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
+  console.log(companyId)
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("CompanyId");
@@ -36,7 +37,7 @@ const ProfileEmployer: React.FC = () => {
                 <LockIcon fontSize="small" sx={{ marginRight: "0.57rem" }} />
                 Change Password
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to={
                   companyId === "null" || !companyId
                     ? "Choosecompany"
@@ -50,7 +51,7 @@ const ProfileEmployer: React.FC = () => {
                   sx={{ marginRight: "0.57rem" }}
                 />
                 Company Information
-              </NavLink>
+              </NavLink> */}
             </div>
           </div>
           <Outlet />

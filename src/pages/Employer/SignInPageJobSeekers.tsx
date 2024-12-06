@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import classes from "./SignInPageEmployer.module.css";
 import Typography from "@mui/material/Typography";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {  NavLink, useLocation, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import PersonIcon from "@mui/icons-material/Person";
 import TextField from "@mui/material/TextField";
@@ -269,7 +269,7 @@ export default function SignInPageJobSeekers() {
                     variant="h6"
                     sx={{ fontWeight: 400, lineHeight: 1.5, fontSize: "16px" }}
                   >
-                    "Access denied. This page is for job seekers account only."
+                    Access denied. This page is for job seekers account only.
                   </Typography>
                 </div>
               </div>
@@ -644,11 +644,11 @@ export default function SignInPageJobSeekers() {
                           Sign in
                         </button> */}
                       </div>
-                      <div className={classes.forgot}>
+                      {/* <div className={classes.forgot}>
                         <Link to={"/"} className={classes.link}>
                           Forgot Password
                         </Link>
-                      </div>
+                      </div> */}
                     </Box>
                   </div>
                 </div>

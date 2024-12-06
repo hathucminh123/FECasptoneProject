@@ -78,7 +78,7 @@ export default function Invite() {
         <form action="" onSubmit={handleSubmit} className={classes.form}>
           <div className={classes.main}>
             <p className={classes.p}>
-              Enter your team member's email, we will send them an invite to
+              Enter your team member email, we will send them an invite to
               join Amazing Job.
             </p>
             <div className={classes.main1}>

@@ -16,6 +16,7 @@ import { AxiosResponse } from "axios";
 import PaymentModal from "./PaymentModal";
 import { AnimatePresence } from "framer-motion";
 import ModalEmail from "./ModalEmail";
+import  Box  from "@mui/material/Box";
 export interface Notification {
   id: number;
   title: string;
@@ -189,7 +190,7 @@ export default function HeaderEmployerSystem({
       <div className={classes.header1}>
         <div className={classes.header2}>
           <NavLink to="" className={classes.link1}>
-            <Typography
+            {/* <Typography
               variant="h2"
               sx={{
                 lineHeight: 1.5,
@@ -204,7 +205,49 @@ export default function HeaderEmployerSystem({
               }}
             >
               Amazing Job
-            </Typography>
+            </Typography> */}
+             <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Căn giữa theo chiều dọc
+                }}
+              >
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif", 
+                    lineHeight: "1",
+                    width: "32px", 
+                    height: "32px", 
+                    borderRadius: "50%", 
+                    display: "flex",
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    marginRight: "3px", 
+                  }}
+                >
+                  A
+                </Box>
+
+             
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5", 
+
+                  }}
+                >
+                mazingJob
+                </Typography>
+              </Box>
           </NavLink>
         </div>
         <nav className={classes.header3}>

@@ -39,7 +39,7 @@ interface JobPost {
 const TopJobSection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
-  const itemsPerPage = 8;
+  const itemsPerPage = 12;
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
   const [totalJobs, setTotalJobs] = useState<number>(0);
 

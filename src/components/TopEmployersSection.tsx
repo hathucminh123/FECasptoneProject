@@ -11,7 +11,7 @@ import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 const TopEmployersSection: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [direction, setDirection] = useState(1); // Direction of animation (1 = right, -1 = left)
-  const itemsPerPage = 6; // Page size
+  const itemsPerPage = 9; // Page size
 
   const {
     data: JobPosts,

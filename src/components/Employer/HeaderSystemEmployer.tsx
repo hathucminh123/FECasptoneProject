@@ -15,6 +15,7 @@ import { AxiosResponse } from "axios";
 import { signalR } from "../../Services/mainService";
 import moment from "moment";
 import Typography from "@mui/material/Typography";
+import  Box  from "@mui/material/Box";
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
@@ -212,7 +213,7 @@ export default function HeaderSystemEmployer({ setOpen, open, token,notification
           <MenuIcon className={classes.iconMenu} />
         </button>
         <Link to={"#"} className={classes.link}>
-          <Typography
+          {/* <Typography
             variant="h2"
             sx={{
               lineHeight: 1.5,
@@ -226,7 +227,49 @@ export default function HeaderSystemEmployer({ setOpen, open, token,notification
             }}
           >
             Amazing Job
-          </Typography>
+          </Typography> */}
+           <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center", // Căn giữa theo chiều dọc
+                }}
+              >
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif", 
+                    lineHeight: "1",
+                    width: "32px", 
+                    height: "32px", 
+                    borderRadius: "50%", 
+                    display: "flex",
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    marginRight: "3px", 
+                  }}
+                >
+                  A
+                </Box>
+
+             
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5", 
+
+                  }}
+                >
+                mazingJob
+                </Typography>
+              </Box>
           {/* <img src={Image} alt="logo" className={classes.img} /> */}
         </Link>
         <div className={classes.div}>

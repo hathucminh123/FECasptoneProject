@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./OverViewDetails.module.css";
 import Typography from "@mui/material/Typography";
 import { Link, useParams } from "react-router-dom";
@@ -15,9 +15,36 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 import moment from "moment";
+import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 const OverViewDetails:React.FC =()=> {
   const { id } = useParams();
   const JobId = Number(id);
+  const [companyId, setCompanyId] = useState<string | null>(
+    localStorage.getItem("CompanyId")
+  );
+  const {
+    data: Company,
+    refetch: refetchCompanies,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company"],
+    queryFn: ({ signal }) => fetchCompanies({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  useEffect(() => {
+    // Sync companyId from localStorage if it changes
+    const storedCompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(storedCompanyId);
+    refetchCompanies();
+  }, [companyId, refetchCompanies]);
+
+  const Companiesdata = Company?.Companies;
+  const CompanyEmployer = Companiesdata?.find(
+    (company) => company.id === Number(companyId)
+  );
+
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectJobId, setselectJobId] = useState<number>();
   const [stressAddressDetail, setStressAddressDetail] = useState<string>("");
@@ -101,6 +128,7 @@ const OverViewDetails:React.FC =()=> {
           </div>
         </header>
         <main className={classes.main2}>
+          <div className={classes.main3} style={{justifyContent:'space-between'}}>
           <Typography
             variant="h3"
             sx={{
@@ -109,10 +137,14 @@ const OverViewDetails:React.FC =()=> {
               fontWeight: 700,
               marginBottom: "8px",
               boxSizing: "border-box",
+              fontFamily: "Lexend, sans-serif", 
             }}
           >
             Job name: {job?.jobTitle}
           </Typography>
+          <img style={{width:'100px',height:'90px',marginRight:'50px'}} src={CompanyEmployer?.imageUrl} alt="Companylogo"/>
+          </div>
+          
           <p className={classes.p}>Salary: {job?.salary} USD</p>
           <div className={classes.main3}>
             <div className={classes.main4}>
@@ -122,6 +154,7 @@ const OverViewDetails:React.FC =()=> {
                   fontSize: "20px",
                   lineHeight: "24px",
                   fontWeight: 700,
+                  fontFamily: "Lexend, sans-serif", 
                   marginBottom: "2px",
                   boxSizing: "border-box",
                 }}
@@ -143,6 +176,7 @@ const OverViewDetails:React.FC =()=> {
                 sx={{
                   fontSize: "20px",
                   lineHeight: "24px",
+                  fontFamily: "Lexend, sans-serif", 
                   fontWeight: 700,
                   marginBottom: "2px",
                   boxSizing: "border-box",
@@ -170,7 +204,7 @@ const OverViewDetails:React.FC =()=> {
                   boxSizing: "border-box",
                 }}
               >
-                Job RequireMents
+               Job Requirements
               </Typography>
               <p className={classes.p1}>
                 {job && (

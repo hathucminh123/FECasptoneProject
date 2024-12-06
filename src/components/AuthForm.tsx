@@ -6,14 +6,30 @@ import Button from "@mui/material/Button";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import classes from "./AuthForm.module.css";
+import React from "react";
 import {
-  Link,
   useLocation,
   useNavigate,
   // useSearchParams,
 } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "../Services/mainService";
+import { jwtDecode, JwtPayload } from "jwt-decode";
+import { login } from "../Services/AuthService/Login";
+// import { message } from "antd";
+// import { message } from "antd";
 
-export default function AuthForm() {
+interface CustomJwtPayload extends JwtPayload {
+  Role: string;
+  UserId: string;
+  name: string;
+  CompanyId: string;
+  Email:string
+  IsPremium:string
+  PremiumExpireDate:string
+}
+
+const AuthForm: React.FC = () => {
   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,27 +47,121 @@ export default function AuthForm() {
       navigate(from);
     }
   }, [auth, location.state, navigate]);
-  const handleSignin = () => {
-    localStorage.setItem("auth", "isAuth");
+  // const handleSignin = () => {
+  //   localStorage.setItem("auth", "isAuth");
 
-    const from = location.state?.from || "/";
+  //   const from = location.state?.from || "/";
 
-    const redirectPath = localStorage.getItem("redirectPath") || "/";
+  //   const redirectPath = localStorage.getItem("redirectPath") || "/";
 
-    const redirectStateString = localStorage.getItem("redirectState");
-    const redirectState = redirectStateString
-      ? JSON.parse(redirectStateString)
-      : {};
+  //   const redirectStateString = localStorage.getItem("redirectState");
+  //   const redirectState = redirectStateString
+  //     ? JSON.parse(redirectStateString)
+  //     : {};
 
-    const redirectStateString1 = localStorage.getItem("redirectStateJob");
-    const redirectState1 = redirectStateString1
-      ? JSON.parse(redirectStateString1)
-      : {};
+  //   const redirectStateString1 = localStorage.getItem("redirectStateJob");
+  //   const redirectState1 = redirectStateString1
+  //     ? JSON.parse(redirectStateString1)
+  //     : {};
 
-    // Combine both redirect states into one object
-    const combinedState = { ...redirectState, ...redirectState1 };
+  //   // Combine both redirect states into one object
+  //   const combinedState = { ...redirectState, ...redirectState1 };
 
-    navigate(from !== "/" ? from : redirectPath, { state: combinedState });
+  //   navigate(from !== "/" ? from : redirectPath, { state: combinedState });
+  // };
+
+  const [islogin, setIsLogin] = useState({
+    userEmail: "",
+    password: "",
+  });
+
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setIsLogin({
+      ...islogin,
+      [name]: value,
+    });
+  };
+
+  const {
+    mutate: mutateLogin,
+    // isError: isLoginError,
+    reset: LoginReset,
+    isPending: LoginPending,
+  } = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["Jobs"] });
+
+      const userInfo = jwtDecode<CustomJwtPayload>(data.result);
+      console.log(userInfo);
+      const userRole = userInfo.Role.toLowerCase();
+      const userId = userInfo.UserId.toLowerCase();
+      const expiration = new Date();
+      const userName = userInfo.name;
+      const CompanyId = userInfo.CompanyId;
+      const Email =userInfo.Email
+      const IsPremium=userInfo.IsPremium
+      const PremiumExpireDate=userInfo.PremiumExpireDate
+      expiration.setHours(expiration.getHours() + 24);
+      const token = data.result;
+      // if (userRole === "Admin") {
+        localStorage.setItem("Auth", "true");
+        localStorage.setItem("name", userName);
+        localStorage.setItem("role", userRole);
+        localStorage.setItem("token", token);
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("CompanyId", CompanyId);
+        localStorage.setItem("Email", Email);
+        localStorage.setItem('IsPremium',IsPremium)
+        localStorage.setItem('PremiumExpireDate',PremiumExpireDate)
+
+        localStorage.setItem("expiration", expiration.toISOString());
+        // if(CompanyId && CompanyId !== "null") {
+        //   navigate("/EmployerJob");
+        // } else{
+        //   navigate("/onboarding/recruit");
+        // }
+
+        navigate("/Admin");
+      // } else {
+      // message.error("login Failed")
+      // }
+
+      setIsLogin({
+        userEmail: "",
+        password: "",
+      });
+
+      setTimeout(() => {
+        LoginReset();
+      }, 3000);
+    },
+    onError: () => {
+      setIsLogin({
+        userEmail: "",
+        password: "",
+      });
+      // console.log("error",data.name)
+      // setErrorsMessage(data.message)
+      setTimeout(() => {
+        LoginReset();
+      }, 5000);
+    },
+  });
+
+  const [errorslogin, setErrorslogin] = useState<{ [key: string]: string }>({});
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    const newErrors: { [key: string]: string } = {};
+    if (!islogin.userEmail) newErrors.userEmail = "Email is required";
+    if (!islogin.password) newErrors.password = "Password is required";
+    setErrorslogin(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+      // console.log("Form Submitted", formData);
+      mutateLogin({ user: islogin });
+    }
   };
 
   return (
@@ -112,15 +222,20 @@ export default function AuthForm() {
 
         <TextField
           id="outlined-email-input"
-          label="Username"
+          label="Email"
           type="text"
+          name="userEmail"
           required
+          value={islogin.userEmail}
+          onChange={handleLoginChange}
+          error={Boolean(errorslogin.userEmail)}
+          helperText={errorslogin.userEmail}
           // autoComplete="email"
           variant="outlined"
           sx={{ width: "100%" }}
         />
 
-        <Typography
+        {/* <Typography
           variant="body1"
           sx={{
             textAlign: "end",
@@ -132,7 +247,7 @@ export default function AuthForm() {
           <Link to="/new" style={{ textDecoration: "none", color: "inherit" }}>
             Reset admin password?
           </Link>
-        </Typography>
+        </Typography> */}
 
         <div style={{ position: "relative", width: "100%" }}>
           <span
@@ -149,7 +264,10 @@ export default function AuthForm() {
           </span>
           <TextField
             id="outlined-password-input"
+            name="password"
             label="Password"
+            onChange={handleLoginChange}
+            value={islogin.password}
             type={isPasswordShow ? "text" : "password"}
             autoComplete="current-password"
             required
@@ -183,16 +301,30 @@ export default function AuthForm() {
             />
           </div>
         )} */}
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          sx={{ width: "100%", mt: 2, padding: 1.5 }}
-          onClick={handleSignin}
-        >
-          {/* {isLogin ? "ADMIN LOGIN" : "Sign Up with Email"} */}
-          Admin Login
-        </Button>
+        {LoginPending ? (
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ width: "100%", mt: 2, padding: 1.5 }}
+            // onClick={handleSignin}
+          >
+            {/* {isLogin ? "ADMIN LOGIN" : "Sign Up with Email"} */}
+            Wait a seconds
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ width: "100%", mt: 2, padding: 1.5 }}
+            onClick={handleLogin}
+          >
+            {/* {isLogin ? "ADMIN LOGIN" : "Sign Up with Email"} */}
+            Admin Login
+          </Button>
+        )}
+
         {/* <div>
           <Typography variant="body1" sx={{ textAlign: "center", mb: 3 }}>
             {isLogin ? " Do not have an account?" : "Already have an account?"}
@@ -209,4 +341,5 @@ export default function AuthForm() {
       </Box>
     </Box>
   );
-}
+};
+export default AuthForm;

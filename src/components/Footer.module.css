@@ -1,16 +1,20 @@
 .container {
 
 
-
+  background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
 
   padding: 0;
-  max-width: 1320px;
+  /* max-width: 1320px; */
   width: 100%;
   margin-right: auto;
   margin-left: auto;
   box-sizing: border-box;
   display: block;
   
+}
+
+.span a{
+  color: #a6a6a6 !important;
 }
 
 .content {
@@ -74,6 +78,7 @@
   font-size: 1rem;
   font-weight: 600;
   margin-bottom: 16px;
+  font-family: "Lexend", sans-serif;;
 }
 
 .list {
@@ -86,10 +91,19 @@
   gap: 12px;
 }
 
+
+.list2{
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+  color: #a6a6a6 !important;
+  flex-direction: column !important;
+  display: flex !important;
+  box-sizing: border-box;
+}
 .span {
   font-size: 14px;
   font-weight: 400;
-  color: var(--i-dark-grey);
+  color: white;
   text-decoration: none;
 }
 
@@ -167,10 +181,70 @@
   cursor: pointer;
   text-transform: none;
 
-  font-family: inherit;
+  font-family: "Lexend", sans-serif;;
   font-feature-settings: inherit;
   font-variation-settings: inherit;
   font-weight: inherit;
   margin: 0;
   padding: 0;
+}
+.div1{
+  padding-bottom: 12px !important;
+  pointer-events: none !important;
+  align-items: center !important;
+  display: flex !important;
+  box-sizing: border-box;
+  color: #a6a6a6 !important;
+  font-size: 14px;
+    font-weight: 400;
+}
+
+.svg{
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: baseline;
+  fill: none;
+  box-sizing: border-box;
+  overflow-clip-margin: content-box;
+  overflow: hidden;
+  pointer-events: none !important;
+  color: #a6a6a6 !important;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.use{
+  box-sizing: border-box;
+  transform-origin: 0px 0px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: baseline;
+  fill: none;
+  pointer-events: none !important;
+  color: #a6a6a6 !important;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.p{
+  margin-left: 8px !important;
+  margin-top: 0;
+  margin-bottom: 0;
+  box-sizing: border-box;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  unicode-bidi: isolate;
+  pointer-events: none !important;
+  color: #a6a6a6 !important;
+  font-size: 14px;
+  font-weight: 400;
 }

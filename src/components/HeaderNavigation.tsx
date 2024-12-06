@@ -9,7 +9,7 @@ import {
 import classes from "./HeaderNavigation.module.css";
 import React, { useEffect, useState } from "react";
 // import { List, Menu, Divider, Typography, MenuItem } from "@mui/material";
-import SettingsIcon from '@mui/icons-material/Settings';
+import SettingsIcon from "@mui/icons-material/Settings";
 import List from "@mui/material/List";
 import Menu from "@mui/material/Menu";
 import Divider from "@mui/material/Divider";
@@ -31,6 +31,7 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 import { SearchCompanyByName } from "../Services/CompanyService/CompanySearchbyName";
+import Box from "@mui/material/Box";
 // import Imagee from "./../assets/image/logo.jpg.webp";
 
 // import { set } from "lodash";
@@ -190,22 +191,48 @@ export default function HeaderNavigation({ token }: props) {
                   borderRadius: "50%",
                 }}
               /> */}
-              <Typography
-                variant="h2"
+              <Box
                 sx={{
-                  lineHeight: 1.5,
-                  fontSize: "22px",
-                  fontWeight: 700,
-                  marginTop: 0,
-                  marginBottom: 0,
-                  boxSizing: "border-box",
-                  display: "block",
-                  color: "#fff",
-                  fontFamily: "Lexend, sans-serif",
+                  display: "flex",
+                  alignItems: "center", // Căn giữa theo chiều dọc
                 }}
               >
-                Amazing Job
-              </Typography>
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#ff0000",
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif", 
+                    lineHeight: "1",
+                    width: "32px", 
+                    height: "32px", 
+                    borderRadius: "50%", 
+                    display: "flex",
+                    justifyContent: "center", 
+                    alignItems: "center",
+                    marginRight: "3px", 
+                  }}
+                >
+                  A
+                </Box>
+
+             
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#fff",
+                    fontWeight: 700, 
+                    fontSize: "22px", 
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5", 
+
+                  }}
+                >
+                mazingJob
+                </Typography>
+              </Box>
             </Link>
           </div>
           <div className={classes.containerright}>
@@ -261,7 +288,11 @@ export default function HeaderNavigation({ token }: props) {
 
             <ul className={classes.listright}>
               <li className={classes.link1}>
-                <NavLink className={classes.linkk} style={{fontFamily: "Lexend, sans-serif",}}  to="/employers/login">
+                <NavLink
+                  className={classes.linkk}
+                  style={{ fontFamily: "Lexend, sans-serif" }}
+                  to="/employers/login"
+                >
                   For Employers
                 </NavLink>
               </li>
@@ -676,7 +707,6 @@ const SkillsMenu = ({
       return;
     }
 
-
     let searchDataArray: SearchData[];
 
     if (column === "All") {
@@ -951,7 +981,7 @@ const ProfileMenu = ({
       navigate("/Job-invitation");
     } else if (item === "Item 5") {
       navigate("/subscription");
-    } else if(item === "Item 6"){
+    } else if (item === "Item 6") {
       navigate("/settings");
     }
 
