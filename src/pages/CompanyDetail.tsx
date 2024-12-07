@@ -305,6 +305,7 @@ import { fetchCompaniesById } from "../Services/CompanyService/GetCompanyById";
 import { GetBusinessStream } from "../Services/BusinessStreamService/GetBusinessStream";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import LanguageIcon from "@mui/icons-material/Language";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 const CompanyDetail:React.FC=() =>{
   const { CompanyId } = useParams();
 
@@ -327,6 +328,18 @@ const CompanyDetail:React.FC=() =>{
     staleTime: 5000,
   });
 
+
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const JobPostsdata = JobPosts?.JobPosts;
   const BusinessStreamData = BusinessStream?.BusinessStreams;
 
   const companyDataa = CompanyData?.Companies;
@@ -337,6 +350,12 @@ const CompanyDetail:React.FC=() =>{
     (item) => detail?.businessStream?.id === item.id
   );
 
+  const jobIncompany = JobPostsdata?.filter(
+    (job) => job.companyId === Number(CompanyId)
+  );
+  const skills = jobIncompany?.map((skill) => skill.skillSets);
+  const flattenedArray = skills?.flat();
+  const uniqueArray = [...new Set(flattenedArray)];
   // console.log('sad',BusinessStreamDatainCompany?.businessStreamName)
 
   return (
@@ -457,17 +476,17 @@ const CompanyDetail:React.FC=() =>{
           Our key skills
         </Typography>
         <div className={classes.job1}>
-          {companyDataa?.jobPosts.map((job) => (
-            <div key={job.id}>
-              {job.skillSets.map((skill, index) => (
+          {uniqueArray?.map((job,index) => (
+            <div key={index}>
+              {/* {job.skillSets.map((skill, index) => ( */}
                 <button
                   style={{ fontFamily: "Lexend, sans-serif" }}
                   key={index}
                   className={classes.button1}
                 >
-                  {skill}
+                  {job}
                 </button>
-              ))}
+              {/* ))} */}
             </div>
           ))}
           {/* <button className={classes.button1}>Java</button>

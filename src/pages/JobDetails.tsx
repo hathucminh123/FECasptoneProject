@@ -1178,7 +1178,8 @@ const JobDetails:React.FC =()=> {
               <div style={{ marginTop: "20px", display: "block" }}>
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: "16px", color: "#414042" }}
+                  sx={{ fontSize: "16px", color: "#414042",   fontFamily: "Lexend, sans-serif",  }}
+
                 >
                   {" "}
                   {detailsCompany?.companyDescription && (
