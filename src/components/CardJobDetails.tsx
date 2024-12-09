@@ -20,6 +20,12 @@ interface JobType {
   description: string;
 }
 
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 interface JobPost {
   id: number;
   jobTitle: string;
@@ -39,6 +45,7 @@ interface JobPost {
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
+  benefitObjects?: Benefits[];
 }
 
 interface BusinessStream {
@@ -341,6 +348,21 @@ export default function CardJobDetails({
                 </div>
               ))}
             </div>
+            <div className={classes.separator}></div>
+
+          <div className={classes.benefit}>
+            <ul className={classes.ul}>
+              {data?.benefitObjects && data.benefitObjects.length > 0 ? (
+                data.benefitObjects.map((benefit) => (
+                  <li className={classes.li} key={benefit.id}>
+                    {benefit.name}
+                  </li>
+                ))
+              ) : (
+                <li className={classes.li}>no Benefits Yet</li>
+              )}
+            </ul>
+          </div>
           </div>
           {formButton ? (
             <div className={classes.formbutton}>

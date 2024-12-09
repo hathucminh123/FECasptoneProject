@@ -79,6 +79,12 @@ interface JobType {
 //   country: string;
 //   stressAddress: string;
 // }
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 
 interface JobPost {
   id: number;
@@ -99,9 +105,10 @@ interface JobPost {
   // jobLocation: JobLocation;
   jobLocationCities: string[];
   jobLocationAddressDetail: string[]; // jobLocation là đối tượng JobLocation
-  skillSets: string[]; // Array of skill sets, có thể là array rỗng
+  skillSets: string[]; 
+  benefitObjects?: Benefits[];
 }
-const JobDetails:React.FC =()=> {
+const JobDetails: React.FC = () => {
   useScrollToTop();
   // const [favorite, setFavorite] = useState<boolean>(false);
   const containerLeftRef = useRef<HTMLDivElement | null>(null);
@@ -147,10 +154,7 @@ const JobDetails:React.FC =()=> {
     });
   }, [currentPage, mutateAsync]);
 
-  const handlePageChange = (
-    _: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     setCurrentPage(page); // Update current page
     // scrollToTop();
   };
@@ -508,7 +512,7 @@ const JobDetails:React.FC =()=> {
                       fontWeight: "bold",
                       mb: 3,
                       color: "#333",
-                      fontFamily: "Lexend, sans-serif", 
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     {job?.jobTitle}
@@ -866,6 +870,45 @@ const JobDetails:React.FC =()=> {
                     {/* <button className={classes.button}>PHP</button>
                     <button className={classes.button}>GoLang</button> */}
                   </div>
+                  <div className={classes.skill} style={{ marginTop: "20px" }}>
+                    <h5
+                      style={{
+                        alignItems: "start",
+                        fontWeight: 500,
+                        marginTop: "7px",
+                        color: " #414042 ",
+                        fontSize: "16px",
+                        lineHeight: 1.334,
+                        marginBottom: "7px",
+                      }}
+                    >
+                      Benefits :
+                    </h5>
+                    {job?.benefitObjects && job?.benefitObjects.length > 0 ? (
+                      job?.benefitObjects?.map((item) => (
+                        <div key={item.id} className={classes.button}>
+                          {item.name}
+                        </div>
+                      ))
+                    ) : (
+                      <h5
+                        style={{
+                          alignItems: "start",
+                          fontWeight: 500,
+                          marginTop: "7px",
+                          color: " #414042 ",
+                          fontSize: "16px",
+                          lineHeight: 1.334,
+                          marginBottom: "7px",
+                        }}
+                      >
+                        No Benefit Yet
+                      </h5>
+                    )}
+
+                    {/* <button className={classes.button}>PHP</button>
+                    <button className={classes.button}>GoLang</button> */}
+                  </div>
                 </div>
               </div>
             </div>
@@ -1178,8 +1221,11 @@ const JobDetails:React.FC =()=> {
               <div style={{ marginTop: "20px", display: "block" }}>
                 <Typography
                   variant="body1"
-                  sx={{ fontSize: "16px", color: "#414042",   fontFamily: "Lexend, sans-serif",  }}
-
+                  sx={{
+                    fontSize: "16px",
+                    color: "#414042",
+                    fontFamily: "Lexend, sans-serif",
+                  }}
                 >
                   {" "}
                   {detailsCompany?.companyDescription && (
@@ -1289,5 +1335,5 @@ const JobDetails:React.FC =()=> {
       </div>
     </div>
   );
-}
-export default JobDetails
+};
+export default JobDetails;

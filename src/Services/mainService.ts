@@ -66,6 +66,11 @@ export const apiLinks = {
     GET: `${baseURL}/SkillSet`,
     DELETE: `${baseURL}/SkillSet`,
   },
+  Benefits: {
+    POST: `${baseURL}/Benefit`,
+    GET: `${baseURL}/Benefit`,
+    DELETE: `${baseURL}/Benefit`,
+  },
   JobLocation: {
     POST: `${baseURL}/JobLocation`,
     GET: `${baseURL}/JobLocation`,
@@ -96,6 +101,10 @@ export const apiLinks = {
   UserSkills: {
     POST: `${baseURL}/User/SkilSet`,
     DELETESKILL: `${baseURL}/User/SkilSet`,
+  },
+  UserBenefits: {
+    POST: `${baseURL}/User/Benefit`,
+    DELETEBENEFIT: `${baseURL}/User/Benefit`,
   },
   UserProfile: {
     GET: `${baseURL}/User/Profile`,

@@ -128,6 +128,7 @@ const HomePage:React.FC =()=> {
       jobType?: string;
       pageSize: number;
       pageIndex?: number;
+      keyword?:string
 
     }
 
@@ -136,38 +137,42 @@ const HomePage:React.FC =()=> {
 
     if (location === "All" && text === "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9 ,pageIndex:1},
-        { companyName: text, pageSize: 9,pageIndex:1 },
-        { skillSet: text, pageSize: 9 ,pageIndex:1},
-        { city: text, pageSize: 9 ,pageIndex:1},
-        { location: text, pageSize: 9 ,pageIndex:1},
+        // { jobTitle: text, pageSize: 9 ,pageIndex:1},
+        // { companyName: text, pageSize: 9,pageIndex:1 },
+        // { skillSet: text, pageSize: 9 ,pageIndex:1},
+        // { city: text, pageSize: 9 ,pageIndex:1},
+        // { location: text, pageSize: 9 ,pageIndex:1},
+        {keyword :text, pageSize: 9 ,pageIndex:1}
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9,pageIndex:1 },
+        // { jobType: text, pageSize: 9,pageIndex:1 },
       ];
     } else if (location !== "All" && text === "") {
       searchDataArray = [
-        { city: location, pageSize: 9,pageIndex:1  },
-        { location: location, pageSize: 9 ,pageIndex:1 },
+        // { city: location, pageSize: 9,pageIndex:1  },
+        // { location: location, pageSize: 9 ,pageIndex:1 },
+        {keyword :location, pageSize: 9 ,pageIndex:1}
       ];
     } else if (location !== "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, city: location, pageSize: 9 ,pageIndex:1 },
-        { companyName: text, city: location, pageSize: 9,pageIndex:1  },
-        { skillSet: text, city: location, pageSize: 9,pageIndex:1  },
-        { city: text, pageSize: 9 },
-        { location: text, city: location, pageSize: 9 ,pageIndex:1 },
+        // { jobTitle: text, city: location, pageSize: 9 ,pageIndex:1 },
+        // { companyName: text, city: location, pageSize: 9,pageIndex:1  },
+        // { skillSet: text, city: location, pageSize: 9,pageIndex:1  },
+        // { city: text, pageSize: 9 },
+        // { location: text, city: location, pageSize: 9 ,pageIndex:1 },
+        {keyword :text,city: location, pageSize: 9 ,pageIndex:1},
         // { experience: Number(text), city: location, pageSize: 9 },
-        { jobType: text, city: location, pageSize: 9,pageIndex:1  },
+        // { jobType: text, city: location, pageSize: 9,pageIndex:1  },
       ];
     } else if (location == "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9 ,pageIndex:1 },
-        { companyName: text, pageSize: 9 ,pageIndex:1 },
-        { skillSet: text, pageSize: 9 ,pageIndex:1 },
-        { city: text, pageSize: 9,pageIndex:1  },
-        { location: text, pageSize: 9 ,pageIndex:1 },
+        // { jobTitle: text, pageSize: 9 ,pageIndex:1 },
+        // { companyName: text, pageSize: 9 ,pageIndex:1 },
+        // { skillSet: text, pageSize: 9 ,pageIndex:1 },
+        // { city: text, pageSize: 9,pageIndex:1  },
+        // { location: text, pageSize: 9 ,pageIndex:1 },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9 ,pageIndex:1 },
+        // { jobType: text, pageSize: 9 ,pageIndex:1 },
+        {keyword :text, pageSize: 9 ,pageIndex:1}
       ];
     } else {
       searchDataArray = [];
@@ -205,7 +210,8 @@ const HomePage:React.FC =()=> {
 
     const searchDataArray = [
       // { companyName: text ,pageSize: 9},
-      { skillSet: item, pageSize: 9 },
+      // { skillSet: item, pageSize: 9 },
+      {keyword :item, pageSize: 9 },
       // { location: text ,pageSize: 9 },
       // { experience: text ,pageSize: 9},
       // { jobType: text ,pageSize: 9},

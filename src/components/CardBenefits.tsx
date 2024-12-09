@@ -7,15 +7,16 @@ import { message } from "antd";
 import { queryClient } from "../Services/mainService";
 // import { DeleteSkillSet } from "../Services/SkillSet/DeleteSkillSet";
 import classes from "./CardSkill.module.css";
-import { DeleteUserProfileCV } from "../Services/UserProfileService/DeleteUserProfileCV";
+// import { DeleteUserProfileCV } from "../Services/UserProfileService/DeleteUserProfileCV";
 
-interface SkillSet {
-  id: number;
-  name: string;
-  shorthand: string;
-  description: string;
-}
+import { DeleteUserBeneFit } from "../Services/UserBenefits/DeleteUserBeneFit";
 
+interface Benefits {
+    id: number;
+    name: string;
+    // shorthand: string;
+    // description: string;
+  }
 
 interface FormProps {
   title?: string;
@@ -24,10 +25,10 @@ interface FormProps {
   icon2?: JSX.Element;
   img?: string;
   onClick?: () => void;
-  data?: SkillSet[];
+  data?: Benefits[];
 }
 
-const CardSkill: React.FC<FormProps> = ({
+const CardBenefits: React.FC<FormProps> = ({
   title,
   text,
   icon,
@@ -40,7 +41,7 @@ const CardSkill: React.FC<FormProps> = ({
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const userId = localStorage.getItem("userId");
   const { mutate } = useMutation({
-    mutationFn: DeleteUserProfileCV,
+    mutationFn: DeleteUserBeneFit,
     onSuccess: () => {
       // Invalidate and refetch the cache to ensure the UI is updated immediately
       queryClient.invalidateQueries({
@@ -61,8 +62,8 @@ const CardSkill: React.FC<FormProps> = ({
     mutate({
       data: {
         userId: Number(userId),
-        skillSetId: id,
-        proficiencyLevel: "",
+        benefitId: id,
+        // proficiencyLevel: "",
       },
     });
   };
@@ -112,7 +113,7 @@ const CardSkill: React.FC<FormProps> = ({
                         fontFamily: "Lexend, sans-serif",
                       }}
                     >
-                      Skill name: {item?.name}
+                      Benefits name: {item?.name}
                     </Typography>
                     {deletingId === item.id ? (
                       <>Please wait a second...</>
@@ -125,13 +126,13 @@ const CardSkill: React.FC<FormProps> = ({
                       </div>
                     )}
                   </div>
-                  <div className={classes.main6}>
+                  {/* <div className={classes.main6}>
                     Short Hand: {item.shorthand}
-                  </div>
-                  <div
+                  </div> */}
+                  {/* <div
                     className={classes.main7}
                     dangerouslySetInnerHTML={{ __html: item.description }}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
@@ -160,4 +161,4 @@ const CardSkill: React.FC<FormProps> = ({
   );
 };
 
-export default CardSkill;
+export default CardBenefits;

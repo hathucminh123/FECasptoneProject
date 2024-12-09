@@ -147,7 +147,7 @@ export default function ListJobDetails() {
                       const uniqueArrayCity = [...new Set(city)];
 
                       const cityColumn = uniqueArrayCity;
-                     
+
                       return (
                         <NavLink
                           to={`OverView/${job.id}`}
@@ -191,12 +191,47 @@ export default function ListJobDetails() {
                               {companyDataa?.city}
                             </p>
                           )}
-                             <p className={classes.p1}>Skills: </p>
-                          <div style={{display:'flex',alignItems:'center' ,gap:10,flexWrap:'wrap',boxSizing:'border-box'}}>
-                          
-                            {job.skillSets.map((skill,index)=>(
-                               <p className={classes.p1} key={index}>  {skill}{index < job.skillSets.length - 1 && " -"}</p>
+                          <p className={classes.p1}>Skills: </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 10,
+                              flexWrap: "wrap",
+                              boxSizing: "border-box",
+                            }}
+                          >
+                            {job.skillSets.map((skill, index) => (
+                              <p className={classes.p1} key={index}>
+                                {" "}
+                                {skill}
+                                {index < job.skillSets.length - 1 && " -"}
+                              </p>
                             ))}
+                          </div>
+                          <p className={classes.p1}>Skills: </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 10,
+                              flexWrap: "wrap",
+                              boxSizing: "border-box",
+                            }}
+                          >
+                            {job.benefitObjects &&
+                            job.benefitObjects.length > 0 ? (
+                              job.benefitObjects.map((benefit, index) => (
+                                <p className={classes.p1} key={benefit.id}>
+                                  {benefit.name}
+                                  {index <
+                                    (job.benefitObjects ?? []).length - 1 &&
+                                    " -"}
+                                </p>
+                              ))
+                            ) : (
+                              <p className={classes.p1}>No Benefit Yet</p>
+                            )}
                           </div>
                         </NavLink>
                       );

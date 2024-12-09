@@ -23,6 +23,12 @@ interface JobType {
   description: string;
 }
 
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 interface JobPost {
   id: number;
   jobTitle: string;
@@ -41,7 +47,8 @@ interface JobPost {
   jobType: JobType; // jobType là đối tượng JobType
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
-  skillSets: string[]; // Array of skill sets, có thể là array rỗng
+  skillSets: string[];
+  benefitObjects?: Benefits[];
 }
 interface Company {
   id: number;
@@ -74,7 +81,7 @@ interface props {
   activity: UserJobActivity;
 }
 
- const CardApply: React.FC<props> = ({ company, job, activity }) => {
+const CardApply: React.FC<props> = ({ company, job, activity }) => {
   const pendingJobsArray = [];
   pendingJobsArray.push(job);
   const city = pendingJobsArray?.map((city) => city?.jobLocationCities);
@@ -122,7 +129,7 @@ interface props {
                 fontSize: "20px",
                 fontWeight: 700,
                 boxSizing: "border-box",
-                fontFamily: "Lexend, sans-serif"
+                fontFamily: "Lexend, sans-serif",
               }}
             >
               {activity.jobTitle}
@@ -136,7 +143,7 @@ interface props {
               <Link
                 to={`/company/detail/${company?.id}`}
                 className={classes.link1}
-                style={{fontFamily: "Lexend, sans-serif"}}
+                style={{ fontFamily: "Lexend, sans-serif" }}
               >
                 {" "}
                 {company?.companyName}
@@ -151,20 +158,20 @@ interface props {
           </div>
           <div className={classes.main7}></div>
           <div className={classes.location}>
-              <BusinessCenterOutlinedIcon />
-              <span
-                style={{
-                  fontSize: "14px",
-                  fontWeight: 400,
-                  color: "#414042",
-                  paddingLeft: "8px",
-                  boxSizing: "border-box",
-                  cursor: "pointer",
-                }}
-              >
-                {job?.jobType?.name}
-              </span>
-            </div>
+            <BusinessCenterOutlinedIcon />
+            <span
+              style={{
+                fontSize: "14px",
+                fontWeight: 400,
+                color: "#414042",
+                paddingLeft: "8px",
+                boxSizing: "border-box",
+                cursor: "pointer",
+              }}
+            >
+              {job?.jobType?.name}
+            </span>
+          </div>
           {/* <div className={classes.main8}>
             <LocationOnIcon />
             <span className={classes.span3}>
@@ -241,38 +248,36 @@ interface props {
               )}
             </Typography>
           </div> */}
-            <div className={classes.location}>
-              <LocationOnOutlinedIcon />
-              <span
-               className={classes.span}
-              >
-                {cityColumn.length && cityColumn.length > 0 ? (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    {cityColumn.join(", ")}
-                  </span>
-                ) : (
-                  <span
-                    style={{
-                      display: "inline-block",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      maxWidth: "100%",
-                    }}
-                  >
-                    {company?.address} {" in "} {company?.city}
-                  </span>
-                )}
-              </span>
-            </div>
+          <div className={classes.location}>
+            <LocationOnOutlinedIcon />
+            <span className={classes.span}>
+              {cityColumn.length && cityColumn.length > 0 ? (
+                <span
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {cityColumn.join(", ")}
+                </span>
+              ) : (
+                <span
+                  style={{
+                    display: "inline-block",
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                  }}
+                >
+                  {company?.address} {" in "} {company?.city}
+                </span>
+              )}
+            </span>
+          </div>
           {/* <div className={classes.button}>
             {job?.skillSets.map((tag, index) => (
               <div key={index} className={classes.button1}>
@@ -284,17 +289,30 @@ interface props {
            
           </div> */}
           <div className={classes.job}>
-              {job?.skillSets.slice(0,5).map((tag, index) => (
-                <div key={index} className={classes.button}>
-                  {tag}
-                </div>
-              ))}
-            </div>
+            {job?.skillSets.slice(0, 5).map((tag, index) => (
+              <div key={index} className={classes.button}>
+                {tag}
+              </div>
+            ))}
+          </div>
+          <div className={classes.main7}></div>
+          <div className={classes.benefit} style={{ marginTop: 10 }}>
+            <ul className={classes.ul}>
+              {job?.benefitObjects && job.benefitObjects.length > 0 ? (
+                job.benefitObjects.map((benefit) => (
+                  <li className={classes.li} key={benefit.id}>
+                    {benefit.name}
+                  </li>
+                ))
+              ) : (
+                <li className={classes.li}>no Benefits Yet</li>
+              )}
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-
-export default CardApply
+export default CardApply;

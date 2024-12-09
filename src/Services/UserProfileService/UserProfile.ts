@@ -10,6 +10,12 @@ interface EducationDetail {
   endDate: string;
   gpa: number;
 }
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 interface ExperienceDetail {
   id: number;
   companyName: string;
@@ -43,6 +49,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits:Benefits[]
 }
 
 interface FetchError extends Error {

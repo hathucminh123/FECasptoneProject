@@ -17,7 +17,12 @@ interface JobType {
   name: string;
   description: string;
 }
-
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 interface JobPost {
   id: number;
   jobTitle: string;
@@ -37,6 +42,7 @@ interface JobPost {
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
+  benefitObjects?: Benefits[];
 }
 
 interface BusinessStream {
@@ -87,7 +93,7 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
   selectedJob,
   applied,
 }) => {
-  console.log("cố lenasd", company);
+  console.log("cố lenasd", data);
   // const getJobLocation = (
   //   jobLocation: JobLocation | string | null | undefined
   // ): string => {
@@ -289,6 +295,22 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
             ))}
             {/* <button className={classes.button}>asdasd</button>
             <button className={classes.button}>asdasd</button> */}
+          </div>
+          <div className={classes.line}></div>
+          <div style={{ marginTop: "8px" }}></div>
+
+          <div className={classes.benefit}>
+            <ul className={classes.ul}>
+              {data?.benefitObjects && data.benefitObjects.length > 0 ? (
+                data.benefitObjects.map((benefit) => (
+                  <li className={classes.li} key={benefit.id}>
+                    {benefit.name}
+                  </li>
+                ))
+              ) : (
+                <li className={classes.li}>no Benefits Yet</li>
+              )}
+            </ul>
           </div>
         </div>
       </div>

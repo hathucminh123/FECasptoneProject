@@ -54,7 +54,12 @@ interface JobType {
   name: string;
   description: string;
 }
-
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 interface JobPost {
   id: number;
   jobTitle: string;
@@ -74,6 +79,7 @@ interface JobPost {
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
+  benefitObjects?: Benefits[];
 }
 
 interface BusinessStream {
@@ -450,6 +456,7 @@ const FilterJobbySkill: React.FC = () => {
       jobType?: string;
       pageSize: number;
       pageIndex?: number;
+      keyword?: string;
     }
 
     // Define searchDataArray with the SearchData[] type
@@ -457,63 +464,75 @@ const FilterJobbySkill: React.FC = () => {
 
     if (locationne === "All" && text === "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9, pageIndex: page },
-        { companyName: text, pageSize: 9, pageIndex: page },
-        { skillSet: text, pageSize: 9, pageIndex: page },
-        { city: text, pageSize: 9, pageIndex: page },
-        { location: text, pageSize: 9, pageIndex: page },
+        // { jobTitle: text, pageSize: 9, pageIndex: page },
+        // { companyName: text, pageSize: 9, pageIndex: page },
+        // { skillSet: text, pageSize: 9, pageIndex: page },
+        // { city: text, pageSize: 9, pageIndex: page },
+        // { location: text, pageSize: 9, pageIndex: page },
+        { keyword: text, pageSize: 9, pageIndex: page },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9, pageIndex: page },
+        // { jobType: text, pageSize: 9, pageIndex: page },
       ];
     } else if (locationne !== "All" && text === "") {
       searchDataArray = [
-        { city: locationne, pageSize: 9, pageIndex: page },
-        { location: locationne, pageSize: 9, pageIndex: page },
+        // { city: locationne, pageSize: 9, pageIndex: page },
+        // { location: locationne, pageSize: 9, pageIndex: page },
+        { keyword: locationne, pageSize: 9, pageIndex: page },
       ];
     } else if (locationne !== "All" && text !== "") {
       searchDataArray = [
+        // {
+        //   jobTitle: text,
+        //   city: locationne,
+        //   pageSize: 9,
+        //   pageIndex: page,
+        // },
         {
-          jobTitle: text,
+          // jobTitle: text,
+
+          keyword: text,
           city: locationne,
           pageSize: 9,
           pageIndex: page,
         },
-        {
-          companyName: text,
-          city: locationne,
-          pageSize: 9,
-          pageIndex: page,
-        },
-        {
-          skillSet: text,
-          city: locationne,
-          pageSize: 9,
-          pageIndex: page,
-        },
-        { city: text, pageSize: 9 },
-        {
-          location: text,
-          city: locationne,
-          pageSize: 9,
-          pageIndex: page,
-        },
-        // { experience: Number(text), city: locationne, pageSize: 9 },
-        {
-          jobType: text,
-          city: locationne,
-          pageSize: 9,
-          pageIndex: page,
-        },
+        // {
+        //   companyName: text,
+        //   city: locationne,
+        //   pageSize: 9,
+        //   pageIndex: page,
+        // },
+        // {
+        //   skillSet: text,
+        //   city: locationne,
+        //   pageSize: 9,
+        //   pageIndex: page,
+        // },
+        // { city: text, pageSize: 9 },
+        // {
+        //   location: text,
+        //   city: locationne,
+        //   pageSize: 9,
+        //   pageIndex: page,
+        // },
+        // // { experience: Number(text), city: locationne, pageSize: 9 },
+        // {
+        //   jobType: text,
+        //   city: locationne,
+        //   pageSize: 9,
+        //   pageIndex: page,
+        // },
       ];
     } else if (locationne == "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9, pageIndex: page },
-        { companyName: text, pageSize: 9, pageIndex: page },
-        { skillSet: text, pageSize: 9, pageIndex: page },
-        { city: text, pageSize: 9, pageIndex: page },
-        { location: text, pageSize: 9, pageIndex: page },
+        // { jobTitle: text, pageSize: 9, pageIndex: page },
+        // { companyName: text, pageSize: 9, pageIndex: page },
+        // { skillSet: text, pageSize: 9, pageIndex: page },
+        // { city: text, pageSize: 9, pageIndex: page },
+        // { location: text, pageSize: 9, pageIndex: page },
+        { keyword: text, pageSize: 9, pageIndex: page },
+
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9, pageIndex: page },
+        // { jobType: text, pageSize: 9, pageIndex: page },
       ];
     } else {
       searchDataArray = []; // Default to an empty array if no conditions are met
@@ -625,6 +644,7 @@ const FilterJobbySkill: React.FC = () => {
       pageSize: number;
 
       pageIndex?: number;
+      keyword?: string;
     }
 
     // Define searchDataArray with the SearchData[] type
@@ -632,38 +652,42 @@ const FilterJobbySkill: React.FC = () => {
 
     if (locationne === "All" && text === "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9, pageIndex: 1 },
-        { companyName: text, pageSize: 9, pageIndex: 1 },
-        { skillSet: text, pageSize: 9, pageIndex: 1 },
-        { city: text, pageSize: 9, pageIndex: 1 },
-        { location: text, pageSize: 9, pageIndex: 1 },
+        // { jobTitle: text, pageSize: 9, pageIndex: 1 },
+        // { companyName: text, pageSize: 9, pageIndex: 1 },
+        //         { skillSet: text, pageSize: 9, pageIndex: 1 },
+        // { city: text, pageSize: 9, pageIndex: 1 },
+        // { location: text, pageSize: 9, pageIndex: 1 },
+        { keyword: text, pageSize: 9, pageIndex: 1 },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9, pageIndex: 1 },
+        // { jobType: text, pageSize: 9, pageIndex: 1 },
       ];
     } else if (locationne !== "All" && text === "") {
       searchDataArray = [
-        { city: locationne, pageSize: 9, pageIndex: 1 },
-        { location: locationne, pageSize: 9, pageIndex: 1 },
+        // { city: locationne, pageSize: 9, pageIndex: 1 },
+        // { location: locationne, pageSize: 9, pageIndex: 1 },
+        { keyword: locationne, pageSize: 9, pageIndex: 1 },
       ];
     } else if (locationne !== "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, city: locationne, pageSize: 9, pageIndex: 1 },
-        { companyName: text, city: locationne, pageSize: 9, pageIndex: 1 },
-        { skillSet: text, city: locationne, pageSize: 9, pageIndex: 1 },
-        { city: text, pageSize: 9 },
-        { location: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        // { jobTitle: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        // { companyName: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        // { skillSet: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        // { city: text, pageSize: 9 },
+        // { location: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        { keyword: text, city: locationne, pageSize: 9, pageIndex: 1 },
         // { experience: Number(text), city: locationne, pageSize: 9 },
-        { jobType: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        // { jobType: text, city: locationne, pageSize: 9, pageIndex: 1 },
       ];
     } else if (locationne == "All" && text !== "") {
       searchDataArray = [
-        { jobTitle: text, pageSize: 9, pageIndex: 1 },
-        { companyName: text, pageSize: 9, pageIndex: 1 },
-        { skillSet: text, pageSize: 9, pageIndex: 1 },
-        { city: text, pageSize: 9, pageIndex: 1 },
-        { location: text, pageSize: 9, pageIndex: 1 },
+        // { jobTitle: text, pageSize: 9, pageIndex: 1 },
+        // { companyName: text, pageSize: 9, pageIndex: 1 },
+        // { skillSet: text, pageSize: 9, pageIndex: 1 },
+        // { city: text, pageSize: 9, pageIndex: 1 },
+        // { location: text, pageSize: 9, pageIndex: 1 },
+        { keyword: text, pageSize: 9, pageIndex: 1 },
         // { experience: Number(text), pageSize: 9 },
-        { jobType: text, pageSize: 9, pageIndex: 1 },
+        // { jobType: text, pageSize: 9, pageIndex: 1 },
       ];
     } else {
       searchDataArray = []; // Default to an empty array if no conditions are met
@@ -802,8 +826,8 @@ const FilterJobbySkill: React.FC = () => {
                     }}
                   >
                     {/* {filteredJobs?.length} Jobs IT in Vietnam{" "} */}
-                    {totalJobs === 0 ? filteredJobs?.length : totalJobs} Jobs
-                    IT in Vietnam{" "}
+                    {totalJobs === 0 ? filteredJobs?.length : totalJobs} Jobs IT
+                    in Vietnam{" "}
                   </Typography>
                   {filteredJobs &&
                   filteredJobs.length &&
@@ -1301,6 +1325,56 @@ const FilterJobbySkill: React.FC = () => {
                                     {item}
                                   </button>
                                 ))}
+                                {/* <button className={classes.button}>Java</button>
+                              <button className={classes.button}>PHP</button>
+                              <button className={classes.button}>GoLang</button> */}
+                              </div>
+                              <div className={classes.skill}>
+                                <Typography
+                                  variant="h5"
+                                  gutterBottom
+                                  sx={{
+                                    alignItems: "start",
+                                    fontWeight: 500,
+                                    mt: "7px",
+                                    color: " #414042 ",
+                                    fontSize: "16px",
+                                    fontFamily: "Lexend, sans-serif",
+                                  }}
+                                >
+                                  Benefits :
+                                </Typography>
+
+                                {jobDetails?.benefitObjects &&
+                                jobDetails.benefitObjects.length > 0 ? (
+                                  jobDetails?.benefitObjects.map((item) => (
+                                    <button
+                                      style={{
+                                        fontFamily: "Lexend, sans-serif",
+                                      }}
+                                      key={item.id}
+                                      className={classes.button}
+                                    >
+                                      {item.name}
+                                    </button>
+                                  ))
+                                ) : (
+                                  <Typography
+                                    variant="h5"
+                                    gutterBottom
+                                    sx={{
+                                      alignItems: "start",
+                                      fontWeight: 500,
+                                      mt: "7px",
+                                      color: " #414042 ",
+                                      fontSize: "16px",
+                                      fontFamily: "Lexend, sans-serif",
+                                    }}
+                                  >
+                                    {" "}
+                                    No Benefits yet
+                                  </Typography>
+                                )}
                                 {/* <button className={classes.button}>Java</button>
                               <button className={classes.button}>PHP</button>
                               <button className={classes.button}>GoLang</button> */}

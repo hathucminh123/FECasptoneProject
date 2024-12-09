@@ -29,6 +29,8 @@ import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 
 import { PutJobPost } from "../../Services/JobsPost/PutJobPost";
+import { GetBenefits } from "../../Services/Benefits/GetBenefits";
+import { PostBenefits } from "../../Services/Benefits/PostBenefits";
 // type JobContextType = {
 //   selectJobId: number | null;
 //   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
@@ -63,6 +65,13 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string;
+}
+
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
 }
 interface JobType {
   id: number;
@@ -123,9 +132,61 @@ export default function EditJobPage() {
   const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [skillId, setSkillId] = useState<number[]>([]);
+  const [skillsFull, setSkillsFull] = useState<SkillSet[]>([]);
   const [inputSkill, setInputSkill] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  //benefitdata
+  const { data: BenefitsData } = useQuery({
+    queryKey: ["Benefits"],
+    queryFn: ({ signal }) => GetBenefits({ signal }),
+    staleTime: 5000,
+  });
+  const Benefitsdataa = BenefitsData?.Benefits;
+  const [openBenefit, setOpenBenefit] = useState(false);
+  const [nameBenefits, setNameBenefits] = useState<string>("");
+  const [benefitsdata, setBenefitsdata] = useState<Benefits[]>([]);
+  const [dropdownOpenBenefit, setDropdownOpenBenefit] = useState(false);
+  const [filteredBenefits, setFilteredBenefits] = useState(Benefitsdataa);
+  const [benefitId, setBenefitId] = useState<number[]>([]);
+  const [benefitFull, setBenefitFull] = useState<Benefits[]>([]);
+  const [inputBenefit, setInputBenefit] = useState<string>("");
+  const dropdownRefBenefit = useRef<HTMLDivElement>(null);
+  const handleOpenBenefit = () => setOpenBenefit(true);
+  const handleCloseBenefit = () => setOpenBenefit(false);
+  const handleChangeBenefit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setInputBenefit(inputValue);
+    if (inputValue) {
+      setFilteredBenefits(
+        Benefitsdataa?.filter((comp) =>
+          comp.name.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+      setDropdownOpenBenefit(true);
+    } else {
+      setFilteredBenefits([]);
+      setDropdownOpenBenefit(false);
+    }
+  };
 
+  const handleBenefit = (selectedBenefit: Benefits) => {
+    if (
+      !benefitsdata.includes(selectedBenefit) &&
+      !benefitId.includes(selectedBenefit.id)
+    ) {
+      setBenefitsdata([...benefitsdata, selectedBenefit]);
+      setBenefitId([...benefitId, selectedBenefit.id]);
+    }
+    setDropdownOpenBenefit(false);
+    setInputBenefit("");
+  };
+
+  const handleRemoveBenefits = (BenefitToRemove: Benefits) => {
+    setBenefitsdata(
+      benefitsdata.filter((benefit) => benefit !== BenefitToRemove)
+    );
+    setBenefitId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
+  };
   //salary
   const [salary, setSalary] = useState<string>("");
   //date
@@ -144,7 +205,8 @@ export default function EditJobPage() {
       //   setSkillLevel(job.skillLevelRequired || 0);
       setSelectType(job.jobType);
       setFileUrl(job.imageURL || "");
-
+      setSkillsFull(job.skillSetObjects || []);
+      setBenefitFull(job.benefitObjects || []);
       // setSkills(job.skillSets || []);
       console.log("skill", job.skillSets);
 
@@ -195,6 +257,30 @@ export default function EditJobPage() {
     },
   });
 
+  const { mutate: createBenefits, isPending: isLoadingBenefit } = useMutation({
+    mutationFn: PostBenefits,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["Benefits"] });
+      message.success("Benefits created successfully.");
+      handleClose();
+    },
+    onError: () => {
+      message.error("Failed to create Benefits.");
+    },
+  });
+
+  const handleSubmitBenefits = () => {
+    if (!nameBenefits.trim()) {
+      return message.error("Please enter a valid benefits name.");
+    }
+    createBenefits({
+      data: {
+        name: nameBenefits,
+        // shorthand: shorthand,
+        // description: descriptionSkillSet,
+      },
+    });
+  };
   const handleSubmitSkillSet = () => {
     createSkillSet({
       data: {
@@ -229,6 +315,20 @@ export default function EditJobPage() {
       setDropdownOpen(false);
     }
   };
+  const handleClickOutsideBenefit = (event: MouseEvent) => {
+    if (
+      dropdownRefBenefit.current &&
+      !dropdownRefBenefit.current.contains(event.target as Node)
+    ) {
+      setDropdownOpenBenefit(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideBenefit);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideBenefit);
+    };
+  }, []);
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -332,7 +432,10 @@ export default function EditJobPage() {
       setSelectJobId(jobincompanyData[0].id);
     }
   }, [selectJobId, jobincompanyData, setSelectJobId]);
-
+  // console.log(
+  //   "mapchua",
+  //   skillsFull.map((skill) => skill.id)
+  // );
   const { mutate: JobPost, isPending: PostPending } = useMutation({
     mutationFn: PutJobPost,
     onSuccess: () => {
@@ -373,8 +476,13 @@ export default function EditJobPage() {
         companyID: Number(companyId),
         imageURL: fileUrl,
         userID: Number(userId),
-        skillSetIds: skillId,
+        skillSetIds:
+          skillId.length > 0 ? skillId : skillsFull.map((skill) => skill.id),
         expiryDate: selectedDate ? adjustTimezone(selectedDate) : "",
+        benefitIds:
+          benefitId.length > 0
+            ? benefitId
+            : benefitFull.map((benefit) => benefit.id),
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
@@ -810,7 +918,22 @@ export default function EditJobPage() {
                   <div className={classes.main24}>
                     {skills.map((skills) => (
                       <span
-                      key={skills.id}
+                        key={skills.id}
+                        className={classes.span2}
+                        onClick={() => handleRemoveSkill(skills)}
+                      >
+                        {skills.name}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                ) : skillsFull.length && skillsFull.length > 0 ? (
+                  <div className={classes.main24}>
+                    {skillsFull.map((skills) => (
+                      <span
+                        key={skills.id}
                         className={classes.span2}
                         onClick={() => handleRemoveSkill(skills)}
                       >
@@ -873,6 +996,109 @@ export default function EditJobPage() {
                               style={{ cursor: "pointer" }}
                             >
                               <span>Create new Skills {inputSkill}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <label
+                htmlFor=""
+                className={classes.label}
+                style={{ marginTop: "50px" }}
+              >
+                <div className={classes.main9}>
+                  <div className={classes.main10}>
+                    Select Your Benefits
+                    <span className={classes.span}>*</span>
+                  </div>
+                </div>
+                {benefitsdata.length && benefitsdata.length > 0 ? (
+                  <div className={classes.main24}>
+                    {benefitsdata.map((benefit) => (
+                      <span
+                        key={benefit.id}
+                        className={classes.span2}
+                        onClick={() => handleRemoveBenefits(benefit)}
+                      >
+                        {benefit.name}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                ) : benefitFull.length && benefitFull.length > 0 ? (
+                  <div className={classes.main24}>
+                    {benefitFull.map((skills) => (
+                      <span
+                        key={skills.id}
+                        className={classes.span2}
+                        // onClick={() => handleRemoveSkill(skills)}
+                      >
+                        {skills.name}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                ) : undefined}
+                <div className={classes.div1} aria-expanded="false">
+                  <div className={inputBenefit ? classes.divne : classes.div2}>
+                    <div className={classes.div3}>
+                      <div className={classes.div4}>
+                        <div className={classes.icon}>
+                          <SearchIcon />
+                        </div>
+                        <input
+                          value={inputBenefit}
+                          onChange={handleChangeBenefit}
+                          className={classes.input2}
+                          type="text"
+                          // placeholder="e.g. Python,Reactjs"
+                          aria-autocomplete="list"
+                          autoComplete="off"
+                          onFocus={() => setDropdownOpenBenefit(true)}
+                        />
+                      </div>
+
+                      {dropdownOpenBenefit && (
+                        <div
+                          className={classes.dropdown}
+                          ref={dropdownRefBenefit}
+                        >
+                          {filteredBenefits?.length &&
+                          filteredBenefits?.length > 0 ? (
+                            filteredBenefits?.map((comp, index) => (
+                              <div
+                                key={index}
+                                className={classes.dropdownItem}
+                                onClick={() => handleBenefit(comp)}
+                              >
+                                {/* <img
+                          src={comp.imageUrl}
+                          alt={comp.companyName}
+                          className={classes.logo}
+                        /> */}
+                                <span className={classes.companyName}>
+                                  {comp.name}
+                                </span>
+                                {/* <span className={classes.companyUrl}>
+                          {comp.websiteURL}
+                        </span> */}
+                              </div>
+                            ))
+                          ) : (
+                            <div
+                              className={classes.createNewCompany}
+                              //   onClick={handleOpenRegister}
+                              onClick={handleOpenBenefit}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <span>Create new Benefits {inputBenefit}</span>
                             </div>
                           )}
                         </div>
@@ -1007,6 +1233,46 @@ export default function EditJobPage() {
               {isLoadingSkillSet ? "Creating..." : "Create"}
             </Button>
             <Button onClick={handleClose} variant="text">
+              Cancel
+            </Button>
+          </Box>
+        </Modal>
+        <Modal open={openBenefit} onClose={handleCloseBenefit}>
+          <Box sx={style}>
+            <Typography variant="h6" component="h2">
+              Create Benefits
+            </Typography>
+            <TextField
+              label="Name"
+              value={nameBenefits}
+              onChange={(e) => setNameBenefits(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            {/* <TextField
+              label="Shorthand"
+              value={shorthand}
+              onChange={(e) => setShorthand(e.target.value)}
+              fullWidth
+              margin="normal"
+            />
+            <TextField
+              label="Description"
+              value={descriptionSkillSet}
+              onChange={(e) => setDescriptionSkillSet(e.target.value)}
+              fullWidth
+              multiline
+              rows={4}
+              margin="normal"
+            /> */}
+            <Button
+              variant="contained"
+              onClick={handleSubmitBenefits}
+              disabled={isLoadingBenefit}
+            >
+              {isLoadingBenefit ? "Creating..." : "Create"}
+            </Button>
+            <Button onClick={handleCloseBenefit} variant="text">
               Cancel
             </Button>
           </Box>

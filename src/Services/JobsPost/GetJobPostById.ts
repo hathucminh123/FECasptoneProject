@@ -6,7 +6,18 @@ interface JobType {
   name: string;
   description: string;
 }
-
+interface SkillSet {
+  id: number;
+  name: string;
+  shorthand: string;
+  description: string;
+}
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 // interface JobLocation {
 //   id: number;
 //   district: string;
@@ -34,8 +45,10 @@ interface JobPost {
   websiteCompanyURL: string;
   jobType: JobType; // jobType là đối tượng JobType
   jobLocationCities:string[];
-  jobLocationAddressDetail:string[]
+  jobLocationAddressDetail:string[];
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
+  skillSetObjects?:SkillSet[];
+  benefitObjects?:Benefits[];
 }
 
 interface FetchError extends Error {

@@ -16,6 +16,12 @@ interface JobType {
 //   country: string;
 //   stressAddress: string;
 // }
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 
 interface JobPost {
   id: number;
@@ -36,6 +42,7 @@ interface JobPost {
   jobLocationCities:string[];
   jobLocationAddressDetail:string[]
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
+  benefitObjects?: Benefits[];
 }
 
 interface FetchError extends Error {

@@ -117,6 +117,7 @@ import Settings from "./pages/Settings";
 import EditInfoCompany from "./pages/EmployerNewUi/EditInfoCompany";
 import SkillSetPage from "./pages/Admin/SkillSetPage";
 import JobTypePage from "./pages/Admin/JobTypePage";
+import BenefitsPage from "./pages/Admin/BenefitsPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -784,6 +785,10 @@ const router = createBrowserRouter([
       {
         path:"skillSet",
         element:<SkillSetPage/>
+      },
+      {
+        path:"Benefits",
+        element:<BenefitsPage/>
       },
       {
         path:"JobType",

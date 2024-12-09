@@ -1,45 +1,49 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import "react-quill/dist/quill.snow.css";
 import classes from "./PersonalProject.module.css";
 import TextField from "@mui/material/TextField";
 import { message } from "antd";
 import { queryClient } from "../Services/mainService";
-import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
+// import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
+
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 // import CardSkillModal from "./CardSkillModal";
 // import { renderButton } from "./RenderButton";
 import RenderButton from "./RenderButton";
-import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
+// import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
+import { PostBenefits } from "../Services/Benefits/PostBenefits";
+import { GetBenefits } from "../Services/Benefits/GetBenefits";
+import { PostUserBenefit } from "../Services/UserBenefits/PostUserBenefit";
 // import { default as modal } from "@mui/material/Modal"; 
 
 // import Button from "@mui/material/Button";
 
 
 
-interface SkillSet {
-  id: number;
-  name: string;
-  shorthand: string;
-  description: string;
-}
+interface Benefits {
+    id: number;
+    name: string;
+    // shorthand: string;
+    // description: string;
+  }
+
 interface Props {
   onDone?: () => void;
 }
 
-export default function PersonalProject({ onDone }: Props) {
+export default function BenefitProfile({ onDone }: Props) {
   const userId = localStorage.getItem("userId");
   // const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
  
-  const [skills, setSkills] = useState<SkillSet|null>(null);
+  const [skills, setSkills] = useState<Benefits|null>(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [skillId, setSkillId] = useState<number|null>(null);
@@ -48,13 +52,13 @@ export default function PersonalProject({ onDone }: Props) {
   const dropdownRef = useRef<HTMLDivElement>(null);
   // const [value, setValue] = useState<string>("");
   const { data: SkillSetData } = useQuery({
-    queryKey: ["SkillSetDetails"],
-    queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
+    queryKey: ["Benefits"],
+    queryFn: ({ signal }) => GetBenefits({ signal: signal }),
     staleTime: 1000,
   });
 
 
-  const SkillSetDatas = SkillSetData?.SkillSets;
+  const SkillSetDatas = SkillSetData?.Benefits;
   const [filteredSkills, setFilteredSkills] = useState(SkillSetDatas);
 
 
@@ -90,12 +94,12 @@ export default function PersonalProject({ onDone }: Props) {
     };
   }, []);
 
-  const handleSkill = (selectedSkill: SkillSet) => {
+  const handleSkill = (selectedSkill: Benefits) => {
   setSkills(selectedSkill)
   setSkillId(selectedSkill.id)
   };
 
-  const handleRemoveSkill = (skillToRemove: SkillSet) => {
+  const handleRemoveSkill = (skillToRemove: Benefits) => {
     setSkillId((prev) => prev === skillToRemove.id ? null : skillToRemove.id )
     setSkills((prev) => prev === skillToRemove ? null : skillToRemove )
   };
@@ -106,11 +110,11 @@ export default function PersonalProject({ onDone }: Props) {
 
   const [formData, setFormData] = useState({
     name: "",
-    shorthand: "",
-    description: "",
+    // shorthand: "",
+    // description: "",
   });
   const { mutate: Save, isPending: isSaving } = useMutation({
-    mutationFn: PostUserSkill,
+    mutationFn: PostUserBenefit,
     onSuccess: () => {
   
       queryClient.invalidateQueries({
@@ -125,27 +129,27 @@ export default function PersonalProject({ onDone }: Props) {
     },
   });
 
-  const maxLength = 2500;
+//   const maxLength = 2500;
 
   // Strip HTML tags to count only text characters
-  const stripHTML = (html: string) => {
-    const tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-  };
+//   const stripHTML = (html: string) => {
+//     const tmp = document.createElement("DIV");
+//     tmp.innerHTML = html;
+//     return tmp.textContent || tmp.innerText || "";
+//   };
 
-  const remainingChars = maxLength - stripHTML(formData.description).length;
+//   const remainingChars = maxLength - stripHTML(formData.description).length;
 
   const navigate = useNavigate();
   const { mutate, isPending } = useMutation({
-    mutationFn: PostSkillSets,
+    mutationFn: PostBenefits,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["SkillSetDetails"] });
+      queryClient.invalidateQueries({ queryKey: ["Benefits"] });
       navigate("#");
       setFormData({
         name: "",
-        shorthand: "",
-        description: "",
+        // shorthand: "",
+        // description: "",
       });
       // onDone?.();
       message.success("SkillSet Details Updated Successfully");
@@ -158,15 +162,15 @@ export default function PersonalProject({ onDone }: Props) {
     Save({
       data: {
         userId: Number(userId),
-        skillSetId: skillId,
-        proficiencyLevel: "",
+        benefitId: skillId,
+        // proficiencyLevel: "",
       },
     });
   };
 
   const handleSubmit = () => {
     // Perform validation and submit formData
-    if (!formData.name || !formData.shorthand || !formData.description) {
+    if (!formData.name ) {
       alert("Please fill in all fields.");
       return;
     }
@@ -174,8 +178,8 @@ export default function PersonalProject({ onDone }: Props) {
     mutate({
       data: {
         name: formData.name,
-        shorthand: formData.shorthand,
-        description: formData.description,
+        // shorthand: formData.shorthand,
+        // description: formData.description,
       },
     });
     // Call your API or perform any action with the form data
@@ -185,7 +189,7 @@ export default function PersonalProject({ onDone }: Props) {
   return (
     <Modal
     text="Save"
-      title="Skill Sets"
+      title="Benefits"
       onClose={onDone}
       isPending={isSaving}
       onClickSubmit={handleSaveSkillSet}
@@ -205,8 +209,7 @@ export default function PersonalProject({ onDone }: Props) {
             <div className={classes.tipText}>
               <b>
                 <span className={classes.tipHighlight}>Tips: </span>
-                You can share the project that relates to your skills and
-                capabilities
+                You can update benefits
               </b>
             </div>
           </div>
@@ -215,7 +218,7 @@ export default function PersonalProject({ onDone }: Props) {
             {/* Project Name (name) */}
             <div className={classes.projectname}>
               <TextField
-                label="Skill Name"
+                label="Benefits Name"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
@@ -227,7 +230,7 @@ export default function PersonalProject({ onDone }: Props) {
             </div>
 
             {/* Short Description (shorthand) */}
-            <div className={classes.description}>
+            {/* <div className={classes.description}>
               <div style={{ display: "block" }}>
                 <Typography
                   variant="h4"
@@ -254,11 +257,11 @@ export default function PersonalProject({ onDone }: Props) {
                   className={classes.inputGroup}
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Detailed Description (description) */}
             <div className={classes.description}>
-              <div style={{ display: "block" }}>
+              {/* <div style={{ display: "block" }}>
                 <Typography
                   variant="h4"
                   sx={{
@@ -289,7 +292,7 @@ export default function PersonalProject({ onDone }: Props) {
                 >
                   {remainingChars} of 2500 characters remaining
                 </Typography>
-              </div>
+              </div> */}
               {/* <button type="button" onClick={handleSubmit}>
                 Submit
               </button> */}
@@ -302,7 +305,7 @@ export default function PersonalProject({ onDone }: Props) {
   />
 ) : (
   <RenderButton
-    text="Add Skill Set"
+    text="Add Benefits"
     color="#ed1b2f"
     variant="contained"
     sxOverrides={{ minWidth: "180px" }}
@@ -320,7 +323,7 @@ export default function PersonalProject({ onDone }: Props) {
               >
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    Select Your Skills
+                    Select Your Benefits
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
@@ -352,7 +355,7 @@ export default function PersonalProject({ onDone }: Props) {
                           onChange={handleChange}
                           className={classes.input2}
                           type="text"
-                          placeholder="e.g. Python,Reactjs"
+                          placeholder="Select Your benefit"
                           aria-autocomplete="list"
                           autoComplete="off"
                           onFocus={() => setDropdownOpen(true)}

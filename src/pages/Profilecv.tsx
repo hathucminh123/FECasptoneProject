@@ -30,6 +30,9 @@ import CardSkill from "../components/CardSkill";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile";
 import { useNavigate } from "react-router-dom";
 import GradientCircularProgress from "../components/GradientCircularProgress";
+import BenefitProfile from "../components/BenefitProfile";
+import CardBenefits from "../components/CardBenefits";
+
 // import { useNavigate } from "react-router-dom";
 export default function Profilecv() {
   const [more, setMore] = useState<boolean>(false);
@@ -44,9 +47,11 @@ export default function Profilecv() {
 
   const [isCreatingNewChallenge4, setIsCreatingNewChallenge4] =
     useState<boolean>(false);
+  const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
+    useState<boolean>(false);
   const userId = localStorage.getItem("userId");
 
-  const [percent,setPercent]=useState<number>(0)
+  const [percent, setPercent] = useState<number>(0);
 
   // const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
   // useState<boolean>(false);
@@ -89,6 +94,13 @@ export default function Profilecv() {
 
   function handleDone4() {
     setIsCreatingNewChallenge4(false);
+  }
+
+  function handleStartAddNewChallenge5() {
+    setIsCreatingNewChallenge5(true);
+  }
+  function handleDone5() {
+    setIsCreatingNewChallenge5(false);
   }
 
   // function handleStartAddNewChallenge5() {
@@ -174,7 +186,7 @@ export default function Profilecv() {
 
   useEffect(() => {
     let newPercent = 0;
-  
+
     if (UserProfileData) {
       if (UserProfileData.educationDetails.length > 0) {
         newPercent += 33.3;
@@ -185,14 +197,20 @@ export default function Profilecv() {
       if (UserProfileData.skillSets.length > 0) {
         newPercent += 33.3;
       }
-      if(UserProfileData.educationDetails.length > 0 && UserProfileData.experienceDetails.length > 0 &&UserProfileData.skillSets.length > 0){
-        newPercent=100
+      if (UserProfileData.benefits.length > 0) {
+        newPercent += 33.3;
+      }
+      if (
+        UserProfileData.educationDetails.length > 0 &&
+        UserProfileData.experienceDetails.length > 0 &&
+        UserProfileData.skillSets.length > 0
+      ) {
+        newPercent = 100;
       }
     }
-  
+
     setPercent(newPercent);
   }, [UserProfileData]);
-
 
   return (
     <div className={classes.icontainer}>
@@ -214,7 +232,7 @@ export default function Profilecv() {
                   Profile Strength
                 </Typography>
 
-                <GradientCircularProgress percentage={percent}/>
+                <GradientCircularProgress percentage={percent} />
               </div>
               <div style={{ display: "block" }}>
                 <Typography
@@ -226,7 +244,7 @@ export default function Profilecv() {
                     fontWeight: 600,
                   }}
                 >
-                  Upgrade profile to Excellent to  Download CV
+                  Upgrade profile to Excellent to Download CV
                 </Typography>
 
                 <div className={classes.updateprofile}>
@@ -597,6 +615,15 @@ export default function Profilecv() {
             onClick={handleStartAddNewChallenge4}
             data={UserProfileData?.skillSets}
           />
+          <CardBenefits
+            title="Benefits"
+            text="Highlight Your Benefits"
+            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+            icon={<EditNoteOutlinedIcon />}
+            img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
+            onClick={handleStartAddNewChallenge5}
+            data={UserProfileData?.benefits}
+          />
           {/* <CardProfile
             title="Certificates"
             text="Highlight detailed information about your job history"
@@ -623,6 +650,9 @@ export default function Profilecv() {
 
       <AnimatePresence>
         {isCreatingNewChallenge4 && <PersonalProject onDone={handleDone4} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isCreatingNewChallenge5 && <BenefitProfile onDone={handleDone5} />}
       </AnimatePresence>
 
       {/* <AnimatePresence>
