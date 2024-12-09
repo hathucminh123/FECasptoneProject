@@ -209,7 +209,7 @@ export default function ListJobDetails() {
                               </p>
                             ))}
                           </div>
-                          <p className={classes.p1}>Skills: </p>
+                          <p className={classes.p1}>Benefits: </p>
                           <div
                             style={{
                               display: "flex",

@@ -54,6 +54,10 @@ interface CVs {
   url: string;
   name: string;
 }
+interface Benefits {
+  id: number;
+  name: string;
+}
 interface UserProfile {
   id: number;
   userName: string;
@@ -65,6 +69,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits: Benefits[];
 }
 const InterViewApplicants: React.FC = () => {
   const { id } = useParams();
@@ -416,6 +421,35 @@ const InterViewApplicants: React.FC = () => {
                               <span>{skill.name}</span>
                             </div>
                           ))}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
+                            Benefits{" :"}
+                            {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                          </div>
+                        </div>
+
+                        <div className={classes.main28}>
+                          {profile.benefits && profile.benefits.length > 0 ? (
+                            profile.benefits.map((skill) => (
+                              <div key={skill.id} className={classes.main29}>
+                                <span>{skill.name}</span>
+                              </div>
+                            ))
+                          ) : (
+                            <span>no Benefits Yet</span>
+                          )}
                         </div>
                       </div>
                     </div>

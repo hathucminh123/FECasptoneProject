@@ -195,6 +195,30 @@ export default function ListTalent() {
                                <p className={classes.p1} key={index}>  {skill}{index < job.skillSets.length - 1 && " -"}</p>
                             ))}
                           </div>
+                          <p className={classes.p1}>Benefits: </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 10,
+                              flexWrap: "wrap",
+                              boxSizing: "border-box",
+                            }}
+                          >
+                            {job.benefitObjects &&
+                            job.benefitObjects.length > 0 ? (
+                              job.benefitObjects.map((benefit, index) => (
+                                <p className={classes.p1} key={benefit.id}>
+                                  {benefit.name}
+                                  {index <
+                                    (job.benefitObjects ?? []).length - 1 &&
+                                    " -"}
+                                </p>
+                              ))
+                            ) : (
+                              <p className={classes.p1}>No Benefit Yet</p>
+                            )}
+                          </div>
                         </NavLink>
                       );
                     })

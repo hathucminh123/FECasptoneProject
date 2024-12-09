@@ -61,7 +61,10 @@ interface CVs {
   url: string;
   name: string;
 }
-
+interface Benefits {
+  id: number;
+  name: string;
+}
 interface UserProfile {
   id: number;
   firstName: string;
@@ -72,6 +75,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits?: Benefits[];
 }
 
 const style = {
@@ -205,9 +209,9 @@ export default function RecommendTalents() {
   //   };
 
   const handleExpandClick = (id: number) => {
-    setExpandedId((prevId) => (prevId === id ? null : id)); 
+    setExpandedId((prevId) => (prevId === id ? null : id));
   };
-  
+
   const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
     mutationFn: PostSkillSets,
     onSuccess: () => {
@@ -250,7 +254,7 @@ export default function RecommendTalents() {
   } = useQuery({
     queryKey: ["JobSeekerRole", pageIndex, id],
     queryFn: ({ signal }) =>
-    ListSeekers({ signal, jobPostId: Number(id), pageIndex, pageSize }),
+      ListSeekers({ signal, jobPostId: Number(id), pageIndex, pageSize }),
     enabled: !!id,
   });
 
@@ -375,7 +379,7 @@ export default function RecommendTalents() {
                                       {/* {". "}
                                         <span>asdasdas</span> */}
                                     </div>
-                                    {expandedId === data.id  && (
+                                    {expandedId === data.id && (
                                       <>
                                         <div className={classes.main20}>
                                           <span>
@@ -476,6 +480,35 @@ export default function RecommendTalents() {
                             <span>{skill.name}</span>
                           </div>
                         ))}
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <div className={classes.main11}>
+                      <div className={classes.main12}>
+                        <div className={classes.main13}>
+                          Benefits{" :"}
+                          {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                        </div>
+                      </div>
+
+                      <div className={classes.main28}>
+                        {data.benefits && data.benefits.length > 0 ? (
+                          data.benefits.map((skill) => (
+                            <div key={skill.id} className={classes.main29}>
+                              <span>{skill.name}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <span>no Benefits Yet</span>
+                        )}
                       </div>
                     </div>
                   </div>

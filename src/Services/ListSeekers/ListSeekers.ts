@@ -33,6 +33,10 @@ interface CVs {
   url: string;
   name: string;
 }
+interface Benefits {
+  id: number;
+  name: string;
+}
 
 interface UserProfile {
   id: number;
@@ -44,6 +48,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits?: Benefits[];
 }
 
 interface FetchError extends Error {
