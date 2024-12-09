@@ -44,6 +44,10 @@ interface CVs {
   url: string;
   name: string;
 }
+interface Benefits {
+  id: number;
+  name: string;
+}
 interface UserProfile {
   id: number;
   userName: string;
@@ -55,6 +59,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits: Benefits[];
 }
 interface props {
   onClose?: () => void;
@@ -436,6 +441,28 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                             </div>
                           </div>
                         </div>
+                        <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>Benefits</div>
+                            <div className={classes.main29}>
+                              {profile?.benefits &&
+                              profile.benefits.length > 0 ? (
+                                profile?.benefits.map((skill) => (
+                                  <div
+                                    className={classes.main30}
+                                    key={skill.id}
+                                  >
+                                    <div className={classes.main31}>
+                                      <span>{skill.name}</span>
+                                    </div>
+                                  </div>
+                                ))
+                              ) : (
+                                <span>No Benefits Yet</span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                         {/* chart */}
                         <div className={classes.main27}>
                           <div className={classes.main16}>
@@ -674,7 +701,13 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                           </div>
                                           <div className={classes.main28}>
                                             Experience:
-                                            <div className={classes.main29} style={{backgroundColor:'#fafafa',marginBottom:'15px'}}>
+                                            <div
+                                              className={classes.main29}
+                                              style={{
+                                                backgroundColor: "#fafafa",
+                                                marginBottom: "15px",
+                                              }}
+                                            >
                                               {Array.isArray(
                                                 item.professional.experience
                                               ) &&

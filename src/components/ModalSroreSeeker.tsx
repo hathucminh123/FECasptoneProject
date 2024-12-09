@@ -43,6 +43,11 @@ interface CVs {
   url: string;
   name: string;
 }
+
+interface Benefits {
+  id:number;
+  name:string;
+}
 interface UserProfile {
   id: number;
   userName: string;
@@ -54,6 +59,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits:Benefits[];
 }
 
 interface SeekersByJobPost {
@@ -479,6 +485,26 @@ const ModalSroreSeeker: React.FC<props> = ({
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
+                                    <div
+                                      className={classes.main30}
+                                      key={skill.id}
+                                    >
+                                      <div className={classes.main31}>
+                                        <span>{skill.name}</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                : undefined}
+                            </div>
+                          </div>
+                        </div>
+                        <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>Benefits:</div>
+                            <div className={classes.main29}>
+                              {profile?.benefits &&
+                              profile.benefits.length > 0
+                                ? profile?.benefits.map((skill) => (
                                     <div
                                       className={classes.main30}
                                       key={skill.id}
