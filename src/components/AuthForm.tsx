@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../Services/mainService";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { login } from "../Services/AuthService/Login";
+import { message } from "antd";
 // import { message } from "antd";
 // import { message } from "antd";
 
@@ -105,7 +106,7 @@ const AuthForm: React.FC = () => {
       const PremiumExpireDate=userInfo.PremiumExpireDate
       expiration.setHours(expiration.getHours() + 24);
       const token = data.result;
-      // if (userRole === "Admin") {
+      if (userRole === "admin") {
         localStorage.setItem("Auth", "true");
         localStorage.setItem("name", userName);
         localStorage.setItem("role", userRole);
@@ -124,9 +125,9 @@ const AuthForm: React.FC = () => {
         // }
 
         navigate("/Admin");
-      // } else {
-      // message.error("login Failed")
-      // }
+      } else {
+      message.error("login Failed")
+      }
 
       setIsLogin({
         userEmail: "",

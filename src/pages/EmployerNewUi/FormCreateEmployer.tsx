@@ -415,6 +415,7 @@ export default function FormCreateEmployer() {
     onSuccess: (data) => {
       const idJob = data.result.jobPost;
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
+      queryClient.invalidateQueries({ queryKey: ["Job-details"] });
       message.success("Post Job successfully.");
       navigate(`/EmployerJob/listjobs/OverView/${idJob}`);
       //   setShowAlert(true);

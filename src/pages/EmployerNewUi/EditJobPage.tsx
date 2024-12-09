@@ -441,6 +441,11 @@ export default function EditJobPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       queryClient.invalidateQueries({ queryKey: ["Job-details"] });
+      
+      queryClient.invalidateQueries({
+        queryKey: ["JobSearch"],
+        refetchType: "active",
+      });
       message.success("Post Job successfully.");
       navigate(`/EmployerJob/listjobs/OverView/${job?.id}`);
       //   setShowAlert(true);

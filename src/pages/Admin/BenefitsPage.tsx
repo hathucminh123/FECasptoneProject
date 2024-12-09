@@ -165,7 +165,7 @@ const BenefitsPage: React.FC = () => {
         <HeaderSystem
           title="Benefits Management"
           appear={false}
-          buttonstring="Create skillSet"
+          buttonstring="Create Benefits"
           onclick={handleOpen}
         />
       </div>
@@ -255,7 +255,7 @@ const BenefitsPage: React.FC = () => {
           <Modal open={open} onClose={handleClose}>
             <Box sx={modalStyle}>
               <Typography variant="h6" component="h2">
-                Create SkillSet
+                Create Benefits
               </Typography>
               <TextField
                 label="Name"

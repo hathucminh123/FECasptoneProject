@@ -13,6 +13,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Typography  from "@mui/material/Typography";
 import Box  from "@mui/material/Box";
 
+
+
+
 interface props {
   setOpen?: Dispatch<SetStateAction<boolean>>;
   open?: boolean;
@@ -138,6 +141,12 @@ interface props {
               <NavLink className={classes.navlink} to="JobType">
                 <CreateIcon className={classes.icon} />
                 Manage JobType
+              </NavLink>
+            </li>
+            <li className={classes.li}>
+              <NavLink className={classes.navlink} to="Benefits">
+                <CreateIcon className={classes.icon} />
+                Manage Benefits
               </NavLink>
             </li>
             {/* <li className={classes.li} onClick={handleOpenNotification}>

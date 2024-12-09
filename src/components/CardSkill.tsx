@@ -47,6 +47,10 @@ const CardSkill: React.FC<FormProps> = ({
         queryKey: ["UserProfile"],
         refetchType: "active",
       });
+        // queryClient.invalidateQueries({
+        //   queryKey: ["UserProfile"],
+        //   refetchType: "active",
+        // });
       message.success("SkillSet Details Deleted Successfully");
       setDeletingId(null);
     },
