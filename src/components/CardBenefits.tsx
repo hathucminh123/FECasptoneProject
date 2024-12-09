@@ -6,7 +6,7 @@ import { message } from "antd";
 
 import { queryClient } from "../Services/mainService";
 // import { DeleteSkillSet } from "../Services/SkillSet/DeleteSkillSet";
-import classes from "./CardSkill.module.css";
+import classes from "./CardBenefit.module.css";
 // import { DeleteUserProfileCV } from "../Services/UserProfileService/DeleteUserProfileCV";
 
 import { DeleteUserBeneFit } from "../Services/UserBenefits/DeleteUserBeneFit";
@@ -113,7 +113,7 @@ const CardBenefits: React.FC<FormProps> = ({
                         fontFamily: "Lexend, sans-serif",
                       }}
                     >
-                      Benefits name: {item?.name}
+                      Benefits name: 
                     </Typography>
                     {deletingId === item.id ? (
                       <>Please wait a second...</>
@@ -133,6 +133,11 @@ const CardBenefits: React.FC<FormProps> = ({
                     className={classes.main7}
                     dangerouslySetInnerHTML={{ __html: item.description }}
                   /> */}
+                </div>
+                <div className={classes.mainbenefit}>
+                  <div className={classes.mainb1}>
+                    <span className={classes.span}>{item?.name}</span>
+                  </div>
                 </div>
               </div>
             </div>

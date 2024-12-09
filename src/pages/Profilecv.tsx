@@ -151,10 +151,11 @@ export default function Profilecv() {
   // });
 
   const { data: UserProfile } = useQuery({
-    queryKey: ["UserProfile"],
+    queryKey: ["UserProfile",userId],
     queryFn: ({ signal }) =>
       GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
+    enabled:!!Number(userId)
   });
 
   const UserProfileData = UserProfile?.UserProfiles;
@@ -184,31 +185,55 @@ export default function Profilecv() {
   // }
   // const SkillSetDatas = SkillSetData?.SkillSets;
 
+  // useEffect(() => {
+  //   let newPercent = 0;
+
+  //   if (UserProfileData) {
+  //     if (UserProfileData.educationDetails.length > 0) {
+  //       newPercent += 33.3;
+  //     }
+  //     if (UserProfileData.experienceDetails.length > 0) {
+  //       newPercent += 33.3;
+  //     }
+  //     if (UserProfileData.skillSets.length > 0) {
+  //       newPercent += 33.3;
+  //     }
+  //     if (UserProfileData.benefits.length > 0) {
+  //       newPercent += 33.3;
+  //     }
+    
+  //     if (
+  //       UserProfileData.educationDetails.length > 0 &&
+  //       UserProfileData.experienceDetails.length > 0 &&
+  //       UserProfileData.skillSets.length > 0 &&
+  //       UserProfileData.benefits.length >0
+  //     ) {
+  //       newPercent = 100;
+  //     }
+  //   }
+
+  //   setPercent(newPercent);
+  // }, [UserProfileData]);
   useEffect(() => {
     let newPercent = 0;
-
+  
     if (UserProfileData) {
+      const weight = 25; // Mỗi yếu tố chiếm 25%
+  
       if (UserProfileData.educationDetails.length > 0) {
-        newPercent += 33.3;
+        newPercent += weight;
       }
       if (UserProfileData.experienceDetails.length > 0) {
-        newPercent += 33.3;
+        newPercent += weight;
       }
       if (UserProfileData.skillSets.length > 0) {
-        newPercent += 33.3;
+        newPercent += weight;
       }
       if (UserProfileData.benefits.length > 0) {
-        newPercent += 33.3;
-      }
-      if (
-        UserProfileData.educationDetails.length > 0 &&
-        UserProfileData.experienceDetails.length > 0 &&
-        UserProfileData.skillSets.length > 0
-      ) {
-        newPercent = 100;
+        newPercent += weight;
       }
     }
-
+  
     setPercent(newPercent);
   }, [UserProfileData]);
 

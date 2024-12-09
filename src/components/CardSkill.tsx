@@ -112,7 +112,7 @@ const CardSkill: React.FC<FormProps> = ({
                         fontFamily: "Lexend, sans-serif",
                       }}
                     >
-                      Skill name: {item?.name}
+                      Skill name: 
                     </Typography>
                     {deletingId === item.id ? (
                       <>Please wait a second...</>
@@ -125,13 +125,18 @@ const CardSkill: React.FC<FormProps> = ({
                       </div>
                     )}
                   </div>
-                  <div className={classes.main6}>
-                    Short Hand: {item.shorthand}
+                  <div className={classes.mainbenefit}>
+                  <div className={classes.mainb1}>
+                    <span className={classes.span}>{item?.name}</span>
                   </div>
-                  <div
+                </div>
+                  {/* <div className={classes.main6}>
+                    Short Hand: {item.shorthand}
+                  </div> */}
+                  {/* <div
                     className={classes.main7}
                     dangerouslySetInnerHTML={{ __html: item.description }}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

@@ -24,15 +24,22 @@ interface EducationDetail {
   endDate: string;
   gpa: number;
 }
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
+}
 const ElegantTemplate: React.FC = () => {
   const cvRef = useRef<HTMLDivElement>(null);
   const userId = localStorage.getItem("userId");
 
   const { data: UserProfile } = useQuery({
-    queryKey: ["UserProfile"],
+    queryKey: ["UserProfile", userId],
     queryFn: ({ signal }) =>
       GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
+    enabled: !!Number(userId),
   });
 
   const UserProfileData = UserProfile?.UserProfiles;
@@ -69,9 +76,17 @@ const ElegantTemplate: React.FC = () => {
     // Contact Details
     doc.setFontSize(12);
     doc.setTextColor(255, 255, 255);
-    doc.text(`Phone Number : ${UserProfileData?.phoneNumber || "No Phone Number"}`, marginLeft, 35);
-    
-    doc.text(`Email: ${UserProfileData?.email || "No Email Yet"}`, marginLeft +80 , 35);
+    doc.text(
+      `Phone Number : ${UserProfileData?.phoneNumber || "No Phone Number"}`,
+      marginLeft,
+      35
+    );
+
+    doc.text(
+      `Email: ${UserProfileData?.email || "No Email Yet"}`,
+      marginLeft + 80,
+      35
+    );
 
     currentY = 50; // Move below the header
 
@@ -83,43 +98,52 @@ const ElegantTemplate: React.FC = () => {
       doc.text(title, marginLeft, currentY);
       currentY += 5;
 
-      
       doc.setDrawColor(200, 200, 200); // Light gray line
       doc.setLineWidth(0.5);
       doc.line(marginLeft, currentY, pageWidth - marginLeft, currentY);
       currentY += 5;
     };
-    const addEducationSection = (educationDetails:EducationDetail[]) => {
+    const addEducationSection = (educationDetails: EducationDetail[]) => {
       // Title for Education Section
       addSectionTitle("Education");
-  
+
       // Iterate through each education detail
       educationDetails.forEach((edu) => {
-          // School Name and Major on the same line
-          doc.setFont("Helvetica", "bold");
-          doc.setFontSize(12);
-          doc.text(`School name: ${edu?.institutionName || "Not Provided"}`, marginLeft, currentY);
-          
-          // Display Date Range, Vertical Bar, and Major
-          const dateRange = `From: ${moment(edu.startDate).format("DD-MM-YYYY")} - To: ${moment(edu.endDate).format("DD-MM-YYYY")}`;
-          const major = `Major: ${edu?.fieldOfStudy || "Not Provided"}`;
-          const separator = " | ";
-  
-          const combinedText = `${dateRange}${separator}${major}`;
-          doc.setFontSize(12);
-          doc.setFont("Helvetica", "normal");
-          doc.text(combinedText, marginLeft, currentY + 6);
-  
-          // Degree
-          currentY += 12;
-          doc.text(`Degree: ${edu.degree || "Not Provided"}`, marginLeft, currentY);
-          currentY += 12; // Add spacing for the next section
+        // School Name and Major on the same line
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(
+          `School name: ${edu?.institutionName || "Not Provided"}`,
+          marginLeft,
+          currentY
+        );
+
+        // Display Date Range, Vertical Bar, and Major
+        const dateRange = `From: ${moment(edu.startDate).format(
+          "DD-MM-YYYY"
+        )} - To: ${moment(edu.endDate).format("DD-MM-YYYY")}`;
+        const major = `Major: ${edu?.fieldOfStudy || "Not Provided"}`;
+        const separator = " | ";
+
+        const combinedText = `${dateRange}${separator}${major}`;
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "normal");
+        doc.text(combinedText, marginLeft, currentY + 6);
+
+        // Degree
+        currentY += 12;
+        doc.text(
+          `Degree: ${edu.degree || "Not Provided"}`,
+          marginLeft,
+          currentY
+        );
+        currentY += 12; // Add spacing for the next section
       });
-  };
-  
-  // Example call for the above function
-  addEducationSection(UserProfileData?.educationDetails || []);
-  
+    };
+
+    // Example call for the above function
+    addEducationSection(UserProfileData?.educationDetails || []);
+
     // Add Education Section
     // addSectionTitle("Education");
 
@@ -147,7 +171,7 @@ const ElegantTemplate: React.FC = () => {
     //   currentY += 12;
 
     //   // Add Skills Section
-      
+
     // });
     // addSectionTitle("Skills");
     //   doc.setFont("Helvetica", "normal");
@@ -156,7 +180,7 @@ const ElegantTemplate: React.FC = () => {
     //     currentY += 6;
     //   });
     //   currentY += 10;
-    const addSkillsSection = (skillSets:SkillSet[]) => {
+    const addSkillsSection = (skillSets: SkillSet[]) => {
       // Add Skills Title
       addSectionTitle("Skills");
 
@@ -165,42 +189,93 @@ const ElegantTemplate: React.FC = () => {
       const boxMargin = 5; // Space between boxes
       let currentX = marginLeft; // Start from the left margin
       const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
-  
-       // Reduce the vertical gap after the title (smaller than before)
-  
-      skillSets.forEach((skill) => {
-          const skillText = skill.name || "Skill";
-          const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
-  
-          // Wrap to next row if it exceeds the page width
-          if (currentX + textWidth > maxWidth) {
-              currentX = marginLeft; // Reset X position
-              currentY += boxHeight + boxMargin; // Move to the next row
-          }
-  
-          // Draw the rectangle for the skill
-          doc.setDrawColor(200, 200, 200); // Light gray border color
-          doc.setFillColor(240, 240, 240); // Light background color
-          doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
-  
-          // Add the skill text inside the rectangle
-          doc.setFont("Helvetica", "normal");
-          doc.setFontSize(10);
-          doc.setTextColor(33, 33, 33); // Dark text color
-          doc.text(skillText, currentX + boxPadding, currentY + boxHeight / 2 + 2.5); // Center text vertically
-  
-          // Update X position for the next box
-          currentX += textWidth + boxMargin;
-      });
-  
-      // Update Y position for the next section
-      currentY +=20;
-  };
-  
-  // Example call for the above function
-  addSkillsSection(UserProfileData?.skillSets || []);
-  
 
+      // Reduce the vertical gap after the title (smaller than before)
+
+      skillSets.forEach((skill) => {
+        const skillText = skill.name || "Skill";
+        const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
+
+        // Wrap to next row if it exceeds the page width
+        if (currentX + textWidth > maxWidth) {
+          currentX = marginLeft; // Reset X position
+          currentY += boxHeight + boxMargin; // Move to the next row
+        }
+
+        // Draw the rectangle for the skill
+        doc.setDrawColor(200, 200, 200); // Light gray border color
+        doc.setFillColor(240, 240, 240); // Light background color
+        doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
+
+        // Add the skill text inside the rectangle
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(33, 33, 33); // Dark text color
+        doc.text(
+          skillText,
+          currentX + boxPadding,
+          currentY + boxHeight / 2 + 2.5
+        ); // Center text vertically
+
+        // Update X position for the next box
+        currentX += textWidth + boxMargin;
+      });
+
+      // Update Y position for the next section
+      currentY += 20;
+    };
+
+    // Example call for the above function
+    addSkillsSection(UserProfileData?.skillSets || []);
+
+    //benefits
+    const addBenefitsSection = (Benefits: Benefits[]) => {
+      // Add Skills Title
+      addSectionTitle("Benefits");
+
+      const boxHeight = 8; // Height of each skill box
+      const boxPadding = 3; // Padding inside the box for text
+      const boxMargin = 5; // Space between boxes
+      let currentX = marginLeft; // Start from the left margin
+      const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
+
+      // Reduce the vertical gap after the title (smaller than before)
+
+      Benefits.forEach((benefit) => {
+        const skillText = benefit.name || "Skill";
+        const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
+
+        // Wrap to next row if it exceeds the page width
+        if (currentX + textWidth > maxWidth) {
+          currentX = marginLeft; // Reset X position
+          currentY += boxHeight + boxMargin; // Move to the next row
+        }
+
+        // Draw the rectangle for the skill
+        doc.setDrawColor(200, 200, 200); // Light gray border color
+        doc.setFillColor(240, 240, 240); // Light background color
+        doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
+
+        // Add the skill text inside the rectangle
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor(33, 33, 33); // Dark text color
+        doc.text(
+          skillText,
+          currentX + boxPadding,
+          currentY + boxHeight / 2 + 2.5
+        ); // Center text vertically
+
+        // Update X position for the next box
+        currentX += textWidth + boxMargin;
+      });
+
+      // Update Y position for the next section
+      currentY += 20;
+    };
+
+    // Example call for the above function
+    addBenefitsSection(UserProfileData?.benefits || []);
     // Add Work Experience Section
 
     addSectionTitle("Work Experience");
@@ -377,7 +452,7 @@ const ElegantTemplate: React.FC = () => {
                     className={classes.skill1}
                     style={{ fontFamily: "Lexend, sans-serif" }}
                   >
-                    Skill
+                    Skills
                   </div>
 
                   <div className={classes.skill2}>
@@ -397,6 +472,50 @@ const ElegantTemplate: React.FC = () => {
                               className={classes.spanskill}
                             >
                               {skill.name}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      {/* <div className={classes.skill3}>
+                          <div className={classes.skill4}>Description</div>
+                          <div className={classes.skill5}>
+                            <p className={classes.education5}>
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: skill.description,
+                                }}
+                              />
+                            </p>
+                          </div>
+                        </div> */}
+                    </div>
+                  </div>
+                </div>
+                <div className={classes.skill}>
+                  <div
+                    className={classes.skill1}
+                    style={{ fontFamily: "Lexend, sans-serif" }}
+                  >
+                    Benefits
+                  </div>
+
+                  <div className={classes.skill2}>
+                    <div className={classes.education3}>
+                      <div className={classes.skill3}>
+                        <div
+                          className={classes.skill4}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          Benefits name
+                        </div>
+                        <div className={classes.skill5}>
+                          {UserProfileData?.benefits.map((benefit) => (
+                            <span
+                              key={benefit.id}
+                              style={{ fontFamily: "Lexend, sans-serif" }}
+                              className={classes.spanskill}
+                            >
+                              {benefit.name}
                             </span>
                           ))}
                         </div>

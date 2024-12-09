@@ -12,10 +12,11 @@ const MinimalTemplate: React.FC = () => {
   const userId = localStorage.getItem("userId");
 
   const { data: UserProfile } = useQuery({
-    queryKey: ["UserProfile"],
+    queryKey: ["UserProfile", userId],
     queryFn: ({ signal }) =>
       GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
+    enabled: !!Number(userId),
   });
 
   const UserProfileData = UserProfile?.UserProfiles;
@@ -301,40 +302,44 @@ const MinimalTemplate: React.FC = () => {
     const pageHeight = doc.internal.pageSize.getHeight();
     const columnWidth = (pageWidth - 3 * marginLeft) / 2; // Two columns with spacing
     let currentY = marginTop; // Shared starting Y position for both columns
-  
+
     // Function to clean HTML text
-    const extractTextFromHTML = (htmlString:string) => {
+    const extractTextFromHTML = (htmlString: string) => {
       const tempDiv = document.createElement("div");
       tempDiv.innerHTML = htmlString;
       return tempDiv.textContent || tempDiv.innerText || "N/A";
     };
-  
+
     // Add Name Header
     doc.setFont("Helvetica", "bold");
     doc.setFontSize(20);
     doc.setTextColor("#121212");
-    doc.text(`${UserProfileData?.firstName} ${UserProfileData?.lastName}`, marginLeft, currentY);
+    doc.text(
+      `${UserProfileData?.firstName} ${UserProfileData?.lastName}`,
+      marginLeft,
+      currentY
+    );
     currentY += 10;
-  
+
     // Add a horizontal line for styling
     doc.setDrawColor(0, 0, 0);
     doc.setLineWidth(0.5);
     doc.line(marginLeft, currentY, pageWidth - marginLeft, currentY);
     currentY += 10;
-  
+
     // Starting positions for both columns
     let leftY = currentY; // Left column (Personal Details, Education, Skills)
     let rightY = currentY; // Right column (Work Experience)
-  
+
     // Utility function to handle page breaks
-    const checkPageBreak = (currentY:number) => {
+    const checkPageBreak = (currentY: number) => {
       if (currentY > pageHeight - 20) {
         doc.addPage();
         return marginTop; // Reset Y-position to top margin
       }
       return currentY;
     };
-  
+
     // Left Column: Personal Details, Education, Skills
     const renderLeftColumn = () => {
       // Personal Details
@@ -343,25 +348,33 @@ const MinimalTemplate: React.FC = () => {
       doc.setTextColor("#ed1b2f");
       doc.text("PERSONAL DETAILS", marginLeft, leftY);
       leftY += 8;
-  
+
       doc.setFont("Helvetica", "normal");
       doc.setFontSize(10);
       doc.setTextColor("#121212");
-      doc.text(`Phone: ${UserProfileData?.phoneNumber || "No Phone Yet"}`, marginLeft, leftY);
+      doc.text(
+        `Phone: ${UserProfileData?.phoneNumber || "No Phone Yet"}`,
+        marginLeft,
+        leftY
+      );
       leftY += 6;
-      doc.text(`Email: ${UserProfileData?.email || "No Email Yet"}`, marginLeft, leftY);
+      doc.text(
+        `Email: ${UserProfileData?.email || "No Email Yet"}`,
+        marginLeft,
+        leftY
+      );
       leftY += 12;
-  
+
       // Check for page break
       leftY = checkPageBreak(leftY);
-  
+
       // Education
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(12);
       doc.setTextColor("#ed1b2f");
       doc.text("EDUCATION", marginLeft, leftY);
       leftY += 8;
-  
+
       UserProfileData?.educationDetails.forEach((edu) => {
         doc.setFont("Helvetica", "normal");
         doc.setFontSize(10);
@@ -369,99 +382,130 @@ const MinimalTemplate: React.FC = () => {
         doc.text(`School: ${edu.institutionName}`, marginLeft, leftY);
         leftY += 6;
         doc.text(`Major: ${edu.fieldOfStudy}`, marginLeft, leftY);
-        leftY += 6
-        doc.text(`From: ${moment(edu.startDate).format("DD-MM-YYYY")} To: ${moment(edu.endDate).format("DD-MM-YYYY") || "Present"}`, marginLeft, leftY);
+        leftY += 6;
+        doc.text(
+          `From: ${moment(edu.startDate).format("DD-MM-YYYY")} To: ${
+            moment(edu.endDate).format("DD-MM-YYYY") || "Present"
+          }`,
+          marginLeft,
+          leftY
+        );
         leftY += 6;
         doc.text(`Degree: ${edu.degree}`, marginLeft, leftY);
         leftY += 12;
-  
+
         // Check for page break
         leftY = checkPageBreak(leftY);
       });
-  
+
       // Skills
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(12);
       doc.setTextColor("#ed1b2f");
       doc.text("SKILLS", marginLeft, leftY);
       leftY += 8;
-  
+
       UserProfileData?.skillSets.forEach((skill) => {
         doc.setFont("Helvetica", "normal");
         doc.setFontSize(10);
         doc.setTextColor("#121212");
         doc.text(skill.name, marginLeft, leftY);
+        leftY += 12;
+
+        // Check for page break
+        leftY = checkPageBreak(leftY);
+      });
+
+      // Benefit
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor("#ed1b2f");
+      doc.text("Benefits", marginLeft, leftY);
+      leftY += 8;
+
+      UserProfileData?.benefits.forEach((benefit) => {
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor("#121212");
+        doc.text(benefit.name, marginLeft, leftY);
         leftY += 6;
-  
+
         // Check for page break
         leftY = checkPageBreak(leftY);
       });
     };
-  
+
     // Right Column: Work Experience
     const renderRightColumn = () => {
       const startXRight = marginLeft + columnWidth + marginLeft; // Starting X position for the right column
-  
+
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(12);
       doc.setTextColor("#ed1b2f");
       doc.text("WORK EXPERIENCE", startXRight, rightY);
       rightY += 8;
-  
+
       UserProfileData?.experienceDetails.forEach((exp) => {
         doc.setFont("Helvetica", "bold");
         doc.setFontSize(10);
         doc.setTextColor("#121212");
         doc.text(`Position: ${exp.position}`, startXRight, rightY);
         rightY += 6;
-  
+
         doc.setFont("Helvetica", "normal");
         doc.text(`Company: ${exp.companyName}`, startXRight, rightY);
         rightY += 6;
-  
-        doc.text(`From: ${moment( exp.startDate).format("DD-MM-YYYY")} To: ${moment(exp.endDate).format("DD-MM-YYYY") || "Present"}`, startXRight, rightY);
+
+        doc.text(
+          `From: ${moment(exp.startDate).format("DD-MM-YYYY")} To: ${
+            moment(exp.endDate).format("DD-MM-YYYY") || "Present"
+          }`,
+          startXRight,
+          rightY
+        );
         rightY += 6;
-  
+
         doc.text("Responsibilities:", startXRight, rightY);
         rightY += 6;
-  
+
         const responsibilities = doc.splitTextToSize(
           extractTextFromHTML(exp.responsibilities || ""),
           columnWidth
         );
-        responsibilities.forEach((task:string) => {
+        responsibilities.forEach((task: string) => {
           doc.text(`- ${task}`, startXRight + 5, rightY);
           rightY += 6;
-  
+
           // Check for page break
           rightY = checkPageBreak(rightY);
         });
-  
+
         const achievements = doc.splitTextToSize(
           extractTextFromHTML(exp.achievements || ""),
           columnWidth
         );
-        achievements.forEach((ach:string) => {
+        achievements.forEach((ach: string) => {
           doc.text(`- ${ach.trim()}`, startXRight + 5, rightY);
           rightY += 6;
-  
+
           // Check for page break
           rightY = checkPageBreak(rightY);
         });
-  
+
         rightY += 10; // Add spacing between experiences
         rightY = checkPageBreak(rightY); // Check for page break
       });
     };
-  
+
     // Render the two columns
     renderLeftColumn();
     renderRightColumn();
-  
+
     // Save the PDF
-    doc.save(`${UserProfileData?.firstName}_${UserProfileData?.lastName}_Resume.pdf`);
+    doc.save(
+      `${UserProfileData?.firstName}_${UserProfileData?.lastName}_Resume.pdf`
+    );
   };
-  
 
   // const handleDownload = () => {
   //   const doc = new jsPDF("p", "mm", "a4"); // A4 portrait PDF
@@ -934,6 +978,65 @@ const MinimalTemplate: React.FC = () => {
                               </span>
                             </div>
                           </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={classes.Skill}>
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          color: "#ed1b2f",
+                          paddingBottom: "12px",
+                          fontWeight: 700,
+                          fontSize: "16px",
+                          textTransform: "uppercase",
+                          lineHeight: 1.5,
+                          marginTop: 0,
+                          marginBottom: 0,
+                          boxSizing: "border-box",
+                          display: "block",
+                          fontFamily: "Lexend, sans-serif",
+                        }}
+                      >
+                        Benefits
+                      </Typography>
+                      {UserProfileData?.benefits.map((benefit) => (
+                        <div style={{ marginBottom: "30px" }} key={benefit.id}>
+                          <div className={classes.skilldes}>
+                            <div className={classes.skill2}>
+                              <span className={classes.span1}>
+                                <strong>Benefits Name:</strong>
+                              </span>
+                            </div>
+                            <div className={classes.skill3}>
+                              <span
+                                style={{ fontFamily: "Lexend, sans-serif" }}
+                                className={classes.span2}
+                              >
+                                {benefit.name}
+                              </span>
+                            </div>
+                          </div>
+                          {/* <div className={classes.skilldes}>
+                            <div className={classes.skill2}>
+                              <span
+                                className={classes.span1}
+                                style={{ fontFamily: "Lexend, sans-serif" }}
+                              >
+                                <strong>Description:</strong>
+                              </span>
+                            </div>
+                            <div>
+                              <span className={classes.span2}>
+                                <div
+                                  style={{ fontFamily: "Lexend, sans-serif" }}
+                                  dangerouslySetInnerHTML={{
+                                    __html: skills.description,
+                                  }}
+                                />
+                              </span>
+                            </div>
+                          </div> */}
                         </div>
                       ))}
                     </div>

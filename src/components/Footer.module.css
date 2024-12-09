@@ -248,3 +248,26 @@
   font-size: 14px;
   font-weight: 400;
 }
+
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .socialIcons {
+    justify-content: center;
+  }
+
+  .button {
+    bottom: 4rem;
+    right: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .copy {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

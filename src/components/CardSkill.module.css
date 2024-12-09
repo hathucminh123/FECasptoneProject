@@ -9,6 +9,41 @@
   
   }
   
+  .mainbenefit {
+    padding-top: 12px !important;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+  .mainb1 {
+    border: none;
+    color: #414042;
+    background-color: #f7f7f7;
+    pointer-events: none;
+    padding: 4px 12px;
+    font-size: 14px;
+    gap: 4px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.5;
+    user-select: none;
+    border-radius: 20px;
+    cursor: pointer;
+  
+    margin-right: 12px !important;
+    margin-bottom: 12px !important;
+    box-sizing: border-box;
+  }
+  
+  
+  .span{
+      color: #414042 !important;
+      font-size: 16px;
+      font-weight: 400;
+      box-sizing: border-box;
+      pointer-events: none;
+  }
   .main1 {
     position: relative;
     display: block;
@@ -73,7 +108,7 @@
   }
   
   .main4 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-sizing: border-box;
     display: block;
   }
