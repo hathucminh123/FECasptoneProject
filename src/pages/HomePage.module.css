@@ -21,6 +21,7 @@
 }
 
 .form1 {
+  --search-input-height: 56px;
   padding-top: 64px !important;
   padding-bottom: 64px !important;
   margin-right: auto !important;
@@ -249,3 +250,26 @@
 }
 
 
+
+.main1{
+  display: block !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  position: absolute !important;
+  box-sizing: border-box;
+}
+
+.main2{
+  display: block !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  position: absolute !important;
+  box-sizing: border-box;
+}
+.img{
+  width: 160px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}

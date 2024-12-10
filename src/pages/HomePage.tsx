@@ -367,6 +367,12 @@ const HomePage:React.FC =()=> {
               </div>
             </div>
           </div>
+          <div className={classes.main1}>
+            <img className={classes.img} src="https://itviec.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzdSVkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--470623509c0a85b21133c40fac9fa817aa009d2c/christmas.png" alt="logo" />
+          </div>
+          <div className={classes.main2}>
+            <img  style={{width:"150px"}} className={classes.img} src="https://dathangsi.vn/upload/products/2021/11/0856-cay-thong-noel-45cm.jpg" alt="logo" />
+          </div>
         </div>
       </div>
 
