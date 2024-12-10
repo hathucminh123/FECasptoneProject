@@ -827,7 +827,7 @@ const FilterJobbySkill: React.FC = () => {
                   >
                     {/* {filteredJobs?.length} Jobs IT in Vietnam{" "} */}
                     {totalJobs === 0 ? filteredJobs?.length : totalJobs} Jobs IT
-                    in Vietnam{" "}
+                    in Vietnam with {text} keyword
                   </Typography>
                   {filteredJobs &&
                   filteredJobs.length &&
