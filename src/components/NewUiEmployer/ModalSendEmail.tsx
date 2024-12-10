@@ -68,7 +68,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits: Benefits[];
+  benefits?: Benefits[];
 }
 interface props {
   onClose?: () => void;
