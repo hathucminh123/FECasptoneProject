@@ -5,21 +5,21 @@ import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
 // import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import "react-quill/dist/quill.snow.css";
-import classes from "./PersonalProject.module.css";
-import TextField from "@mui/material/TextField";
+import classes from "./BenefitProfile.module.css";
+// import TextField from "@mui/material/TextField";
 import { message } from "antd";
 import { queryClient } from "../Services/mainService";
 // import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 // import CardSkillModal from "./CardSkillModal";
 // import { renderButton } from "./RenderButton";
-import RenderButton from "./RenderButton";
+// import RenderButton from "./RenderButton";
 // import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
-import { PostBenefits } from "../Services/Benefits/PostBenefits";
+// import { PostBenefits } from "../Services/Benefits/PostBenefits";
 import { GetBenefits } from "../Services/Benefits/GetBenefits";
 import { PostUserBenefit } from "../Services/UserBenefits/PostUserBenefit";
 // import { default as modal } from "@mui/material/Modal"; 
@@ -108,11 +108,11 @@ export default function BenefitProfile({ onDone }: Props) {
   // const handleClose = () => setOpen(false);
 
 
-  const [formData, setFormData] = useState({
-    name: "",
-    // shorthand: "",
-    // description: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   // shorthand: "",
+  //   // description: "",
+  // });
   const { mutate: Save, isPending: isSaving } = useMutation({
     mutationFn: PostUserBenefit,
     onSuccess: () => {
@@ -140,24 +140,24 @@ export default function BenefitProfile({ onDone }: Props) {
 
 //   const remainingChars = maxLength - stripHTML(formData.description).length;
 
-  const navigate = useNavigate();
-  const { mutate, isPending } = useMutation({
-    mutationFn: PostBenefits,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Benefits"] });
-      navigate("#");
-      setFormData({
-        name: "",
-        // shorthand: "",
-        // description: "",
-      });
-      // onDone?.();
-      message.success("SkillSet Details Updated Successfully");
-    },
-    onError: () => {
-      message.error("Failed to update experience details");
-    },
-  });
+  // const navigate = useNavigate();
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: PostBenefits,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["Benefits"] });
+  //     navigate("#");
+  //     setFormData({
+  //       name: "",
+  //       // shorthand: "",
+  //       // description: "",
+  //     });
+  //     // onDone?.();
+  //     message.success("SkillSet Details Updated Successfully");
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to update experience details");
+  //   },
+  // });
   const handleSaveSkillSet = () => {
     Save({
       data: {
@@ -168,23 +168,23 @@ export default function BenefitProfile({ onDone }: Props) {
     });
   };
 
-  const handleSubmit = () => {
-    // Perform validation and submit formData
-    if (!formData.name ) {
-      alert("Please fill in all fields.");
-      return;
-    }
+  // const handleSubmit = () => {
+  //   // Perform validation and submit formData
+  //   if (!formData.name ) {
+  //     alert("Please fill in all fields.");
+  //     return;
+  //   }
 
-    mutate({
-      data: {
-        name: formData.name,
-        // shorthand: formData.shorthand,
-        // description: formData.description,
-      },
-    });
-    // Call your API or perform any action with the form data
-    console.log("Submitting:", formData);
-  };
+  //   mutate({
+  //     data: {
+  //       name: formData.name,
+  //       // shorthand: formData.shorthand,
+  //       // description: formData.description,
+  //     },
+  //   });
+  //   // Call your API or perform any action with the form data
+  //   console.log("Submitting:", formData);
+  // };
 
   return (
     <Modal
@@ -216,7 +216,7 @@ export default function BenefitProfile({ onDone }: Props) {
 
           <div className={classes.form}>
             {/* Project Name (name) */}
-            <div className={classes.projectname}>
+            {/* <div className={classes.projectname}>
               <TextField
                 label="Benefits Name"
                 value={formData.name}
@@ -227,7 +227,7 @@ export default function BenefitProfile({ onDone }: Props) {
                 variant="outlined"
                 className={classes.inputGroup}
               />
-            </div>
+            </div> */}
 
             {/* Short Description (shorthand) */}
             {/* <div className={classes.description}>
@@ -296,7 +296,7 @@ export default function BenefitProfile({ onDone }: Props) {
               {/* <button type="button" onClick={handleSubmit}>
                 Submit
               </button> */}
-             {isPending ? (
+             {/* {isPending ? (
   <RenderButton
     text="Wait a minute"
     color="white"
@@ -312,7 +312,7 @@ export default function BenefitProfile({ onDone }: Props) {
     onClick={handleSubmit}  // Action when button is clicked
     disabled={false}  // Enabled by default when not pending
   />
-)}
+)} */}
 
             </div>
 

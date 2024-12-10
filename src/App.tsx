@@ -118,6 +118,7 @@ import EditInfoCompany from "./pages/EmployerNewUi/EditInfoCompany";
 import SkillSetPage from "./pages/Admin/SkillSetPage";
 import JobTypePage from "./pages/Admin/JobTypePage";
 import BenefitsPage from "./pages/Admin/BenefitsPage";
+import AdminProtectedRoute from "./components/Admin/AdminProtectedRoute";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -540,7 +541,7 @@ const router = createBrowserRouter([
           },
           {
             path: "Settings",
-            element: <EditInfoCompany/>,
+            element: <EditInfoCompany />,
           },
         ],
       },
@@ -580,8 +581,6 @@ const router = createBrowserRouter([
     path: "/api/Payment/callback",
     element: <PaymentCallback />,
   },
-
-
 
   {
     path: "/employer-verify/jobs",
@@ -726,7 +725,11 @@ const router = createBrowserRouter([
   },
   {
     path: "Admin",
-    element: <RootAdminSystem />,
+    element: (
+      <AdminProtectedRoute>
+        <RootAdminSystem />,
+      </AdminProtectedRoute>
+    ),
     errorElement: <ErrorPage />,
     loader: tokenLoader,
     id: "root2",
@@ -783,16 +786,16 @@ const router = createBrowserRouter([
         element: <ManageJobPosting />,
       },
       {
-        path:"skillSet",
-        element:<SkillSetPage/>
+        path: "skillSet",
+        element: <SkillSetPage />,
       },
       {
-        path:"Benefits",
-        element:<BenefitsPage/>
+        path: "Benefits",
+        element: <BenefitsPage />,
       },
       {
-        path:"JobType",
-        element:<JobTypePage/>
+        path: "JobType",
+        element: <JobTypePage />,
       },
       {
         path: "Comment",

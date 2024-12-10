@@ -175,9 +175,8 @@ export default function FormCreateEmployer() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-
-  const handleOpenBenefit =()=>setOpenBenefit(true);
-    const handleCloseBenefit = () => setOpenBenefit(false);
+  const handleOpenBenefit = () => setOpenBenefit(true);
+  const handleCloseBenefit = () => setOpenBenefit(false);
 
   const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
     mutationFn: PostSkillSets,
@@ -212,7 +211,7 @@ export default function FormCreateEmployer() {
     if (!descriptionSkillSet.trim()) {
       return message.error("Please enter a description for the skill.");
     }
-  
+
     createSkillSet({
       data: {
         name: nameSkill.trim(),
@@ -221,7 +220,7 @@ export default function FormCreateEmployer() {
       },
     });
   };
-  
+
   const handleSubmitBenefits = () => {
     if (!nameBenefits.trim()) {
       return message.error("Please enter a valid benefits name.");
@@ -432,7 +431,29 @@ export default function FormCreateEmployer() {
         message.warning("Please select a file to upload.");
         return;
       }
+      if (
+        !jobTitle ||
+        !jobDescription ||
+        !salary ||
+        !selectExp ||
+        !qualificationRequired ||
+        !benefits ||
+        !selectTypeId ||
+        !skillId ||
+        !benefitId
+      ) {
+        message.error("Please fill in all the required fields.");
+      }
 
+      if (parseInt(salary) === 0) {
+        message.warning("Salary must be more than 0");
+        return;
+      }
+
+      if (selectedDate && new Date(selectedDate) <= new Date()) {
+        message.warning("The expiry date must be a future date.");
+        return;
+      }
       const fileName = `${uuidv4()}-${selectedFile.name}`;
       const fileRef = ref(storage, fileName);
 
@@ -455,7 +476,7 @@ export default function FormCreateEmployer() {
         imageURL: fileUrl,
         userID: Number(userId),
         skillSetIds: skillId,
-        benefitIds:benefitId,
+        benefitIds: benefitId,
         expiryDate: selectedDate ? adjustTimezone(selectedDate) : "",
       };
 
@@ -1103,7 +1124,7 @@ export default function FormCreateEmployer() {
               <label htmlFor="" className={classes.label}>
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    Title
+                    Salary
                     <span className={classes.span}>*</span>
                   </div>
                 </div>

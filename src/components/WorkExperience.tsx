@@ -102,9 +102,13 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
       !formData.startYear ||
       !formData.startMonth ||
       !formData.endYear ||
-      !formData.endMonth
+      !formData.endMonth ||
+      !formData.achievements ||
+      !formData.companyName ||
+      !formData.position ||
+      !formData.responsibilities 
     ) {
-      message.error("Please fill in all date fields");
+      message.error("Please fill in all the required fields");
       return;
     }
 

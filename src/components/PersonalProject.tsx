@@ -1,23 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
-import ReactQuill from "react-quill";
+// import ReactQuill from "react-quill";
 import Box from "@mui/material/Box";
 import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import Modal from "./Modal";
 import "react-quill/dist/quill.snow.css";
 import classes from "./PersonalProject.module.css";
-import TextField from "@mui/material/TextField";
+// import TextField from "@mui/material/TextField";
 import { message } from "antd";
 import { queryClient } from "../Services/mainService";
-import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
-import { useNavigate } from "react-router-dom";
+// import { PostSkillSets } from "../Services/SkillSet/PostSkillSet";
+// import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
 // import CardSkillModal from "./CardSkillModal";
 // import { renderButton } from "./RenderButton";
-import RenderButton from "./RenderButton";
+// import RenderButton from "./RenderButton";
 import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
 // import { default as modal } from "@mui/material/Modal"; 
 
@@ -104,11 +104,11 @@ export default function PersonalProject({ onDone }: Props) {
   // const handleClose = () => setOpen(false);
 
 
-  const [formData, setFormData] = useState({
-    name: "",
-    shorthand: "",
-    description: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   name: "",
+  //   shorthand: "",
+  //   description: "",
+  // });
   const { mutate: Save, isPending: isSaving } = useMutation({
     mutationFn: PostUserSkill,
     onSuccess: () => {
@@ -125,35 +125,35 @@ export default function PersonalProject({ onDone }: Props) {
     },
   });
 
-  const maxLength = 2500;
+  // const maxLength = 2500;
 
   // Strip HTML tags to count only text characters
-  const stripHTML = (html: string) => {
-    const tmp = document.createElement("DIV");
-    tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
-  };
+  // const stripHTML = (html: string) => {
+  //   const tmp = document.createElement("DIV");
+  //   tmp.innerHTML = html;
+  //   return tmp.textContent || tmp.innerText || "";
+  // };
 
-  const remainingChars = maxLength - stripHTML(formData.description).length;
+  // const remainingChars = maxLength - stripHTML(formData.description).length;
 
-  const navigate = useNavigate();
-  const { mutate, isPending } = useMutation({
-    mutationFn: PostSkillSets,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["SkillSetDetails"] });
-      navigate("#");
-      setFormData({
-        name: "",
-        shorthand: "",
-        description: "",
-      });
-      // onDone?.();
-      message.success("SkillSet Details Updated Successfully");
-    },
-    onError: () => {
-      message.error("Failed to update experience details");
-    },
-  });
+  // const navigate = useNavigate();
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: PostSkillSets,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["SkillSetDetails"] });
+  //     navigate("#");
+  //     setFormData({
+  //       name: "",
+  //       shorthand: "",
+  //       description: "",
+  //     });
+  //     // onDone?.();
+  //     message.success("SkillSet Details Updated Successfully");
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to update experience details");
+  //   },
+  // });
   const handleSaveSkillSet = () => {
     Save({
       data: {
@@ -164,23 +164,23 @@ export default function PersonalProject({ onDone }: Props) {
     });
   };
 
-  const handleSubmit = () => {
-    // Perform validation and submit formData
-    if (!formData.name || !formData.shorthand || !formData.description) {
-      alert("Please fill in all fields.");
-      return;
-    }
+  // const handleSubmit = () => {
+  //   // Perform validation and submit formData
+  //   if (!formData.name || !formData.shorthand || !formData.description) {
+  //     alert("Please fill in all fields.");
+  //     return;
+  //   }
 
-    mutate({
-      data: {
-        name: formData.name,
-        shorthand: formData.shorthand,
-        description: formData.description,
-      },
-    });
-    // Call your API or perform any action with the form data
-    console.log("Submitting:", formData);
-  };
+  //   mutate({
+  //     data: {
+  //       name: formData.name,
+  //       shorthand: formData.shorthand,
+  //       description: formData.description,
+  //     },
+  //   });
+  //   // Call your API or perform any action with the form data
+  //   console.log("Submitting:", formData);
+  // };
 
   return (
     <Modal
@@ -213,7 +213,7 @@ export default function PersonalProject({ onDone }: Props) {
 
           <div className={classes.form}>
             {/* Project Name (name) */}
-            <div className={classes.projectname}>
+            {/* <div className={classes.projectname}>
               <TextField
                 label="Skill Name"
                 value={formData.name}
@@ -224,10 +224,10 @@ export default function PersonalProject({ onDone }: Props) {
                 variant="outlined"
                 className={classes.inputGroup}
               />
-            </div>
+            </div> */}
 
             {/* Short Description (shorthand) */}
-            <div className={classes.description}>
+            {/* <div className={classes.description}>
               <div style={{ display: "block" }}>
                 <Typography
                   variant="h4"
@@ -254,10 +254,10 @@ export default function PersonalProject({ onDone }: Props) {
                   className={classes.inputGroup}
                 />
               </div>
-            </div>
+            </div> */}
 
             {/* Detailed Description (description) */}
-            <div className={classes.description}>
+            {/* <div className={classes.description}>
               <div style={{ display: "block" }}>
                 <Typography
                   variant="h4"
@@ -290,9 +290,7 @@ export default function PersonalProject({ onDone }: Props) {
                   {remainingChars} of 2500 characters remaining
                 </Typography>
               </div>
-              {/* <button type="button" onClick={handleSubmit}>
-                Submit
-              </button> */}
+           
              {isPending ? (
   <RenderButton
     text="Wait a minute"
@@ -311,7 +309,7 @@ export default function PersonalProject({ onDone }: Props) {
   />
 )}
 
-            </div>
+            </div> */}
 
             <label
                 htmlFor=""
