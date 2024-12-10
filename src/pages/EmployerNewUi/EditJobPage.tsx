@@ -441,7 +441,7 @@ export default function EditJobPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["JobPosts"] });
       queryClient.invalidateQueries({ queryKey: ["Job-details"] });
-      
+
       queryClient.invalidateQueries({
         queryKey: ["JobSearch"],
         refetchType: "active",
@@ -466,6 +466,15 @@ export default function EditJobPage() {
 
         uploadedFileUrl = await getDownloadURL(fileRef);
         setFileUrl(uploadedFileUrl);
+      }
+      if (parseInt(salary) === 0) {
+        message.warning("Salary must be more than 0");
+        return;
+      }
+
+      if (selectedDate && new Date(selectedDate) <= new Date()) {
+        message.warning("The expiry date must be a future date.");
+        return;
       }
 
       const data = {
