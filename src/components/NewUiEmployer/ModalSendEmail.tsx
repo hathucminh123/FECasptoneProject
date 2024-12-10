@@ -54,7 +54,10 @@ interface CVs {
   url: string;
   name: string;
 }
-
+interface Benefits {
+  id: number;
+  name: string;
+}
 interface UserProfile {
   id: number;
   firstName: string;
@@ -65,6 +68,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  benefits: Benefits[];
 }
 interface props {
   onClose?: () => void;
@@ -562,7 +566,29 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
-                                    <div className={classes.main30} key={skill.id}>
+                                    <div
+                                      className={classes.main30}
+                                      key={skill.id}
+                                    >
+                                      <div className={classes.main31}>
+                                        <span>{skill.name}</span>
+                                      </div>
+                                    </div>
+                                  ))
+                                : undefined}
+                            </div>
+                          </div>
+                        </div>
+                        <div className={classes.main27}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>Benefits:</div>
+                            <div className={classes.main29}>
+                              {profile?.benefits && profile.benefits.length > 0
+                                ? profile?.benefits.map((skill) => (
+                                    <div
+                                      className={classes.main30}
+                                      key={skill.id}
+                                    >
                                       <div className={classes.main31}>
                                         <span>{skill.name}</span>
                                       </div>
@@ -816,7 +842,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                             </button>
                           ) : isExpired ? (
                             <button disabled={true} className={classes.main544}>
-                             Application deadline
+                              Application deadline
                             </button>
                           ) : (
                             <button type="submit" className={classes.main54}>
