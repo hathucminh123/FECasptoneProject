@@ -97,6 +97,10 @@ const SkillSetPage: React.FC = () => {
 
   // Handle form submission for skill set creation
   const handleSubmitSkillSet = () => {
+    if(!nameSkill || !shorthand || !descriptionSkillSet){
+      message.warning("Please fill in all the required fields.");
+      return;
+    }
     createSkillSet({
       data: {
         name: nameSkill,

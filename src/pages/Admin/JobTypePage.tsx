@@ -100,6 +100,10 @@ const JobTypePage: React.FC = () => {
 
   // Handle form submission for skill set creation
   const handleSubmitSkillSet = () => {
+    if(!nameSkill || !descriptionSkillSet){
+      message.warning("Please fill in all the required fields.");
+      return;
+    }
     createSkillSet({
       data: {
         name: nameSkill,
