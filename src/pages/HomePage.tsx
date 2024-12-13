@@ -202,6 +202,7 @@ const HomePage:React.FC =()=> {
   };
 
   const handleNavigateSkill = async (item: string) => {
+    setText(item)
     interface JobSearchResponse {
       result: {
         items: JobPost[];

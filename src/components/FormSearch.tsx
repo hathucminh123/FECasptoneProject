@@ -11,7 +11,7 @@ import {
 // import LocationOnIcon from "@mui/icons-material/LocationOn";
 // import { SelectChangeEvent } from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { SearchCompany } from "../Services/CompanyService/SearchCompany";
@@ -63,14 +63,14 @@ export default function FormSearch({
   setText,
   onClick,
   // location,
-  setLocation,
+  // setLocation,
   isPending,
 }: FormSearchProps) {
-  const locationPass = useLocation();
+  // const locationPass = useLocation();
   const navigate = useNavigate();
   const [hovered, setHovered] = useState<null | number>(null);
 
-  const locationText = locationPass.state?.text || "";
+  // const locationText = locationPass.state?.text || "";
   // const advance = locationPass.state?.boolean || "";
   // const [turnOn, setTurnOn] = useState<boolean>(advance ||false);
   const [turnOn, setTurnOn] = useState<boolean>(() =>
@@ -205,26 +205,26 @@ export default function FormSearch({
   // const handleOpen = () => setOpen(true);
   // const handleClose = () => setOpen(false);
 
-  useEffect(() => {
-    const allowedLocations = [
-      "All",
-      "DA NANG",
-      "HA NOI",
-      "HO CHI MINH",
-      "HAI PHONG",
-      "CAN THO",
-      "NHA TRANG",
-    ];
+  // useEffect(() => {
+  //   const allowedLocations = [
+  //     "All",
+  //     "DA NANG",
+  //     "HA NOI",
+  //     "HO CHI MINH",
+  //     "HAI PHONG",
+  //     "CAN THO",
+  //     "NHA TRANG",
+  //   ];
 
-    if (allowedLocations.includes(locationText)) {
-      setLocation(locationText);
-      setText(locationText)
+  //   if (allowedLocations.includes(locationText)) {
+  //     setLocation(locationText);
+  //     setText(locationText)
      
-    } else {
-      setText(locationText ? locationText : text);
-      setLocation("All");
-    }
-  }, [locationText, setLocation, setText, text]);
+  //   } else {
+  //     setText(locationText ? locationText : text);
+  //     setLocation("All");
+  //   }
+  // }, [locationText, setLocation, setText, text]);
  
   
 
@@ -304,7 +304,7 @@ export default function FormSearch({
             value={text}
             id="keyword-input"
             // label="Enter keyword"
-            placeholder="Skill (Java, iOS), Job title, Company Name,City"
+            placeholder="Enter Keyword Skill (Java, iOS), Job title, Company Name,City"
             type="text"
             variant="outlined"
             onChange={handleText}
