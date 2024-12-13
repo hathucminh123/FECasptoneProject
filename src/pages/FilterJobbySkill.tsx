@@ -121,6 +121,7 @@ const FilterJobbySkill: React.FC = () => {
 
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [openSearch,setOpenSearch]=useState<boolean>(false)
   // const [direction, setDirection] = useState(1);
 
   const itemsPerPage = 9;
@@ -577,6 +578,7 @@ const FilterJobbySkill: React.FC = () => {
         const jobSearchResults = data.result.items;
         const total = data.result.totalCount;
         setJobSearch(data.result.items);
+        setOpenSearch(false)
         // setCurrentPage(1)
         // setTotalJobs(data.result.totalCount);
         navigate("/it_jobs", {
@@ -813,6 +815,8 @@ const FilterJobbySkill: React.FC = () => {
               setLocation={setLocation}
               setText={setText}
               onClick={handleNavigateJob}
+              open={openSearch}
+              setOpen={setOpenSearch}
             />
           </div>
         </div>

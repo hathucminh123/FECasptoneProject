@@ -11,7 +11,7 @@ import {
 // import LocationOnIcon from "@mui/icons-material/LocationOn";
 // import { SelectChangeEvent } from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { SearchCompany } from "../Services/CompanyService/SearchCompany";
@@ -19,6 +19,9 @@ import { SearchCompanyByName } from "../Services/CompanyService/CompanySearchbyN
 import classes from "./FormSearch.module.css";
 import { JobSearchQuery } from "../Services/JobSearchService/JobSearchQuery";
 import { message } from "antd";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import { queryClient } from "../Services/mainService";
 
 interface JobType {
   id: number;
@@ -48,14 +51,16 @@ interface JobPost {
 }
 
 interface FormSearchProps {
-  setJobSearch: React.Dispatch<React.SetStateAction<JobPost[] |undefined>>;
-  jobSearch: JobPost[] |undefined;
+  setJobSearch: React.Dispatch<React.SetStateAction<JobPost[] | undefined>>;
+  jobSearch: JobPost[] | undefined;
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
   onClick: () => void;
   location?: string;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   isPending?: boolean;
+  open?: boolean;
+  setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function FormSearch({
@@ -64,11 +69,15 @@ export default function FormSearch({
   onClick,
   // location,
   // setLocation,
+  setOpen,
+  open,
   isPending,
 }: FormSearchProps) {
   // const locationPass = useLocation();
   const navigate = useNavigate();
   const [hovered, setHovered] = useState<null | number>(null);
+  const [hoveredJob,setHoveredJob]=useState<null |string>(null)
+// const [open,setOpen]=useState<boolean>(false)
 
   // const locationText = locationPass.state?.text || "";
   // const advance = locationPass.state?.boolean || "";
@@ -85,6 +94,25 @@ export default function FormSearch({
 
   const Companiesdata = Company?.Companies;
 
+  const {
+    data: JobPosts,
+    // isLoading: isJobLoading,
+    // isError: isJobError,
+  } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal: signal }),
+    staleTime: 5000,
+  });
+
+  const JobPostsdata = JobPosts?.JobPosts;
+
+  const JobTitle = JobPostsdata?.map((name) => name.jobTitle);
+
+  const flattenedArrayJobTitle = JobTitle?.flat();
+  const uniqueArrayJobTitle = [...new Set(flattenedArrayJobTitle)];
+
+  const JobTitleColums = uniqueArrayJobTitle;
+
   // Filtered companies based on the input text
   const filterCompany =
     text.trim() !== ""
@@ -92,6 +120,17 @@ export default function FormSearch({
           name.companyName.toLowerCase().includes(text.toLowerCase())
         )
       : [];
+
+  const filterjobs =
+    text.trim() !== ""
+      ? JobTitleColums?.filter((name) =>
+          name.toLowerCase().includes(text.toLowerCase())
+        )
+      : [];
+
+
+  const handleMouseEnterJobTitle = (title: string) => setHoveredJob(title);
+  const handleMouseLeaveJobTitle = () => setHoveredJob(null);
 
   const handleMouseEnter = (id: number) => setHovered(id);
   const handleMouseLeave = () => setHovered(null);
@@ -129,6 +168,63 @@ export default function FormSearch({
       console.error("Error during company search:", error);
     }
   };
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      console.log("Search result:", data);
+
+      if (data && data.result && data.result.items.length > 0) {
+        const jobSearchResults = data.result.items;
+        const total =data.result.totalCount
+        setOpen?.(false) 
+        navigate("/it_jobs", {
+          state: {
+            jobSearch: jobSearchResults,
+            text: text || "",
+            // location: location,
+            total:total
+            
+          },
+        });
+      } else {
+        navigate("/it_jobs", {
+          state: { text: text || "", jobSearch: [] ,total :0},
+        });
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: ["JobSearch"],
+        refetchType: "active",
+      });
+
+      // navigate("/it-jobs",{state : text});
+    },
+    onError: () => {
+      message.error("Failed to Search");
+    },
+  });
+  const handleSelectJobtitle = async (title: string) => {
+ 
+    setText(title);
+    try {
+        const result = await mutateAsync({
+            data: { keyword: title, pageSize: 9, pageIndex: 1 },
+        });
+
+        if (result && result.result && result.result.items.length > 0) {
+            // setJobSearch(result.result.items);
+            // navigate("/it_jobs", {
+            //     state: { jobSearch: result.result.items, textt: skill ,total:totalJobs},
+            // });
+        } else {
+            // setJobSearch([]);
+            // navigate("/it_jobs", { state: { jobSearch: [], textt: skill,total:0 } });
+        }
+    } catch (error) {
+        console.error("Error during job search:", error);
+    }
+};
+
 
   useEffect(() => {
     localStorage.setItem("Turn", JSON.stringify(turnOn));
@@ -139,7 +235,6 @@ export default function FormSearch({
 
   const handleText = (e: React.ChangeEvent<HTMLInputElement>) =>
     setText(e.target.value || "");
-
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -162,8 +257,6 @@ export default function FormSearch({
       }
     }
   };
-
-
 
   const { mutate, isPending: Loading } = useMutation({
     mutationFn: JobSearchQuery,
@@ -220,15 +313,12 @@ export default function FormSearch({
   //   if (allowedLocations.includes(locationText)) {
   //     setLocation(locationText);
   //     setText(locationText)
-     
+
   //   } else {
   //     setText(locationText ? locationText : text);
   //     setLocation("All");
   //   }
   // }, [locationText, setLocation, setText, text]);
- 
-  
-
 
   return (
     <Box sx={{ display: "block", marginTop: "0em", unicodeBidi: "isolate" }}>
@@ -310,6 +400,7 @@ export default function FormSearch({
             variant="outlined"
             onChange={handleText}
             onKeyDown={handleKeyDown}
+            onFocus={()=>setOpen?.(true)}
             sx={{
               width: { xs: "100%", sm: "100%" },
               fontSize: "16px",
@@ -324,7 +415,7 @@ export default function FormSearch({
               },
             }}
           />
-          {filterCompany && filterCompany.length > 0 && (
+          {filterCompany && filterCompany.length > 0 ? (
             <div className={classes.drop}>
               <div className={classes.drop1}>Company</div>
               {filterCompany.map((item) => (
@@ -345,6 +436,30 @@ export default function FormSearch({
                 </button>
               ))}
             </div>
+          ) : (
+            filterjobs &&
+            filterjobs.length > 0 && open && (
+              <div className={classes.drop}>
+                <div className={classes.drop1}>Job title</div>
+                {filterjobs.map((item, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={classes.main1}
+                    style={
+                      hoveredJob === item
+                        ? { backgroundColor: "#FFF5F5" }
+                        : undefined
+                    }
+                    onMouseEnter={() => handleMouseEnterJobTitle(item)}
+                    onMouseLeave={handleMouseLeaveJobTitle}
+                    onClick={() => handleSelectJobtitle(item)}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )
           )}
         </div>
         <Button
@@ -368,7 +483,7 @@ export default function FormSearch({
             padding: "10px 20px",
             boxSizing: "border-box",
             height: "56px",
-            fontFamily:"Lexend",
+            fontFamily: "Lexend",
             mb: "2px",
             fontSize: "16px",
             width: { xs: "100%", sm: "25%" },
@@ -403,7 +518,7 @@ export default function FormSearch({
             mb: "2px",
             fontSize: "16px",
             width: { xs: "100%", sm: "60%" },
-            fontFamily:"Lexend",
+            fontFamily: "Lexend",
             marginTop: { xs: "10px", sm: "0" },
             transition: "background-color 0.3s ease",
             "&:hover": {

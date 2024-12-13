@@ -71,6 +71,7 @@ const HomePage:React.FC =()=> {
 
   const [text, setText] = useState<string>("");
   const [totalJobs, setTotalJobs] = useState<number>(0);
+  const [open,setOpen]=useState<boolean>(false)
   console.log('total',totalJobs)
   const [location, setLocation] = useState<string>("All");
   const { mutateAsync, isPending } = useMutation({
@@ -83,6 +84,7 @@ const HomePage:React.FC =()=> {
         const total =data.result.totalCount
         setJobSearch(data.result.items);
         setTotalJobs(data.result.totalCount);
+        setOpen(false)
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
@@ -317,6 +319,8 @@ const HomePage:React.FC =()=> {
                 setLocation={setLocation}
                 setText={setText}
                 onClick={handleNavigateJob}
+                open={open}
+                setOpen={setOpen}
               />
             </div>
             <div
