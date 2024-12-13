@@ -13,6 +13,7 @@
   top: 0;
   right: 0;
   left: 0;
+  bottom: 0;
   z-index: 1030;
   /* background: rgba(255, 255, 255, 0.5);  */
   background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
@@ -84,6 +85,8 @@
   transition: color 0.3s ease, background-color 0.3s ease; 
 }
 
+
+
 .link1 {
   cursor: pointer;
   color: #fff;
@@ -101,19 +104,23 @@
   background-color: rgba(0, 0, 0, 0.1); 
   color: #e6502c; 
 }
-
 .link.active,
 .linkk.active {
-  color: #000000;
-  background-color: rgba(0, 0, 0, 0.2); 
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.2);
 }
-
 .listright .linkk {
   font-weight: bold;
 }
-
+.link:focus,
+.linkk:focus {
+  outline: none;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: #e6502c;
+  box-shadow: 0 0 4px rgba(230, 80, 44, 0.6); /* Subtle glow */
+}
 .li {
-  padding: 32px 0;
+  padding: 20px 0;
   cursor: pointer;
   color: #fff; 
   position: relative !important;
@@ -158,10 +165,11 @@
 .linkk:hover {
   background-color: rgba(0, 0, 0, 0.1);
   color: #e6502c;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.link.active,
-.linkk.active {
-  color: #fff;
-  background-color: rgba(0, 0, 0, 0.2);
+.link.active:hover,
+.linkk.active:hover {
+  background-color: rgba(0, 0, 0, 0.3); /* Slightly darker */
+  color: #e6502c; /* Maintain hover color */
 }

@@ -96,11 +96,11 @@ export default function HeaderNavigation({ token }: props) {
     null
   );
 
-  // const handleMouseEnter = (event: React.MouseEvent<HTMLAnchorElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  //   setHovered(event.currentTarget.textContent || null);
-  //   setSelectedMenu(event.currentTarget.textContent || null);
-  // };
+  const handleMouseEnter = (event: React.MouseEvent<HTMLLIElement>) => {
+    setAnchorEl(event.currentTarget);
+    setHovered(event.currentTarget.textContent || null);
+    setSelectedMenu(event.currentTarget.textContent || null);
+  };
   // const handleMouseEnterCompany = (
   //   event: React.MouseEvent<HTMLAnchorElement>
   // ) => {
@@ -117,7 +117,7 @@ export default function HeaderNavigation({ token }: props) {
     }, 200); // Delay to prevent accidental closing of the menu
   };
 
-  const handleMouseEnterProfile = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleMouseEnterProfile = (event: React.MouseEvent<HTMLLIElement>) => {
     setAnchorElProfile(event.currentTarget);
     setHoveredProfile(event.currentTarget.textContent || null);
     setSelectedMenuProflie(event.currentTarget.textContent || null);
@@ -202,47 +202,42 @@ export default function HeaderNavigation({ token }: props) {
                   sx={{
                     backgroundColor: "#ff0000",
                     color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
-                    fontFamily: "Lexend, sans-serif", 
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
                     lineHeight: "1",
-                    width: "32px", 
-                    height: "32px", 
-                    borderRadius: "50%", 
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
                     display: "flex",
-                    justifyContent: "center", 
+                    justifyContent: "center",
                     alignItems: "center",
-                    marginRight: "3px", 
+                    marginRight: "3px",
                   }}
                 >
                   A
                 </Box>
 
-             
                 <Typography
                   variant="h2"
                   sx={{
                     color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
+                    fontWeight: 700,
+                    fontSize: "22px",
                     fontFamily: "Lexend, sans-serif",
-                    lineHeight: "1.5", 
-
+                    lineHeight: "1.5",
                   }}
                 >
-                mazingJob
+                  mazingJob
                 </Typography>
               </Box>
             </Link>
           </div>
           <div className={classes.containerright}>
             <ul className={classes.list}>
-              {/* <li className={classes.li}>
-                <NavLink
-                  onMouseEnter={handleMouseEnter}
-                  className={classes.link}
-                  to="#"
-                >
+              *{" "}
+              <li className={classes.li} onMouseEnter={handleMouseEnter}>
+                <NavLink className={classes.link} to="#">
                   All Jobs
                   <ArrowDropDownIcon
                     sx={{
@@ -257,7 +252,7 @@ export default function HeaderNavigation({ token }: props) {
                     }}
                   />
                 </NavLink>
-              </li> */}
+              </li>
               {/* <li className={classes.li}>
                 <NavLink
                   onMouseEnter={handleMouseEnterCompany}
@@ -296,12 +291,13 @@ export default function HeaderNavigation({ token }: props) {
                   For Employers
                 </NavLink>
               </li>
-              <li className={classes.liprofile}>
-                {token ? (
-                  <div
-                    className={classes.profile}
-                    onMouseEnter={handleMouseEnterProfile}
-                  >
+
+              {token ? (
+                <li
+                  className={classes.liprofile}
+                  onMouseEnter={handleMouseEnterProfile}
+                >
+                  <div className={classes.profile}>
                     <div className={classes.profileleft}>
                       {/* <img
                         src={Image}
@@ -346,29 +342,29 @@ export default function HeaderNavigation({ token }: props) {
                       />
                     </div>
                   </div>
-                ) : (
-                  // !isLogin &&
-                  // !isSignup && (
-                  //   <NavLink
-                  //     className={classes.linkk}
-                  //     to="/auth?mode=login"
-                  //     onClick={handleSavePath}
-                  //   >
-                  //     Sign in/Sign up
-                  //   </NavLink>
-                  // )
-                  !isLogin &&
-                  !isSignup && (
-                    <NavLink
-                      className={classes.linkk}
-                      to="/JobSeekers/login"
-                      onClick={handleSavePath}
-                    >
-                      Sign in/Sign up
-                    </NavLink>
-                  )
-                )}
-              </li>
+                </li>
+              ) : (
+                // !isLogin &&
+                // !isSignup && (
+                //   <NavLink
+                //     className={classes.linkk}
+                //     to="/auth?mode=login"
+                //     onClick={handleSavePath}
+                //   >
+                //     Sign in/Sign up
+                //   </NavLink>
+                // )
+                !isLogin &&
+                !isSignup && (
+                  <NavLink
+                    className={classes.linkk}
+                    to="/JobSeekers/login"
+                    onClick={handleSavePath}
+                  >
+                    Sign in/Sign up
+                  </NavLink>
+                )
+              )}
             </ul>
           </div>
         </div>
@@ -511,12 +507,12 @@ const SkillsMenu = ({
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
         // setJobSearch(data.result.items);
-
+        const total = data.result.totalCount;
         navigate("/it_jobs", {
-          state: { jobSearch: jobSearchResults, textt: text },
+          state: { jobSearch: jobSearchResults, text: text, total: total },
         });
       } else {
-        navigate("/it_jobs", { state: { textt: text } });
+        navigate("/it_jobs", { state: { text: text } });
       }
 
       queryClient.invalidateQueries({
@@ -688,6 +684,8 @@ const SkillsMenu = ({
       location?: string;
       jobType?: string;
       pageSize: number;
+      keyword?: string;
+      pageIndex?: number;
     }
 
     if (selectedMenu === "Jobs by Company") {
@@ -699,7 +697,7 @@ const SkillsMenu = ({
           navigate(`/company/detail/${companyData?.Companies.id}`);
         } else {
           console.warn("No results found for company search.");
-          navigate("/it_jobs", { state: { textt: text } });
+          navigate("/it_jobs", { state: { text: text } });
         }
       } catch (error) {
         console.error("Error during company search:", error);
@@ -711,26 +709,29 @@ const SkillsMenu = ({
 
     if (column === "All") {
       searchDataArray = [
-        { jobTitle: "", pageSize: 9 },
-        { companyName: "", pageSize: 9 },
-        { skillSet: "", pageSize: 9 },
-        { city: "", pageSize: 9 },
-        { location: "", pageSize: 9 },
-        { jobType: "", pageSize: 9 },
+        // { jobTitle: "", pageSize: 9 },
+        // { companyName: "", pageSize: 9 },
+        // { skillSet: "", pageSize: 9 },
+        // { city: "", pageSize: 9 },
+        // { location: "", pageSize: 9 },
+        // { jobType: "", pageSize: 9 },
+        { keyword: "", pageSize: 10, pageIndex: 1 },
       ];
     } else if (cityColumn.includes(column)) {
       searchDataArray = [
-        { city: column, pageSize: 9 },
-        { location: column, pageSize: 9 },
+        // { city: column, pageSize: 9 },
+        // { location: column, pageSize: 9 },
+        { keyword: column, pageSize: 10, pageIndex: 1 },
       ];
     } else {
       searchDataArray = [
-        { jobTitle: column, pageSize: 9 },
-        { companyName: column, pageSize: 9 },
-        { skillSet: column, pageSize: 9 },
-        { city: column, pageSize: 9 },
-        { location: column, pageSize: 9 },
-        { jobType: column, pageSize: 9 },
+        // { jobTitle: column, pageSize: 9 },
+        // { companyName: column, pageSize: 9 },
+        // { skillSet: column, pageSize: 9 },
+        // { city: column, pageSize: 9 },
+        // { location: column, pageSize: 9 },
+        // { jobType: column, pageSize: 9 },
+        { keyword: column, pageSize: 10, pageIndex: 1 },
       ];
     }
 
@@ -745,14 +746,24 @@ const SkillsMenu = ({
 
         if (result && result.result && result.result.items.length > 0) {
           // Perform navigation with results
-          navigate("/it_jobs", {
-            state: { jobSearch: result.result.items, textt: text },
-          });
+          // navigate("/it_jobs", {
+          //   state: { jobSearch: result.result.items, textt: column },
+          // });
           break;
         }
       } catch (error) {
         console.error("Error during job search:", error);
       }
+    }
+  };
+
+  const handleNavigate = () => {
+    if (selectedMenu === "Jobs by Skill") {
+      navigate("/jobs-skill-index");
+    } else if (selectedMenu === "Jobs by Title") {
+      navigate("/jobs-title-index");
+    } else if (selectedMenu === "Jobs by Company") {
+      navigate("/jobs-company-index");
     }
   };
 
@@ -791,8 +802,13 @@ const SkillsMenu = ({
                 key={item}
                 style={{
                   color: hovered === item ? "white" : "#b0bec5",
-                  transition: "color 0.3s ease",
+                  transition: "all 0.3s ease",
                   fontWeight: hovered === item ? "bold" : "normal",
+                  backgroundColor: hovered === item ? "#444b52" : "transparent",
+                  borderRadius: "5px",
+                  marginBottom: "5px",
+                  padding: "8px 12px",
+                  cursor: "pointer",
                 }}
                 onMouseEnter={() => {
                   setHovered(item);
@@ -817,12 +833,8 @@ const SkillsMenu = ({
               paddingLeft: "10px",
             }}
           >
-            {content.map((column, colIdx) => (
-              <div
-                key={colIdx}
-                style={{ width: "33%" }}
-                onClick={() => handleOnclick(column)}
-              >
+            {content.slice(0, 20).map((column, colIdx) => (
+              <div key={colIdx} style={{ width: "33%", marginBottom: "10px" }}>
                 <MenuItem
                   style={{
                     padding: "8px 16px",
@@ -831,14 +843,14 @@ const SkillsMenu = ({
                     whiteSpace: "nowrap",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    cursor: "pointer",
+                    backgroundColor:
+                      hovered === column ? "#444b52" : "transparent",
+                    color: hovered === column ? "white" : "#b0bec5",
                   }}
-                  onClick={handleClose}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#3c3f44")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "transparent")
-                  }
+                  onMouseEnter={() => setHovered(column)}
+                  onMouseLeave={() => setHovered(null)}
+                  onClick={() => handleOnclick(column)}
                 >
                   {column}
                 </MenuItem>
@@ -851,11 +863,18 @@ const SkillsMenu = ({
       <Divider />
 
       {selectedMenu && (
-        <div style={{ padding: "10px", textAlign: "center" }}>
-          <Typography
-            variant="body2"
-            style={{ color: "lightgray", cursor: "pointer" }}
-          >
+        <div
+          style={{
+            padding: "10px",
+            textAlign: "center",
+            cursor: "pointer",
+            transition: "color 0.3s ease",
+          }}
+          onClick={handleNavigate}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "white")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "lightgray")}
+        >
+          <Typography variant="body2" style={{ color: "lightgray" }}>
             View all {selectedMenu}
           </Typography>
         </div>
@@ -1002,7 +1021,7 @@ const ProfileMenu = ({
           width: "250px",
           borderRadius: "10px",
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
-          mt: 2.5,
+          mt: -1,
         },
       }}
       MenuListProps={{

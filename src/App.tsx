@@ -119,6 +119,9 @@ import SkillSetPage from "./pages/Admin/SkillSetPage";
 import JobTypePage from "./pages/Admin/JobTypePage";
 import BenefitsPage from "./pages/Admin/BenefitsPage";
 import AdminProtectedRoute from "./components/Admin/AdminProtectedRoute";
+import JobsSkill from "./pages/JobsSkill";
+import JobsTitle from "./pages/JobsTitle";
+import JobsCompany from "./pages/JobsCompany";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -138,7 +141,18 @@ const router = createBrowserRouter([
         index: true,
         element: <HomePage />,
       },
-
+      {
+        path: "jobs-skill-index",
+        element: <JobsSkill />,
+      },
+      {
+        path: "jobs-title-index",
+        element: <JobsTitle />,
+      },
+      {
+        path: "jobs-company-index",
+        element: <JobsCompany />,
+      },
       {
         path: "new",
         element: <ForgotPassword />,

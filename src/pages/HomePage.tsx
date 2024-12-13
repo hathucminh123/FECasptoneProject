@@ -211,7 +211,7 @@ const HomePage:React.FC =()=> {
     const searchDataArray = [
       // { companyName: text ,pageSize: 9},
       // { skillSet: item, pageSize: 9 },
-      {keyword :item, pageSize: 9 },
+      {keyword :item, pageSize: 9,pageIndex:1},
       // { location: text ,pageSize: 9 },
       // { experience: text ,pageSize: 9},
       // { jobType: text ,pageSize: 9},

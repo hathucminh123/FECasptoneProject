@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
-  FormControl,
+  // FormControl,
 
-  MenuItem,
-  Select,
+  // MenuItem,
+  // Select,
   TextField,
 } from "@mui/material";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { SelectChangeEvent } from "@mui/material/Select";
+// import LocationOnIcon from "@mui/icons-material/LocationOn";
+// import { SelectChangeEvent } from "@mui/material/Select";
 import SearchIcon from "@mui/icons-material/Search";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -53,7 +53,7 @@ interface FormSearchProps {
   text: string;
   setText: React.Dispatch<React.SetStateAction<string>>;
   onClick: () => void;
-  location: string;
+  location?: string;
   setLocation: React.Dispatch<React.SetStateAction<string>>;
   isPending?: boolean;
 }
@@ -62,7 +62,7 @@ export default function FormSearch({
   text,
   setText,
   onClick,
-  location,
+  // location,
   setLocation,
   isPending,
 }: FormSearchProps) {
@@ -70,7 +70,7 @@ export default function FormSearch({
   const navigate = useNavigate();
   const [hovered, setHovered] = useState<null | number>(null);
 
-  const locationText = locationPass.state?.textt || "";
+  const locationText = locationPass.state?.text || "";
   // const advance = locationPass.state?.boolean || "";
   // const [turnOn, setTurnOn] = useState<boolean>(advance ||false);
   const [turnOn, setTurnOn] = useState<boolean>(() =>
@@ -134,8 +134,8 @@ export default function FormSearch({
     localStorage.setItem("Turn", JSON.stringify(turnOn));
   }, [turnOn]);
 
-  const handleChangeLocation = (event: SelectChangeEvent) =>
-    setLocation(event.target.value as string);
+  // const handleChangeLocation = (event: SelectChangeEvent) =>
+  //   setLocation(event.target.value as string);
 
   const handleText = (e: React.ChangeEvent<HTMLInputElement>) =>
     setText(e.target.value || "");
@@ -200,10 +200,10 @@ export default function FormSearch({
       },
     });
   };
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
   useEffect(() => {
     const allowedLocations = [
@@ -218,11 +218,16 @@ export default function FormSearch({
 
     if (allowedLocations.includes(locationText)) {
       setLocation(locationText);
+      setText(locationText)
+     
     } else {
       setText(locationText ? locationText : text);
       setLocation("All");
     }
   }, [locationText, setLocation, setText, text]);
+ 
+  
+
 
   return (
     <Box sx={{ display: "block", marginTop: "0em", unicodeBidi: "isolate" }}>
@@ -238,7 +243,7 @@ export default function FormSearch({
         noValidate
         autoComplete="off"
       >
-        <FormControl fullWidth sx={{ width: { xs: "100%", sm: "25%" } }}>
+        {/* <FormControl fullWidth sx={{ width: { xs: "100%", sm: "25%" } }}>
         <Select
         IconComponent={() => (
           <LocationOnIcon
@@ -292,14 +297,14 @@ export default function FormSearch({
                 {city.replace(/_/g, " ")}
               </MenuItem>
             ))}
-          </Select> */}
-        </FormControl>
+          </Select> 
+        </FormControl> */}
         <div className={classes.main}>
           <TextField
             value={text}
             id="keyword-input"
             // label="Enter keyword"
-            placeholder="Skill (Java, iOS), Job title, Company Name"
+            placeholder="Skill (Java, iOS), Job title, Company Name,City"
             type="text"
             variant="outlined"
             onChange={handleText}

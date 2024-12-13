@@ -10,6 +10,7 @@ interface SearchData {
   jobType?: string;
   pageSize?: number;
   pageIndex?:number
+  keyword?:string;
 }
 
 interface JobSearch{
