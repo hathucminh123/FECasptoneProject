@@ -499,6 +499,7 @@ const SkillsMenu = ({
   // const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
 
   const [text, setText] = useState<string>("");
+  console.log("quao",text)
   const { mutateAsync } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
@@ -509,7 +510,7 @@ const SkillsMenu = ({
         // setJobSearch(data.result.items);
         const total = data.result.totalCount;
         navigate("/it_jobs", {
-          state: { jobSearch: jobSearchResults, text: text, total: total },
+          state: { jobSearch: jobSearchResults, text: text, total: total }
         });
       } else {
         navigate("/it_jobs", { state: { text: text } });

@@ -152,7 +152,8 @@ const FilterJobbySkill: React.FC = () => {
   console.log("tong job", totalJobs);
   const LocationPass = location.state?.location || [];
   console.log("JobSearchPass", jobSearchPass);
-  // console.log("text", TextPass);
+
+  console.log("text", TextPass);
 
   const [jobSearch, setJobSearch] = useState<JobPost[] | undefined>(
     location.state?.jobSearch || []
@@ -408,6 +409,12 @@ const FilterJobbySkill: React.FC = () => {
   //   }
   // };
   const [text, setText] = useState<string>(TextPass);
+
+  useEffect(() => {
+    if (TextPass) {
+      setText(TextPass);
+    }
+  }, [TextPass]);
   const [locationne, setLocation] = useState<string>(LocationPass);
   console.log("duockoni", text);
   // const { mutateAsync } = useMutation({
@@ -491,7 +498,7 @@ const FilterJobbySkill: React.FC = () => {
           // jobTitle: text,
 
           keyword: text,
-          city: locationne,
+          // city: locationne,
           pageSize: 9,
           pageIndex: page,
         },
@@ -576,7 +583,7 @@ const FilterJobbySkill: React.FC = () => {
           state: {
             jobSearch: jobSearchResults,
             text: text,
-            location: location,
+            // location: location,
             total: total,
             currentPage: 1,
           },
@@ -586,7 +593,7 @@ const FilterJobbySkill: React.FC = () => {
         navigate("/it_jobs", {
           state: {
             text: text,
-            location: location,
+            // location: location,
             jobSearch: [],
             total: 0,
             currentPage: 0,
@@ -674,7 +681,7 @@ const FilterJobbySkill: React.FC = () => {
         // { skillSet: text, city: locationne, pageSize: 9, pageIndex: 1 },
         // { city: text, pageSize: 9 },
         // { location: text, city: locationne, pageSize: 9, pageIndex: 1 },
-        { keyword: text, city: locationne, pageSize: 9, pageIndex: 1 },
+        { keyword: text, pageSize: 9, pageIndex: 1 },
         // { experience: Number(text), city: locationne, pageSize: 9 },
         // { jobType: text, city: locationne, pageSize: 9, pageIndex: 1 },
       ];

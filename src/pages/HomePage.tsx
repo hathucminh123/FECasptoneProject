@@ -159,7 +159,7 @@ const HomePage:React.FC =()=> {
         // { skillSet: text, city: location, pageSize: 9,pageIndex:1  },
         // { city: text, pageSize: 9 },
         // { location: text, city: location, pageSize: 9 ,pageIndex:1 },
-        {keyword :text,city: location, pageSize: 9 ,pageIndex:1},
+        {keyword :text, pageSize: 9 ,pageIndex:1},
         // { experience: Number(text), city: location, pageSize: 9 },
         // { jobType: text, city: location, pageSize: 9,pageIndex:1  },
       ];

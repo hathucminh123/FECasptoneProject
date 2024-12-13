@@ -140,6 +140,7 @@ export default function FormSearch({
   const handleText = (e: React.ChangeEvent<HTMLInputElement>) =>
     setText(e.target.value || "");
 
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
