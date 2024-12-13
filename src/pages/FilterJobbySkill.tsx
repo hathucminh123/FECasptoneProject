@@ -727,7 +727,7 @@ const FilterJobbySkill: React.FC = () => {
     <div className={classes.main}>
       {openFilter && (
         // <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
-        <FilterModal filteredJobs={JobPostsdata} onDone={CloseHandleFilter} />
+        <FilterModal setText={setText} filteredJobs={JobPostsdata} onDone={CloseHandleFilter} />
       )}
       <AnimatePresence>
         {openModalScore && (

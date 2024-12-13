@@ -63,6 +63,7 @@ interface SearchData {
 interface Props {
   onDone?: () => void;
   filteredJobs?: JobPost[];
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const experienceLevels = [
@@ -86,7 +87,7 @@ const datacities: string[] = [
   "NHA TRANG",
 ];
 
-const FilterModal: React.FC<Props> = ({ onDone }) => {
+const FilterModal: React.FC<Props> = ({ onDone,setText }) => {
   const [totalJobs, setTotalJobs] = useState<number>(0);
   console.log("duoc di", totalJobs);
   // const JobSalary = filteredJobs?.map((salary) => salary.salary);
@@ -410,10 +411,12 @@ const FilterModal: React.FC<Props> = ({ onDone }) => {
         const jobSearchResults = data.result.items;
         // const total = data.result.totalCount;
         setJobSearch(data.result.items);
+        setText("")
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             // text: text,
+            text:""
             // location: location,
             // total: total,
           },
@@ -446,6 +449,7 @@ const FilterModal: React.FC<Props> = ({ onDone }) => {
         if (result && result.result && result.result.items.length > 0) {
           setJobSearch(result.result.items);
           setTotalJobs(result.result.totalCount);
+          setText("")
           // navigate("/it_jobs", {
           //   state: {
           //     jobSearch: result.result.items,
