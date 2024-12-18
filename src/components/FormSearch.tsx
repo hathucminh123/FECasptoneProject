@@ -476,6 +476,7 @@ export default function FormSearch({
           variant="contained"
           size="large"
           sx={{
+           
             backgroundColor: "#FF6F61",
             color: "white",
             border: "none",
@@ -486,7 +487,9 @@ export default function FormSearch({
             fontFamily: "Lexend",
             mb: "2px",
             fontSize: "16px",
-            width: { xs: "100%", sm: "25%" },
+            // width: { xs: "100%", sm: "25%" },
+            width: "500px",
+            position:'relative',
             marginTop: { xs: "10px", sm: "0" },
             transition: "background-color 0.3s ease",
             "&:hover": {
@@ -494,6 +497,55 @@ export default function FormSearch({
             },
           }}
         >
+          <img className={classes.img} src="https://itviec.com/assets/santa-hat-42f9e437ff89aee0a506e9e93c5cdb31c237e5f00ff562e953de0072cb3adb67.svg" alt="logoNoel" />
+          {/* <svg className={classes.img}  width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+
+  <g transform="rotate(45, 100, 100)">
+ 
+    <path d="M 100 20 L 30 160 L 170 160 Z" fill="#D8B787" stroke="#A47E50" strokeWidth="2"/>
+ 
+    <path d="M 30 160 Q 100 140 170 160" fill="none" stroke="#A47E50" strokeWidth="2"/>
+   
+    <path d="M 50 160 Q 100 180 150 160" fill="none" stroke="#D43F3F" strokeWidth="4" strokeLinecap="round"/>
+
+    <path d="M 100 20 L 60 160 L 140 160 Z" fill="#C4A078" opacity="0.3"/>
+  </g>
+
+
+  <g transform="translate(40, 70) scale(0.6)">
+    <circle cx="0" cy="0" r="10" fill="#FFB6C1"/>
+    <circle cx="0" cy="-8" r="3" fill="#FFD700"/>
+    <circle cx="7" cy="-5" r="3" fill="#FFD700"/>
+    <circle cx="7" cy="5" r="3" fill="#FFD700"/>
+    <circle cx="0" cy="8" r="3" fill="#FFD700"/>
+    <circle cx="-7" cy="5" r="3" fill="#FFD700"/>
+    <circle cx="-7" cy="-5" r="3" fill="#FFD700"/>
+  </g>
+
+  <g transform="translate(160, 60) scale(0.5)">
+    <circle cx="0" cy="0" r="10" fill="#FFB6C1"/>
+    <circle cx="0" cy="-8" r="3" fill="#FFD700"/>
+    <circle cx="7" cy="-5" r="3" fill="#FFD700"/>
+    <circle cx="7" cy="5" r="3" fill="#FFD700"/>
+    <circle cx="0" cy="8" r="3" fill="#FFD700"/>
+    <circle cx="-7" cy="5" r="3" fill="#FFD700"/>
+    <circle cx="-7" cy="-5" r="3" fill="#FFD700"/>
+  </g>
+
+
+  <g transform="translate(90, 40) scale(0.4)">
+    <circle cx="0" cy="0" r="10" fill="#FFB6C1"/>
+    <circle cx="0" cy="-8" r="3" fill="#FFD700"/>
+    <circle cx="7" cy="-5" r="3" fill="#FFD700"/>
+    <circle cx="7" cy="5" r="3" fill="#FFD700"/>
+    <circle cx="0" cy="8" r="3" fill="#FFD700"/>
+    <circle cx="-7" cy="5" r="3" fill="#FFD700"/>
+    <circle cx="-7" cy="-5" r="3" fill="#FFD700"/>
+  </g>
+</svg> */}
+
+
+
           {turnOn
             ? Loading
               ? "Searching..."

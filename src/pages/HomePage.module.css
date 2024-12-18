@@ -77,13 +77,25 @@
 }
 
 .card1{
-  column-gap: 28px;
+  /* column-gap: 28px;
   row-gap: 32px;
   flex-direction: row !important;
   align-items: center !important;
   justify-content: center !important;
   flex-wrap: wrap !important;
   display: flex !important;
+  box-sizing: border-box; */
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  flex-wrap: wrap !important;
+  display: flex !important;
+  --i-gutter-x: 1.5rem;
+  --i-gutter-y: 0;
+  margin-top: calc(-1* var(--i-gutter-y));
+  margin-right: calc(-0.5* var(--i-gutter-x));
+  margin-left: calc(-0.5* var(--i-gutter-x));
   box-sizing: border-box;
 }
 .cardJob {
@@ -258,6 +270,15 @@
   position: absolute !important;
   box-sizing: border-box;
 }
+.mainne{
+  display: block !important;
+  right: 0 !important;
+  margin-left: 1000px;
+  top:0  !important;
+  /* bottom: 0 !important; */
+  position: absolute !important;
+  box-sizing: border-box;
+}
 
 .main2{
   display: block !important;
@@ -268,6 +289,21 @@
 }
 .img{
   width: 160px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+}
+
+.img1{
+  max-width: 2000px;
+  margin: auto;
+  display: inline !important;
+  width: 100% !important;
+  right: 0 !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  position: absolute !important;
   vertical-align: middle;
   box-sizing: border-box;
   overflow-clip-margin: content-box;

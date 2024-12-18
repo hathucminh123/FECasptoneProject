@@ -55,7 +55,7 @@ interface JobPost {
   skillSets: string[];
 }
 
-const HomePage:React.FC =()=> {
+const HomePage: React.FC = () => {
   const navigate = useNavigate();
 
   // Handling profile navigation
@@ -67,12 +67,12 @@ const HomePage:React.FC =()=> {
       navigate("/profile-cv");
     }
   };
-  const [jobSearch, setJobSearch] = useState<JobPost[] |undefined>([]);
+  const [jobSearch, setJobSearch] = useState<JobPost[] | undefined>([]);
 
   const [text, setText] = useState<string>("");
   const [totalJobs, setTotalJobs] = useState<number>(0);
-  const [open,setOpen]=useState<boolean>(false)
-  console.log('total',totalJobs)
+  const [open, setOpen] = useState<boolean>(false);
+  console.log("total", totalJobs);
   const [location, setLocation] = useState<string>("All");
   const { mutateAsync, isPending } = useMutation({
     mutationFn: GetJobSearch,
@@ -81,22 +81,26 @@ const HomePage:React.FC =()=> {
 
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
-        const total =data.result.totalCount
+        const total = data.result.totalCount;
         setJobSearch(data.result.items);
         setTotalJobs(data.result.totalCount);
-        setOpen(false)
+        setOpen(false);
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             text: text || "",
             location: location,
-            total:total
-            
+            total: total,
           },
         });
       } else {
         navigate("/it_jobs", {
-          state: { text: text || "", location: location, jobSearch: [] ,total :0},
+          state: {
+            text: text || "",
+            location: location,
+            jobSearch: [],
+            total: 0,
+          },
         });
       }
 
@@ -130,8 +134,7 @@ const HomePage:React.FC =()=> {
       jobType?: string;
       pageSize: number;
       pageIndex?: number;
-      keyword?:string
-
+      keyword?: string;
     }
 
     // Define searchDataArray with the SearchData[] type
@@ -144,7 +147,7 @@ const HomePage:React.FC =()=> {
         // { skillSet: text, pageSize: 9 ,pageIndex:1},
         // { city: text, pageSize: 9 ,pageIndex:1},
         // { location: text, pageSize: 9 ,pageIndex:1},
-        {keyword :text, pageSize: 9 ,pageIndex:1}
+        { keyword: text, pageSize: 9, pageIndex: 1 },
         // { experience: Number(text), pageSize: 9 },
         // { jobType: text, pageSize: 9,pageIndex:1 },
       ];
@@ -152,7 +155,7 @@ const HomePage:React.FC =()=> {
       searchDataArray = [
         // { city: location, pageSize: 9,pageIndex:1  },
         // { location: location, pageSize: 9 ,pageIndex:1 },
-        {keyword :location, pageSize: 9 ,pageIndex:1}
+        { keyword: location, pageSize: 9, pageIndex: 1 },
       ];
     } else if (location !== "All" && text !== "") {
       searchDataArray = [
@@ -161,7 +164,7 @@ const HomePage:React.FC =()=> {
         // { skillSet: text, city: location, pageSize: 9,pageIndex:1  },
         // { city: text, pageSize: 9 },
         // { location: text, city: location, pageSize: 9 ,pageIndex:1 },
-        {keyword :text, pageSize: 9 ,pageIndex:1},
+        { keyword: text, pageSize: 9, pageIndex: 1 },
         // { experience: Number(text), city: location, pageSize: 9 },
         // { jobType: text, city: location, pageSize: 9,pageIndex:1  },
       ];
@@ -174,7 +177,7 @@ const HomePage:React.FC =()=> {
         // { location: text, pageSize: 9 ,pageIndex:1 },
         // { experience: Number(text), pageSize: 9 },
         // { jobType: text, pageSize: 9 ,pageIndex:1 },
-        {keyword :text, pageSize: 9 ,pageIndex:1}
+        { keyword: text, pageSize: 9, pageIndex: 1 },
       ];
     } else {
       searchDataArray = [];
@@ -204,7 +207,7 @@ const HomePage:React.FC =()=> {
   };
 
   const handleNavigateSkill = async (item: string) => {
-    setText(item)
+    setText(item);
     interface JobSearchResponse {
       result: {
         items: JobPost[];
@@ -214,7 +217,7 @@ const HomePage:React.FC =()=> {
     const searchDataArray = [
       // { companyName: text ,pageSize: 9},
       // { skillSet: item, pageSize: 9 },
-      {keyword :item, pageSize: 9,pageIndex:1},
+      { keyword: item, pageSize: 9, pageIndex: 1 },
       // { location: text ,pageSize: 9 },
       // { experience: text ,pageSize: 9},
       // { jobType: text ,pageSize: 9},
@@ -347,7 +350,7 @@ const HomePage:React.FC =()=> {
                 Skills for you:
               </Typography>
               <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-                {uniqueArray.slice(0,10).map((item) => (
+                {uniqueArray.slice(0, 10).map((item) => (
                   <Button
                     onClick={() => handleNavigateSkill(item)}
                     key={item}
@@ -359,7 +362,7 @@ const HomePage:React.FC =()=> {
                       padding: "10px 20px",
                       cursor: "pointer",
                       fontSize: "14px",
-                      fontFamily:"Lexend",
+                      fontFamily: "Lexend",
                       margin: "5px",
                       "&:hover": {
                         backgroundColor: "#333",
@@ -373,12 +376,101 @@ const HomePage:React.FC =()=> {
             </div>
           </div>
           <div className={classes.main1}>
-            <img className={classes.img} src="https://itviec.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzdSVkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--470623509c0a85b21133c40fac9fa817aa009d2c/christmas.png" alt="logo" />
+    
+            <img
+              className={classes.img}
+              src="https://itviec.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzdSVkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--470623509c0a85b21133c40fac9fa817aa009d2c/christmas.png"
+              alt="logo"
+            />
           </div>
+          {/* <div  className={classes.mainne}>
+          <svg   className={classes.img}  viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+
+<path d="M 50 250 Q 80 200, 120 230 Q 150 260, 180 220 Q 220 170, 250 210" 
+      stroke="#6C422A" strokeWidth="6" fill="none"/>
+<path d="M 80 180 Q 100 150, 140 160 Q 180 170, 220 130" 
+      stroke="#6C422A" strokeWidth="6" fill="none"/>
+
+
+<g fill="#FFD700" stroke="#E5B300" strokeWidth="1">
+ 
+  <circle cx="50" cy="250" r="8"/>
+  <circle cx="58" cy="246" r="8"/>
+  <circle cx="54" cy="258" r="8"/>
+  <circle cx="46" cy="258" r="8"/>
+  <circle cx="42" cy="246" r="8"/>
+
+  <g transform="translate(120, 230) scale(1)">
+    <circle cx="0" cy="0" r="8"/>
+    <circle cx="8" cy="-3" r="8"/>
+    <circle cx="4" cy="7" r="8"/>
+    <circle cx="-4" cy="7" r="8"/>
+    <circle cx="-8" cy="-3" r="8"/>
+  </g>
+  
+  <g transform="translate(180, 220) scale(0.9)">
+    <circle cx="0" cy="0" r="8"/>
+    <circle cx="8" cy="-3" r="8"/>
+    <circle cx="4" cy="7" r="8"/>
+    <circle cx="-4" cy="7" r="8"/>
+    <circle cx="-8" cy="-3" r="8"/>
+  </g>
+
+  <g transform="translate(140, 160) scale(0.8)">
+    <circle cx="0" cy="0" r="8"/>
+    <circle cx="8" cy="-3" r="8"/>
+    <circle cx="4" cy="7" r="8"/>
+    <circle cx="-4" cy="7" r="8"/>
+    <circle cx="-8" cy="-3" r="8"/>
+  </g>
+
+  <g transform="translate(220, 130) scale(1.2)">
+    <circle cx="0" cy="0" r="8"/>
+    <circle cx="8" cy="-3" r="8"/>
+    <circle cx="4" cy="7" r="8"/>
+    <circle cx="-4" cy="7" r="8"/>
+    <circle cx="-8" cy="-3" r="8"/>
+  </g>
+</g>
+
+
+<g fill="#FFB300">
+  <circle cx="50" cy="250" r="3"/>
+  <circle cx="120" cy="230" r="3"/>
+  <circle cx="180" cy="220" r="3"/>
+  <circle cx="140" cy="160" r="3"/>
+  <circle cx="220" cy="130" r="3"/>
+</g>
+
+<g fill="#3FA34D">
+
+  <ellipse cx="42" cy="260" rx="5" ry="10" transform="rotate(-30, 42, 260)"/>
+  <ellipse cx="58" cy="260" rx="5" ry="10" transform="rotate(30, 58, 260)"/>
+
+  <ellipse cx="112" cy="240" rx="5" ry="10" transform="rotate(-30, 112, 240)"/>
+  <ellipse cx="128" cy="240" rx="5" ry="10" transform="rotate(30, 128, 240)"/>
+
+  <ellipse cx="212" cy="140" rx="5" ry="10" transform="rotate(-30, 212, 140)"/>
+  <ellipse cx="228" cy="140" rx="5" ry="10" transform="rotate(30, 228, 140)"/>
+</g>
+</svg>
+          </div> */}
           <div className={classes.main2}>
-            <img  style={{width:"150px"}} className={classes.img} src="https://dathangsi.vn/upload/products/2021/11/0856-cay-thong-noel-45cm.jpg" alt="logo" />
+            <img
+              style={{ width: "150px" }}
+              className={classes.img}
+              src="https://dathangsi.vn/upload/products/2021/11/0856-cay-thong-noel-45cm.jpg"
+              alt="logo"
+            />
           </div>
         </div>
+        <img
+          className={classes.img1}
+          src="https://itviec.com/assets/christmas_background-36b334a677f4f8d08aa5aa26805025e9fd35dbd2ccbf998146741b56f04cd244.svg"
+          alt=""
+        />
+
+
       </div>
 
       {/* First section with tools for application journey */}
@@ -515,10 +607,9 @@ const HomePage:React.FC =()=> {
           </section>
         </div>
       </main> */}
-   
-        <TopJobSection />
-    
+
+      <TopJobSection />
     </>
   );
-}
-export default HomePage
+};
+export default HomePage;

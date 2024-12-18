@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./CardEmployer.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import Image from "./../assets/image/download.png";
 // import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -80,6 +80,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
 
   const cityColumn = uniqueArrayCity;
   return (
+    <Link to=""  className={classes.main}>
     <div className={classes.card_item} onClick={() => handleNavigate(data)}>
       <div style={{ textAlign: "center", display: "block" }}>
         <div className={classes.index}>
@@ -113,6 +114,8 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
             variant="h3"
             gutterBottom
             sx={{
+              overflow:'hidden',
+          
               paddingLeft: "16px",
               paddingRight: "16px",
               color:
@@ -219,6 +222,7 @@ const CardEmployer: React.FC<CardEmployerProps> = ({ data, jobs }) => {
         </div>
       </div>
     </div>
+    </Link>
   );
 };
 
