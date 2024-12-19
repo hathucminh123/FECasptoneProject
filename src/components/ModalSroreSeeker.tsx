@@ -1066,9 +1066,11 @@ const ModalSroreSeeker: React.FC<props> = ({
                                   color="textSecondary"
                                 >
                                   <strong>Date:</strong>{" "}
-                                  {new Date(
+                                  {/* {new Date(
                                     comment.commentDate
-                                  ).toLocaleDateString()}
+                                  ).toLocaleDateString()} */}
+
+                                  {moment(comment.commentDate).format("DD-MM-YYYY")}
                                 </Typography>
                                 <Box display="flex" alignItems="center">
                                   <Typography

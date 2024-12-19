@@ -147,7 +147,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
                   {/* Display user initials or name if available */}
                   <Typography sx={{ color: "#757575", fontSize: "12px" }}>
-                    {moment(item.commentDate).format("YYYY-MM-DD HH:mm:ss")}
+                    {moment(item.commentDate).format("YYYY-MM-DD ")}
                   </Typography>
                 </Box>
               </Box>
