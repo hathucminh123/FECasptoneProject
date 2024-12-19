@@ -195,7 +195,7 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
                 }}
               >
                 {" "}
-                {data?.salary}
+                {data?.salary} USD
               </span>
             </div>
           </div>

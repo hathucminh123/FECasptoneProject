@@ -236,7 +236,7 @@ export default function CardJobDetails({
                   color: "#0ab305 !important",
                 }}
               >
-                {data?.salary}
+                {data?.salary} USD
               </Typography>
             </div>
             <div className={classes.separator}></div>

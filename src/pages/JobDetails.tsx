@@ -568,7 +568,7 @@ const JobDetails: React.FC = () => {
                       fontFamily: "Lexend, sans-serif",
                     }}
                   >
-                    {job?.salary}
+                    {job?.salary} USD
                   </Typography>
                 </div>
                 {hasAppliedJobActivity ? (
