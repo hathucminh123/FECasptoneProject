@@ -1,4 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { 
+  // useEffect
+  
+   useState } from "react";
 import {
   Box,
   Button,
@@ -17,7 +20,7 @@ import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { SearchCompany } from "../Services/CompanyService/SearchCompany";
 import { SearchCompanyByName } from "../Services/CompanyService/CompanySearchbyName";
 import classes from "./FormSearch.module.css";
-import { JobSearchQuery } from "../Services/JobSearchService/JobSearchQuery";
+// import { JobSearchQuery } from "../Services/JobSearchService/JobSearchQuery";
 import { message } from "antd";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
@@ -82,9 +85,9 @@ export default function FormSearch({
   // const locationText = locationPass.state?.text || "";
   // const advance = locationPass.state?.boolean || "";
   // const [turnOn, setTurnOn] = useState<boolean>(advance ||false);
-  const [turnOn, setTurnOn] = useState<boolean>(() =>
-    JSON.parse(localStorage.getItem("Turn") || "false")
-  );
+  // const [turnOn, setTurnOn] = useState<boolean>(() =>
+  //   JSON.parse(localStorage.getItem("Turn") || "false")
+  // );
 
   const { data: Company } = useQuery({
     queryKey: ["Company"],
@@ -226,9 +229,9 @@ export default function FormSearch({
 };
 
 
-  useEffect(() => {
-    localStorage.setItem("Turn", JSON.stringify(turnOn));
-  }, [turnOn]);
+  // useEffect(() => {
+  //   localStorage.setItem("Turn", JSON.stringify(turnOn));
+  // }, [turnOn]);
 
   // const handleChangeLocation = (event: SelectChangeEvent) =>
   //   setLocation(event.target.value as string);
@@ -236,64 +239,83 @@ export default function FormSearch({
   const handleText = (e: React.ChangeEvent<HTMLInputElement>) =>
     setText(e.target.value || "");
 
+  // const handleKeyDown = (e: React.KeyboardEvent) => {
+  //   if (e.key === "Enter") {
+  //     e.preventDefault();
+
+  //     const normalizedText = (text || "").trim().toLowerCase();
+
+  //     const matchingCompany = filterCompany?.find(
+  //       (item) => item.companyName.trim().toLowerCase() === normalizedText
+  //     );
+
+  //     if (matchingCompany) {
+  //       handleSearchCompany();
+  //     // } else {
+  //     //   if (turnOn === true) {
+  //     //     handleSearch();
+  //     //   } 
+  //     }
+  //      else  {
+  //         onClick();
+  //       }
+  //     }
+  //   }
+  // };
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-
-      const normalizedText = (text || "").trim().toLowerCase();
-
-      const matchingCompany = filterCompany?.find(
-        (item) => item.companyName.trim().toLowerCase() === normalizedText
-      );
-
-      if (matchingCompany) {
-        handleSearchCompany();
-      } else {
-        if (turnOn === true) {
-          handleSearch();
-        } else {
-          onClick();
-        }
-      }
+    if (e.key !== "Enter") return; // Early return for non-Enter keys
+  
+    e.preventDefault();
+  
+    const normalizedText = (text || "").trim().toLowerCase();
+  
+    const matchingCompany = filterCompany?.find(
+      (item) => item.companyName.trim().toLowerCase() === normalizedText
+    );
+  
+    if (matchingCompany) {
+      handleSearchCompany();
+    } else {
+      onClick();
     }
   };
+  // const { mutate, isPending: Loading } = useMutation({
+  //   mutationFn: JobSearchQuery,
+  //   onSuccess: (data) => {
+  //     console.log("Search result:", data);
 
-  const { mutate, isPending: Loading } = useMutation({
-    mutationFn: JobSearchQuery,
-    onSuccess: (data) => {
-      console.log("Search result:", data);
+  //     if (data && data.result && data.result.length > 0) {
+  //       const jobSearchResults = data.result;
+  //       // setJobSearch(data.result.items);
 
-      if (data && data.result && data.result.length > 0) {
-        const jobSearchResults = data.result;
-        // setJobSearch(data.result.items);
+  //       navigate("/it_jobs", {
+  //         state: {
+  //           jobSearch: jobSearchResults,
+  //           text: text || "",
+  //           boolean: turnOn,
+  //         },
+  //         // state: { jobSearch: jobSearchResults },
+  //       });
+  //     } else {
+  //       // navigate("/it_jobs", { state: { textt: searchTerm } });
+  //       navigate("/it_jobs");
+  //     }
 
-        navigate("/it_jobs", {
-          state: {
-            jobSearch: jobSearchResults,
-            text: text || "",
-            boolean: turnOn,
-          },
-          // state: { jobSearch: jobSearchResults },
-        });
-      } else {
-        // navigate("/it_jobs", { state: { textt: searchTerm } });
-        navigate("/it_jobs");
-      }
+  //     // navigate("/it-jobs",{state : text});
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Search.");
+  //   },
+  // });
 
-      // navigate("/it-jobs",{state : text});
-    },
-    onError: () => {
-      message.error("Failed to Search.");
-    },
-  });
-
-  const handleSearch = () => {
-    mutate({
-      data: {
-        query: text,
-      },
-    });
-  };
+  // const handleSearch = () => {
+  //   mutate({
+  //     data: {
+  //       query: text,
+  //     },
+  //   });
+  // };
   // const [open, setOpen] = useState(false);
 
   // const handleOpen = () => setOpen(true);
@@ -468,8 +490,8 @@ export default function FormSearch({
             filterCompany[0]?.companyName.trim().toLowerCase() ===
               text.trim().toLowerCase()
               ? handleSearchCompany
-              : turnOn
-              ? handleSearch
+              // : turnOn
+              // ? handleSearch
               : onClick
           }
           startIcon={<SearchIcon />}
@@ -487,8 +509,8 @@ export default function FormSearch({
             fontFamily: "Lexend",
             mb: "2px",
             fontSize: "16px",
-            // width: { xs: "100%", sm: "25%" },
-            width: "500px",
+            width: { xs: "100%", sm: "25%" },
+            // width: "500px",
             position:'relative',
             marginTop: { xs: "10px", sm: "0" },
             transition: "background-color 0.3s ease",
@@ -546,15 +568,17 @@ export default function FormSearch({
 
 
 
-          {turnOn
+          {/* {turnOn
             ? Loading
               ? "Searching..."
               : "Search"
-            : isPending
+            :  */}
+            {
+            isPending
             ? "Searching..."
             : "Search"}
         </Button>
-        <Button
+        {/* <Button
           onClick={() => setTurnOn(!turnOn)}
           // startIcon={<SearchIcon />}
           variant="contained"
@@ -579,7 +603,7 @@ export default function FormSearch({
           }}
         >
           Advanced Search: {turnOn ? "Turn Off" : "Turn On"}
-        </Button>
+        </Button> */}
       </Box>
     </Box>
   );

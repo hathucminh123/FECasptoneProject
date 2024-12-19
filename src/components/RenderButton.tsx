@@ -52,6 +52,7 @@ interface RenderButtonProps {
         fontSize: "16px",
         borderRadius: "4px",
         minWidth: "80px",
+     
         display: "inline-flex",
         fontFamily: "Lexend, sans-serif",
         justifyContent: "center",

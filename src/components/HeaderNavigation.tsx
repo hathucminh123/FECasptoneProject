@@ -221,7 +221,7 @@ export default function HeaderNavigation({ token }: props) {
                 <Typography
                   variant="h2"
                   sx={{
-                    color: "#fff",
+                    color: "#000000",
                     fontWeight: 700,
                     fontSize: "22px",
                     fontFamily: "Lexend, sans-serif",
@@ -235,7 +235,7 @@ export default function HeaderNavigation({ token }: props) {
           </div>
           <div className={classes.containerright}>
             <ul className={classes.list}>
-              *{" "}
+              {" "}
               <li className={classes.li} onMouseEnter={handleMouseEnter}>
                 <NavLink className={classes.link} to="#">
                   All Jobs
@@ -320,7 +320,7 @@ export default function HeaderNavigation({ token }: props) {
                         variant="body1"
                         sx={{
                           marginLeft: "12px",
-                          color: "#fff",
+                          color: "#000000",
                           cursor: "pointer",
                           fontFamily: "Lexend, sans-serif",
                         }}

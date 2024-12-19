@@ -1,6 +1,7 @@
 .header {
   padding: 0 24px;
-  background-color: #0e1111;
+  background: var(--color-background-default);
+  border-bottom: 1px solid var(--color-border-hover);
   position: sticky;
   top: 0;
   width: 100%;
@@ -14,6 +15,10 @@
   border-style: solid;
 }
 
+:root {
+  --color-background-default: #ffffff;
+  --color-border-hover: #cccccc;
+}
 .header1 {
   display: flex;
   flex-direction: row;
@@ -64,7 +69,7 @@
   min-width: 0;
   min-height: 0;
   flex-grow: 1;
-  color: #fff;
+  color: #000000;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
@@ -154,14 +159,14 @@
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
-  background-color: #fff;
+  background-color: #000000;
 }
 
 .header6 {
   margin-left: 16px;
   margin-right: 8px;
   height: 32px;
-  border-right: 1px solid #eee;
+  border-right: 1px solid #000000;
   opacity: 0.5;
   box-sizing: border-box;
 
@@ -183,7 +188,7 @@
   min-width: 0;
   min-height: 0;
   flex-grow: 0;
-  color: #fff;
+  color: #000000;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;
@@ -210,7 +215,7 @@
 }
 
 .svg {
-  color: #fff;
+  color: #000000;
   display: block;
   box-sizing: border-box;
   border-width: 0;
@@ -311,7 +316,7 @@
 
 .header15 {
   flex-shrink: 0;
-  border-color: #fff;
+  border-color: #000000;
   --tw-bg-opacity: 1;
   background-color: rgb(250 250 250 / var(--tw-bg-opacity));
   --tw-border-opacity: 1;
@@ -373,7 +378,7 @@
   transition-duration: 300ms;
   background-color: transparent;
   -webkit-font-smoothing: antialiased;
-  color: #fff;
+  color: #000000;
   border-radius: 4px;
   font-size: 14px;
   line-height: 1.4;
@@ -407,7 +412,7 @@
     0 0 1px 0 var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
     var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  scrollbar-color: #e0e0e0 #fff;
+  scrollbar-color: #e0e0e0 #ffff;
   scrollbar-width: 5px;
   border-radius: 4px;
   z-index: 100;
@@ -469,7 +474,7 @@
 
 .img1 {
   flex-shrink: 0;
-  border-color: #fff;
+  border-color: #000000;
   --tw-bg-opacity: 1;
   background-color: rgb(250 250 250 / var(--tw-bg-opacity));
   --tw-border-opacity: 1;
@@ -657,7 +662,7 @@
 
 .svg1 {
   width: 24px;
-  color: #fff;
+  color: #000000;
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;

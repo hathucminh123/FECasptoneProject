@@ -504,7 +504,7 @@ export default function Profilecv() {
                   text="Preview & Download CV"
                   color="#ed1b2f"
                   variant="contained"
-                  sxOverrides={{ minWidth: "300px" }}
+                  sxOverrides={{width: "100%" }}
                   onClick={handleNavigate}
                 />
               </div>

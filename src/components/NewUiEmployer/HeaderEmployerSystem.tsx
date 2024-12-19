@@ -237,7 +237,7 @@ export default function HeaderEmployerSystem({
                 <Typography
                   variant="h2"
                   sx={{
-                    color: "#fff",
+                    color: "#000000",
                     fontWeight: 700, 
                     fontSize: "22px", 
                     fontFamily: "Lexend, sans-serif",
@@ -460,7 +460,7 @@ export default function HeaderEmployerSystem({
                     <Typography
                       variant="h5"
                       sx={{
-                        color: "#fff",
+                        color: "#000000",
                         lineHeight: "16px",
                         whiteSpace: "nowrap",
                         margin: 0,
