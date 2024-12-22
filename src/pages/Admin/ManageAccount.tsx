@@ -3,7 +3,7 @@ import classes from "./ManageAccount.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FormSelect from "../../components/Employer/FormSelect";
-import TableAccount from "../../components/Admin/TableAccount";
+import TableAccountt from "../../components/Admin/TableAccountt";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Tooltip from "@mui/material/Tooltip";
 import PauseIcon from "@mui/icons-material/Pause";
@@ -172,7 +172,7 @@ const ManageAccount: React.FC = () => {
             </div>
           </div>
           <div className={classes.main12}>
-            <TableAccount
+            <TableAccountt
               headers={headers}
               data={data}
               onViewDetail={handleViewDetail}
