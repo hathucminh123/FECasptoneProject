@@ -47,6 +47,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -55,8 +56,8 @@ interface CVs {
   name: string;
 }
 interface Benefits {
-  id:number;
-  name:string
+  id: number;
+  name: string;
 }
 interface UserProfile {
   id: number;
@@ -69,9 +70,9 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits:Benefits[]
+  benefits: Benefits[];
 }
-const  PassedApplicants:React.FC =()=> {
+const PassedApplicants: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
@@ -195,10 +196,9 @@ const  PassedApplicants:React.FC =()=> {
   //   return `${(percentage / 100) * circumference} ${circumference}`;
   // };
 
-  if(PendingDataSeekerApply.length === 0){
-    return <NoJobApplicants text="There are no  Passed applicants Yet"/>
+  if (PendingDataSeekerApply.length === 0) {
+    return <NoJobApplicants text="There are no  Passed applicants Yet" />;
   }
-
 
   return (
     <div className={classes.main}>
@@ -255,7 +255,11 @@ const  PassedApplicants:React.FC =()=> {
                         </div>
                       </div>
                       <div className={classes.main9}>
-                        <button type="button" className={classes.button} style={{marginRight:'50px'}}>
+                        <button
+                          type="button"
+                          className={classes.button}
+                          style={{ marginRight: "50px" }}
+                        >
                           <span>
                             {" "}
                             {data.status} {" ✦"}
@@ -309,7 +313,7 @@ const  PassedApplicants:React.FC =()=> {
                                         {/* {". "}
                                         <span>asdasdas</span> */}
                                       </div>
-                                      {expandedId === data.id&& (
+                                      {expandedId === data.id && (
                                         <>
                                           <div className={classes.main20}>
                                             <span>
@@ -408,11 +412,25 @@ const  PassedApplicants:React.FC =()=> {
                           </div>
                         </div>
 
-                        <div className={classes.main28} >
+                        <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
-                            <div className={classes.main29} key={skill.id}>
-                              <span>{skill.name}</span>
-                            </div>
+                            <>
+                              <div className={classes.main13}>
+                                {skill.proficiencyLevel}
+                                {": "}
+                                {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                              </div>
+                              <div className={classes.main29} key={skill.id}>
+                                <span>{skill.name}</span>
+                              </div>
+                            </>
                           ))}
                         </div>
                       </div>
@@ -434,19 +452,19 @@ const  PassedApplicants:React.FC =()=> {
                         </div>
 
                         <div className={classes.main28}>
-                          {
-                            profile.benefits && profile.benefits.length > 0? profile.benefits.map((skill) => (
+                          {profile.benefits && profile.benefits.length > 0 ? (
+                            profile.benefits.map((skill) => (
                               <div key={skill.id} className={classes.main29}>
                                 <span>{skill.name}</span>
                               </div>
-                            )): <span>no Benefits Yet</span>
-                          }
-                       
+                            ))
+                          ) : (
+                            <span>no Benefits Yet</span>
+                          )}
                         </div>
-                        
                       </div>
                     </div>
-                    <div className={classes.main33}  style={{ top: 175}}>
+                    <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button
                           type="button"
@@ -461,14 +479,16 @@ const  PassedApplicants:React.FC =()=> {
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 0}}>
+                    <div className={classes.main33} style={{ top: 0 }}>
                       <div>
-                        <button type="button" className={classes.button6}    onClick={() =>
-                              handleOpenMdalScore(data.id, profile)
-                            }>
+                        <button
+                          type="button"
+                          className={classes.button6}
+                          onClick={() => handleOpenMdalScore(data.id, profile)}
+                        >
                           {/* <span className={classes.spanicon}> */}
-                             {/* <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/> */}
-                             {data.analyzedResult.matchDetails && (
+                          {/* <GradientCircularProgress percentage={data.analyzedResult.matchDetails.scores.overallMatch}/> */}
+                          {data.analyzedResult.matchDetails && (
                             <GradientCircularProgress
                               percentage={
                                 data.analyzedResult.matchDetails.scores
@@ -476,7 +496,7 @@ const  PassedApplicants:React.FC =()=> {
                               }
                             />
                           )}
-                          
+
                           {/* </span> */}
                         </button>
                       </div>
@@ -540,5 +560,5 @@ const  PassedApplicants:React.FC =()=> {
       </div>
     </div>
   );
-}
-export default PassedApplicants
+};
+export default PassedApplicants;

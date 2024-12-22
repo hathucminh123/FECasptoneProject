@@ -35,6 +35,7 @@ export const apiLinks = {
     GetCompaniesbyId: `${baseURL}/Company`,
     GetSearch: `${baseURL}/Company/company-name`,
     getSeacrhByname: `${baseURLL}`,
+    PUTCOMPANYSTATUS :`${baseURL}/Company/company-status`,
   },
   JobPosts: {
     POST: `${baseURL}/JobPosts`,
@@ -156,6 +157,9 @@ export const apiLinks = {
   SearchQuery: {
     POST: `${baseURL}/JobPosts/SearchJobsQuery`,
   },
+  TaxCode :{
+    GET: `https://api.vietqr.io/v2/business`
+  }
 };
 
 export const signalR = {

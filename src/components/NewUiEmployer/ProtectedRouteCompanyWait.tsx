@@ -4,19 +4,17 @@ import { Navigate, useLocation, useOutletContext } from "react-router-dom";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
 import React from "react";
+
 type JobContextType = {
   selectJobId: number | null;
   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
+const ProtectedRouteCompanyWait = ({ children }: { children: ReactNode }) => {
   const [companyId, setCompanyId] = useState<string | null>(
     localStorage.getItem("CompanyId")
   );
   const { selectJobId, setSelectJobId } = useOutletContext<JobContextType>();
-
-  // const [selectJobId,setSelectJobId]=useState<number|null>()
-
   const location = useLocation();
 
   const { data: CompanyDa } = useQuery({
@@ -26,9 +24,7 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
     enabled: !!companyId,
   });
 
-  // Dữ liệu công ty (nếu có)
-  const companyDataa = CompanyDa?.Companies;
-
+  const companyDataa = CompanyDa?.Companies ;
   const isPending = companyDataa?.companyStatus;
 
   const { data: JobPosts } = useQuery({
@@ -36,9 +32,9 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
     queryFn: ({ signal }) => GetJobPost({ signal }),
     staleTime: 5000,
   });
-  const JobPostsdata = JobPosts?.JobPosts;
 
-  const jobincompanyData = JobPostsdata?.filter(
+  const JobPostsdata = JobPosts?.JobPosts || [];
+  const jobincompanyData = JobPostsdata.filter(
     (item) => item.companyId === companyDataa?.id
   );
 
@@ -59,13 +55,10 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
     }
   }, [companyId, location]);
 
-  return jobincompanyData &&
-    jobincompanyData.length > 0 &&
-    selectJobId &&
-    isPending === 2 ? (
+  return jobincompanyData.length > 0 && selectJobId ? (
     <Navigate to={`/EmployerJob/listjobs/OverView/${selectJobId}`} replace />
-  ) : isPending === 0 ? (
-    <Navigate to={`/EmployerJob/Waiting`} replace />
+  ) : isPending === 2 ? (
+    <Navigate to={`/EmployerJob`} replace />
   ) : isPending === 1 ? (
     <Navigate to={`/onboarding/recruit`} replace />
   ) : (
@@ -73,4 +66,4 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default ProtectedRouteJob;
+export default ProtectedRouteCompanyWait;

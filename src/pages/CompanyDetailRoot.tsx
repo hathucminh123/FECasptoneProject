@@ -498,6 +498,7 @@ const CompanyDetailRoot:React.FC =()=> {
                       );
                       return (
                         <CardJob
+                         
                           key={job.id}
                           data={job}
                           company={companys}

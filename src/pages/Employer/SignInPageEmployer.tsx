@@ -536,7 +536,7 @@ export default function SignInPageEmployer() {
 
                           <TextField
                             id="outlined-username-input"
-                            label="Email "
+                            label="Email"
                             name="userEmail"
                             type="text"
                             required

@@ -47,6 +47,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?:string;
 }
 
 interface CVs {
@@ -413,9 +414,23 @@ const RejectedApplicants: React.FC = () => {
 
                         <div className={classes.main28}>
                           {profile.skillSets.map((skill, index) => (
-                            <div className={classes.main29} key={index}>
-                              <span>{skill.name}</span>
-                            </div>
+                            <>
+                              <div className={classes.main13}>
+                                {skill.proficiencyLevel}
+                                {" :"}
+                                {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                              </div>
+                              <div className={classes.main29} key={index}>
+                                <span>{skill.name}</span>
+                              </div>
+                            </>
                           ))}
                         </div>
                       </div>

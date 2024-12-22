@@ -54,6 +54,7 @@ interface SkillSet {
   name: string;
   shorthand: string | null;
   description: string | null;
+  // proficiencyLevel?:string |null;
 }
 
 interface CVs {
@@ -476,9 +477,12 @@ export default function RecommendTalents() {
 
                       <div className={classes.main28}>
                         {data.skillSets.map((skill) => (
-                          <div className={classes.main29} key={skill.id}>
-                            <span>{skill.name}</span>
-                          </div>
+                          <>
+                            
+                            <div className={classes.main29} key={skill.id}>
+                              <span>{skill.name}</span>
+                            </div>
+                          </>
                         ))}
                       </div>
                     </div>

@@ -13,6 +13,7 @@ import BuildOutlinedIcon from "@mui/icons-material/BuildOutlined";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
 import RedeemOutlinedIcon from "@mui/icons-material/RedeemOutlined";
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 
 interface props {
   open: boolean;
@@ -226,11 +227,43 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                 </NavLink>
               </div>
             </li>
+            <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to="BusinessStream"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <AccountTreeOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>Business Stream</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
+                </NavLink>
+              </div>
+            </li>
 
             <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
-                  to="JobPosting"
+                  to="CompanyInfo"
                   className={({ isActive }) =>
                     isActive ? classes.active : undefined
                   }
@@ -251,7 +284,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                   <div
                     className={`${open ? classes.div10 : classes.div10Open} `}
                   >
-                    <span className={classes.span5}>Jobs Posting</span>
+                    <span className={classes.span5}>Manage Company</span>
                   </div>
                   <div className={classes.div11}></div>
                 </NavLink>
@@ -280,6 +313,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                 </ul>
               )}
             </li>
+
             {/* <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink

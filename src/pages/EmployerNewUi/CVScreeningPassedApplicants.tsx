@@ -49,6 +49,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -57,8 +58,8 @@ interface CVs {
   name: string;
 }
 interface Benefits {
-  id:number;
-  name:string
+  id: number;
+  name: string;
 }
 interface UserProfile {
   id: number;
@@ -71,7 +72,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits:Benefits[]
+  benefits: Benefits[];
 }
 const CVScreeningPassedApplicants: React.FC = () => {
   const { id } = useParams();
@@ -96,7 +97,7 @@ const CVScreeningPassedApplicants: React.FC = () => {
 
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const handleExpandClick = (id: number) => {
-    setExpandedId((prevId) => (prevId === id ? null : id)); 
+    setExpandedId((prevId) => (prevId === id ? null : id));
   };
 
   const handleOpenModal = (id: number) => {
@@ -281,7 +282,7 @@ const CVScreeningPassedApplicants: React.FC = () => {
                               type="button"
                               className={classes.button1}
                               // onClick={() => setOpenExp((prev) => !prev)}
-                              onClick={()=>handleExpandClick(data.id)}
+                              onClick={() => handleExpandClick(data.id)}
                             >
                               {" "}
                               {expandedId === data.id ? "Hide" : "View More"}
@@ -318,7 +319,7 @@ const CVScreeningPassedApplicants: React.FC = () => {
                                         {/* {". "}
                                         <span>asdasdas</span> */}
                                       </div>
-                                      {expandedId === data.id  && (
+                                      {expandedId === data.id && (
                                         <>
                                           <div className={classes.main20}>
                                             <span>
@@ -419,9 +420,23 @@ const CVScreeningPassedApplicants: React.FC = () => {
 
                         <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
-                            <div className={classes.main29} key={skill.id}>
-                              <span>{skill.name}</span>
-                            </div>
+                            <>
+                              <div className={classes.main13}>
+                                {skill.proficiencyLevel}
+                                {": "}
+                                {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                              </div>
+                              <div className={classes.main29} key={skill.id}>
+                                <span>{skill.name}</span>
+                              </div>
+                            </>
                           ))}
                         </div>
                       </div>
@@ -443,19 +458,19 @@ const CVScreeningPassedApplicants: React.FC = () => {
                         </div>
 
                         <div className={classes.main28}>
-                          {
-                            profile.benefits && profile.benefits.length > 0? profile.benefits.map((skill) => (
+                          {profile.benefits && profile.benefits.length > 0 ? (
+                            profile.benefits.map((skill) => (
                               <div key={skill.id} className={classes.main29}>
                                 <span>{skill.name}</span>
                               </div>
-                            )): <span>no Benefits Yet</span>
-                          }
-                       
+                            ))
+                          ) : (
+                            <span>no Benefits Yet</span>
+                          )}
                         </div>
-                        
                       </div>
                     </div>
-                  
+
                     <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button

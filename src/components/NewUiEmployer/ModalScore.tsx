@@ -37,6 +37,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?:string;
 }
 
 interface CVs {
@@ -428,14 +429,17 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
+                                  <>
                                     <div
                                       className={classes.main30}
                                       key={skill.id}
                                     >
+                                       <div className={classes.main28}>{skill.proficiencyLevel}</div>
                                       <div className={classes.main31}>
                                         <span>{skill.name}</span>
                                       </div>
                                     </div>
+                                    </>
                                   ))
                                 : undefined}
                             </div>

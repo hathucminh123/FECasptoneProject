@@ -16,7 +16,7 @@ import { AxiosResponse } from "axios";
 import PaymentModal from "./PaymentModal";
 import { AnimatePresence } from "framer-motion";
 import ModalEmail from "./ModalEmail";
-import  Box  from "@mui/material/Box";
+import Box from "@mui/material/Box";
 export interface Notification {
   id: number;
   title: string;
@@ -54,7 +54,6 @@ export default function HeaderEmployerSystem({
   const [openSettings, SetOpenSettings] = useState<boolean>(false);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
-
 
   useEffect(() => {
     const storedCompanyId = localStorage.getItem("CompanyId");
@@ -172,10 +171,9 @@ export default function HeaderEmployerSystem({
     setOnpenModalEmail(false);
   };
 
-
   return (
     <header className={classes.header}>
-        <ModalEmail open={openModalEmail} onClose={handleCloseModal} />
+      <ModalEmail open={openModalEmail} onClose={handleCloseModal} />
       <AnimatePresence>
         {openModal && (
           <PaymentModal
@@ -206,48 +204,46 @@ export default function HeaderEmployerSystem({
             >
               Amazing Job
             </Typography> */}
-             <Box
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center", // Căn giữa theo chiều dọc
+              }}
+            >
+              {/* Phần chữ "it" */}
+              <Box
                 sx={{
+                  backgroundColor: "#ff0000",
+                  color: "#fff",
+                  fontWeight: 700,
+                  fontSize: "22px",
+                  fontFamily: "Lexend, sans-serif",
+                  lineHeight: "1",
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
                   display: "flex",
-                  alignItems: "center", // Căn giữa theo chiều dọc
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginRight: "3px",
                 }}
               >
-                {/* Phần chữ "it" */}
-                <Box
-                  sx={{
-                    backgroundColor: "#ff0000",
-                    color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
-                    fontFamily: "Lexend, sans-serif", 
-                    lineHeight: "1",
-                    width: "32px", 
-                    height: "32px", 
-                    borderRadius: "50%", 
-                    display: "flex",
-                    justifyContent: "center", 
-                    alignItems: "center",
-                    marginRight: "3px", 
-                  }}
-                >
-                  A
-                </Box>
-
-             
-                <Typography
-                  variant="h2"
-                  sx={{
-                    color: "#000000",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
-                    fontFamily: "Lexend, sans-serif",
-                    lineHeight: "1.5", 
-
-                  }}
-                >
-                mazingJob
-                </Typography>
+                A
               </Box>
+
+              <Typography
+                variant="h2"
+                sx={{
+                  color: "#000000",
+                  fontWeight: 700,
+                  fontSize: "22px",
+                  fontFamily: "Lexend, sans-serif",
+                  lineHeight: "1.5",
+                }}
+              >
+                mazingJob
+              </Typography>
+            </Box>
           </NavLink>
         </div>
         <nav className={classes.header3}>
@@ -338,12 +334,16 @@ export default function HeaderEmployerSystem({
           </NavLink>
         </nav>
         {/* {IsPremium !== "True" && ( */}
+
+        {CompanyEmployer && (
           <div className={classes.discover} onClick={() => setOpenModal(true)}>
             <span>Payment</span>
           </div>
+        )}
+
         {/* )} */}
 
-        <div className={classes.header6}></div>
+        <div className={classes.header6}> </div>
         <div className={classes.header7}>
           <div className={classes.header22} onMouseEnter={handleOpen}>
             <button type="button" className={classes.button}>

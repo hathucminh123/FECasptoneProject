@@ -30,6 +30,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?:string;
 }
 
 interface CVs {

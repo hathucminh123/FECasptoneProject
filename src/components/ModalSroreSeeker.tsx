@@ -36,6 +36,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -45,8 +46,8 @@ interface CVs {
 }
 
 interface Benefits {
-  id:number;
-  name:string;
+  id: number;
+  name: string;
 }
 interface UserProfile {
   id: number;
@@ -59,7 +60,7 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits:Benefits[];
+  benefits: Benefits[];
 }
 
 interface SeekersByJobPost {
@@ -480,19 +481,24 @@ const ModalSroreSeeker: React.FC<props> = ({
                         {/* Skills */}
                         <div className={classes.main27}>
                           <div className={classes.main16}>
-                            <div className={classes.main28}>Skills</div>
+                            <div className={classes.main28}>skills</div>
                             <div className={classes.main29}>
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
-                                    <div
-                                      className={classes.main30}
-                                      key={skill.id}
-                                    >
-                                      <div className={classes.main31}>
-                                        <span>{skill.name}</span>
+                                    <>
+                                      <div
+                                        className={classes.main30}
+                                        key={skill.id}
+                                      >
+                                        <div className={classes.main28}>
+                                          {skill.proficiencyLevel}
+                                        </div>
+                                        <div className={classes.main31}>
+                                          <span> {skill.name}</span>
+                                        </div>
                                       </div>
-                                    </div>
+                                    </>
                                   ))
                                 : undefined}
                             </div>
@@ -502,8 +508,7 @@ const ModalSroreSeeker: React.FC<props> = ({
                           <div className={classes.main16}>
                             <div className={classes.main28}>Benefits:</div>
                             <div className={classes.main29}>
-                              {profile?.benefits &&
-                              profile.benefits.length > 0
+                              {profile?.benefits && profile.benefits.length > 0
                                 ? profile?.benefits.map((skill) => (
                                     <div
                                       className={classes.main30}
@@ -852,7 +857,13 @@ const ModalSroreSeeker: React.FC<props> = ({
                                           </div>
                                           <div className={classes.main28}>
                                             Experience:
-                                            <div className={classes.main29} style={{backgroundColor:'#fafafa',marginBottom:'15px'}}>
+                                            <div
+                                              className={classes.main29}
+                                              style={{
+                                                backgroundColor: "#fafafa",
+                                                marginBottom: "15px",
+                                              }}
+                                            >
                                               {Array.isArray(
                                                 item.professional.experience
                                               ) &&
@@ -1069,8 +1080,9 @@ const ModalSroreSeeker: React.FC<props> = ({
                                   {/* {new Date(
                                     comment.commentDate
                                   ).toLocaleDateString()} */}
-
-                                  {moment(comment.commentDate).format("DD-MM-YYYY")}
+                                  {moment(comment.commentDate).format(
+                                    "DD-MM-YYYY"
+                                  )}
                                 </Typography>
                                 <Box display="flex" alignItems="center">
                                   <Typography

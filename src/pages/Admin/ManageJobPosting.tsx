@@ -11,55 +11,132 @@ import PauseIcon from "@mui/icons-material/Pause";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Link } from "react-router-dom";
-
+import { useQuery } from "@tanstack/react-query";
+import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
+import { AnimatePresence } from "framer-motion";
+import ModalCompany from "../../components/Admin/ModalCompany";
 const jobStatusOptions = ["Pending", "Approved", "Suspended"];
-const jobTypeOptions = ["Full-time", "Part-time", "Contract"];
+const statusToIdMap: { [key: string]: number } = {
+  Pending: 0,
+  Approved: 2,
+  Suspended: 1,
+};
 
-const headers = [
-  "jobTitle",
+// const jobTypeOptions = ["Full-time", "Part-time", "Contract"];
+
+
+
+interface BusinessStream {
+  id: number;
+  businessStreamName: string;
+  description: string;
+}
+interface JobType {
+  id: number;
+  name: string;
+  description: string;
+}
+
+
+interface JobPost {
+  id: number;
+  jobTitle: string;
+  jobDescription: string;
+  salary: number;
+  postingDate: string;
+  expiryDate: string; 
+  experienceRequired: number;
+  qualificationRequired: string;
+  benefits: string;
+  imageURL: string;
+  isActive: boolean;
+  companyId: number;
+  companyName: string;
+  websiteCompanyURL: string;
+  jobType: JobType; // jobType là đối tượng JobType
+  jobLocationCities:string[];
+  jobLocationAddressDetail:string[]
+  skillSets: string[]; 
+}
+interface Company {
+  id: number;
+  companyName: string;
+  companyDescription: string;
+  websiteURL: string;
+  establishedYear: number;
+  country: string;
+  city: string;
+  address: string;
+  numberOfEmployees: number;
+  businessStream: BusinessStream;
+  jobPosts: JobPost[];
+  imageUrl:string
+  companyStatus?:number;
+  
+}
+const headers: (keyof Company | "Action")[] = [
   "companyName",
-  "postedDate",
-  "jobType",
-  "status",
+  "numberOfEmployees",
+  "country",
+  "companyStatus",
   "Action",
 ];
 // Sample job data
-const jobData = [
-  {
-    jobTitle: "Frontend Developer",
-    companyName: "ABC Tech",
-    postedDate: "2024-09-20",
-    status: "Pending",
-    jobType: "Full-time",
-  },
-  {
-    jobTitle: "Backend Engineer",
-    companyName: "XYZ Solutions",
-    postedDate: "2024-09-15",
-    status: "Approved",
-    jobType: "Contract",
-  },
-];
+
 
 const  ManageJobPosting:React.FC =()=> {
   const [selectStatus, setSelectStatus] = useState<string>("");
-  const [selectJobType, setSelectJobType] = useState<string>("");
+  console.log('statuss',selectStatus)
+    const [openModal, setOpenModal] = useState<boolean>(false);
+  // const [selectJobType, setSelectJobType] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
+   const [companyId, setCompanyId] = useState<number | null>(null);
+
+  
+   
+  const {
+    data: Company,
+    // isLoading: isCompanyLoading,
+    // isError: isCompanyError,
+  } = useQuery({
+    queryKey: ["Company", selectStatus], 
+    queryFn: ({ signal }) =>
+      fetchCompanies({
+        signal: signal,
+        id: statusToIdMap[selectStatus] || 0, 
+      }),
+      staleTime: 1000,
+    // staleTime: 5000,
+    enabled:!! selectStatus ,
+  });
+
+  const Companiesdata = Company?.Companies || [];
+
+ 
+
 
   const width = 230;
 
-  const handleViewDetail = (job: { [key: string]: string }) => {
-    console.log("View Detail clicked for:", job);
-    alert(`Viewing details for ${job.jobTitle}`);
+  const handleViewDetail = (company:Company) => {
+    console.log("View Detail clicked for:", openModal);
+    // alert(`Viewing details for ${company.companyName}`);
+    
+    setOpenModal(true)
+    setCompanyId(company.id)
+  };
+  const handleCloseModal = () => {
+   
+    setOpenModal(false);
+    // setPendingUpdate(null); 
   };
 
   // Custom renderers for specific columns
-  const customRenderers = {
-    jobTitle: (job: { [key: string]: string }, index: number) => (
+  const customRenderers: { [key: string]: (row: Company, index: number) => React.ReactNode } = {
+    companyName: (company: Company, index: number) => (
       <>
-        <span>{job.jobTitle}</span>
+        <span>{company.companyName}</span>
         {hovered === index && (
-          <div className={classes.div6}>
+          <div className={classes.div6} onClick={()=>handleViewDetail(company)}>
             <Link to="#" className={classes.link2}>
               View Job Details
             </Link>
@@ -67,24 +144,30 @@ const  ManageJobPosting:React.FC =()=> {
         )}
       </>
     ),
-    status: (job: { [key: string]: string }) => (
+    "Number Of Employees": (company: Company) => <span>{company.numberOfEmployees}</span>,
+    Country: (company: Company) => <span>{company.country}</span>,
+    companyStatus: (company: Company) => (
       <span
         style={{
           color:
-            job.status === "Approved"
+            company.companyStatus === 2
               ? "green"
-              : job.status === "Pending"
+              : company.companyStatus === 0
               ? "orange"
               : "red",
           fontWeight: "bold",
         }}
       >
-        {job.status}
+        {company.companyStatus === 2
+          ? "Approved"
+          : company.companyStatus === 0
+          ? "Pending"
+          : "Rejected"}
       </span>
     ),
-    Action: (job: { [key: string]: string }, index: number) => (
+    Action: (company: Company, index: number) => (
       <div className={classes.actions}>
-        {job.status === "Pending" && (
+        {company.companyStatus === 0 && (
           <div className={classes.icon2}>
             <Tooltip title="Approve">
               <CheckCircleIcon
@@ -141,11 +224,21 @@ const  ManageJobPosting:React.FC =()=> {
       </div>
     ),
   };
+  
 
   return (
     <div className={classes.main}>
+       <AnimatePresence>
+        {openModal && (
+          <ModalCompany
+            onClose={handleCloseModal} // Đóng modal
+            companyId ={companyId}
+            // onConfirm={handleConfirmModal} // Xác nhận trong modal
+          />
+        )}
+      </AnimatePresence>
       <div className={classes.div}>
-        <HeaderSystem title="Job Postings Management" appear={true} />
+        <HeaderSystem title="Company Info Management" appear={true} />
       </div>
       <div className={classes.main1}>
         <div className={classes.main2}>
@@ -155,7 +248,7 @@ const  ManageJobPosting:React.FC =()=> {
                 <input
                   type="text"
                   className={classes.input}
-                  placeholder="Search by job title or company"
+                  placeholder="Search by Company name"
                 />
                 <button className={classes.button}>
                   <SearchOutlinedIcon fontSize="small" />
@@ -168,10 +261,10 @@ const  ManageJobPosting:React.FC =()=> {
                 setSelectedValue={setSelectStatus}
                 data={jobStatusOptions}
                 width={width}
-                placeholder="Filter by Job Status"
+                placeholder="Filter by Company Status"
               />
             </div>
-            <div className={classes.main5}>
+            {/* <div className={classes.main5}>
               <FormSelect
                 selectedValue={selectJobType}
                 setSelectedValue={setSelectJobType}
@@ -179,7 +272,7 @@ const  ManageJobPosting:React.FC =()=> {
                 width={width}
                 placeholder="Filter by Job Type"
               />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -189,7 +282,7 @@ const  ManageJobPosting:React.FC =()=> {
             <div className={classes.main9}>
               <div className={classes.main10}>
                 Found
-                <span className={classes.span}> {jobData.length} </span>
+                <span className={classes.span}> {Companiesdata.length} </span>
                 Jobs
               </div>
             </div>
@@ -197,8 +290,8 @@ const  ManageJobPosting:React.FC =()=> {
           <div className={classes.main12}>
             <TableAccount
               headers={headers}
-              data={jobData}
-              onViewDetail={handleViewDetail}
+              data={Companiesdata}
+          
               customRenderers={customRenderers}
               hovered={hovered}
               setHovered={setHovered} // Correct prop name

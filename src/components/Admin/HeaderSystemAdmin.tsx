@@ -119,16 +119,16 @@ interface props {
         </Link>
         <div className={classes.div}>
           <ul className={classes.ul}>
-            <li className={classes.li}>
+            {/* <li className={classes.li}>
               <NavLink className={classes.navlink} to="Account">
                 <CreateIcon className={classes.icon} />
                 User Manage
               </NavLink>
-            </li>
+            </li> */}
             <li className={classes.li}>
-              <NavLink className={classes.navlink} to="JobPosting">
+              <NavLink className={classes.navlink} to="CompanyInfo">
                 <CreateIcon className={classes.icon} />
-                Manage job postings
+                Manage Company Info
               </NavLink>
             </li>
             <li className={classes.li}>
@@ -147,6 +147,12 @@ interface props {
               <NavLink className={classes.navlink} to="Benefits">
                 <CreateIcon className={classes.icon} />
                 Manage Benefits
+              </NavLink>
+            </li>
+            <li className={classes.li}>
+              <NavLink className={classes.navlink} to="BusinessStream">
+                <CreateIcon className={classes.icon} />
+                Manage BusinessStream Stream
               </NavLink>
             </li>
             {/* <li className={classes.li} onClick={handleOpenNotification}>

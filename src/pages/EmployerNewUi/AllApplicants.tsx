@@ -49,6 +49,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -58,8 +59,8 @@ interface CVs {
 }
 
 interface Benefits {
-  id:number;
-  name:string
+  id: number;
+  name: string;
 }
 interface UserProfile {
   id: number;
@@ -72,9 +73,9 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits:Benefits[]
+  benefits: Benefits[];
 }
-const  AllApplicants:React.FC=()=> {
+const AllApplicants: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
@@ -106,9 +107,9 @@ const  AllApplicants:React.FC=()=> {
 
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const handleExpandClick = (id: number) => {
-    setExpandedId((prevId) => (prevId === id ? null : id)); 
+    setExpandedId((prevId) => (prevId === id ? null : id));
   };
-  
+
   const {
     data: SeekerApply,
     // isLoading: isSeekerLoading,
@@ -317,7 +318,7 @@ const  AllApplicants:React.FC=()=> {
                                         {/* {". "}
                                         <span>asdasdas</span> */}
                                       </div>
-                                      {expandedId === data.id  && (
+                                      {expandedId === data.id && (
                                         <>
                                           <div className={classes.main20}>
                                             <span>
@@ -418,12 +419,25 @@ const  AllApplicants:React.FC=()=> {
 
                         <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
-                            <div key={skill.id} className={classes.main29}>
-                              <span>{skill.name}</span>
-                            </div>
+                            <>
+                              <div className={classes.main13}>
+                                {skill.proficiencyLevel}
+                                {" :"}
+                                {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                              </div>
+                              <div key={skill.id} className={classes.main29}>
+                                <span>{skill.name}</span>
+                              </div>
+                            </>
                           ))}
                         </div>
-                        
                       </div>
                     </div>
                     <div>
@@ -443,19 +457,19 @@ const  AllApplicants:React.FC=()=> {
                         </div>
 
                         <div className={classes.main28}>
-                          {
-                            profile.benefits && profile.benefits.length > 0? profile.benefits.map((skill) => (
+                          {profile.benefits && profile.benefits.length > 0 ? (
+                            profile.benefits.map((skill) => (
                               <div key={skill.id} className={classes.main29}>
                                 <span>{skill.name}</span>
                               </div>
-                            )): <span>no Benefits Yet</span>
-                          }
-                       
+                            ))
+                          ) : (
+                            <span>no Benefits Yet</span>
+                          )}
                         </div>
-                        
                       </div>
                     </div>
-                  
+
                     <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button
@@ -550,6 +564,6 @@ const  AllApplicants:React.FC=()=> {
       </div>
     </div>
   );
-}
+};
 
-export default AllApplicants
+export default AllApplicants;

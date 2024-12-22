@@ -14,16 +14,14 @@ import { queryClient } from "../Services/mainService";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import CloseIcon from "@mui/icons-material/Close";
-import SearchIcon from "@mui/icons-material/Search";
+// import SearchIcon from "@mui/icons-material/Search";
 // import CardSkillModal from "./CardSkillModal";
 // import { renderButton } from "./RenderButton";
 // import RenderButton from "./RenderButton";
 import { PostUserSkill } from "../Services/UserSkillService/PostUserSkill";
-// import { default as modal } from "@mui/material/Modal"; 
+// import { default as modal } from "@mui/material/Modal";
 
 // import Button from "@mui/material/Button";
-
-
 
 interface SkillSet {
   id: number;
@@ -35,17 +33,24 @@ interface Props {
   onDone?: () => void;
 }
 
+const level =["Excellent","Intermediate","Beginner"]
+
 export default function PersonalProject({ onDone }: Props) {
   const userId = localStorage.getItem("userId");
   // const [selectedCvId, setSelectedCvId] = useState<number | null>(null);
- 
-  const [skills, setSkills] = useState<SkillSet|null>(null);
 
+  const [skills, setSkills] = useState<SkillSet | null>(null);
+  const [hovered, setHovered] = useState<null | number>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [skillId, setSkillId] = useState<number|null>(null);
+  const [dropdownOpenLevel, setDropdownOpenLevel] = useState(false);
+  const [skillId, setSkillId] = useState<number | null>(null);
   // const [open, setOpen] = useState(false);
   const [inputSkill, setInputSkill] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [inputSkillLevel, setInputSkillLevel] = useState<string>("");
+  const [skillsLevel, setSkillsLevel] = useState<string | null>(null);
+  const [hoveredLevel, setHoveredLevel] = useState<null | number>(null);
+  const dropdownRefLevel = useRef<HTMLDivElement>(null);
   // const [value, setValue] = useState<string>("");
   const { data: SkillSetData } = useQuery({
     queryKey: ["SkillSetDetails"],
@@ -53,9 +58,11 @@ export default function PersonalProject({ onDone }: Props) {
     staleTime: 1000,
   });
 
-
   const SkillSetDatas = SkillSetData?.SkillSets;
   const [filteredSkills, setFilteredSkills] = useState(SkillSetDatas);
+  const [filteredSkillsLevel, setFilteredSkillsLevel] = useState(level);
+
+
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,6 +81,21 @@ export default function PersonalProject({ onDone }: Props) {
     }
   };
 
+  const handleChangeLevel = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setInputSkillLevel(inputValue);
+    if (inputValue) {
+      setFilteredSkillsLevel(
+        level?.filter((comp) =>
+          comp.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+      setDropdownOpenLevel(true);
+    } else {
+      setFilteredSkillsLevel([]);
+      setDropdownOpenLevel(false);
+    }
+  };
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -90,19 +112,41 @@ export default function PersonalProject({ onDone }: Props) {
     };
   }, []);
 
+    const handleClickOutsideLevel = (event: MouseEvent) => {
+    if (
+      dropdownRefLevel.current &&
+      !dropdownRefLevel.current.contains(event.target as Node)
+    ) {
+      setDropdownOpenLevel(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideLevel);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideLevel);
+    };
+  }, []);
+
   const handleSkill = (selectedSkill: SkillSet) => {
-  setSkills(selectedSkill)
-  setSkillId(selectedSkill.id)
+    setSkills(selectedSkill);
+    setSkillId(selectedSkill.id);
   };
 
+  const handleSkillLevel =(selectlevel :string)=>{
+    setSkillsLevel(selectlevel)
+  }
+
   const handleRemoveSkill = (skillToRemove: SkillSet) => {
-    setSkillId((prev) => prev === skillToRemove.id ? null : skillToRemove.id )
-    setSkills((prev) => prev === skillToRemove ? null : skillToRemove )
+    setSkillId((prev) => (prev === skillToRemove.id ? null : skillToRemove.id));
+    setSkills((prev) => (prev === skillToRemove ? null : skillToRemove));
   };
+
+  const handleRemoveSkillLevel =(level :string) =>{
+    setSkillsLevel((prev) =>( prev === level ?null :level))
+  }
 
   // const handleOpen = () => setOpen(true);
   // const handleClose = () => setOpen(false);
-
 
   // const [formData, setFormData] = useState({
   //   name: "",
@@ -111,13 +155,12 @@ export default function PersonalProject({ onDone }: Props) {
   // });
   const { mutate: Save, isPending: isSaving } = useMutation({
     mutationFn: PostUserSkill,
-    onSuccess: () => {
-  
-      queryClient.invalidateQueries({
+    onSuccess: async() => {
+       await queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
-        refetchType: "active", 
+        refetchType: "active",
       });
-        onDone?.();
+      onDone?.();
       message.success("SkillSet Details Save Successfully");
     },
     onError: () => {
@@ -125,6 +168,25 @@ export default function PersonalProject({ onDone }: Props) {
     },
   });
 
+
+
+  
+  const handleMouseEnter = (id: number) => {
+    setHovered(id || null);
+    console.log('test',id)
+  };
+
+
+const handleMouseEnterLevel =(index :number) =>{
+  setHoveredLevel(index || null)
+}
+const handleMouseLeaveLevel = () => {
+  setHoveredLevel(null);
+};
+
+  const handleMouseLeave = () => {
+    setHovered(null);
+  };
   // const maxLength = 2500;
 
   // Strip HTML tags to count only text characters
@@ -159,7 +221,7 @@ export default function PersonalProject({ onDone }: Props) {
       data: {
         userId: Number(userId),
         skillSetId: skillId,
-        proficiencyLevel: "",
+        proficiencyLevel: skillsLevel,
       },
     });
   };
@@ -184,11 +246,12 @@ export default function PersonalProject({ onDone }: Props) {
 
   return (
     <Modal
-    text="Save"
+      text="Save"
       title="Skill Sets"
       onClose={onDone}
       isPending={isSaving}
       onClickSubmit={handleSaveSkillSet}
+      height={true}
     >
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
@@ -311,91 +374,53 @@ export default function PersonalProject({ onDone }: Props) {
 
             </div> */}
 
-            <label
-                htmlFor=""
-                className={classes.label}
-                style={{ marginTop: "50px" }}
-              >
-                <div className={classes.main9}>
-                  <div className={classes.main10}>
-                    Select Your Skills
-                    <span className={classes.span}>*</span>
-                  </div>
+            {/* <label
+              htmlFor=""
+              className={classes.label}
+              style={{ marginTop: "50px" }}
+            >
+              <div className={classes.main9}>
+                <div className={classes.main10}>
+                  Select Your Skills
+                  <span className={classes.span}>*</span>
                 </div>
-                {skills   ? (
-                  <div className={classes.main24}>
-                    
-                      <span
-                        className={classes.span2}
-                        onClick={() => handleRemoveSkill(skills)}
-                      >
-                        {skills.name}
-                        <span className={classes.spanicon}>
-                          <CloseIcon />
-                        </span>
-                      </span>
-                   
-                  </div>
-                ) : undefined}
+              </div>
+              {skills ? (
+                <div className={classes.main24}>
+                  <span
+                    className={classes.span2}
+                    onClick={() => handleRemoveSkill(skills)}
+                  >
+                    {skills.name}
+                    <span className={classes.spanicon}>
+                      <CloseIcon />
+                    </span>
+                  </span>
+                </div>
+              ) : undefined}
 
-                <div className={classes.div1} aria-expanded="false">
-                  <div className={inputSkill ? classes.divne : classes.div2}>
-                    <div className={classes.div3}>
-                      <div className={classes.div4}>
-                        <div className={classes.icon}>
-                          <SearchIcon />
-                        </div>
-                        <input
-                          value={inputSkill}
-                          onChange={handleChange}
-                          className={classes.input2}
-                          type="text"
-                          placeholder="e.g. Python,Reactjs"
-                          aria-autocomplete="list"
-                          autoComplete="off"
-                          onFocus={() => setDropdownOpen(true)}
-                        />
+              <div className={classes.div1} aria-expanded="false">
+                <div className={inputSkill ? classes.divne : classes.div2}>
+                  <div className={classes.div3}>
+                    <div className={classes.div4}>
+                      <div className={classes.icon}>
+                        <SearchIcon />
                       </div>
-
-                      {dropdownOpen && (
-                        <div className={classes.dropdown} ref={dropdownRef}>
-                          {filteredSkills?.length &&
-                          filteredSkills?.length > 0 ? (
-                            filteredSkills?.map((comp, index) => (
-                              <div
-                                key={index}
-                                className={classes.dropdownItem}
-                                onClick={() => handleSkill(comp)}
-                              >
-                                {/* <img
-                          src={comp.imageUrl}
-                          alt={comp.companyName}
-                          className={classes.logo}
-                        /> */}
-                                <span className={classes.companyName}>
-                                  {comp.name}
-                                </span>
-                                {/* <span className={classes.companyUrl}>
-                          {comp.websiteURL}
-                        </span> */}
-                              </div>
-                            ))
-                          ) : (
-                            <div
-                              className={classes.createNewCompany}
-                              //   onClick={handleOpenRegister}
-                              // onClick={handleOpen}
-                              // style={{ cursor: "pointer" }}
-                            >
-                              <span>Not Found {inputSkill}</span>
-                            </div>
-                          )}
-                        </div>
-                      )}
+                      <input
+                        value={inputSkill}
+                        onChange={handleChange}
+                        className={classes.input2}
+                        type="text"
+                        placeholder="e.g. Python,Reactjs"
+                        aria-autocomplete="list"
+                        autoComplete="off"
+                        // onFocus={() => setDropdownOpen(true)}
+                      />
                     </div>
                   </div>
                 </div>
-              </label>
+              </div>
+            </label> */}
             {/* <CardSkillModal
               title="Skills"
               text="Highlight Your skills Set"
@@ -407,10 +432,139 @@ export default function PersonalProject({ onDone }: Props) {
               data={SkillSetDatas}
             /> */}
 
-
             {/* Submit Button */}
             <div style={{ marginTop: "20px" }}></div>
-        
+          </div>
+        </div>
+
+        <div className={classes.main30}>
+          <div className={classes.main31}>
+            <div className={classes.main32}>
+            {skills ? (
+                <div className={classes.main24} style={{marginTop:'10px'}}>
+                  <span
+                    className={classes.span2}
+                    onClick={() => handleRemoveSkill(skills)}
+                  >
+                    {skills.name}
+                    <span className={classes.spanicon}>
+                      <CloseIcon />
+                    </span>
+                  </span>
+                </div>
+              ) : undefined}
+              <input
+                type="text"
+                className={classes.input}
+                value={inputSkill}
+                onChange={handleChange}
+                size={1}
+                aria-haspopup="listbox"
+                aria-expanded="true"
+                tabIndex={0}
+                placeholder="Search skills"
+                onFocus={() => setDropdownOpen(true)}
+              />
+            </div>
+            {dropdownOpen && (
+              <div className={classes.main33} ref={dropdownRef}>
+                {" "}
+                <div className={classes.main34}>
+                  {filteredSkills?.length && filteredSkills?.length > 0 ? (
+                    filteredSkills?.map((comp, index) => (
+                      <div
+                        key={index}
+                        // className={classes.main35}
+                        onMouseEnter={() => handleMouseEnter(comp.id)}
+                        onMouseLeave={() => handleMouseLeave}
+                        onClick={() => handleSkill(comp)}
+                        className={
+                          hovered === comp.id
+                            ? classes.main36
+                            : classes.main35
+                        }
+                      >
+                        {comp.name}
+                      </div>
+                    ))
+                  ) : (
+                    <div
+                      className={classes.createNewCompany}
+                      //   onClick={handleOpenRegister}
+                      // onClick={handleOpen}
+                      // style={{ cursor: "pointer" }}
+                    >
+                      <span>Not Found {inputSkill}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className={classes.main31}>
+            <div className={classes.main32}>
+            {skillsLevel ? (
+                <div className={classes.main24} style={{marginTop:'10px'}}>
+                  <span
+                    className={classes.span2}
+                    onClick={() => handleRemoveSkillLevel(skillsLevel)}
+                  >
+                    {skillsLevel}
+                    <span className={classes.spanicon}>
+                      <CloseIcon />
+                    </span>
+                  </span>
+                </div>
+              ) : undefined}
+              <input
+                type="text"
+                className={classes.input}
+                value={inputSkillLevel}
+                onChange={handleChangeLevel}
+                // disabled={true}
+               
+                size={1}
+                aria-haspopup="listbox"
+                aria-expanded="true"
+                tabIndex={0}
+                placeholder="Select level"
+                onFocus={() => setDropdownOpenLevel(true)}
+              />
+            </div>
+            {dropdownOpenLevel && (
+              <div className={classes.main33} ref={dropdownRefLevel}>
+                {" "}
+                <div className={classes.main34}>
+                  {filteredSkillsLevel?.length && filteredSkillsLevel?.length > 0 ? (
+                    filteredSkillsLevel?.map((comp, index) => (
+                      <div
+                        key={index}
+                        // className={classes.main35}
+                        onMouseEnter={() => handleMouseEnterLevel(index)}
+                        onMouseLeave={() => handleMouseLeaveLevel}
+                        onClick={() => handleSkillLevel(comp)}
+                        className={
+                          hoveredLevel === index
+                            ? classes.main36
+                            : classes.main35
+                        }
+                      >
+                        {comp}
+                      </div>
+                    ))
+                  ) : (
+                    <div
+                      className={classes.createNewCompany}
+                      //   onClick={handleOpenRegister}
+                      // onClick={handleOpen}
+                      // style={{ cursor: "pointer" }}
+                    >
+                      <span>Not Found {inputSkill}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </Box>

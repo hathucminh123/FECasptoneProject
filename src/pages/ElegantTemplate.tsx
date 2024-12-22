@@ -13,6 +13,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string;
+  proficiencyLevel?:string;
 }
 interface EducationDetail {
   id: number;
@@ -194,7 +195,8 @@ const ElegantTemplate: React.FC = () => {
 
       skillSets.forEach((skill) => {
         const skillText = skill.name || "Skill";
-        const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
+        const skillLevel =skill.proficiencyLevel || "Level"
+        const textWidth = doc.getTextWidth(`${skillLevel}: ${skillText}`) + boxPadding * 2;
 
         // Wrap to next row if it exceeds the page width
         if (currentX + textWidth > maxWidth) {
@@ -212,7 +214,7 @@ const ElegantTemplate: React.FC = () => {
         doc.setFontSize(10);
         doc.setTextColor(33, 33, 33); // Dark text color
         doc.text(
-          skillText,
+         ` ${skillLevel}: ${skillText} `,
           currentX + boxPadding,
           currentY + boxHeight / 2 + 2.5
         ); // Center text vertically
@@ -458,21 +460,23 @@ const ElegantTemplate: React.FC = () => {
                   <div className={classes.skill2}>
                     <div className={classes.education3}>
                       <div className={classes.skill3}>
-                        <div
-                          className={classes.skill4}
-                          style={{ fontFamily: "Lexend, sans-serif" }}
-                        >
-                          Skill Name
-                        </div>
                         <div className={classes.skill5}>
                           {UserProfileData?.skillSets.map((skill) => (
-                            <span
-                              key={skill.id}
-                              style={{ fontFamily: "Lexend, sans-serif" }}
-                              className={classes.spanskill}
-                            >
-                              {skill.name}
-                            </span>
+                            <>
+                              <div
+                                className={classes.skill4} 
+                                style={{ fontFamily: "Lexend, sans-serif" ,marginLeft:5}}
+                              >
+                                {skill.proficiencyLevel}
+                              </div>
+                              <span
+                                key={skill.id}
+                                style={{ fontFamily: "Lexend, sans-serif" }}
+                                className={classes.spanskill}
+                              >
+                                {skill.name}
+                              </span>
+                            </>
                           ))}
                         </div>
                       </div>

@@ -39,7 +39,10 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
-  imageUrl:string
+  imageUrl:string;
+  evidence?:string;
+  taxCode?:string | number;
+  companyStatus?:number
 }
 
 interface FetchError extends Error {

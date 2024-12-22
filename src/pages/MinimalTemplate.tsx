@@ -409,7 +409,8 @@ const MinimalTemplate: React.FC = () => {
         doc.setFont("Helvetica", "normal");
         doc.setFontSize(10);
         doc.setTextColor("#121212");
-        doc.text(skill.name, marginLeft, leftY);
+        
+        doc.text(`${skill.proficiencyLevel}: ${skill.name}`, marginLeft, leftY);
         leftY += 12;
 
         // Check for page break
@@ -972,7 +973,27 @@ const MinimalTemplate: React.FC = () => {
                                 <div
                                   style={{ fontFamily: "Lexend, sans-serif" }}
                                   dangerouslySetInnerHTML={{
-                                    __html: skills.description,
+                                    __html: skills.description ?? "No Description yet",
+                                  }}
+                                />
+                              </span>
+                            </div>
+                          </div>
+                          <div className={classes.skilldes}>
+                            <div className={classes.skill2}>
+                              <span
+                                className={classes.span1}
+                                style={{ fontFamily: "Lexend, sans-serif" }}
+                              >
+                                <strong>Skill levels:</strong>
+                              </span>
+                            </div>
+                            <div>
+                              <span className={classes.span2}>
+                                <div
+                                  style={{ fontFamily: "Lexend, sans-serif" }}
+                                  dangerouslySetInnerHTML={{
+                                    __html: skills.proficiencyLevel ??"",
                                   }}
                                 />
                               </span>

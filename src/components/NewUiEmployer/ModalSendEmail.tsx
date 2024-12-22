@@ -47,6 +47,7 @@ interface SkillSet {
   name: string;
   shorthand: string | null;
   description: string | null;
+  proficiencyLevel?:string |null;
 }
 
 interface CVs {
@@ -570,6 +571,7 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
                                       className={classes.main30}
                                       key={skill.id}
                                     >
+                                       <div className={classes.main28}>{skill.proficiencyLevel}</div>
                                       <div className={classes.main31}>
                                         <span>{skill.name}</span>
                                       </div>

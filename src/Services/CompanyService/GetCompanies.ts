@@ -57,13 +57,15 @@ interface FetchError extends Error {
 
 interface signal{
   signal:AbortSignal
+  id?:number |undefined
 }
 
-export const fetchCompanies = async ({signal}:signal): Promise<{ Companies: Company[] }> => {
+export const fetchCompanies = async ({signal,id}:signal): Promise<{ Companies: Company[] }> => {
   try {
     const response = await httpClient.get({
-      url: apiLinks.Company.GET,
-      signal:signal
+      url: `${apiLinks.Company.GET}?companyStatus=${id}`,
+      signal:signal,
+      // params:{id},
     });
 
     if (response.status !== 200) {

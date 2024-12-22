@@ -15,6 +15,7 @@ interface ModalProps {
   disappear?: boolean;
   text?: string;
   Appear?: boolean;
+  height?:boolean;
 }
 
 export default function Modal({
@@ -26,6 +27,7 @@ export default function Modal({
   disappear,
   text,
   Appear,
+  height,
   onClickReset
 }: ModalProps) {
   const modalRoot = document.getElementById("modal");
@@ -34,7 +36,7 @@ export default function Modal({
     return null;
   }
   return createPortal(
-    <div className={classes.backdrop} onClick={onClose ? onClose : undefined}>
+    <div className={classes.backdrop}  onClick={onClose ? onClose : undefined}>
       <motion.dialog
         onClick={(e) => e.stopPropagation()}
         variants={{
@@ -51,7 +53,7 @@ export default function Modal({
         open
         className={classes.modall}
       >
-        <div className={classes.modal}>
+        <div className={classes.modal} style={height ?{ height:'500px' }: undefined} >
           <div className={classes.modal1}>
             <Typography
               variant="h2"

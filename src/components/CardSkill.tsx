@@ -14,6 +14,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string;
+  proficiencyLevel?:string
 }
 
 
@@ -41,9 +42,9 @@ const CardSkill: React.FC<FormProps> = ({
   const userId = localStorage.getItem("userId");
   const { mutate } = useMutation({
     mutationFn: DeleteUserProfileCV,
-    onSuccess: () => {
+    onSuccess:async () => {
       // Invalidate and refetch the cache to ensure the UI is updated immediately
-      queryClient.invalidateQueries({
+     await  queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
         refetchType: "active",
       });
@@ -116,7 +117,7 @@ const CardSkill: React.FC<FormProps> = ({
                         fontFamily: "Lexend, sans-serif",
                       }}
                     >
-                      Skill name: 
+                      {item.proficiencyLevel}
                     </Typography>
                     {deletingId === item.id ? (
                       <>Please wait a second...</>

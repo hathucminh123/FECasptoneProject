@@ -15,7 +15,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { GetBusinessStream } from "../../Services/BusinessStreamService/GetBusinessStream";
-import { PostBusinessStream } from "../../Services/BusinessStreamService/PostBusinessStream";
+// import { PostBusinessStream } from "../../Services/BusinessStreamService/PostBusinessStream";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import ReactQuill from "react-quill";
@@ -102,8 +102,11 @@ export default function VerifiCompany() {
   const [websiteURL, setWebsiteURL] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>("");
+  const [selectedFileEvi, setSelectedFileEvi] = useState<File | null>(null);
+  const [fileUrlEvi, setFileUrlEvi] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [establishedYear, setEstablishedYear] = useState<string>("");
+  const [taxCode, setTaxCode] = useState<string>("");
   const [city, setCity] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [numberOfEmployees, setNumberOfEmployees] = useState<string>("");
@@ -125,10 +128,11 @@ export default function VerifiCompany() {
   const [selectCompany, setSelectCompany] = useState<Company | null>(null);
   // const [companyId, setCompanyId] = useState<number | null>(null);
   const [openRegister, setOpenRegister] = useState<boolean>(false);
-  const [businessStreamName, setBusinessStreamName] = useState<string>("");
-  const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
+  // const [businessStreamName, setBusinessStreamName] = useState<string>("");
+  // const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileEvidenceRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
   const isVerification = searchParams.get("mode") === "verification";
   // const userId = localStorage.getItem("userId");
@@ -143,30 +147,30 @@ export default function VerifiCompany() {
 
   const BusinessStreamData = BusinessStream?.BusinessStreams;
 
-  const { mutate: MutateBusinessStream, isPending: Pedingbusiness } =
-    useMutation({
-      mutationFn: PostBusinessStream,
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["BusinessStream"] });
-        message.success("Post BusinessStream successfully.");
-        setBusinessStreamName("");
-        setDescriptionBusiness("");
-      },
-      onError: () => {
-        message.error("Failed to Post BusinessStream details.");
-      },
-    });
+  // const { mutate: MutateBusinessStream, isPending: Pedingbusiness } =
+  //   useMutation({
+  //     mutationFn: PostBusinessStream,
+  //     onSuccess: () => {
+  //       queryClient.invalidateQueries({ queryKey: ["BusinessStream"] });
+  //       message.success("Post BusinessStream successfully.");
+  //       setBusinessStreamName("");
+  //       setDescriptionBusiness("");
+  //     },
+  //     onError: () => {
+  //       message.error("Failed to Post BusinessStream details.");
+  //     },
+  //   });
 
-  const handleSubmitBusinessStream = (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmitBusinessStream = (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    MutateBusinessStream({
-      data: {
-        businessStreamName,
-        description: descriptionBusiness,
-      },
-    });
-  };
+  //   MutateBusinessStream({
+  //     data: {
+  //       businessStreamName,
+  //       description: descriptionBusiness,
+  //     },
+  //   });
+  // };
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -179,10 +183,28 @@ export default function VerifiCompany() {
       setFileUrl(previewUrl);
     }
   };
+  const handleFileChangeEvidence = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const file = event.target.files?.[0] || null;
+    if (file) {
+      setSelectedFileEvi(file);
+
+      const previewUrl = URL.createObjectURL(file);
+      setFileUrlEvi(previewUrl);
+    }
+  };
 
   const handleUploadClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
+    }
+  };
+  const handleUploadClickEvidence = () => {
+    if (fileEvidenceRef.current) {
+      fileEvidenceRef.current.click();
     }
   };
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -298,22 +320,24 @@ export default function VerifiCompany() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // if (validateForm()) {
     try {
-      if (!selectedFile) {
-        console.error("No file selected");
-        // message.warning("Please select a file to upload.");
+      if (!selectedFile || !selectedFileEvi) {
+        console.error("Missing files for upload");
         return;
       }
-
+      // Upload first file
       const fileName = `${uuidv4()}-${selectedFile.name}`;
       const fileRef = ref(storage, fileName);
-
       await uploadBytes(fileRef, selectedFile);
-
       const fileUrl = await getDownloadURL(fileRef);
 
+      // Upload second file (evidence)
+      const fileNameEvi = `${uuidv4()}-${selectedFileEvi.name}`;
+      const fileRefEvi = ref(storage, fileNameEvi);
+      await uploadBytes(fileRefEvi, selectedFileEvi);
+      const fileUrlEvi = await getDownloadURL(fileRefEvi);
+
+      // Submit form
       const formData = {
         companyName: company,
         companyDescription: description,
@@ -323,21 +347,19 @@ export default function VerifiCompany() {
         city,
         address,
         numberOfEmployees: selectedEm
-          ? parseInt(selectedEm?.replace(/[^0-9]/g, "") || "0", 10)
+          ? parseInt(selectedEm.replace(/[^0-9]/g, "") || "0", 10)
           : parseInt(numberOfEmployees),
-
         businessStreamId: selectedBu?.id,
         imageUrl: fileUrl,
+        evidence: fileUrlEvi,
+        taxCode: taxCode,
       };
 
       mutate({ data: formData });
-
-      console.log("Form submitted successfully");
     } catch (error) {
-      console.error("Error during file upload or form submission:", error);
-      message.error("Failed to upload file or submit form.");
+      console.error("Error during submission", error);
+      message.error("Failed to upload files or submit form.");
     }
-    // }
   };
 
   // const { mutate: verifi,  isPending:IsVerifi } = useMutation({
@@ -428,7 +450,7 @@ export default function VerifiCompany() {
             Back
           </Link>
           <>
-          {/* {IsVerifi ? (
+            {/* {IsVerifi ? (
             <button className={classes.btn3}>Wait a seconds</button>
           ) : (
             <button
@@ -774,7 +796,7 @@ export default function VerifiCompany() {
               </div>
             </div>
           </label>
-          <div style={{ display: "flex", gap: 10, width: "100%" }}>
+          {/* <div style={{ display: "flex", gap: 10, width: "100%" }}>
             <label
               htmlFor=""
               className={classes.label}
@@ -815,8 +837,8 @@ export default function VerifiCompany() {
                 />
               </div>
             </label>
-          </div>
-          {Pedingbusiness ? (
+          </div> */}
+          {/* {Pedingbusiness ? (
             <button
               className={classes.btn1}
               style={{ marginBottom: 20 }}
@@ -832,7 +854,7 @@ export default function VerifiCompany() {
             >
               Create Bussiness Stream
             </button>
-          )}
+          )} */}
 
           <label htmlFor="" className={classes.label}>
             <div className={classes.label1}>
@@ -932,6 +954,89 @@ export default function VerifiCompany() {
                 value={description}
                 onChange={setDescription}
                 placeholder="Enter your summary"
+              />
+            </div>
+          </label>
+          <label htmlFor="" className={classes.label}>
+            <div className={classes.label1}>
+              <div className={classes.label2}>
+                Certificate of Business Registration / National ID Card
+                <span className={classes.span1}>*</span>
+              </div>
+            </div>
+            <div className={classes.input6}>
+              <div className={classes.input7}>
+                {selectedFileEvi ? (
+                  <>
+                    <div className={classes.img1}>
+                      <img
+                        src={fileUrlEvi}
+                        alt={selectedFileEvi.name}
+                        className={classes.img2}
+                      />
+                    </div>
+                    <span className={classes.spanimg}>
+                      {selectedFileEvi.name}
+                      <button
+                        className={classes.clear}
+                        onClick={() => setSelectedFileEvi(null)}
+                      >
+                        (Clear)
+                      </button>
+                    </span>
+
+                    <div onClick={() => setSelectedFileEvi(null)}>
+                      <CloseIcon
+                        sx={{
+                          position: "absolute",
+                          top: "-8px",
+                          right: 0,
+                          width: "16px",
+                          boxSizing: "border-box",
+                          borderWidth: 0,
+                          borderStyle: "solid",
+                        }}
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <button
+                    className={classes.input8}
+                    onClick={handleUploadClickEvidence}
+                  >
+                    <CloudUploadIcon />
+                    Upload Evidence/Image
+                  </button>
+                )}
+              </div>
+              <input
+                ref={fileEvidenceRef}
+                type="file"
+                accept="image/png,image/jpg,image/jpeg"
+                className={classes.upload}
+                onChange={handleFileChangeEvidence}
+                hidden
+              />
+            </div>
+          </label>
+          <label htmlFor="" className={classes.label}>
+            <div className={classes.label1}>
+              <div className={classes.label2}>
+                TaxCode
+                <span className={classes.span1}>*</span>
+              </div>
+            </div>
+            <div className={classes.input4}>
+              <input
+                type="number"
+                className={classes.input5}
+                value={taxCode}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  // const numberValue = value ? parseInt(value, 10) : undefined;
+                  setTaxCode(value);
+                }}
               />
             </div>
           </label>

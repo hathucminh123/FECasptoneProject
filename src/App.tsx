@@ -122,6 +122,9 @@ import AdminProtectedRoute from "./components/Admin/AdminProtectedRoute";
 import JobsSkill from "./pages/JobsSkill";
 import JobsTitle from "./pages/JobsTitle";
 import JobsCompany from "./pages/JobsCompany";
+import WaitingCompany from "./pages/EmployerNewUi/WaitingCompany";
+import ProtectedRouteCompanyWait from "./components/NewUiEmployer/ProtectedRouteCompanyWait";
+import BusinessStreamPage from "./pages/Admin/BusinessStreamPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -409,6 +412,14 @@ const router = createBrowserRouter([
           <ProtectedRouteJob>
             <JobPageNoJob />
           </ProtectedRouteJob>
+        ),
+      },
+      {
+        path: "Waiting",
+        element: (
+          <ProtectedRouteCompanyWait>
+            <WaitingCompany />
+          </ProtectedRouteCompanyWait>
         ),
       },
       {
@@ -795,9 +806,13 @@ const router = createBrowserRouter([
         element: <ManageAccount />,
       },
       {
-        path: "JobPosting",
+        path: "CompanyInfo",
         // index:true,
         element: <ManageJobPosting />,
+      },
+      {
+        path: "BusinessStream",
+        element: <BusinessStreamPage />,
       },
       {
         path: "skillSet",

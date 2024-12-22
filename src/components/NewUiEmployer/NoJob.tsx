@@ -4,7 +4,14 @@ import { useNavigate } from "react-router-dom";
 import WorkIcon from "@mui/icons-material/Work";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "./PaymentModal";
-const NoJob: React.FC = () => {
+
+interface props {
+  text?: string;
+  des?: string;
+  appear?: boolean;
+}
+
+const NoJob: React.FC<props> = ({ text, des, appear }) => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const IsPremium = localStorage.getItem("IsPremium");
@@ -32,9 +39,11 @@ const NoJob: React.FC = () => {
           />
         )}
       </AnimatePresence>
-      <p className={classes.p}>No Jobs</p>
+      <p className={classes.p}>{text ? text : "No Job"} </p>
       <p className={classes.p1}>
-        You do not need to post a job to start reaching out to candidates.
+        {des
+          ? des
+          : " You need to post a job to start reaching out to candidates."}
       </p>
       <div className={classes.main1}>
         <div className={classes.main2}>
@@ -54,11 +63,12 @@ const NoJob: React.FC = () => {
             <WorkIcon />
             Post Jobs
           </Link> */}
-
-          <div className={classes.link2} onClick={handlePostJobs}>
-            <WorkIcon />
-            Post Jobs
-          </div>
+          {appear && (
+            <div className={classes.link2} onClick={handlePostJobs}>
+              <WorkIcon />
+              Post Jobs
+            </div>
+          )}
         </div>
       </div>
     </div>

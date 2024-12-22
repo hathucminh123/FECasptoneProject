@@ -68,6 +68,9 @@ export default function SignInPage() {
             >
               <TextFieldForm text="Manage skillSet data" />
               <TextFieldForm text="Manage JobType Data" />
+              <TextFieldForm text="Manage Company Info" />
+              <TextFieldForm text="Manage business stream " />
+              <TextFieldForm text="Manage Benefit data" />
               {/* <TextFieldForm text="Access advanced analytics and reports" />
               <TextFieldForm text="Control platform settings and security configurations" /> */}
             </motion.div>

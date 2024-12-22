@@ -47,6 +47,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
+  proficiencyLevel?:string;
 }
 
 interface CVs {
@@ -417,9 +418,23 @@ const InterViewApplicants: React.FC = () => {
 
                         <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
-                            <div className={classes.main29} key={skill.id}>
-                              <span>{skill.name}</span>
+                            <>
+                              <div className={classes.main13} style={{marginTop:'5px'}}>
+                            {skill.proficiencyLevel}{":  "}
+                            {/* <button
+                type="button"
+                className={classes.button1}
+                onClick={() => setOpenExp((prev) => !prev)}
+              >
+                {" "}
+                - View More
+              </button> */}
+                          </div>
+                            <div className={classes.main29} style={{display:'flex' ,alignItems:'center'}} key={skill.id}>
+                            
+                              <span>{" "} {skill.name}</span>
                             </div>
+                            </>
                           ))}
                         </div>
                       </div>
