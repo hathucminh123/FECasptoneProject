@@ -96,6 +96,59 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
         </div>
         <div className={classes.menu}>
           <ul className={classes.ul}>
+          <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to=""
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <div className={classes.div9}>
+                    <span className={classes.span4}>
+                      <WorkOutlineOutlinedIcon
+                        fontSize="large"
+                        sx={{
+                          fontSize: "14px",
+                          display: "block",
+                          fontWeight: 400,
+                        }}
+                      />
+                    </span>
+                  </div>
+                  <div
+                    className={`${open ? classes.div10 : classes.div10Open} `}
+                  >
+                    <span className={classes.span5}>Manage Company</span>
+                  </div>
+                  <div className={classes.div11}></div>
+                </NavLink>
+                <div style={{ cursor: "pointer" }} onClick={handleOpen}>
+                  {drop ? (
+                    <ArrowDropDownIcon className={classes.icon1} />
+                  ) : (
+                    <NavigateNextIcon className={classes.icon} />
+                  )}
+                </div>
+              </div>
+
+              {drop && (
+                <ul className={classes.ul1}>
+                  <li className={classes.li1}>
+                    <NavLink to={"#"} className={classes.navlink}>
+                      <div
+                        className={`${
+                          open ? classes.div10 : classes.div10Open
+                        } `}
+                      >
+                        <span className={classes.span5}>Review</span>
+                      </div>
+                    </NavLink>
+                  </li>
+                </ul>
+              )}
+            </li>
             <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
@@ -260,59 +313,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
               </div>
             </li>
 
-            <li className={classes.li}>
-              <div className={classes.div8}>
-                <NavLink
-                  to="CompanyInfo"
-                  className={({ isActive }) =>
-                    isActive ? classes.active : undefined
-                  }
-                  end
-                >
-                  <div className={classes.div9}>
-                    <span className={classes.span4}>
-                      <WorkOutlineOutlinedIcon
-                        fontSize="large"
-                        sx={{
-                          fontSize: "14px",
-                          display: "block",
-                          fontWeight: 400,
-                        }}
-                      />
-                    </span>
-                  </div>
-                  <div
-                    className={`${open ? classes.div10 : classes.div10Open} `}
-                  >
-                    <span className={classes.span5}>Manage Company</span>
-                  </div>
-                  <div className={classes.div11}></div>
-                </NavLink>
-                <div style={{ cursor: "pointer" }} onClick={handleOpen}>
-                  {drop ? (
-                    <ArrowDropDownIcon className={classes.icon1} />
-                  ) : (
-                    <NavigateNextIcon className={classes.icon} />
-                  )}
-                </div>
-              </div>
-
-              {drop && (
-                <ul className={classes.ul1}>
-                  <li className={classes.li1}>
-                    <NavLink to={"#"} className={classes.navlink}>
-                      <div
-                        className={`${
-                          open ? classes.div10 : classes.div10Open
-                        } `}
-                      >
-                        <span className={classes.span5}>Review</span>
-                      </div>
-                    </NavLink>
-                  </li>
-                </ul>
-              )}
-            </li>
+         
 
             {/* <li className={classes.li}>
               <div className={classes.div8}>

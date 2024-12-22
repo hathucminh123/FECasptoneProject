@@ -1,7 +1,6 @@
 .header {
-  height: 88px;
-  display: block;
-  background-color: transparent;
+  background: var(--color-background-default);
+  border-bottom: 1px solid var(--color-border-hover);
 }
 
 .header.scrolled {

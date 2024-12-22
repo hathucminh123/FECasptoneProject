@@ -126,7 +126,7 @@ interface props {
               </NavLink>
             </li> */}
             <li className={classes.li}>
-              <NavLink className={classes.navlink} to="CompanyInfo">
+              <NavLink className={classes.navlink} to="">
                 <CreateIcon className={classes.icon} />
                 Manage Company Info
               </NavLink>

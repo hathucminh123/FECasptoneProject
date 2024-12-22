@@ -775,8 +775,10 @@ const SkillsMenu = ({
       keepMounted
       open={Boolean(anchorEl)}
       onClose={handleClose}
+      
       PaperProps={{
         style: {
+          marginRight: "10px",
           backgroundColor: "#2c2f33",
           color: "white",
           width: "900px",
@@ -786,6 +788,7 @@ const SkillsMenu = ({
       }}
       MenuListProps={{
         onMouseLeave: handleClose,
+        onMouseEnter: () => setHovered(selectedMenu),
       }}
     >
       <div style={{ display: "flex", padding: "10px" }}>
@@ -940,7 +943,7 @@ const ProfileMenu = ({
   handleClose,
   setHovered,
   hovered,
-  // selectedMenu,
+  selectedMenu,
   setSelectedMenu,
 }: {
   anchorEl: HTMLElement | null;
@@ -1019,14 +1022,16 @@ const ProfileMenu = ({
         "& .MuiPaper-root": {
           backgroundColor: "#2c2f33",
           color: "white",
-          width: "250px",
+          maxWidth: "250px",
           borderRadius: "10px",
           boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
           mt: -1,
+       ml: -2,
         },
       }}
       MenuListProps={{
         onMouseLeave: handleClose,
+        onMouseEnter: () => setHovered(selectedMenu),
       }}
     >
       <ul

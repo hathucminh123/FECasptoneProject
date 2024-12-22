@@ -802,12 +802,12 @@ const router = createBrowserRouter([
       },
       {
         path: "AccountSystem",
-        index: true,
+        // index: true,
         element: <ManageAccount />,
       },
       {
-        path: "CompanyInfo",
-        // index:true,
+        // path: "CompanyInfo",
+        index:true,
         element: <ManageJobPosting />,
       },
       {
