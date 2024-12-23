@@ -421,8 +421,8 @@ const AllApplicants: React.FC = () => {
                           {profile.skillSets.map((skill) => (
                             <>
                               <div className={classes.main13}>
-                                {skill.proficiencyLevel}
-                                {" :"}
+                                {/* {skill.proficiencyLevel} */}
+                                {skill.proficiencyLevel}{skill.proficiencyLevel !== "" && " :"} 
                                 {/* <button
                 type="button"
                 className={classes.button1}

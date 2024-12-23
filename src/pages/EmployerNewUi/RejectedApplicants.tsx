@@ -47,7 +47,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
-  proficiencyLevel?:string;
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -417,7 +417,7 @@ const RejectedApplicants: React.FC = () => {
                             <>
                               <div className={classes.main13}>
                                 {skill.proficiencyLevel}
-                                {" :"}
+                                {skill.proficiencyLevel !== "" && " :"}
                                 {/* <button
                 type="button"
                 className={classes.button1}

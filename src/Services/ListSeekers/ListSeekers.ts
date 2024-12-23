@@ -26,6 +26,7 @@ interface SkillSet {
   name: string;
   shorthand: string | null;
   description: string | null;
+  proficiencyLevel?:string;
 }
 
 interface CVs {

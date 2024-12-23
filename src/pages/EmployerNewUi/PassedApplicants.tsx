@@ -417,7 +417,7 @@ const PassedApplicants: React.FC = () => {
                             <>
                               <div className={classes.main13}>
                                 {skill.proficiencyLevel}
-                                {": "}
+                                {skill.proficiencyLevel !== "" && " :"}
                                 {/* <button
                 type="button"
                 className={classes.button1}
