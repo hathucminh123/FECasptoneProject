@@ -14,6 +14,7 @@ import { queryClient } from "../Services/mainService";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import { GetJobType } from "../Services/JobTypeService/GetJobType";
+import { useAppSelector } from "../redux/hooks/hooks";
 // import { useQuery } from "@tanstack/react-query";
 // import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -59,6 +60,7 @@ interface SearchData {
   pageSize?: number;
   minSalary?: number;
   maxSalary?: number;
+  keyword?: string;
 }
 interface Props {
   onDone?: () => void;
@@ -87,22 +89,11 @@ const datacities: string[] = [
   "NHA TRANG",
 ];
 
-const FilterModal: React.FC<Props> = ({ onDone,setText }) => {
+const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const [totalJobs, setTotalJobs] = useState<number>(0);
+  const searchState = useAppSelector((state) => state.searchJob);
   console.log("duoc di", totalJobs);
-  // const JobSalary = filteredJobs?.map((salary) => salary.salary);
-  // const flattenedArraySalary = JobSalary?.flat();
 
-  // const uniqueArraySalary = [...new Set(flattenedArraySalary)];
-
-  // const SalaryJob = uniqueArraySalary;
-  // const maxSalaryJob = Math.max(...SalaryJob);
-
-  // const [salary, setSalary] = useState<number[]>([500, maxSalaryJob]);
-  // const [minSalary, setMinSalary] = useState<number>(500);
-  // const [maxSalary, setMaxSalary] = useState<number>(maxSalaryJob);
-
-  // const [selectedSkill, setSelectedSkill] = useState<string[]>([]);
   const [selectedSkill, setSelectedSkill] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("selectedSkill") || "[]")
   );
@@ -300,58 +291,7 @@ const FilterModal: React.FC<Props> = ({ onDone,setText }) => {
 
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
 
-  // useEffect(() => {
-  //   const newSearchDataArray: SearchData[] = [];
-  //   const searchObject: SearchData = {
-  //     pageSize: 9,
-  //     minSalary: minSalary,
-  //     maxSalary: maxSalary,
-  //   };
 
-  //   if (selectedSkill ) {
-  //     newSearchDataArray.push({
-  //       skillSet: selectedSkill,
-
-  //       minSalary: minSalary,
-  //       maxSalary: maxSalary,
-  //       pageSize: 9,
-  //     });
-  //   }
-
-  //   if (selectedType) {
-  //     newSearchDataArray.push({
-  //       jobType: selectedType,
-  //       minSalary: minSalary,
-  //       maxSalary: maxSalary,
-  //       pageSize: 9,
-  //     });
-  //   }
-  //   if (selectExp) {
-  //     newSearchDataArray.push({
-  //       experience: selectExp,
-  //       minSalary: minSalary,
-  //       maxSalary: maxSalary,
-  //       pageSize: 9,
-  //     });
-  //   }
-  //   if (selectedCompany) {
-  //     newSearchDataArray.push({
-  //       companyName: selectedCompany,
-  //       minSalary: minSalary,
-  //       maxSalary: maxSalary,
-  //       pageSize: 9,
-  //     });
-  //   }
-
-  //   setSearchDataArray(newSearchDataArray);
-  // }, [
-  //   selectedSkill,
-  //   selectedType,
-  //   selectExp,
-  //   selectedCompany,
-  //   maxSalary,
-  //   minSalary,
-  // ]);
 
   useEffect(() => {
     const newSearchDataArray: SearchData[] = [];
@@ -366,6 +306,10 @@ const FilterModal: React.FC<Props> = ({ onDone,setText }) => {
 
     if (selectedSkill.length > 0) {
       searchObject.skillSets = selectedSkill;
+    }
+
+    if (searchState.search.keyword) {
+      searchObject.keyword = searchState.search.keyword
     }
 
     if (selectedType.length > 0) {
@@ -416,7 +360,7 @@ const FilterModal: React.FC<Props> = ({ onDone,setText }) => {
           state: {
             jobSearch: jobSearchResults,
             // text: text,
-            text:""
+            text: ""
             // location: location,
             // total: total,
           },
@@ -450,12 +394,6 @@ const FilterModal: React.FC<Props> = ({ onDone,setText }) => {
           setJobSearch(result.result.items);
           setTotalJobs(result.result.totalCount);
           setText("")
-          // navigate("/it_jobs", {
-          //   state: {
-          //     jobSearch: result.result.items,
-          //     total:totalJobs
-          //   },
-          // });
           break;
         }
       }

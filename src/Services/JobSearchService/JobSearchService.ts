@@ -1,7 +1,7 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 interface SearchData {
-  jobTitle?:string;
+  jobTitle?: string;
   companyName?: string;
   skillSet?: string;
   city?: string;
@@ -9,30 +9,32 @@ interface SearchData {
   experience?: number;
   jobType?: string;
   pageSize?: number;
-  pageIndex?:number
-  keyword?:string;
+  pageIndex?: number
+  keyword?: string | null;
 }
 
-interface JobSearch{
-    // data: { [key: string]: string|number|undefined };
-    data:SearchData
+interface JobSearch {
+  // data: { [key: string]: string|number|undefined };
+  data: SearchData
 }
 
 export const GetJobSearch = async ({ data }: JobSearch) => {
-    try {
-      const response = await httpClient.post({
-        url: apiLinks.jobSearch.POST,
-        data: data,
-      });
-      return response.data;
-    } catch (error: unknown) {
-  
-      if (error instanceof Error) {
-        console.error("Post JobActivity request failed:", error.message); 
-      } else {
-        console.error("Unexpected error", error);
-      }
-      throw error; 
+  if (data.keyword?.trim() === "") {
+    data.keyword = null
+  }
+  try {
+    const response = await httpClient.post({
+      url: apiLinks.jobSearch.POST,
+      data: data,
+    });
+    return response.data;
+  } catch (error: unknown) {
+
+    if (error instanceof Error) {
+      console.error("Post JobActivity request failed:", error.message);
+    } else {
+      console.error("Unexpected error", error);
     }
-  };
-  
+    throw error;
+  }
+};

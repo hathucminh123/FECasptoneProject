@@ -1,7 +1,8 @@
-import React, { 
+import React, {
   // useEffect
-  
-   useState } from "react";
+
+  useState
+} from "react";
 import {
   Box,
   Button,
@@ -25,6 +26,8 @@ import { message } from "antd";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { queryClient } from "../Services/mainService";
+import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
+import { setKeyword } from "../redux/slices/searchJobSlice";
 
 interface JobType {
   id: number;
@@ -79,16 +82,9 @@ export default function FormSearch({
   // const locationPass = useLocation();
   const navigate = useNavigate();
   const [hovered, setHovered] = useState<null | number>(null);
-  const [hoveredJob,setHoveredJob]=useState<null |string>(null)
-// const [open,setOpen]=useState<boolean>(false)
-
-  // const locationText = locationPass.state?.text || "";
-  // const advance = locationPass.state?.boolean || "";
-  // const [turnOn, setTurnOn] = useState<boolean>(advance ||false);
-  // const [turnOn, setTurnOn] = useState<boolean>(() =>
-  //   JSON.parse(localStorage.getItem("Turn") || "false")
-  // );
-
+  const [hoveredJob, setHoveredJob] = useState<null | string>(null)
+  const searchState = useAppSelector((state) => state.searchJob);
+  const dispatch = useAppDispatch();
   const { data: Company } = useQuery({
     queryKey: ["Company"],
     queryFn: ({ signal }) => fetchCompanies({ signal }),
@@ -118,17 +114,17 @@ export default function FormSearch({
 
   // Filtered companies based on the input text
   const filterCompany =
-    text.trim() !== ""
+  searchState.search.keyword!.trim() !== ""
       ? Companiesdata?.filter((name) =>
-          name.companyName.toLowerCase().includes(text.toLowerCase())
-        )
+        name.companyName.toLowerCase().includes(text.toLowerCase())
+      )
       : [];
 
   const filterjobs =
-    text.trim() !== ""
+  searchState.search.keyword!.trim() !== ""
       ? JobTitleColums?.filter((name) =>
-          name.toLowerCase().includes(text.toLowerCase())
-        )
+        name.toLowerCase().includes(searchState.search.keyword!.toLowerCase())
+      )
       : [];
 
 
@@ -141,7 +137,7 @@ export default function FormSearch({
   const handleSearchCompany = async () => {
     try {
       // Normalize the input text
-      const normalizedText = (text || "").trim().toLowerCase();
+      const normalizedText = (searchState.search.keyword || "").trim().toLowerCase();
 
       const matchingCompany = filterCompany?.find(
         (item) => item.companyName.trim().toLowerCase() === normalizedText
@@ -151,7 +147,7 @@ export default function FormSearch({
         navigate(`/company/detail/${matchingCompany.id}`);
       } else {
         // Navigate to the job search page if no exact match is found
-        navigate("/it_jobs", { state: { textt: text } });
+        navigate("/it_jobs", { state: { textt: searchState.search.keyword } });
       }
     } catch (error) {
       console.error("Error during company search:", error);
@@ -160,12 +156,13 @@ export default function FormSearch({
 
   const handleSelect = async (name: string) => {
     setText(name);
+    dispatch(setKeyword(name));
     try {
       const companyData = await SearchCompanyByName({ name });
       if (companyData?.Companies) {
         navigate(`/company/detail/${companyData.Companies.id}`);
       } else {
-        navigate("/it_jobs", { state: { textt: text } });
+        navigate("/it_jobs", { state: { textt: searchState.search.keyword } });
       }
     } catch (error) {
       console.error("Error during company search:", error);
@@ -178,20 +175,20 @@ export default function FormSearch({
 
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
-        const total =data.result.totalCount
-        setOpen?.(false) 
+        const total = data.result.totalCount
+        setOpen?.(false)
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
-            text: text || "",
+            text: searchState.search.keyword || "",
             // location: location,
-            total:total
-            
+            total: total
+
           },
         });
       } else {
         navigate("/it_jobs", {
-          state: { text: text || "", jobSearch: [] ,total :0},
+          state: { text: searchState.search.keyword || "", jobSearch: [], total: 0 },
         });
       }
 
@@ -207,26 +204,26 @@ export default function FormSearch({
     },
   });
   const handleSelectJobtitle = async (title: string) => {
- 
+    dispatch(setKeyword(title));
     setText(title);
     try {
-        const result = await mutateAsync({
-            data: { keyword: title, pageSize: 9, pageIndex: 1 },
-        });
+      const result = await mutateAsync({
+        data: { keyword: title, pageSize: 9, pageIndex: 1 },
+      });
 
-        if (result && result.result && result.result.items.length > 0) {
-            // setJobSearch(result.result.items);
-            // navigate("/it_jobs", {
-            //     state: { jobSearch: result.result.items, textt: skill ,total:totalJobs},
-            // });
-        } else {
-            // setJobSearch([]);
-            // navigate("/it_jobs", { state: { jobSearch: [], textt: skill,total:0 } });
-        }
+      if (result && result.result && result.result.items.length > 0) {
+        // setJobSearch(result.result.items);
+        // navigate("/it_jobs", {
+        //     state: { jobSearch: result.result.items, textt: skill ,total:totalJobs},
+        // });
+      } else {
+        // setJobSearch([]);
+        // navigate("/it_jobs", { state: { jobSearch: [], textt: skill,total:0 } });
+      }
     } catch (error) {
-        console.error("Error during job search:", error);
+      console.error("Error during job search:", error);
     }
-};
+  };
 
 
   // useEffect(() => {
@@ -236,111 +233,29 @@ export default function FormSearch({
   // const handleChangeLocation = (event: SelectChangeEvent) =>
   //   setLocation(event.target.value as string);
 
-  const handleText = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setText(e.target.value || "");
+  const handleText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setText(event.target.value || "");
+    dispatch(setKeyword(event.target.value || ""));
+  }
 
-  // const handleKeyDown = (e: React.KeyboardEvent) => {
-  //   if (e.key === "Enter") {
-  //     e.preventDefault();
-
-  //     const normalizedText = (text || "").trim().toLowerCase();
-
-  //     const matchingCompany = filterCompany?.find(
-  //       (item) => item.companyName.trim().toLowerCase() === normalizedText
-  //     );
-
-  //     if (matchingCompany) {
-  //       handleSearchCompany();
-  //     // } else {
-  //     //   if (turnOn === true) {
-  //     //     handleSearch();
-  //     //   } 
-  //     }
-  //      else  {
-  //         onClick();
-  //       }
-  //     }
-  //   }
-  // };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== "Enter") return; // Early return for non-Enter keys
-  
+
     e.preventDefault();
-  
-    const normalizedText = (text || "").trim().toLowerCase();
-  
+
+    const normalizedText = (searchState.search.keyword || "").trim().toLowerCase();
+
     const matchingCompany = filterCompany?.find(
       (item) => item.companyName.trim().toLowerCase() === normalizedText
     );
-  
+
     if (matchingCompany) {
       handleSearchCompany();
     } else {
       onClick();
     }
   };
-  // const { mutate, isPending: Loading } = useMutation({
-  //   mutationFn: JobSearchQuery,
-  //   onSuccess: (data) => {
-  //     console.log("Search result:", data);
-
-  //     if (data && data.result && data.result.length > 0) {
-  //       const jobSearchResults = data.result;
-  //       // setJobSearch(data.result.items);
-
-  //       navigate("/it_jobs", {
-  //         state: {
-  //           jobSearch: jobSearchResults,
-  //           text: text || "",
-  //           boolean: turnOn,
-  //         },
-  //         // state: { jobSearch: jobSearchResults },
-  //       });
-  //     } else {
-  //       // navigate("/it_jobs", { state: { textt: searchTerm } });
-  //       navigate("/it_jobs");
-  //     }
-
-  //     // navigate("/it-jobs",{state : text});
-  //   },
-  //   onError: () => {
-  //     message.error("Failed to Search.");
-  //   },
-  // });
-
-  // const handleSearch = () => {
-  //   mutate({
-  //     data: {
-  //       query: text,
-  //     },
-  //   });
-  // };
-  // const [open, setOpen] = useState(false);
-
-  // const handleOpen = () => setOpen(true);
-  // const handleClose = () => setOpen(false);
-
-  // useEffect(() => {
-  //   const allowedLocations = [
-  //     "All",
-  //     "DA NANG",
-  //     "HA NOI",
-  //     "HO CHI MINH",
-  //     "HAI PHONG",
-  //     "CAN THO",
-  //     "NHA TRANG",
-  //   ];
-
-  //   if (allowedLocations.includes(locationText)) {
-  //     setLocation(locationText);
-  //     setText(locationText)
-
-  //   } else {
-  //     setText(locationText ? locationText : text);
-  //     setLocation("All");
-  //   }
-  // }, [locationText, setLocation, setText, text]);
 
   return (
     <Box sx={{ display: "block", marginTop: "0em", unicodeBidi: "isolate" }}>
@@ -356,65 +271,9 @@ export default function FormSearch({
         noValidate
         autoComplete="off"
       >
-        {/* <FormControl fullWidth sx={{ width: { xs: "100%", sm: "25%" } }}>
-        <Select
-        IconComponent={() => (
-          <LocationOnIcon
-            sx={{
-              transform: open ? "rotate(180deg)" : "rotate(0deg)",
-              transition: "transform 0.3s",
-            }}
-          />
-        )}
-        labelId="location-select-label"
-        id="location-select"
-        value={location || ""}
-        onChange={handleChangeLocation}
-        onOpen={handleOpen}
-        onClose={handleClose}
-        sx={{ background: "white" }}
-      >
-        {[
-          "All",
-          "HO CHI MINH",
-          "HA NOI",
-          "DA NANG",
-          "HAI PHONG",
-          "CAN THO",
-          "NHA TRANG",
-        ].map((city) => (
-          <MenuItem key={city} value={city}>
-            {city.replace(/_/g, " ")}
-          </MenuItem>
-        ))}
-      </Select>
-          {/* <Select
-          IconComponent={LocationOnIcon} 
-            labelId="location-select-label"
-            id="location-select"
-            value={location || ""}
-            label="Location"
-            onChange={handleChangeLocation}
-            sx={{ background: "white" }}
-          >
-            {[
-              "All",
-              "HO CHI MINH",
-              "HA NOI",
-              "DA NANG",
-              "HAI PHONG",
-              "CAN THO",
-              "NHA TRANG",
-            ].map((city) => (
-              <MenuItem key={city} value={city}>
-                {city.replace(/_/g, " ")}
-              </MenuItem>
-            ))}
-          </Select> 
-        </FormControl> */}
         <div className={classes.main}>
           <TextField
-            value={text}
+            value={searchState.search.keyword}
             id="keyword-input"
             // label="Enter keyword"
             placeholder="Enter Keyword Skill (Java, iOS), Job title, Company Name,City"
@@ -422,7 +281,8 @@ export default function FormSearch({
             variant="outlined"
             onChange={handleText}
             onKeyDown={handleKeyDown}
-            onFocus={()=>setOpen?.(true)}
+            onFocus={() => setOpen?.(true)}
+            onBlur={() => setOpen?.(false)}
             sx={{
               width: { xs: "100%", sm: "100%" },
               fontSize: "16px",
@@ -437,7 +297,7 @@ export default function FormSearch({
               },
             }}
           />
-          {filterCompany && filterCompany.length > 0 ? (
+          {filterCompany && open && filterCompany.length > 0 ? (
             <div className={classes.drop}>
               <div className={classes.drop1}>Company</div>
               {filterCompany.map((item) => (
@@ -487,8 +347,8 @@ export default function FormSearch({
         <Button
           onClick={
             filterCompany?.length === 1 &&
-            filterCompany[0]?.companyName.trim().toLowerCase() ===
-              text.trim().toLowerCase()
+              filterCompany[0]?.companyName.trim().toLowerCase() ===
+              searchState.search.keyword!.trim().toLowerCase()
               ? handleSearchCompany
               // : turnOn
               // ? handleSearch
@@ -498,7 +358,7 @@ export default function FormSearch({
           variant="contained"
           size="large"
           sx={{
-           
+
             backgroundColor: "#FF6F61",
             color: "white",
             border: "none",
@@ -511,7 +371,7 @@ export default function FormSearch({
             fontSize: "16px",
             width: { xs: "100%", sm: "25%" },
             // width: "500px",
-            position:'relative',
+            position: 'relative',
             marginTop: { xs: "10px", sm: "0" },
             transition: "background-color 0.3s ease",
             "&:hover": {
@@ -573,10 +433,10 @@ export default function FormSearch({
               ? "Searching..."
               : "Search"
             :  */}
-            {
+          {
             isPending
-            ? "Searching..."
-            : "Search"}
+              ? "Searching..."
+              : "Search"}
         </Button>
         {/* <Button
           onClick={() => setTurnOn(!turnOn)}

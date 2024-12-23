@@ -22,7 +22,7 @@ interface SearchState {
 // Initial state
 const initialState: SearchState = {
   search: {
-    keyword: null,
+    keyword: "",
     companyNames: null,
     jobTitles: null,
     skillSets: null,

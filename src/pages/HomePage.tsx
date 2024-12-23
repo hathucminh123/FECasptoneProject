@@ -16,6 +16,8 @@ import { queryClient } from "../Services/mainService";
 import { message } from "antd";
 import TopEmployersSection from "../components/TopEmployersSection";
 import TopJobSection from "../components/TopJobSection";
+import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
+import { setKeyword } from "../redux/slices/searchJobSlice";
 
 // const skillsColumns = [
 //   "Java",
@@ -68,10 +70,11 @@ const HomePage: React.FC = () => {
     }
   };
   const [jobSearch, setJobSearch] = useState<JobPost[] | undefined>([]);
-
+  const dispatch = useAppDispatch();
   const [text, setText] = useState<string>("");
   const [totalJobs, setTotalJobs] = useState<number>(0);
   const [open, setOpen] = useState<boolean>(false);
+  const searchState = useAppSelector((state) => state.searchJob);
   console.log("total", totalJobs);
   const [location, setLocation] = useState<string>("All");
   const { mutateAsync, isPending } = useMutation({
@@ -88,7 +91,7 @@ const HomePage: React.FC = () => {
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
-            text: text || "",
+            text: searchState.search.keyword || "",
             location: location,
             total: total,
           },
@@ -96,7 +99,7 @@ const HomePage: React.FC = () => {
       } else {
         navigate("/it_jobs", {
           state: {
-            text: text || "",
+            text: searchState.search.keyword || "",
             location: location,
             jobSearch: [],
             total: 0,
@@ -140,7 +143,7 @@ const HomePage: React.FC = () => {
     // Define searchDataArray with the SearchData[] type
     let searchDataArray: SearchData[];
 
-    if (location === "All" && text === "") {
+    if (location === "All" && searchState.search.keyword === "") {
       searchDataArray = [
         // { jobTitle: text, pageSize: 9 ,pageIndex:1},
         // { companyName: text, pageSize: 9,pageIndex:1 },
@@ -151,13 +154,13 @@ const HomePage: React.FC = () => {
         // { experience: Number(text), pageSize: 9 },
         // { jobType: text, pageSize: 9,pageIndex:1 },
       ];
-    } else if (location !== "All" && text === "") {
+    } else if (location !== "All" && searchState.search.keyword === "") {
       searchDataArray = [
         // { city: location, pageSize: 9,pageIndex:1  },
         // { location: location, pageSize: 9 ,pageIndex:1 },
         { keyword: location, pageSize: 9, pageIndex: 1 },
       ];
-    } else if (location !== "All" && text !== "") {
+    } else if (location !== "All" && searchState.search.keyword !== "") {
       searchDataArray = [
         // { jobTitle: text, city: location, pageSize: 9 ,pageIndex:1 },
         // { companyName: text, city: location, pageSize: 9,pageIndex:1  },
@@ -207,6 +210,7 @@ const HomePage: React.FC = () => {
   };
 
   const handleNavigateSkill = async (item: string) => {
+    dispatch(setKeyword(item));
     setText(item);
     interface JobSearchResponse {
       result: {
