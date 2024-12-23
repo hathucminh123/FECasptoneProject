@@ -778,6 +778,7 @@ const SkillsMenu = ({
       
       PaperProps={{
         style: {
+          overflow: "visible",
           marginRight: "10px",
           backgroundColor: "#2c2f33",
           color: "white",

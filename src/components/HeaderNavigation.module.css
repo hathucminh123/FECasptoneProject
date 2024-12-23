@@ -1,10 +1,13 @@
 .header {
   background: var(--color-background-default);
   border-bottom: 1px solid var(--color-border-hover);
+overflow: visible !important;
+ 
 }
 
 .header.scrolled {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  overflow: visible !important;
 }
 :root {
   --color-background-default: #ffffff;
@@ -12,6 +15,7 @@
 }
 .nav {
   position: fixed;
+overflow: visible !important;
   top: 0;
   right: 0;
   left: 0;
@@ -33,6 +37,7 @@
 
 .nav.scrolled {
   background-color: rgba(255, 255, 255, 0.8); 
+  overflow: visible !important;
 }
 
 .container {

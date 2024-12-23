@@ -206,6 +206,7 @@ export default function FormSearch({
   const handleSelectJobtitle = async (title: string) => {
     dispatch(setKeyword(title));
     setText(title);
+  console.log("event")
     try {
       const result = await mutateAsync({
         data: { keyword: title, pageSize: 9, pageIndex: 1 },
@@ -282,7 +283,8 @@ export default function FormSearch({
             onChange={handleText}
             onKeyDown={handleKeyDown}
             onFocus={() => setOpen?.(true)}
-            onBlur={() => setOpen?.(false)}
+            // onBlur={() => setTimeout(() => setOpen?.(false), 200)}
+            // onBlur={() => setOpen?.(false)}
             sx={{
               width: { xs: "100%", sm: "100%" },
               fontSize: "16px",
