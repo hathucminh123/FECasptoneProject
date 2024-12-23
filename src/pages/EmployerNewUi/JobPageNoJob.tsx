@@ -10,17 +10,37 @@ import PaymentModal from "../../components/NewUiEmployer/PaymentModal";
 const JobPageNoJob: React.FC = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const IsPremium = localStorage.getItem("IsPremium");
+  // const IsPremium = localStorage.getItem("IsPremium");
+  const isPremiumExpired = () => {
+    const expireDate = localStorage.getItem("PremiumExpireDate");
+
+    if (!expireDate) {
+      return true;
+    }
+
+    const expirationDate = new Date(expireDate);
+    const currentDate = new Date();
+
+    return expirationDate < currentDate;
+  };
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);
   };
 
-  const handlePostJobs = () => {
-    if (IsPremium === "True") {
-      navigate("/EmployerJob/jobs/create");
-    } else {
+  // const handlePostJobs = () => {
+  //   if (IsPremium === "True") {
+  //     navigate("/EmployerJob/jobs/create");
+  //   } else {
+  //     setOpenModal(true);
+  //   }
+  // };
+  const handleNavigate = () => {
+    if (isPremiumExpired()) {
       setOpenModal(true);
+      return;
+    } else {
+      navigate("/EmployerJob/jobs/create");
     }
   };
   return (
@@ -46,7 +66,7 @@ const JobPageNoJob: React.FC = () => {
                     {" "}
                     + Post Jobs
                   </Link> */}
-                  <div className={classes.link} onClick={handlePostJobs}>
+                  <div className={classes.link} onClick={handleNavigate}>
                     {" "}
                     + Post Jobs
                   </div>

@@ -8,19 +8,39 @@ import PaymentModal from "./PaymentModal";
 const NotifiModal: React.FC = () => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const IsPremium = localStorage.getItem("IsPremium");
+  // const IsPremium = localStorage.getItem("IsPremium");
+  const isPremiumExpired = () => {
+    const expireDate = localStorage.getItem("PremiumExpireDate");
+
+    if (!expireDate) {
+      return true;
+    }
+
+    const expirationDate = new Date(expireDate);
+    const currentDate = new Date();
+
+    return expirationDate < currentDate;
+  };
 
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);
   };
 
-  const handlePostJobs = () => {
-    if (IsPremium === "True") {
-      navigate("/EmployerJob/jobs/create");
+  // const handlePostJobs = () => {
+  //   if (IsPremium === "True") {
+  //     navigate("/EmployerJob/jobs/create");
     
-    } else {
+  //   } else {
+  //     setOpenModal(true);
+  //   }
+  // };
+  const handleNavigate = () => {
+    if (isPremiumExpired()) {
       setOpenModal(true);
+      return;
+    } else {
+      navigate("/EmployerJob/jobs/create");
     }
   };
   return (
@@ -50,7 +70,7 @@ const NotifiModal: React.FC = () => {
           <WorkIcon/>
           Post A Jobs
         </Link> */}
-        <div className={classes.link} onClick={handlePostJobs}>
+        <div className={classes.link} onClick={handleNavigate}>
           {/* <svg fill="none" height={16} width={16} viewBox="0 0 16 16">
             <path
               d="M2.56684 4.23096H13.1765C14.3177 4.23096 15.2433 5.15669 15.2433 6.29921V12.2062C15.2433 13.3487 14.3177 14.2744 13.1765 14.2744H2.56684C1.42562 14.2744 0.5 13.3487 0.5 12.2062V6.29921C0.5 5.15669 1.42562 4.23096 2.56684 4.23096Z"
