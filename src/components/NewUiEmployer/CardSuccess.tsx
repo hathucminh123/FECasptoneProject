@@ -37,7 +37,7 @@ const CardSuccess: React.FC<props> = ({ status }) => {
 
   console.log("kkkha", maxExpiredDate);
   useEffect(() => {
-    if (status === "success" || maxExpiredDate) {
+    if (status === "success" && maxExpiredDate) {
       // Định dạng thành "MM/DD/YYYY HH:mm:ss"
       const formattedDate = maxExpiredDate?.toLocaleString("en-US", {
         month: "2-digit",
