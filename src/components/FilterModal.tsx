@@ -14,7 +14,8 @@ import { queryClient } from "../Services/mainService";
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import { GetJobType } from "../Services/JobTypeService/GetJobType";
-import { useAppSelector } from "../redux/hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
+import { reset, setCities, setCompanyNames, setExperience, setJobTypes, setSkillSets } from "../redux/slices/searchJobSlice";
 // import { useQuery } from "@tanstack/react-query";
 // import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -92,7 +93,7 @@ const datacities: string[] = [
 const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const [totalJobs, setTotalJobs] = useState<number>(0);
   const searchState = useAppSelector((state) => state.searchJob);
-  console.log("duoc di", totalJobs);
+  const dispatch = useAppDispatch() 
 
   const [selectedSkill, setSelectedSkill] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("selectedSkill") || "[]")
@@ -143,6 +144,8 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
         ? prevTypes.filter((t) => t !== type)
         : [...prevTypes, type]
     );
+
+    dispatch(setJobTypes(type))
   };
 
   //exp
@@ -168,6 +171,7 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
     setSelectExp((prev) =>
       prev === experienceNumber ? null : experienceNumber
     );
+    dispatch(setExperience(experienceNumber))
     // setSelectExpString((prev) => (prev === experienceNumber ? " " : experienceNumber));
     setSelectExpString((prev) => (prev === exp ? " " : exp));
   };
@@ -178,6 +182,7 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
         ? prevSelected.filter((company) => company !== name)
         : [...prevSelected, name]
     );
+    dispatch(setCompanyNames(name))
   };
 
   const handleCheckboxChangeCities = (name: string) => {
@@ -186,6 +191,7 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
         ? prevSelected.filter((company) => company !== name)
         : [...prevSelected, name]
     );
+    dispatch(setCities(name))
   };
 
   const handleCheckboxChangeSkills = (name: string) => {
@@ -194,6 +200,8 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
         ? prevSelected.filter((company) => company !== name)
         : [...prevSelected, name]
     );
+
+    dispatch(setSkillSets(name))
   };
   // const CompanyName = filteredJobs?.map((name) => name.companyName);
   const {
@@ -221,21 +229,6 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const filtercites = datacities.filter((name) =>
     name.toLowerCase().includes(searchQueryCities.toLowerCase())
   );
-  // const filterSkills = skillsColumns.filter((name) =>
-  //   name.toLowerCase().includes(searchQuerySkills.toLowerCase())
-  // );
-  // const {
-  //   data: JobPosts,
-  //   // isLoading: isJobLoading,
-  //   // isError: isJobError,
-  // } = useQuery({
-  //   queryKey: ["JobPosts"],
-  //   queryFn: ({ signal }) => GetJobPost({ signal: signal }),
-  //   staleTime: 5000,
-  // });
-
-  // const JobPostsdata = JobPosts?.JobPosts;
-  //skills
   const { data: SkillSetData } = useQuery({
     queryKey: ["SkillSetDetails"],
     queryFn: ({ signal }) => GetSkillSets({ signal: signal }),
@@ -345,11 +338,9 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
     selectExp,
     selectedCites,
   ]);
-  console.log("thietko", jobSearch);
   const { mutateAsync, isPending } = useMutation({
     mutationFn: GetJobSearch,
     onSuccess: (data) => {
-      console.log("Search result:", data);
 
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
@@ -385,6 +376,8 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
 
   const handleNavigateJob = async () => {
     try {
+      console.log("searchState.search", searchState.search);
+      
       for (let i = 0; i < searchDataArray.length; i++) {
         const result = await mutateAsync({
           data: searchDataArray[i],
@@ -415,6 +408,8 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
     localStorage.removeItem("selectedCompany");
     localStorage.removeItem("selectedCities");
     localStorage.removeItem("selectExp");
+
+    dispatch(reset())
   };
   // const [showAllSkills, setShowAllSkills] = useState(false);
 

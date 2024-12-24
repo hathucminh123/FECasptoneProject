@@ -23,17 +23,17 @@ interface SearchState {
 const initialState: SearchState = {
   search: {
     keyword: "",
-    companyNames: null,
+    companyNames: JSON.parse(localStorage.getItem("selectedCompany") || "[]"),
     jobTitles: null,
-    skillSets: null,
+    skillSets: JSON.parse(localStorage.getItem("selectedSkill") || "[]"),
     minSalary: null,
     maxSalary: null,
     locations: null,
-    cities: null,
+    cities: JSON.parse(localStorage.getItem("selectedCities") || "[]"),
     experience: null,
-    jobTypes: null,
+    jobTypes:  JSON.parse(localStorage.getItem("selectedType") || "[]"),
     pageIndex: null,
-    pageSize: null,
+    pageSize: 9,
   },
 };
 
@@ -45,13 +45,25 @@ export const searchJobSlice = createSlice({
       state.search.keyword = action.payload;
     },
     setCompanyNames: (state, action: PayloadAction<string>) => {
-      state.search.companyNames = state.search.companyNames ? [...state.search.companyNames, action.payload] : [action.payload];
+      state.search.companyNames = state.search.companyNames
+        ? state.search.companyNames.includes(action.payload)
+          ? state.search.companyNames.filter(name => name !== action.payload)
+          : [...state.search.companyNames, action.payload]
+        : [action.payload];
     },
     setJobTitles: (state, action: PayloadAction<string>) => {
-      state.search.jobTitles = state.search.jobTitles ? [...state.search.jobTitles, action.payload] : [action.payload];
+      state.search.jobTitles = state.search.jobTitles
+        ? state.search.jobTitles.includes(action.payload)
+          ? state.search.jobTitles.filter(title => title !== action.payload)
+          : [...state.search.jobTitles, action.payload]
+        : [action.payload];
     },
     setSkillSets: (state, action: PayloadAction<string>) => {
-      state.search.skillSets = state.search.skillSets ? [...state.search.skillSets, action.payload] : [action.payload];
+      state.search.skillSets = state.search.skillSets
+        ? state.search.skillSets.includes(action.payload)
+          ? state.search.skillSets.filter(skill => skill !== action.payload)
+          : [...state.search.skillSets, action.payload]
+        : [action.payload];
     },
     setMinSalary: (state, action: PayloadAction<number>) => {
       state.search.minSalary = action.payload;
@@ -60,16 +72,28 @@ export const searchJobSlice = createSlice({
       state.search.maxSalary = action.payload;
     },
     setLocations: (state, action: PayloadAction<string>) => {
-      state.search.locations = state.search.locations ? [...state.search.locations, action.payload] : [action.payload];
+      state.search.locations = state.search.locations
+        ? state.search.locations.includes(action.payload)
+          ? state.search.locations.filter(location => location !== action.payload)
+          : [...state.search.locations, action.payload]
+        : [action.payload];
     },
     setCities: (state, action: PayloadAction<string>) => {
-      state.search.cities = state.search.cities ? [...state.search.cities, action.payload] : [action.payload];
+      state.search.cities = state.search.cities
+        ? state.search.cities.includes(action.payload)
+          ? state.search.cities.filter(city => city !== action.payload)
+          : [...state.search.cities, action.payload]
+        : [action.payload];
     },
     setExperience: (state, action: PayloadAction<number>) => {
-      state.search.experience = action.payload;
+      state.search.experience = state.search.experience === action.payload ? null : action.payload;
     },
     setJobTypes: (state, action: PayloadAction<string>) => {
-      state.search.jobTypes = state.search.jobTypes ? [...state.search.jobTypes, action.payload] : [action.payload];
+      state.search.jobTypes = state.search.jobTypes
+        ? state.search.jobTypes.includes(action.payload)
+          ? state.search.jobTypes.filter(type => type !== action.payload)
+          : [...state.search.jobTypes, action.payload]
+        : [action.payload];
     },
     setPageIndex: (state, action: PayloadAction<number>) => {
       state.search.pageIndex = action.payload;
@@ -77,6 +101,16 @@ export const searchJobSlice = createSlice({
     setPageSize: (state, action: PayloadAction<number>) => {
       state.search.pageSize = action.payload;
     },
+    reset: (state)=> {
+      state.search = {
+        ...state.search,
+        cities: [],
+        companyNames: [],
+        skillSets:[],
+        jobTypes:[],
+        experience:null,
+      }
+    }
   },
 });
 
@@ -94,6 +128,7 @@ export const {
   setJobTypes,
   setPageIndex,
   setPageSize,
+  reset
 } = searchJobSlice.actions;
 
 // Selector to access the search state in the store

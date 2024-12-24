@@ -185,6 +185,7 @@ const FilterJobbySkill: React.FC = () => {
 
   const filteredJobs = jobSearch;
   const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
+  const searchState = useAppSelector((state) => state.searchJob.search);
   console.log("fe", dataa);
 
   const [detailsCompany, setDetailsCompany] = useState<Company | undefined>();
