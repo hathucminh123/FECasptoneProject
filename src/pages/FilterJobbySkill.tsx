@@ -187,6 +187,7 @@ const FilterJobbySkill: React.FC = () => {
   const dataa = useAppSelector((state) => state.companyJobs.jobPosts);
   const searchState = useAppSelector((state) => state.searchJob.search);
   console.log("fe", dataa);
+  console.log("searchState", searchState);
 
   const [detailsCompany, setDetailsCompany] = useState<Company | undefined>();
   const [selectedJob, setSelectedJob] = useState<null | JobPost>(null);
@@ -553,7 +554,7 @@ const FilterJobbySkill: React.FC = () => {
         console.log("Searching with:", searchDataArray[i]);
 
         const result: JobSearchResponse = await mutateAsync({
-          data: searchDataArray[i],
+          data: searchState,
         });
 
         console.log("Search results:", result.result.items);
@@ -622,6 +623,7 @@ const FilterJobbySkill: React.FC = () => {
     } else
       mutateAsync({
         data: {
+          // keyword: text,  
           pageIndex: currentPage,
           pageSize: itemsPerPage,
         },
@@ -633,6 +635,14 @@ const FilterJobbySkill: React.FC = () => {
     currentPage,
     mutateAsync,
   ]);
+
+  // const handleNavigateJob = async () => {
+  //   setCurrentPage(1);
+  //   await mutateAsync({
+  //     data: searchState, // Correct placement of the `data` key
+  //   });
+  // };
+  
   const handleNavigateJob = async () => {
     setCurrentPage(1);
     // Define the shape of job data returned by the mutation
@@ -709,7 +719,7 @@ const FilterJobbySkill: React.FC = () => {
         console.log("Searching with:", searchDataArray[i]);
 
         const result: JobSearchResponse = await mutateAsync({
-          data: searchDataArray[i],
+          data: searchState,
         });
 
         console.log("Search results:", result.result.items);

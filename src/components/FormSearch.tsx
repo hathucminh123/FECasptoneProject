@@ -210,6 +210,7 @@ export default function FormSearch({
     try {
       const result = await mutateAsync({
         data: { keyword: title, pageSize: 9, pageIndex: 1 },
+        // data: searchState.search,
       });
 
       if (result && result.result && result.result.items.length > 0) {

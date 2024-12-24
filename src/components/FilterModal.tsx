@@ -92,6 +92,7 @@ const datacities: string[] = [
 
 const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const [totalJobs, setTotalJobs] = useState<number>(0);
+  console.log("totalJobs", totalJobs);
   const searchState = useAppSelector((state) => state.searchJob);
   const dispatch = useAppDispatch() 
 
@@ -284,7 +285,7 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
 
   const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
 
-
+console.log("okchua",jobSearch);
 
   useEffect(() => {
     const newSearchDataArray: SearchData[] = [];
@@ -380,7 +381,7 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
       
       for (let i = 0; i < searchDataArray.length; i++) {
         const result = await mutateAsync({
-          data: searchDataArray[i],
+          data: searchState.search,
         });
 
         if (result && result.result && result.result.items.length > 0) {

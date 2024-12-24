@@ -8,11 +8,11 @@ interface SearchState {
     companyNames: string[] | null;
     jobTitles: string[] | null;
     skillSets: string[] | null;
-    minSalary: number | null;
+    minSalary: number | null ;
     maxSalary: number | null;
     locations: string[] | null;
     cities: string[] | null;
-    experience: number | null;
+    experience: number | null |undefined;
     jobTypes: string[] | null;
     pageIndex: number | null;
     pageSize: number | null;
@@ -32,7 +32,7 @@ const initialState: SearchState = {
     cities: JSON.parse(localStorage.getItem("selectedCities") || "[]"),
     experience: null,
     jobTypes:  JSON.parse(localStorage.getItem("selectedType") || "[]"),
-    pageIndex: null,
+    pageIndex: 1,
     pageSize: 9,
   },
 };

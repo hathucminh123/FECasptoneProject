@@ -1,21 +1,24 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
-interface SearchData {
-  jobTitle?: string;
-  companyName?: string;
-  skillSet?: string;
-  city?: string;
-  location?: string;
-  experience?: number;
-  jobType?: string;
-  pageSize?: number;
-  pageIndex?: number
-  keyword?: string | null;
-}
+interface SearchState {
 
+    keyword?: string | null;
+    companyNames?: string[] | null;
+    jobTitles?: string[] | null;
+    skillSets?: string[] | null;
+    minSalary?: number | null ;
+    maxSalary?: number | null;
+    locations?: string[] | null;
+    cities?: string[] | null;
+    experience?: number | null |undefined;
+    jobTypes?: string[] | null;
+    pageIndex?: number | null;
+    pageSize?: number | null;
+  
+}
 interface JobSearch {
   // data: { [key: string]: string|number|undefined };
-  data: SearchData
+  data: SearchState
 }
 
 export const GetJobSearch = async ({ data }: JobSearch) => {
