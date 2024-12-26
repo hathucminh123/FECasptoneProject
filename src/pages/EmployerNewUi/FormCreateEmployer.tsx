@@ -19,7 +19,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import DatePicker from "react-datepicker";
-import { PostJobType } from "../../Services/JobTypeService/PostJobType";
+// import { PostJobType } from "../../Services/JobTypeService/PostJobType";
 import { GetJobType } from "../../Services/JobTypeService/GetJobType";
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase/config";
@@ -28,6 +28,7 @@ import { PostJobPosts } from "../../Services/JobsPost/PostJobPosts";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import { GetBenefits } from "../../Services/Benefits/GetBenefits";
 import { PostBenefits } from "../../Services/Benefits/PostBenefits";
+import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 // type JobContextType = {
 //   selectJobId: number | null;
 //   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
@@ -75,8 +76,16 @@ interface JobType {
   description: string;
 }
 
+interface Services {
+  id: number;
+  name: string;
+  numberOfPost: number;
+  description: string;
+  price: number;
+}
 export default function FormCreateEmployer() {
   const navigate = useNavigate();
+
   const [jobDescription, setJobDescription] = useState<string>("");
   const [jobTitle, setJobTitle] = useState<string>("");
   const [benefits, setBenefits] = useState<string>("");
@@ -99,9 +108,15 @@ export default function FormCreateEmployer() {
   const [openType, setOpenType] = useState<boolean>(false);
   const [selectType, setSelectType] = useState<JobType | null>();
   const [selectTypeId, setSelectTypeId] = useState<number | null>();
-  const [openFormType, setOpenFormType] = useState<boolean>(false);
-  const [nameType, setNameType] = useState<string>("");
-  const [descriptionType, setDescriptionType] = useState<string>("");
+  // const [openFormType, setOpenFormType] = useState<boolean>(false);
+  // const [nameType, setNameType] = useState<string>("");
+  // const [descriptionType, setDescriptionType] = useState<string>("");
+
+  //service
+  const [openService, setOpenService] = useState<boolean>(false);
+  const [selectService, setSelectService] = useState<Services | null>();
+  const [selectServiceId, setSelectServiceId] = useState<number | null>();
+
   // skill
   const [open, setOpen] = useState(false);
   const [nameSkill, setNameSkill] = useState("");
@@ -141,6 +156,7 @@ export default function FormCreateEmployer() {
   const dropdownRefBenefit = useRef<HTMLDivElement>(null);
   //salary
   const [salary, setSalary] = useState<string>("");
+  const [minsalary, setMinSalary] = useState<string>("");
   //date
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -151,6 +167,15 @@ export default function FormCreateEmployer() {
     setIsDatePickerOpen(!isDatePickerOpen);
   };
 
+  //profile
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
   //imageurl
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -345,29 +370,29 @@ export default function FormCreateEmployer() {
   };
   // type
 
-  const { mutate: JobType, isPending: PedingJobtype } = useMutation({
-    mutationFn: PostJobType,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["JobType"] });
-      message.success("Job type created successfully.");
-      setNameType("");
-      setDescriptionType("");
-    },
-    onError: () => {
-      message.error("Failed to create job type.");
-    },
-  });
+  // const { mutate: JobType, isPending: PedingJobtype } = useMutation({
+  //   mutationFn: PostJobType,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["JobType"] });
+  //     message.success("Job type created successfully.");
+  //     setNameType("");
+  //     setDescriptionType("");
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to create job type.");
+  //   },
+  // });
 
-  const handleSubmitJobtype = (e: React.FormEvent) => {
-    e.preventDefault();
+  // const handleSubmitJobtype = (e: React.FormEvent) => {
+  //   e.preventDefault();
 
-    if (!nameType || !descriptionType) {
-      message.error("Please fill in both the name and description!");
-      return;
-    }
+  //   if (!nameType || !descriptionType) {
+  //     message.error("Please fill in both the name and description!");
+  //     return;
+  //   }
 
-    JobType({ data: { name: nameType, description: descriptionType } });
-  };
+  //   JobType({ data: { name: nameType, description: descriptionType } });
+  // };
 
   const { data: JobTypedata } = useQuery({
     queryKey: ["JobType"],
@@ -376,17 +401,39 @@ export default function FormCreateEmployer() {
   });
 
   const JobTypeDatas = JobTypedata?.JobTypes;
-  const handleOpenFormType = (e: React.FormEvent) => {
-    e.preventDefault();
-    setOpenFormType((prev) => !prev);
-  };
+  // const handleOpenFormType = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   setOpenFormType((prev) => !prev);
+  // };
   const handleOpenSelectType = () => {
     setOpenType((prev) => !prev);
   };
 
+  const handleOpenSelectService = () => {
+    setOpenService((prev) => !prev);
+  };
   const handleSelectType = (type: JobType) => {
-    setSelectType(type);
-    setSelectTypeId(type.id);
+    if (selectType?.id === type.id) {
+      // Nếu mục được chọn lại giống mục hiện tại, đặt lại giá trị thành null
+      setSelectType(null);
+      setSelectTypeId(null);
+    } else {
+      // Ngược lại, cập nhật mục mới
+      setSelectType(type);
+      setSelectTypeId(type.id);
+    }
+  };
+  
+  const handleSelectService = (type: Services) => {
+    if (selectService?.id === type.id) {
+      // Nếu mục được chọn lại giống mục hiện tại, đặt lại giá trị thành null
+      setSelectService(null);
+      setSelectServiceId(null);
+    } else {
+      // Ngược lại, cập nhật mục mới
+      setSelectService(type);
+      setSelectServiceId(type.id);
+    }
   };
   const adjustTimezone = (date: Date) => {
     const offsetInMs = date.getTimezoneOffset() * 60 * 1000;
@@ -424,6 +471,10 @@ export default function FormCreateEmployer() {
     },
   });
   const handleOnCreate = async () => {
+    if(!selectServiceId){
+      message.warning("Please select a service package to post the job."); 
+      return; 
+    }
     try {
       // Kiểm tra nếu `selectedFile` tồn tại trước khi tiếp tục
       if (!selectedFile) {
@@ -447,6 +498,14 @@ export default function FormCreateEmployer() {
 
       if (parseInt(salary) === 0) {
         message.warning("Salary must be more than 0");
+        return;
+      }
+      if (parseInt(minsalary) === 0) {
+        message.warning("Min Salary must be more than 0");
+        return;
+      }
+      if (parseInt(minsalary) >= parseInt(salary)) {
+        message.warning("Minimum salary must be less than the salary.");
         return;
       }
 
@@ -478,6 +537,8 @@ export default function FormCreateEmployer() {
         skillSetIds: skillId,
         benefitIds: benefitId,
         expiryDate: selectedDate ? adjustTimezone(selectedDate) : "",
+        serviceId: selectServiceId,
+        minsalary: parseInt(minsalary) ?? 0,
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
@@ -743,16 +804,99 @@ export default function FormCreateEmployer() {
                   {/* <input type="hidden" name="jobTypeId"></input> */}
                 </div>
               </label>
-              <div className={classes.main12}>
+              <label
+                htmlFor=""
+                className={classes.label}
+                style={{ marginTop: "50px" }}
+              >
+                <div className={classes.main9}>
+                  <div className={classes.main10}>
+                    Select service package
+                    <span className={classes.span}>*</span>
+                  </div>
+                </div>
+                <div
+                  className={classes.main13}
+                  onClick={handleOpenSelectService}
+                >
+                  <div className={classes.main14}>
+                    <div className={classes.main15}>
+                      {selectService ? (
+                        <div className={classes.select}>
+                          {selectService.name}
+                        </div>
+                      ) : (
+                        <div className={classes.main16}>Select Services</div>
+                      )}
+
+                      <div className={classes.main17}>
+                        <div className={classes.main18}>
+                          <input
+                            type="text"
+                            name=""
+                            id=""
+                            className={classes.input1}
+                          />
+                          <div className={classes.main19}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={classes.main20}>
+                      <span className={classes.span1}></span>
+                      <div className={classes.main21}>
+                        <ExpandMoreIcon />
+                      </div>
+                    </div>
+                  </div>
+
+                  {openService &&
+                  UserProfileData?.userAccountServices &&
+                  UserProfileData?.userAccountServices?.length > 0 && (
+                    UserProfileData?.userAccountServices.map((comp) => (
+                      <div
+                        className={`${classes.dropdown} ${
+                          comp.numberOfPostLeft === 0 ? classes.disabled : ""
+                        }`}
+                        key={comp.id}
+                      >
+                        <div
+                          className={classes.dropdownItem}
+                          onClick={() => {
+                            if (comp.numberOfPostLeft > 0)
+                              handleSelectService(comp.serviceResponse);
+                          }}
+                          style={{
+                            pointerEvents:
+                              comp.numberOfPostLeft === 0 ? "none" : "auto",
+                            opacity: comp.numberOfPostLeft === 0 ? 0.5 : 1,
+                          }}
+                        >
+                          <span className={classes.companyName}>
+                            {comp.serviceResponse.name}: {comp.numberOfPostLeft}{" "}
+                            post left
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  ) 
+                  // : (
+                  //   <div className={classes.dropdownItem}>
+                  //     No service package available
+                  //   </div>
+                  }
+                  {/* <input type="hidden" name="jobTypeId"></input> */}
+                </div>
+              </label>
+              {/* <div className={classes.main12}>
                 <button
                   className={classes.button1}
                   onClick={handleOpenFormType}
                 >
                   Add another Type
                 </button>
-              </div>
+              </div> */}
 
-              {openFormType && (
+              {/* {openFormType && (
                 <div
                   style={{
                     display: "flex",
@@ -824,7 +968,7 @@ export default function FormCreateEmployer() {
                     </button>
                   )}
                 </div>
-              )}
+              )} */}
               <label
                 htmlFor=""
                 className={classes.label}
@@ -1121,6 +1265,25 @@ export default function FormCreateEmployer() {
               >
                 Salary
               </Typography>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.main9}>
+                  <div className={classes.main10}>
+                    Min Salary
+                    <span className={classes.span}>*</span>
+                  </div>
+                </div>
+                <div className={classes.main26}>
+                  <input
+                    type="text"
+                    name="salary"
+                    placeholder="10,000"
+                    className={classes.input3}
+                    value={minsalary}
+                    onChange={(e) => setMinSalary(e.target.value)}
+                  />
+                  <div className={classes.main27}>$</div>
+                </div>
+              </label>
               <label htmlFor="" className={classes.label}>
                 <div className={classes.main9}>
                   <div className={classes.main10}>

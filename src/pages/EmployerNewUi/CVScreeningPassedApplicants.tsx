@@ -21,9 +21,11 @@ import GradientCircularProgress from "../../components/NewUiEmployer/GradientCir
 // import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
+import { CoverLetterModal } from "../../components/CoverModal";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
+import DescriptionIcon from '@mui/icons-material/Description';
 
 interface EducationDetail {
   id: number;
@@ -70,6 +72,7 @@ interface UserProfile {
   phoneNumber: string | null;
   educationDetails: EducationDetail[];
   experienceDetails: ExperienceDetail[];
+  coverLetter?: string;
   cvs: CVs[];
   skillSets: SkillSet[];
   benefits: Benefits[];
@@ -79,10 +82,12 @@ const CVScreeningPassedApplicants: React.FC = () => {
   const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
   const [isFetchingProfile, setIsFetchingProfile] = useState<boolean>(false);
+    const [openModalCoverLetter, setOpenModalCoverLetter] = useState<boolean>(false);
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [jobProfileCounts, setJobProfileCounts] = useState<
     Record<number, UserProfile>
   >({});
+  const [description, setDescription] = useState<string|undefined>("");
 
   const [openModal, setOpenModal] = useState<boolean>(false);
 
@@ -107,6 +112,11 @@ const CVScreeningPassedApplicants: React.FC = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
+  };
+  const handleOpenModalCoverLetter = (data:string|undefined) => {
+    setOpenModalCoverLetter(true);
+    setDescription(data);
+    
   };
 
   const {
@@ -213,6 +223,11 @@ const CVScreeningPassedApplicants: React.FC = () => {
         onClose={handleCloseModal}
         selectedIdJobPostActivity={selectedIdJobPostActivity}
       />
+           <CoverLetterModal
+              open={openModalCoverLetter}
+              onClose={() => setOpenModalCoverLetter(false)}
+              description={description}
+            />
 
       <AnimatePresence>
         {openModalScore && (
@@ -471,7 +486,21 @@ const CVScreeningPassedApplicants: React.FC = () => {
                         </div>
                       </div>
                     </div>
-
+                    <div className={classes.main33} style={{ top: 230  }}>
+                      <div>
+                        <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={()=>
+                            handleOpenModalCoverLetter(profile?.coverLetter)
+                          }
+                        >
+                          <span className={classes.spanicon}>
+                          <DescriptionIcon/>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                     <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button

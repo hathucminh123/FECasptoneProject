@@ -7,9 +7,9 @@ import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useLocation, NavLink, Outlet } from "react-router-dom";
 
-import classes from "./StepComppanyVerification.module.css";
+import classes from "./UpdateStepCompany.module.css";
 
-const StepComppanyVerification: React.FC = () => {
+const UpdateStepCompany: React.FC = () => {
   const [open, setOpen] = useState<boolean>(true);
   const [nextStep, setNextStep] = useState<boolean>(false);
   const [companyId, setCompanyId] = useState<string | null>(
@@ -79,7 +79,7 @@ const StepComppanyVerification: React.FC = () => {
                 {/* Phần chữ "it" */}
                 <Box
                   sx={{
-                    backgroundColor: "#3cbc8c",
+                    backgroundColor: "#ff0000",
                     color: "#fff",
                     fontWeight: 700,
                     fontSize: "22px",
@@ -100,7 +100,7 @@ const StepComppanyVerification: React.FC = () => {
                 <Typography
                   variant="h2"
                   sx={{
-                    color: "#000000",
+                    color: "#fff",
                     fontWeight: 700,
                     fontSize: "22px",
                     fontFamily: "Lexend, sans-serif",
@@ -114,10 +114,10 @@ const StepComppanyVerification: React.FC = () => {
               <div className={classes.main2}>
                 <NavLink
                   to={
-                    !nextStep && !isCompletePage ? "/onboarding/recruit" : "#"
+                    !nextStep && !isCompletePage ? "/onboarding/UpdateCompany" : "#"
                   }
                   className={({ isActive }) =>
-                    isActive && location.pathname === "/onboarding/recruit"
+                    isActive && location.pathname === "/onboarding/UpdateCompany"
                       ? classes.active
                       : undefined
                   }
@@ -168,4 +168,4 @@ const StepIcon = ({ isActive }: { isActive: boolean }) =>
   ) : (
     <RadioButtonUncheckedIcon fontSize="small" className={classes.svg} />
   );
-export default StepComppanyVerification;
+export default UpdateStepCompany;

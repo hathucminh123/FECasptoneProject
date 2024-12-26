@@ -14,18 +14,18 @@ interface props {
 const NoJob: React.FC<props> = ({ text, des, appear }) => {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const IsPremium = localStorage.getItem("IsPremium");
+  // const IsPremium = localStorage.getItem("IsPremium");
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);
   };
 
   const handlePostJobs = () => {
-    if (IsPremium === "True") {
+    // if (IsPremium === "True") {
       navigate("/EmployerJob/jobs/create");
-    } else {
-      setOpenModal(true);
-    }
+    // } else {
+    //   setOpenModal(true);
+    // }
   };
   return (
     <div className={classes.main}>

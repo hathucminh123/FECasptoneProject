@@ -28,6 +28,7 @@ interface JobPost {
   jobTitle: string;
   jobDescription: string;
   salary: number;
+  minsalary?: number;
   postingDate: string;
   expiryDate: string; 
   experienceRequired: number;
@@ -38,6 +39,7 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
+  isHot?: boolean;
   jobType: JobType; // jobType là đối tượng JobType
   jobLocationCities:string[];
   jobLocationAddressDetail:string[]

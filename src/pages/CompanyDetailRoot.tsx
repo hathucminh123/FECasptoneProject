@@ -266,7 +266,7 @@ const CompanyDetailRoot:React.FC =()=> {
                     textAlign: "start",
                     fontWeight: "bold",
                     mt: 3,
-                    color: "white",
+                    color: "#091615",
                     fontFamily: "Lexend, sans-serif",
                   }}
                 >
@@ -309,7 +309,7 @@ const CompanyDetailRoot:React.FC =()=> {
                     textAlign: "start",
                     fontWeight: "bold",
                     mt: 3,
-                    color: "white",
+                    color: "#091615",
                     fontFamily: "Lexend, sans-serif",
                   }}
                   
@@ -318,7 +318,7 @@ const CompanyDetailRoot:React.FC =()=> {
                 </Typography>
                 <div className={classes.locationjob}>
                   <div className={classes.location}>
-                    <LocationOnOutlinedIcon sx={{ color: "#fff" }} />
+                    <LocationOnOutlinedIcon sx={{   color: "#091615", }} />
                     {/* <Typography
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
@@ -332,7 +332,7 @@ const CompanyDetailRoot:React.FC =()=> {
                             sx={{
                               fontSize: "14px",
                               fontWeight: 400,
-                              color: "white",
+                              color: "#091615",
                               fontFamily: "Lexend, sans-serif",
                             }}
                           >
@@ -348,7 +348,7 @@ const CompanyDetailRoot:React.FC =()=> {
                               fontSize: "14px",
                               fontWeight: 400,
                               fontFamily: "Lexend, sans-serif",
-                              color: "white",
+                              color: "#091615",
                             }}
                           >
                             OTHER{" "}
@@ -363,7 +363,7 @@ const CompanyDetailRoot:React.FC =()=> {
                           sx={{
                             fontSize: "14px",
                             fontWeight: 400,
-                            color: "white",
+                            color: "#091615",
                             fontFamily: "Lexend, sans-serif",
                           }}
                         >
@@ -391,7 +391,7 @@ const CompanyDetailRoot:React.FC =()=> {
                     {/* </Typography> */}
                   </div>
                   <div className={classes.job}>
-                    <WorkOutlineOutlinedIcon sx={{ color: "#fff" }} />
+                    <WorkOutlineOutlinedIcon sx={{   color: "#091615",}} />
                     <Typography
                       variant="body2"
                       sx={{
@@ -399,7 +399,7 @@ const CompanyDetailRoot:React.FC =()=> {
                         fontWeight: 400,
                         whiteSpace: "nowrap",
                         textDecoration: "underline",
-                        color: "white",
+                        color: "#091615",
                         fontFamily: "Lexend, sans-serif",
                         
                       }}
@@ -414,7 +414,8 @@ const CompanyDetailRoot:React.FC =()=> {
                     text="Write review"
                     color="#ed1b2f"
                     variant="contained"
-                    onClick={handleNavigate}
+                     textHover="Unfollow"
+                    // onClick={handleNavigate}
                   /> */}
                   {haveFollow ? (
                     <RenderButton

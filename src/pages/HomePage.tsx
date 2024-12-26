@@ -310,7 +310,7 @@ const HomePage: React.FC = () => {
                 fontWeight: "bold",
                 mb: 3,
 
-                color: "#fff",
+                color: "#091615",
               }}
             >
               {JobPostsdata?.length} IT Jobs For {"Chất"} Developers
@@ -348,7 +348,7 @@ const HomePage: React.FC = () => {
                 gutterBottom
                 sx={{
                   fontWeight: "bold",
-                  color: "#fff",
+                  color: "#091615",
                 }}
               >
                 Skills for you:
@@ -460,12 +460,12 @@ const HomePage: React.FC = () => {
 </svg>
           </div> */}
           <div className={classes.main2}>
-            <img
+            {/* <img
               style={{ width: "150px" }}
               className={classes.img}
               src="https://dathangsi.vn/upload/products/2021/11/0856-cay-thong-noel-45cm.jpg"
               alt="logo"
-            />
+            /> */}
           </div>
         </div>
         <img

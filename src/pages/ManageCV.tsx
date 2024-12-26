@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./ManageCV.module.css";
 import { Typography, Button, Box } from "@mui/material";
 import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
@@ -19,11 +19,17 @@ import { storage } from "../firebase/config.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import DownloadIcon from "@mui/icons-material/Download";
-
+import { PutUser } from "../Services/UserJobPostActivity/PutUser.ts";
+import { GetUserProfile } from "../Services/UserProfileService/UserProfile.ts";
 
 export default function ManageCV() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [value, setValue] = useState("");
+  const stripHTML = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
+  const userId = localStorage.getItem("userId");
+  const [value, setValue] = useState<string|undefined>("");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -53,7 +59,7 @@ export default function ManageCV() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["CVs"] });
       message.success("CV uploaded successfully!");
-      setSelectedFile(null)
+      setSelectedFile(null);
     },
     onError: () => {
       message.error("Failed to upload CV.");
@@ -75,6 +81,58 @@ export default function ManageCV() {
       setDeletingId(null);
     },
   });
+  const { mutate:Coverletter } = useMutation({
+    mutationFn: PutUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["Profile"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["JobSeekerRole"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["UserProfile"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["JobSeekerRole"],
+        refetchType: "active",
+      });
+      message.success("User Cover letter updated successfully");
+      setIsCreatingNewChallenge(false);
+    },
+    onError: () => {
+      message.error("You need to update Your full Profile");
+    },
+  });
+
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
+
+  useEffect(() => {if(UserProfileData?.coverLetter !== null){
+    setValue(UserProfileData?.coverLetter);
+  }},[UserProfileData])
+
+  const handleConfirmModal = () => {
+    Coverletter({
+      data: {
+        firstName: UserProfileData?.firstName ,
+        lastName: UserProfileData?.lastName,
+        email: UserProfileData?.email || "",
+        phoneNumber: UserProfileData?.phoneNumber || null,
+        isLookingForJob:  UserProfileData?.isLookingForJob ,
+        coverLetter: value,
+      },
+    });
+  };
 
   const handleUploadClick = async () => {
     if (selectedFile) {
@@ -97,10 +155,10 @@ export default function ManageCV() {
 
   const dataCVS = data?.CVs || [];
 
-  const handleSaveClick = () => {
-    console.log("Cover letter value:", value);
-    // Implement cover letter save logic (API call)
-  };
+  // const handleSaveClick = () => {
+  //   console.log("Cover letter value:", value);
+  //   // Implement cover letter save logic (API call)
+  // };
 
   const handleDeleteCV = (id: number) => {
     setDeletingId(id);
@@ -436,11 +494,28 @@ export default function ManageCV() {
                   color="#ed1b2f"
                   variant="contained"
                   sxOverrides={{ minWidth: "180px" }}
-                  onClick={handleSaveClick}
+                  onClick={handleConfirmModal}
                 />
               </div>
             </div>
-          ) : (
+          ) : 
+          UserProfileData?.coverLetter  !== null ? (
+            <div className={classes.content}>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: 1.8,
+                  fontFamily: "Lexend, sans-serif",
+                }}
+              >
+                {stripHTML(UserProfileData?.coverLetter || "")}
+              </Typography>
+            </div>
+          ) :
+          
+          (
             <div className={classes.content}>
               <Typography
                 variant="body1"

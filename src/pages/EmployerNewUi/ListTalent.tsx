@@ -63,30 +63,30 @@ export default function ListTalent() {
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState<boolean>(false);
 
-  const isPremiumExpired = () => {
-    const expireDate = localStorage.getItem("PremiumExpireDate");
+  // const isPremiumExpired = () => {
+  //   const expireDate = localStorage.getItem("PremiumExpireDate");
 
-    if (!expireDate) {
-      return true;
-    }
+  //   if (!expireDate) {
+  //     return true;
+  //   }
 
-    const expirationDate = new Date(expireDate);
-    const currentDate = new Date();
+  //   const expirationDate = new Date(expireDate);
+  //   const currentDate = new Date();
 
-    return expirationDate < currentDate;
-  };
+  //   return expirationDate < currentDate;
+  // };
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);
   };
 
   const handleNavigate = () => {
-    if (isPremiumExpired()) {
-      setOpenModal(true);
-      return;
-    } else {
+    // if (isPremiumExpired()) {
+    //   setOpenModal(true);
+    //   return;
+    // } else {
       navigate("/EmployerJob/jobs/create");
-    }
+    // }
   };
 
   return (

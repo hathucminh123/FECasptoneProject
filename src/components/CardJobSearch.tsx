@@ -30,6 +30,8 @@ interface JobPost {
   salary: number;
   postingDate: string;
   expiryDate: string;
+  isHot?: boolean;
+  minsalary?: number;
   experienceRequired: number;
   qualificationRequired: string;
   benefits: string;
@@ -93,6 +95,18 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
   selectedJob,
   applied,
 }) => {
+  console.log("cố lenasd", data);
+  // const getJobLocation = (
+  //   jobLocation: JobLocation | string | null | undefined
+  // ): string => {
+  //   if (typeof jobLocation === "string") {
+  //     return jobLocation;
+  //   } else if (jobLocation === null) {
+  //     return "Location not specified";
+  //   } else {
+  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
+  //   }
+  // };
 
   return (
     <div
@@ -102,7 +116,8 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
       onClick={onclick}
     >
       <div className={classes.main}>
-        <div className={classes.tag}>Hot</div>
+        {data?.isHot && <div className={classes.tag}>Hot</div>}
+
         <div className={classes.content}>
           <div className={classes.content1}>
             <span
@@ -183,7 +198,7 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
                 }}
               >
                 {" "}
-                {data?.salary} USD
+                {`${data?.minsalary} - ${data?.salary} USD`}
               </span>
             </div>
           </div>

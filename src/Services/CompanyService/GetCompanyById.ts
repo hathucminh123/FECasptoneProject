@@ -41,7 +41,7 @@ interface Company {
   jobPosts: JobPost[];
   imageUrl:string;
   evidence?:string;
-  taxCode?:string | number;
+  taxCode?:string;
   companyStatus?:number
 }
 

@@ -14,7 +14,7 @@ import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { useQuery } from "@tanstack/react-query";
 import RedeemOutlinedIcon from "@mui/icons-material/RedeemOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
-
+import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 interface props {
   open: boolean;
 }
@@ -306,6 +306,38 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                       className={`${open ? classes.div10 : classes.div10Open} `}
                     >
                       <span className={classes.span5}>Business Stream</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
+                </NavLink>
+              </div>
+            </li>
+            <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to="Service"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <MonetizationOnOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>Services</span>
                     </div>
                     <div className={classes.div11}></div>
                   </>

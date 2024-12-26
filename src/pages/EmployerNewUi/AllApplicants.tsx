@@ -21,6 +21,9 @@ import GradientCircularProgress from "../../components/NewUiEmployer/GradientCir
 // import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
+import DescriptionIcon from '@mui/icons-material/Description';
+import { CoverLetterModal } from "../../components/CoverModal";
+
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -68,6 +71,7 @@ interface UserProfile {
   firstName: string;
   lastName: string;
   email: string;
+  coverLetter?: string;
   phoneNumber: string | null;
   educationDetails: EducationDetail[];
   experienceDetails: ExperienceDetail[];
@@ -86,10 +90,11 @@ const AllApplicants: React.FC = () => {
   >({});
 
   const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModalCoverLetter, setOpenModalCoverLetter] = useState<boolean>(false);
 
   const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
   const [idApplicants, setIdApplicants] = useState<number | null>(null);
-
+const [description, setDescription] = useState<string|undefined>("");
   const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
     number | null
   >(null);
@@ -99,6 +104,11 @@ const AllApplicants: React.FC = () => {
   const handleOpenModal = (id: number) => {
     setOpenModal(true);
     setSelectedIdJobPostActivity(id);
+  };
+  const handleOpenModalCoverLetter = (data:string|undefined) => {
+    setOpenModalCoverLetter(true);
+    setDescription(data);
+    
   };
 
   const handleCloseModal = () => {
@@ -211,6 +221,11 @@ const AllApplicants: React.FC = () => {
         open={openModal}
         onClose={handleCloseModal}
         selectedIdJobPostActivity={selectedIdJobPostActivity}
+      />
+      <CoverLetterModal
+        open={openModalCoverLetter}
+        onClose={() => setOpenModalCoverLetter(false)}
+        description={description}
       />
 
       <AnimatePresence>
@@ -469,7 +484,21 @@ const AllApplicants: React.FC = () => {
                         </div>
                       </div>
                     </div>
-
+                    <div className={classes.main33} style={{ top: 230  }}>
+                      <div>
+                        <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={()=>
+                            handleOpenModalCoverLetter(profile?.coverLetter)
+                          }
+                        >
+                          <span className={classes.spanicon}>
+                          <DescriptionIcon/>
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                     <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button

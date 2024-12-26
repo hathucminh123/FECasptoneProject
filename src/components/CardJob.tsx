@@ -40,6 +40,8 @@ interface JobPost {
   benefits: string;
   imageURL: string;
   isActive: boolean;
+  isHot?: boolean;
+  minsalary?: number;
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
@@ -82,7 +84,7 @@ interface MyComponentProps {
   setShowAlert?: Dispatch<SetStateAction<boolean>>;
   setShowAlertt?: Dispatch<SetStateAction<boolean>>;
   setUndoData?: Dispatch<SetStateAction<JobPost | null>>;
-  classOn?:boolean
+  classOn?: boolean;
 }
 
 export default function CardJob({
@@ -148,9 +150,9 @@ export default function CardJob({
   return (
     // <Link to={`jobs/detail/${data?.id}`} className={classes.link2}>
     <div
-      className={classOn ?classes.card_main:undefined}
+      className={classOn ? classes.card_main : undefined}
       onClick={onclick}
-      style={{ cursor: "pointer" }} 
+      style={{ cursor: "pointer" }}
     >
       <div
         className={`${className ? className : classes.card_item}`}
@@ -161,15 +163,19 @@ export default function CardJob({
             {/* Posting Date */}
             <div className={classes.time}>
               <span
-               style={{ fontSize: "14px",
-                fontWeight: 400,
-                color: "#a6a6a6 !important",}}
+                style={{
+                  fontSize: "14px",
+                  fontWeight: 400,
+                  color: "#a6a6a6 !important",
+                }}
               >
                 From:{" "}
                 {moment(data?.postingDate.slice(0, 10)).format("DD-MM-YYYY")} -
                 To: {moment(data?.expiryDate.slice(0, 10)).format("DD-MM-YYYY")}
               </span>
             </div>
+
+            {data?.isHot && <div className={classes.status}>Hot</div>}
 
             {/* Job Title */}
             <Link to={`/jobs/detail/${data?.id}`} className={classes.link}>
@@ -186,7 +192,7 @@ export default function CardJob({
                   textOverflow: "ellipsis",
                   width: "100%",
                   boxSizing: "border-box",
-                  fontFamily: "Lexend, sans-serif"
+                  fontFamily: "Lexend, sans-serif",
                 }}
               >
                 {data?.jobTitle}
@@ -208,7 +214,6 @@ export default function CardJob({
               <Link
                 to={`/company/detail/${company?.id}`}
                 className={classes.link3}
-
               >
                 <Typography
                   variant="h6"
@@ -217,7 +222,7 @@ export default function CardJob({
                     fontWeight: "bold",
                     fontSize: "14px",
                     color: "#414042 !important",
-                    fontFamily: "Lexend, sans-serif"
+                    fontFamily: "Lexend, sans-serif",
                   }}
                 >
                   {company?.companyName}
@@ -240,7 +245,7 @@ export default function CardJob({
                   color: "#0ab305 !important",
                 }}
               >
-                {data?.salary} USD
+                {`${data?.minsalary} - ${data?.salary} USD`}
               </Typography>
             </div>
 
@@ -249,9 +254,7 @@ export default function CardJob({
             {/* Job Location */}
             <div className={classes.location}>
               <LocationOnOutlinedIcon />
-              <span
-               className={classes.span}
-              >
+              <span className={classes.span}>
                 {cityColumn.length && cityColumn.length > 0 ? (
                   <span
                     style={{
@@ -275,7 +278,6 @@ export default function CardJob({
                     }}
                   >
                     {company?.address} {" in "} {company?.city}
-              
                   </span>
                 )}
               </span>
@@ -300,7 +302,7 @@ export default function CardJob({
 
             {/* Skills */}
             <div className={classes.job}>
-              {data?.skillSets.slice(0,5).map((tag, index) => (
+              {data?.skillSets.slice(0, 5).map((tag, index) => (
                 <div key={index} className={classes.button}>
                   {tag}
                 </div>
@@ -308,18 +310,18 @@ export default function CardJob({
             </div>
             <div className={classes.separator}></div>
             <div className={classes.benefit}>
-            <ul className={classes.ul}>
-              {data?.benefitObjects && data.benefitObjects.length > 0 ? (
-                data.benefitObjects.map((benefit) => (
-                  <li className={classes.li} key={benefit.id}>
-                    {benefit.name}
-                  </li>
-                ))
-              ) : (
-                <li className={classes.li}>no Benefits Yet</li>
-              )}
-            </ul>
-          </div>
+              <ul className={classes.ul}>
+                {data?.benefitObjects && data.benefitObjects.length > 0 ? (
+                  data.benefitObjects.map((benefit) => (
+                    <li className={classes.li} key={benefit.id}>
+                      {benefit.name}
+                    </li>
+                  ))
+                ) : (
+                  <li className={classes.li}>no Benefits Yet</li>
+                )}
+              </ul>
+            </div>
           </div>
 
           {/* Action Button (Apply Now and Favorite) */}
@@ -360,7 +362,7 @@ export default function CardJob({
                     <FavoriteIcon
                       fontSize="large"
                       sx={{
-                        color: "#3cbc8c !important",
+                        color: "#ed1b2f !important",
                         mr: 2,
                       }}
                     />
@@ -369,7 +371,7 @@ export default function CardJob({
                   <FavoriteBorderOutlinedIcon
                     fontSize="large"
                     sx={{
-                      color: "#3cbc8c !important",
+                      color: "#ed1b2f !important",
                       mr: 2,
                     }}
                   />

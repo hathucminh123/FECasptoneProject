@@ -55,12 +55,12 @@ const ProtectedRouteCompanyWait = ({ children }: { children: ReactNode }) => {
     }
   }, [companyId, location]);
 
-  return jobincompanyData.length > 0 && selectJobId ? (
+  return jobincompanyData.length > 0 && selectJobId && isPending === 2 ? (
     <Navigate to={`/EmployerJob/listjobs/OverView/${selectJobId}`} replace />
   ) : isPending === 2 ? (
     <Navigate to={`/EmployerJob`} replace />
   ) : isPending === 1 ? (
-    <Navigate to={`/onboarding/recruit`} replace />
+    <Navigate to={`/onboarding/UpdateCompany`} replace />
   ) : (
     children
   );

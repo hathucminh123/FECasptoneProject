@@ -25,6 +25,13 @@ interface ExperienceDetail {
   responsibilities: string;
   achievements: string;
 }
+interface Services {
+  id: number;
+  name: string;
+  numberOfPost: number;
+  description: string;
+  price: number;
+}
 interface SkillSet {
   id: number;
   name: string;
@@ -33,6 +40,11 @@ interface SkillSet {
   proficiencyLevel?:string;
 }
 
+interface data{ 
+  id:number;
+  numberOfPostLeft:number;
+  serviceResponse:Services;
+}
 interface CVs {
   id: number;
   url: string;
@@ -46,11 +58,13 @@ interface UserProfile {
   lastName: string;
   email: string;
   phoneNumber: string | null;
+  coverLetter?: string;
   educationDetails: EducationDetail[];
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
   benefits:Benefits[]
+  userAccountServices?:data[]
 }
 
 interface FetchError extends Error {

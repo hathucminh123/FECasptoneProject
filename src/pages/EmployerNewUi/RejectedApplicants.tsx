@@ -19,10 +19,11 @@ import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
 import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
+import { CoverLetterModal } from "../../components/CoverModal";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
-
+import DescriptionIcon from "@mui/icons-material/Description";
 interface EducationDetail {
   id: number;
   name: string;
@@ -65,6 +66,7 @@ interface UserProfile {
   firstName: string;
   lastName: string;
   email: string;
+  coverLetter?: string;
   phoneNumber: string | null;
   educationDetails: EducationDetail[];
   experienceDetails: ExperienceDetail[];
@@ -93,12 +95,19 @@ const RejectedApplicants: React.FC = () => {
   const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
     number | null
   >(null);
+  const [openModalCoverLetter, setOpenModalCoverLetter] =
+    useState<boolean>(false);
+  const [description, setDescription] = useState<string | undefined>("");
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
 
   const handleOpenModal = (id: number) => {
     setOpenModal(true);
     setSelectedIdJobPostActivity(id);
+  };
+  const handleOpenModalCoverLetter = (data: string | undefined) => {
+    setOpenModalCoverLetter(true);
+    setDescription(data);
   };
 
   const handleCloseModal = () => {
@@ -206,6 +215,11 @@ const RejectedApplicants: React.FC = () => {
         open={openModal}
         onClose={handleCloseModal}
         selectedIdJobPostActivity={selectedIdJobPostActivity}
+      />
+      <CoverLetterModal
+        open={openModalCoverLetter}
+        onClose={() => setOpenModalCoverLetter(false)}
+        description={description}
       />
 
       <AnimatePresence>
@@ -462,6 +476,21 @@ const RejectedApplicants: React.FC = () => {
                             <span>no Benefits Yet</span>
                           )}
                         </div>
+                      </div>
+                    </div>
+                    <div className={classes.main33} style={{ top: 230 }}>
+                      <div>
+                        <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={() =>
+                            handleOpenModalCoverLetter(profile?.coverLetter)
+                          }
+                        >
+                          <span className={classes.spanicon}>
+                            <DescriptionIcon />
+                          </span>
+                        </button>
                       </div>
                     </div>
                     <div className={classes.main33} style={{ top: 175 }}>

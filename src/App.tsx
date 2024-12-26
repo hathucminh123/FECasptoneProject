@@ -125,6 +125,10 @@ import JobsCompany from "./pages/JobsCompany";
 import WaitingCompany from "./pages/EmployerNewUi/WaitingCompany";
 import ProtectedRouteCompanyWait from "./components/NewUiEmployer/ProtectedRouteCompanyWait";
 import BusinessStreamPage from "./pages/Admin/BusinessStreamPage";
+import UpdateStepCompany from "./pages/Employer/UpdateStepCompany";
+import VerifiCompanyUpdate from "./pages/Employer/verifiCompanyUpdate";
+import CompleteUpdate from "./pages/Employer/CompleteUpdate";
+import ServicePage from "./pages/Admin/ServicePage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -383,6 +387,27 @@ const router = createBrowserRouter([
       {
         path: "Complete",
         element: <Complete />,
+      },
+    ],
+  },
+  {
+    path: "onboarding/UpdateCompany",
+    element: <UpdateStepCompany />,
+    errorElement: <ErrorPage />,
+    loader: tokenLoader,
+    children: [
+      {
+        index: true,
+        element: <VerifiCompanyUpdate />,
+      },
+
+      {
+        path: "inviteYourTeam",
+        element: <Invite />,
+      },
+      {
+        path: "Complete",
+        element: <CompleteUpdate />,
       },
     ],
   },
@@ -813,6 +838,10 @@ const router = createBrowserRouter([
       {
         path: "BusinessStream",
         element: <BusinessStreamPage />,
+      },
+      {
+        path: "Service",
+        element: <ServicePage />,
       },
       {
         path: "skillSet",

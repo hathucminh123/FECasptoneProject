@@ -37,11 +37,14 @@ interface JobPost {
   expiryDate: string; 
   experienceRequired: number;
   qualificationRequired: string;
+  minsalary?: number;
+  isHot?: boolean;
   benefits: string;
   imageURL: string;
   isActive: boolean;
   companyId: number;
   companyName: string;
+
   websiteCompanyURL: string;
   jobType: JobType; // jobType là đối tượng JobType
   jobLocationCities:string[];

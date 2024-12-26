@@ -611,6 +611,8 @@
 .companyName {
   font-weight: bold;
   margin-right: 8px;
+  display: flex;
+  justify-content: space-between;
 }
 
 .input2 {
@@ -1025,4 +1027,9 @@
     display: inline-flex;
     text-decoration: none;
     box-sizing: border-box;
+  }
+  .disabled {
+    color: gray;
+    cursor: not-allowed;
+    opacity: 0.5;
   }

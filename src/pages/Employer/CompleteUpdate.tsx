@@ -19,7 +19,7 @@ const Complete:React.FC =()=> {
 
   const handlePostJobs = () => {
     // if (IsPremium === "True") {
-      navigate("/EmployerJob");
+      navigate("/EmployerJob/Waiting");
     // } else {
     //   setOpenModal(true);
     // }

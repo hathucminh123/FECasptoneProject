@@ -17,6 +17,8 @@ import PaymentModal from "./PaymentModal";
 import { AnimatePresence } from "framer-motion";
 import ModalEmail from "./ModalEmail";
 import Box from "@mui/material/Box";
+
+import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
 export interface Notification {
   id: number;
   title: string;
@@ -81,9 +83,23 @@ export default function HeaderEmployerSystem({
   }, [companyId, refetchCompanies]);
 
   const Companiesdata = Company?.Companies;
+
+   const { data: CompanyDa } = useQuery({
+      queryKey: ["Company-details", companyId],
+      queryFn: ({ signal }) =>
+        fetchCompaniesById({ id: Number(companyId), signal }),
+      enabled: !!companyId,
+    });
+  
+    // Dữ liệu công ty (nếu có)
+    const companyDataa = CompanyDa?.Companies;
+  
+    const isPending = companyDataa?.companyStatus;
+
   const CompanyEmployer = Companiesdata?.find(
     (company) => company.id === Number(companyId)
   );
+  console.log("CompanyEmployer",CompanyEmployer)
 
   const [open, setOpen] = useState<boolean>(false);
   const { data: UserProfile } = useQuery({
@@ -212,37 +228,37 @@ export default function HeaderEmployerSystem({
             >
               {/* Phần chữ "it" */}
               <Box
-                sx={{
-                  backgroundColor: "#ff0000",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontSize: "22px",
-                  fontFamily: "Lexend, sans-serif",
-                  lineHeight: "1",
-                  width: "32px",
-                  height: "32px",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginRight: "3px",
-                }}
-              >
-                A
-              </Box>
+                  sx={{
+                    backgroundColor: "#3cbc8c",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1",
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: "3px",
+                  }}
+                >
+                  A
+                </Box>
 
-              <Typography
-                variant="h2"
-                sx={{
-                  color: "#000000",
-                  fontWeight: 700,
-                  fontSize: "22px",
-                  fontFamily: "Lexend, sans-serif",
-                  lineHeight: "1.5",
-                }}
-              >
-                mazingJob
-              </Typography>
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#000000",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  mazingJob
+                </Typography>
             </Box>
           </NavLink>
         </div>
@@ -335,7 +351,7 @@ export default function HeaderEmployerSystem({
         </nav>
         {/* {IsPremium !== "True" && ( */}
 
-        {CompanyEmployer && (
+        {isPending ===2  && (
           <div className={classes.discover} onClick={() => setOpenModal(true)}>
             <span>Payment</span>
           </div>

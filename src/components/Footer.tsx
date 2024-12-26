@@ -31,29 +31,29 @@ const Footer: React.FC<props> = ({ onClick, scroll }) => {
                 >
                   {/* Phần chữ "it" */}
                   <Box
-                    sx={{
-                      backgroundColor: "#ff0000",
-                      color: "#fff",
-                      fontWeight: 700,
-                      fontSize: "22px",
-                      fontFamily: "Lexend, sans-serif",
-                      lineHeight: "1",
-                      width: "32px",
-                      height: "32px",
-                      borderRadius: "50%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginRight: "3px",
-                    }}
-                  >
-                    A
-                  </Box>
+                  sx={{
+                    backgroundColor: "#3cbc8c",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1",
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: "3px",
+                  }}
+                >
+                  A
+                </Box>
 
                   <Typography
                     variant="h2"
                     sx={{
-                      color: "#fff",
+                      color: "#000000",
                       fontWeight: 700,
                       fontSize: "22px",
                       fontFamily: "Lexend, sans-serif",

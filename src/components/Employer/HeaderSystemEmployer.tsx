@@ -237,37 +237,35 @@ export default function HeaderSystemEmployer({ setOpen, open, token,notification
                 {/* Phần chữ "it" */}
                 <Box
                   sx={{
-                    backgroundColor: "#ff0000",
+                    backgroundColor: "#3cbc8c",
                     color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
-                    fontFamily: "Lexend, sans-serif", 
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
                     lineHeight: "1",
-                    width: "32px", 
-                    height: "32px", 
-                    borderRadius: "50%", 
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
                     display: "flex",
-                    justifyContent: "center", 
+                    justifyContent: "center",
                     alignItems: "center",
-                    marginRight: "3px", 
+                    marginRight: "3px",
                   }}
                 >
                   A
                 </Box>
 
-             
                 <Typography
                   variant="h2"
                   sx={{
-                    color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
+                    color: "#000000",
+                    fontWeight: 700,
+                    fontSize: "22px",
                     fontFamily: "Lexend, sans-serif",
-                    lineHeight: "1.5", 
-
+                    lineHeight: "1.5",
                   }}
                 >
-                mazingJob
+                  mazingJob
                 </Typography>
               </Box>
           {/* <img src={Image} alt="logo" className={classes.img} /> */}

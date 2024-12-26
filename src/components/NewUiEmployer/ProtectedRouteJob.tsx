@@ -67,7 +67,7 @@ const ProtectedRouteJob = ({ children }: { children: ReactNode }) => {
   ) : isPending === 0 ? (
     <Navigate to={`/EmployerJob/Waiting`} replace />
   ) : isPending === 1 ? (
-    <Navigate to={`/onboarding/recruit`} replace />
+    <Navigate to={`/onboarding/UpdateCompany`} replace />
   ) : (
     children
   );

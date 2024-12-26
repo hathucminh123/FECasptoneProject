@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./Apply.module.css";
 import ArrowBackIosNewOutlinedIcon from "@mui/icons-material/ArrowBackIosNewOutlined";
 import Typography from "@mui/material/Typography";
@@ -28,10 +28,14 @@ import { GetUserProfile } from "../Services/UserProfileService/UserProfile.ts";
 import { PostCVsAI } from "../Services/CVService/PostCVAI.ts";
 
 export default function Apply() {
-  const [coverLetter, setCoverLetter] = useState("");
+  const [coverLetter, setCoverLetter] = useState<string | undefined>("");
   const userId = localStorage.getItem("userId");
   const { JobId } = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const stripHTML = (html: string) => {
+    const doc = new DOMParser().parseFromString(html, "text/html");
+    return doc.body.textContent || "";
+  };
 
   const { data: UserProfile } = useQuery({
     queryKey: ["UserProfile"],
@@ -43,6 +47,12 @@ export default function Apply() {
   const UserProfileData = UserProfile?.UserProfiles;
 
   console.log("userId", UserProfileData);
+
+  useEffect(() => {
+    if (UserProfileData?.coverLetter !== null) {
+      setCoverLetter(UserProfileData?.coverLetter);
+    }
+  }, [UserProfileData]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0] || null;
@@ -302,48 +312,46 @@ export default function Apply() {
                 >
                   Amazing Job
                 </Typography> */}
-                 <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center", // Căn giữa theo chiều dọc
-                }}
-              >
-                {/* Phần chữ "it" */}
                 <Box
                   sx={{
-                    backgroundColor: "#ff0000",
-                    color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
-                    fontFamily: "Lexend, sans-serif", 
-                    lineHeight: "1",
-                    width: "32px", 
-                    height: "32px", 
-                    borderRadius: "50%", 
                     display: "flex",
-                    justifyContent: "center", 
-                    alignItems: "center",
-                    marginRight: "3px", 
+                    alignItems: "center", // Căn giữa theo chiều dọc
                   }}
                 >
-                  A
+                  {/* Phần chữ "it" */}
+                  <Box
+                    sx={{
+                      backgroundColor: "#3cbc8c",
+                      color: "#fff",
+                      fontWeight: 700,
+                      fontSize: "22px",
+                      fontFamily: "Lexend, sans-serif",
+                      lineHeight: "1",
+                      width: "32px",
+                      height: "32px",
+                      borderRadius: "50%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: "3px",
+                    }}
+                  >
+                    A
+                  </Box>
+
+                  <Typography
+                    variant="h2"
+                    sx={{
+                      color: "#000000",
+                      fontWeight: 700,
+                      fontSize: "22px",
+                      fontFamily: "Lexend, sans-serif",
+                      lineHeight: "1.5",
+                    }}
+                  >
+                    mazingJob
+                  </Typography>
                 </Box>
-
-             
-                <Typography
-                  variant="h2"
-                  sx={{
-                    color: "#fff",
-                    fontWeight: 700, 
-                    fontSize: "22px", 
-                    fontFamily: "Lexend, sans-serif",
-                    lineHeight: "1.5", 
-
-                  }}
-                >
-                mazingJob
-                </Typography>
-              </Box>
                 {/* <img
                   src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShDXOd1EUVLnkgF9P9P9ZAGyBSv6f_lmq6CA&s"
                   alt="logo"
@@ -636,11 +644,12 @@ export default function Apply() {
                     placeholder="Detail and specific examples will make your application stronger"
                     multiline
                     rows={6}
-                    value={coverLetter}
+                    value={stripHTML(coverLetter || "")}
                     onChange={(e) => setCoverLetter(e.target.value)}
+                    disabled={true}
                     sx={{ width: "100%", height: "100%" }}
                   />
-                  <Typography
+                  {/* <Typography
                     variant="h4"
                     sx={{
                       marginBottom: "12px",
@@ -653,7 +662,7 @@ export default function Apply() {
                     }}
                   >
                     {500 - coverLetter.length} of 500 characters remaining
-                  </Typography>
+                  </Typography> */}
                 </div>
                 {isPending ? (
                   <div>

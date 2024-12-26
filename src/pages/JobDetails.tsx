@@ -567,8 +567,10 @@ const JobDetails: React.FC = () => {
                       color: "#0ab305 !important",
                       fontFamily: "Lexend, sans-serif",
                     }}
+
                   >
-                    {job?.salary} USD
+                     {`${job?.minsalary} - ${job?.salary} USD`}
+                    {/* {job?.salary} USD */}
                   </Typography>
                 </div>
                 {hasAppliedJobActivity ? (
@@ -658,9 +660,12 @@ const JobDetails: React.FC = () => {
                       sx={{
                         mt: 3,
                         width: "90%",
-                        backgroundColor: "#ed1b2f",
+                        // backgroundColor: "#ed1b2f",
+                        // borderColor: "#ed1b2f",
+                        // color: "#3cbc8c",
+                        backgroundColor: "#3cbc8c",
                         borderColor: "#ed1b2f",
-                        color: "#3cbc8c",
+                        color: "black",
                         borderRadius: "4px",
                         fontSize: "16px",
                         fontWeight: "bold",
@@ -673,7 +678,7 @@ const JobDetails: React.FC = () => {
                         },
                       }}
                     >
-                      Apply now 123
+                      Apply now 
                     </Button>
                     {haveFavorite ? (
                       <div
@@ -683,7 +688,8 @@ const JobDetails: React.FC = () => {
                         <FavoriteIcon
                           fontSize="large"
                           sx={{
-                            color: "#ed1b2f !important",
+                            // color: "#ed1b2f !important",
+                            color: "#3cbc8c !important",
                             marginTop: "20px",
                             mr: 2,
                           }}
@@ -697,7 +703,8 @@ const JobDetails: React.FC = () => {
                         <FavoriteBorderOutlinedIcon
                           fontSize="large"
                           sx={{
-                            color: "#ed1b2f !important",
+                            // color: "#ed1b2f !important",
+                            color: "#3cbc8c !important",
                             fontFamily: "Lexend, sans-serif",
                             marginTop: "20px",
                             mr: 2,

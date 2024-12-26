@@ -4,6 +4,7 @@ import { QueryClient } from "@tanstack/react-query";
 
 // const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
 const baseURL = "https://finalcapstonebe-nd0l.onrender.com/api";
+// const baseURL = "https://a530-2405-4802-8131-a220-d8df-aaa0-a27d-5b98.ngrok-free.app/api";
 // const baseURL = "https://12e3-116-109-208-219.ngrok-free.app/api";
 // const baseURL ="https://6e7c-14-187-237-206.ngrok-free.app/api"
 // const baseURLL = "https://finalcapstonebe-aib5.onrender.com";
@@ -35,7 +36,8 @@ export const apiLinks = {
     GetCompaniesbyId: `${baseURL}/Company`,
     GetSearch: `${baseURL}/Company/company-name`,
     getSeacrhByname: `${baseURLL}`,
-    PUTCOMPANYSTATUS :`${baseURL}/Company/company-status`,
+    PUTCOMPANYSTATUS: `${baseURL}/Company/company-status`,
+    PUTCompanyRejected: `${baseURL}/Company/Reject`,
   },
   JobPosts: {
     POST: `${baseURL}/JobPosts`,
@@ -157,9 +159,17 @@ export const apiLinks = {
   SearchQuery: {
     POST: `${baseURL}/JobPosts/SearchJobsQuery`,
   },
-  TaxCode :{
-    GET: `https://api.vietqr.io/v2/business`
-  }
+  TaxCode: {
+    GET: `https://api.vietqr.io/v2/business`,
+  },
+
+  Service: {
+    GET: `${baseURL}/Service`,
+    POST: `${baseURL}/Service`,
+    PUT: `${baseURL}/Service`,
+    DELETE: `${baseURL}/Service`,
+    GETServiceById: `${baseURL}/Service`,
+  },
 };
 
 export const signalR = {

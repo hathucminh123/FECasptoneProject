@@ -3,9 +3,11 @@ import { createPortal } from "react-dom";
 import classes from "./PaymentModal.module.css";
 import { motion } from "framer-motion";
 import { Typography } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Payment } from "../../Services/Payment/Payment";
 import { message } from "antd";
+import { GetServicePayment } from "../../Services/ServicePayment/GetServicePayment";
+
 // import { redirect, useNavigate } from "react-router-dom";
 
 interface props {
@@ -17,6 +19,18 @@ interface props {
 export default function PaymentModal({ onClose }: props) {
   const modalRoot = document.getElementById("modalPayment");
   // const Email = localStorage.getItem("Email");
+
+  const {
+    data: SkillSetData,
+    // isLoading,
+    // isError,
+  } = useQuery({
+    queryKey: ["ServicePayment"],
+    queryFn: ({ signal }) => GetServicePayment({ signal }),
+    staleTime: 1000,
+  });
+
+  const skillSets = SkillSetData?.Services || [];
 
   const { mutate } = useMutation({
     mutationFn: Payment,
@@ -37,42 +51,40 @@ export default function PaymentModal({ onClose }: props) {
       message.error("Failed to Payment.");
     },
   });
-  const { mutate: Year } = useMutation({
-    mutationFn: Payment,
-    onSuccess: (data) => {
-     
+  // const { mutate: Year } = useMutation({
+  //   mutationFn: Payment,
+  //   onSuccess: (data) => {
+  //     // message.success(`Payment successfully!`);
 
-      // message.success(`Payment successfully!`);
+  //     // Mở đường link data.result trong tab mới
+  //     // window.open(data.result, '_blank');
 
-      // Mở đường link data.result trong tab mới
-      // window.open(data.result, '_blank');
+  //     // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
+  //     window.location.href = data.result;
 
-      // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
-      window.location.href = data.result;
+  //     // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Payment.");
+  //   },
+  // });
 
-      // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
-    },
-    onError: () => {
-      message.error("Failed to Payment.");
-    },
-  });
-
-  const handlePayment = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePayment = (e: React.MouseEvent<HTMLButtonElement>,id:number) => {
     e.preventDefault();
     mutate({
       data: {
-        orderType:1
+        orderType: id,
       },
     });
   };
-  const handlePaymentYear = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    Year({
-      data: {
-        orderType:2
-      },
-    });
-  };
+  // const handlePaymentYear = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   Year({
+  //     data: {
+  //       orderType: 2,
+  //     },
+  //   });
+  // };
 
   if (!modalRoot) {
     return null;
@@ -130,7 +142,124 @@ export default function PaymentModal({ onClose }: props) {
                   </div>
                 </div>
                 <div className={classes.main6}>
-                  <div className={classes.main7}>
+                  {skillSets.map((item) => (
+                    <div key={item.id} className={classes.main7}>
+                      <div className={classes.main8}>
+                        <div className={classes.main9}>
+                          <Typography
+                            variant="h4"
+                            sx={{
+                              fontWeight: 700,
+                              fontSize: "100%",
+                              margin: 0,
+                              padding: 0,
+
+                              boxSizing: "border-box",
+                              borderWidth: 0,
+                              borderStyle: "solid",
+                            }}
+                          >
+                            {" "}
+                            {item.name}
+                          </Typography>
+                          <div className={classes.main10}>
+                            Get Started posting Job
+                          </div>
+                          <Typography
+                            variant="h3"
+                            sx={{
+                              fontSize: "14px",
+                              lineHeight: "20px",
+                              marginBottom: "24px",
+                              fontWeight: 400,
+                              boxSizing: "border-box",
+                              borderWidth: 0,
+                              borderStyle: "solid",
+                            }}
+                          >
+                            <span
+                              style={{
+                                fontWeight: 700,
+                                fontSize: "24px",
+                                lineHeight: "30px",
+                                boxSizing: "border-box",
+                                borderWidth: 0,
+                                borderStyle: "solid",
+                              }}
+                            >
+                             {item.price}/VNĐ
+                            </span>
+                          </Typography>
+                          <p className={classes.p1}>Includes:</p>
+                          <ul className={classes.ul}>
+                            <li className={classes.li}>
+                              <svg viewBox="0 0 24 24" className={classes.svg1}>
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  fill="currentColor"
+                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                ></path>
+                              </svg>
+                              Post {item.numberOfPost} Jobs
+                            </li>
+                            <li className={classes.li}>
+                              <svg viewBox="0 0 24 24" className={classes.svg1}>
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  fill="currentColor"
+                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                ></path>
+                              </svg>
+                              Review Applicants
+                            </li>
+                            <li className={classes.li}>
+                              <svg viewBox="0 0 24 24" className={classes.svg1}>
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  fill="currentColor"
+                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                ></path>
+                              </svg>
+                              Quick Accept/Reject with Templates
+                            </li>
+                            <li className={classes.li}>
+                              <svg viewBox="0 0 24 24" className={classes.svg1}>
+                                <path
+                                  fillRule="evenodd"
+                                  clipRule="evenodd"
+                                  fill="currentColor"
+                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                ></path>
+                              </svg>
+                              Advanced Applicant Filters
+                            </li>
+                          </ul>
+                        </div>
+                        <footer className={classes.footer}>
+                          {/* {isPending ? (
+                          <button
+                            className={classes.button1}
+                            // onClick={handlePayment}
+                          >
+                            wait a second...
+                          </button>
+                        ) : ( */}
+                          <button
+                            className={classes.button1}
+                            onClick={(e) =>handlePayment(e,item.id)}
+                            type="button"
+                          >
+                            Upgrade
+                          </button>
+                          {/* )} */}
+                        </footer>
+                      </div>
+                    </div>
+                  ))}
+                  {/* <div className={classes.main7}>
                     <div className={classes.main8}>
                       <div className={classes.main9}>
                         <Typography
@@ -226,14 +355,14 @@ export default function PaymentModal({ onClose }: props) {
                         </ul>
                       </div>
                       <footer className={classes.footer}>
-                        {/* {isPending ? (
+                         {isPending ? (
                           <button
                             className={classes.button1}
                             // onClick={handlePayment}
                           >
                             wait a second...
                           </button>
-                        ) : ( */}
+                        ) : ( 
                         <button
                           className={classes.button1}
                           onClick={handlePayment}
@@ -241,11 +370,11 @@ export default function PaymentModal({ onClose }: props) {
                         >
                           Upgrade
                         </button>
-                        {/* )} */}
+                         )} 
                       </footer>
                     </div>
-                  </div>
-                  <div className={classes.main7}>
+                  </div> */}
+                  {/* <div className={classes.main7}>
                     <div className={classes.main8}>
                       <div className={classes.main9}>
                         <Typography
@@ -341,25 +470,25 @@ export default function PaymentModal({ onClose }: props) {
                         </ul>
                       </div>
                       <footer className={classes.footer}>
-                        {/* {isPendingYears ? (
+                        {isPendingYears ? (
                           <button
                             className={classes.button1}
                             // onClick={handlePayment}
                           >
                             wait a second...
                           </button>
-                        ) : ( */}
-                        <button
-                          className={classes.button1}
-                          onClick={handlePaymentYear}
-                          type="button"
-                        >
-                          Upgrade
-                        </button>
-                        {/* )} */}
+                        ) : (
+                          <button
+                            className={classes.button1}
+                            onClick={handlePaymentYear}
+                            type="button"
+                          >
+                            Upgrade
+                          </button>
+                        )}
                       </footer>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@
   margin-top: var(--i-gutter-y);
   box-sizing: border-box;
   display: block;
+  position: relative !important;
 }
 .card_item {
   /* position: relative;
@@ -21,6 +22,7 @@
   border-radius: 8px;
   /* border: 1px solid #dedede; */
   background-color: white;
+  position: relative !important;
   box-shadow: 0px 6px 32px rgba(0, 0, 0, 0.08);
   box-sizing: border-box;
 
@@ -258,4 +260,33 @@
   text-indent: 0px !important;
   text-align: start !important;
   text-align-last: start !important;
+}
+.status{
+  background-color: #ff9119;
+  display: inline-flex
+  ;
+      align-items: center;
+      padding: 4px 12px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+      font-size: 14px;
+      color: #fff;
+      font-weight: 600;
+      right: 0 !important;
+      top: 0.5 !important;
+      position: absolute !important;
+      box-sizing: border-box;
+      cursor: pointer;
+}
+
+.status::after{
+  border-top: 8px solid #ff9119;
+  content: "";
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    box-sizing: border-box;
 }
