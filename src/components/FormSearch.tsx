@@ -298,6 +298,9 @@ export default function FormSearch({
                   boxShadow: "0 0 5px rgba(0, 0, 0, 0.2)",
                 },
               },
+              "& .MuiInputBase-input::placeholder": {
+                color: "black", // Custom placeholder color
+              },
             }}
           />
           {filterCompany && open && filterCompany.length > 0 ? (
@@ -362,8 +365,8 @@ export default function FormSearch({
           size="large"
           sx={{
 
-            backgroundColor: "#FF6F61",
-            color: "white",
+            backgroundColor: "#4cd681",
+            color: "#091615",
             border: "none",
             borderRadius: "5px",
             padding: "10px 20px",
@@ -371,7 +374,8 @@ export default function FormSearch({
             height: "56px",
             fontFamily: "Lexend",
             mb: "2px",
-            fontSize: "16px",
+            fontSize: "18px",
+            fontWeight:"bold",
             width: { xs: "100%", sm: "25%" },
             // width: "500px",
             position: 'relative',

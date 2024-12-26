@@ -22,8 +22,10 @@ interface JobSearch {
 }
 
 export const GetJobSearch = async ({ data }: JobSearch) => {
+  console.log(data.keyword);
+
   if (data.keyword?.trim() === "") {
-    data.keyword = null
+    data = { ...data, keyword: null }; // Create a new object to avoid modifying the original
   }
   try {
     const response = await httpClient.post({
@@ -32,7 +34,6 @@ export const GetJobSearch = async ({ data }: JobSearch) => {
     });
     return response.data;
   } catch (error: unknown) {
-
     if (error instanceof Error) {
       console.error("Post JobActivity request failed:", error.message);
     } else {
@@ -41,3 +42,4 @@ export const GetJobSearch = async ({ data }: JobSearch) => {
     throw error;
   }
 };
+

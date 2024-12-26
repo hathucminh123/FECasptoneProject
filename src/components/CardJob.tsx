@@ -360,7 +360,7 @@ export default function CardJob({
                     <FavoriteIcon
                       fontSize="large"
                       sx={{
-                        color: "#ed1b2f !important",
+                        color: "#3cbc8c !important",
                         mr: 2,
                       }}
                     />
@@ -369,7 +369,7 @@ export default function CardJob({
                   <FavoriteBorderOutlinedIcon
                     fontSize="large"
                     sx={{
-                      color: "#ed1b2f !important",
+                      color: "#3cbc8c !important",
                       mr: 2,
                     }}
                   />

@@ -866,19 +866,19 @@ const FilterJobbySkill: React.FC = () => {
                             padding: "7px 20px",
                             minWidth: "140px",
                             borderRadius: "4px",
-                            color: "#ed1b2f",
-                            backgroundColor: "#fff",
+                            color: "#3cbc8c",
+                            backgroundColor: "white",
                             borderColor: "#ed1b2f",
                             display: "inline-flex",
                             justifyContent: "center",
                             alignItems: "center",
                             lineHeight: 1.5,
-                            border: "1px solid #ed1b2f",
+                            border: "1px solid #3cbc8c",
                             gap: "8px",
                             "&:hover": {
-                              backgroundColor: "#f60d00",
-                              color: "white",
-                              borderColor: "#f60d00",
+                              backgroundColor: "#3cbc8c",
+                              color: "black",
+                              borderColor: "#3cbc8c",
                             },
                           }}
                         >
@@ -1159,16 +1159,16 @@ const FilterJobbySkill: React.FC = () => {
                                 sx={{
                                   mt: 3,
                                   width: "90%",
-                                  backgroundColor: "#ed1b2f",
+                                  backgroundColor: "#3cbc8c",
                                   borderColor: "#ed1b2f",
-                                  color: "#fff",
+                                  color: "black",
                                   borderRadius: "4px",
-                                  fontSize: "16px",
+                                  fontSize: "18px",
                                   fontWeight: "bold",
                                   padding: "11px 24px",
                                   fontFamily: "Lexend, sans-serif",
                                   "&:hover": {
-                                    backgroundColor: "#C82222",
+                                    backgroundColor: "#3ca666",
 
                                     color: "white",
                                   },
@@ -1184,7 +1184,7 @@ const FilterJobbySkill: React.FC = () => {
                                   <FavoriteIcon
                                     fontSize="large"
                                     sx={{
-                                      color: "#ed1b2f !important",
+                                      color: "#3cbc8c !important",
                                       marginTop: "20px",
                                       mr: 2,
                                     }}
@@ -1198,7 +1198,7 @@ const FilterJobbySkill: React.FC = () => {
                                   <FavoriteBorderOutlinedIcon
                                     fontSize="large"
                                     sx={{
-                                      color: "#ed1b2f !important",
+                                      color: "#3cbc8c !important",
 
                                       marginTop: "20px",
                                       mr: 2,

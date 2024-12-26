@@ -372,7 +372,7 @@ export default function CardJobDetails({
                     minWidth: "140px",
                     backgroundColor: "#ed1b2f",
                     borderColor: "#ed1b2f",
-                    color: "#fff",
+                    color: "#3cbc8c",
                     borderRadius: "4px",
                     fontSize: "16px",
                     fontWeight: "bold",

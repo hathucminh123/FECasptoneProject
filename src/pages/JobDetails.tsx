@@ -660,20 +660,20 @@ const JobDetails: React.FC = () => {
                         width: "90%",
                         backgroundColor: "#ed1b2f",
                         borderColor: "#ed1b2f",
-                        color: "#fff",
+                        color: "#3cbc8c",
                         borderRadius: "4px",
                         fontSize: "16px",
                         fontWeight: "bold",
                         padding: "11px 24px",
                         fontFamily: "Lexend, sans-serif",
                         "&:hover": {
-                          backgroundColor: "#C82222",
+                          backgroundColor: "#3cbc8c",
 
                           color: "white",
                         },
                       }}
                     >
-                      Apply now
+                      Apply now 123
                     </Button>
                     {haveFavorite ? (
                       <div

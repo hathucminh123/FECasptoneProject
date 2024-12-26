@@ -93,18 +93,6 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
   selectedJob,
   applied,
 }) => {
-  console.log("cố lenasd", data);
-  // const getJobLocation = (
-  //   jobLocation: JobLocation | string | null | undefined
-  // ): string => {
-  //   if (typeof jobLocation === "string") {
-  //     return jobLocation;
-  //   } else if (jobLocation === null) {
-  //     return "Location not specified";
-  //   } else {
-  //     return `${jobLocation?.district}, ${jobLocation?.city}, ${jobLocation?.state}, ${jobLocation?.country}`;
-  //   }
-  // };
 
   return (
     <div

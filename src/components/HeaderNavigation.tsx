@@ -200,7 +200,7 @@ export default function HeaderNavigation({ token }: props) {
                 {/* Phần chữ "it" */}
                 <Box
                   sx={{
-                    backgroundColor: "#ff0000",
+                    backgroundColor: "#3cbc8c",
                     color: "#fff",
                     fontWeight: 700,
                     fontSize: "22px",
