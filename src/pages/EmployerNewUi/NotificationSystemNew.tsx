@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, Link, NavLink } from "react-router-dom";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
-import classes from "./../../components/Employer/NotificationSystem.module.css";
+import classes from "./NotificationSystemNew.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import { AxiosResponse } from "axios";
 import {
@@ -196,6 +196,7 @@ export default function NotificationSystemNew() {
 
   return (
     <div className={classes.div20}>
+       
       <div className={classes.div21}>
         <div className={classes.div22}>
           <div >
@@ -205,7 +206,9 @@ export default function NotificationSystemNew() {
                 buttonstring="Mark all as Read"
                 icon={<MarkAsUnreadIcon />}
                 onclick={readAllNotify}
+                appear={false}
               />
+             
             </div>
             <div className={classes.main1}>
               <div className={classes.main2}>{renderNotifications()}</div>

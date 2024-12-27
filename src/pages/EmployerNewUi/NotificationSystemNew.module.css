@@ -81,7 +81,7 @@
   }
   
   .main5{
-      width: 9%;
+      /* width: 9%; */
       box-sizing: border-box;
       display: block;
   }
@@ -106,7 +106,7 @@
   }
   
   .main6{
-      width: 9%;
+      /* width: 9%; */
       padding-left: 1.14rem !important;
       padding-right: 1.14rem !important;
       align-self: center !important;
