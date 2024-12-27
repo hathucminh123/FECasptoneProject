@@ -5,7 +5,7 @@ import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import _ from "lodash";
 import CardJob from "../components/CardJob";
-import RenderButton from "../components/RenderButton";
+// import RenderButton from "../components/RenderButton";
 import { NavLink, Outlet, useNavigate, useParams } from "react-router-dom";
 import useScrollToTop from "../hook/useScrollToTop";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -21,6 +21,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompany";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+import Followsucess from "../components/Followsucess";
+import { AnimatePresence } from "framer-motion";
 interface JobType {
   id: number;
   name: string;
@@ -48,11 +50,12 @@ interface JobPost {
   skillSets: string[];
 }
 
-const CompanyDetailRoot:React.FC =()=> {
+const CompanyDetailRoot: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const navigate = useNavigate();
   const { CompanyId } = useParams();
   console.log("id", CompanyId);
+    const [openModal, setOpenModal] = useState<boolean>(false);
   const Auth = localStorage.getItem("Auth");
   // Lấy chi tiết công ty bằng React Query
   const {
@@ -60,7 +63,7 @@ const CompanyDetailRoot:React.FC =()=> {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["Company-details", CompanyId], 
+    queryKey: ["Company-details", CompanyId],
     queryFn: ({ signal }) =>
       fetchCompaniesById({ id: Number(CompanyId), signal }),
     enabled: !!CompanyId,
@@ -88,6 +91,16 @@ const CompanyDetailRoot:React.FC =()=> {
     navigate(`/jobs/detail/${job.id}`, {
       state: job,
     });
+  };
+
+  const [hovered, setHovered] = useState<null | string>(null);
+
+  const handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setHovered(event.currentTarget.textContent || null);
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(null);
   };
 
   // Xử lý cuộn để thay đổi trạng thái
@@ -128,7 +141,7 @@ const CompanyDetailRoot:React.FC =()=> {
     onSuccess: (data) => {
       if (data && data.result && data.result.items.length > 0) {
         setJobSearch(data.result.items);
-        // setTotalJobs(data.result.totalCount); 
+        // setTotalJobs(data.result.totalCount);
       } else {
         setJobSearch([]);
         // setTotalJobs(0);
@@ -139,9 +152,6 @@ const CompanyDetailRoot:React.FC =()=> {
     },
   });
 
-
-
-
   // Fetch jobs whenever currentPage changes
   useEffect(() => {
     mutateAsync({
@@ -150,14 +160,13 @@ const CompanyDetailRoot:React.FC =()=> {
         pageSize: 1000,
       },
     });
-  }, [ mutateAsync]);
+  }, [mutateAsync]);
 
   // Lọc các công việc thuộc về công ty hiện tại
   const jobincompanyData = jobSearch?.filter(
     (item) => item.companyId === companyDataa?.id
   );
 
- 
   // const skills = jobincompanyData?.map((skill) => skill.skillSets);
   // const flattenedArray = skills?.flat();
   // const uniqueArray = [...new Set(flattenedArray)];
@@ -184,6 +193,7 @@ const CompanyDetailRoot:React.FC =()=> {
         refetchType: "active",
       });
       message.success(`Follow ${companyDataa?.companyName} Successfully`);
+      setOpenModal(true); 
     },
     onError: () => {
       // message.error(`Failed to Follow ${companyDataa?.companyName} `);
@@ -202,6 +212,11 @@ const CompanyDetailRoot:React.FC =()=> {
       message.error(`Failed to UnFollow ${companyDataa?.companyName} `);
     },
   });
+  const handleCloseModal = () => {
+   
+    setOpenModal(false);
+    // setPendingUpdate(null); 
+  };
 
   const handleFollow = () => {
     if (!Auth) {
@@ -252,6 +267,15 @@ const CompanyDetailRoot:React.FC =()=> {
 
   return (
     <div className={classes.main_container}>
+      <AnimatePresence>
+        {openModal && (
+          <Followsucess
+            onClose={handleCloseModal} // Đóng modal
+            // onConfirm={handleConfirmModal} 
+            companyDataa={companyDataa}
+          />
+        )}
+      </AnimatePresence>
       <div
         className={isScrolled ? classes.sticky_container : classes.container}
       >
@@ -297,28 +321,36 @@ const CompanyDetailRoot:React.FC =()=> {
                       ? Image
                       : companyDataa?.imageUrl
                   }
-                  style={{ width: "200px" }}
+                  className={classes.img}
+                  // style={{ width: "200px" }}
                   alt={`Logo of ${companyDataa.companyName}`}
                 />
               </div>
               <div className={classes.container4}>
                 <Typography
-                  variant="h5"
+                  variant="h1"
                   gutterBottom
                   sx={{
-                    textAlign: "start",
-                    fontWeight: "bold",
+                    paddingTop: "0 !important",
+                    paddingBottom: "8px !important",
+                    marginTop: "0",
+                    marginBottom: "0 ",
+                    textAlign: "left !important",
+                    fontWeight: 700,
+                    lineHeight: 1.5,
+                    fontSize: "28px",
+                    boxSizing: "border-box",
+
                     mt: 3,
                     color: "#091615",
                     fontFamily: "Lexend, sans-serif",
                   }}
-                  
                 >
                   {companyDataa.companyName}
                 </Typography>
                 <div className={classes.locationjob}>
                   <div className={classes.location}>
-                    <LocationOnOutlinedIcon sx={{   color: "#091615", }} />
+                    <LocationOnOutlinedIcon sx={{ color: "#091615" }} />
                     {/* <Typography
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
@@ -391,7 +423,7 @@ const CompanyDetailRoot:React.FC =()=> {
                     {/* </Typography> */}
                   </div>
                   <div className={classes.job}>
-                    <WorkOutlineOutlinedIcon sx={{   color: "#091615",}} />
+                    <WorkOutlineOutlinedIcon sx={{ color: "#091615" }} />
                     <Typography
                       variant="body2"
                       sx={{
@@ -401,7 +433,6 @@ const CompanyDetailRoot:React.FC =()=> {
                         textDecoration: "underline",
                         color: "#091615",
                         fontFamily: "Lexend, sans-serif",
-                        
                       }}
                     >
                       {jobincompanyData?.length || 0} job openings
@@ -418,6 +449,43 @@ const CompanyDetailRoot:React.FC =()=> {
                     // onClick={handleNavigate}
                   /> */}
                   {haveFollow ? (
+                    <button
+                      type="button"
+                      style={{ cursor: "pointer" }}
+                      className={classes.unfollow}
+                      onClick={handleUnFollow}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <div className={classes.main3}>
+                        <div className={classes.main4}>
+                          <svg className={classes.svg}>
+                            {hovered === "Following" ? <CloseIcon /> : <CheckIcon />}
+                           
+                          </svg>
+                          {hovered === "Following" ? "Unfollow" : "Following"}
+                        </div>
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      style={{ cursor: "pointer" }}
+                      className={classes.button2}
+                      onClick={handleFollow}
+                    >
+                      Follow
+                    </button>
+                  )}
+                  {/* <button
+                    type="button"
+                    style={{ cursor: "pointer" }}
+                    className={classes.button2}
+                  >
+                    Follow
+                  </button> */}
+
+                  {/* {haveFollow ? (
                     <RenderButton
                       icon={<CheckIcon />}
                       iconHovered={<CloseIcon />}
@@ -434,7 +502,7 @@ const CompanyDetailRoot:React.FC =()=> {
                       variant="outlined"
                       onClick={handleFollow}
                     />
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
@@ -499,7 +567,6 @@ const CompanyDetailRoot:React.FC =()=> {
                       );
                       return (
                         <CardJob
-                         
                           key={job.id}
                           data={job}
                           company={companys}
@@ -516,5 +583,5 @@ const CompanyDetailRoot:React.FC =()=> {
       </div>
     </div>
   );
-}
-export default CompanyDetailRoot
+};
+export default CompanyDetailRoot;

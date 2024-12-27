@@ -29,6 +29,8 @@ import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import { GetBenefits } from "../../Services/Benefits/GetBenefits";
 import { PostBenefits } from "../../Services/Benefits/PostBenefits";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
+import { AnimatePresence } from "framer-motion";
+import EmployerServiceModal from "../../components/Employer/EmployerServiceModal";
 // type JobContextType = {
 //   selectJobId: number | null;
 //   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
@@ -113,9 +115,9 @@ export default function FormCreateEmployer() {
   // const [descriptionType, setDescriptionType] = useState<string>("");
 
   //service
-  const [openService, setOpenService] = useState<boolean>(false);
-  const [selectService, setSelectService] = useState<Services | null>();
-  const [selectServiceId, setSelectServiceId] = useState<number | null>();
+  // const [openService, setOpenService] = useState<boolean>(false);
+  const [selectService, setSelectService] = useState<Services | null |  undefined>();
+  const [selectServiceId, setSelectServiceId] = useState<number | null|undefined>();
 
   // skill
   const [open, setOpen] = useState(false);
@@ -149,6 +151,7 @@ export default function FormCreateEmployer() {
   const Benefitsdataa = BenefitsData?.Benefits;
   const [openBenefit, setOpenBenefit] = useState(false);
   const [benefitsdata, setBenefitsdata] = useState<Benefits[]>([]);
+    const [openModal, setOpenModal] = useState<boolean>(false);
   const [dropdownOpenBenefit, setDropdownOpenBenefit] = useState(false);
   const [filteredBenefits, setFilteredBenefits] = useState(Benefitsdataa);
   const [benefitId, setBenefitId] = useState<number[]>([]);
@@ -176,6 +179,7 @@ export default function FormCreateEmployer() {
   });
 
   const UserProfileData = UserProfile?.UserProfiles;
+  console.log(UserProfileData);
   //imageurl
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -409,9 +413,9 @@ export default function FormCreateEmployer() {
     setOpenType((prev) => !prev);
   };
 
-  const handleOpenSelectService = () => {
-    setOpenService((prev) => !prev);
-  };
+  // const handleOpenSelectService = () => {
+  //   setOpenService((prev) => !prev);
+  // };
   const handleSelectType = (type: JobType) => {
     if (selectType?.id === type.id) {
       // Nếu mục được chọn lại giống mục hiện tại, đặt lại giá trị thành null
@@ -424,17 +428,17 @@ export default function FormCreateEmployer() {
     }
   };
   
-  const handleSelectService = (type: Services) => {
-    if (selectService?.id === type.id) {
-      // Nếu mục được chọn lại giống mục hiện tại, đặt lại giá trị thành null
-      setSelectService(null);
-      setSelectServiceId(null);
-    } else {
-      // Ngược lại, cập nhật mục mới
-      setSelectService(type);
-      setSelectServiceId(type.id);
-    }
-  };
+  // const handleSelectService = (type: Services) => {
+  //   if (selectService?.id === type.id) {
+  //     // Nếu mục được chọn lại giống mục hiện tại, đặt lại giá trị thành null
+  //     setSelectService(null);
+  //     setSelectServiceId(null);
+  //   } else {
+  //     // Ngược lại, cập nhật mục mới
+  //     setSelectService(type);
+  //     setSelectServiceId(type.id);
+  //   }
+  // };
   const adjustTimezone = (date: Date) => {
     const offsetInMs = date.getTimezoneOffset() * 60 * 1000;
     return new Date(date.getTime() - offsetInMs).toISOString();
@@ -470,6 +474,10 @@ export default function FormCreateEmployer() {
       message.error("Failed to post the job.");
     },
   });
+
+  const handleCloseModalPayment = () => {
+    setOpenModal(false);
+  };
   const handleOnCreate = async () => {
     if(!selectServiceId){
       message.warning("Please select a service package to post the job."); 
@@ -552,6 +560,18 @@ export default function FormCreateEmployer() {
   };
   return (
     <div className={classes.main}>
+       <AnimatePresence>
+        {openModal && (
+          <EmployerServiceModal
+            onClose={handleCloseModalPayment}
+            setSelectService={setSelectService}
+            setSelectServiceId={setSelectServiceId}
+            // profile={profileScore}
+            // id={idApplicants}
+            // idJob={id}
+          />
+        )}
+      </AnimatePresence>
       <header className={classes.header}>
         <div className={classes.main1}>
           <div className={classes.main2}>
@@ -817,7 +837,8 @@ export default function FormCreateEmployer() {
                 </div>
                 <div
                   className={classes.main13}
-                  onClick={handleOpenSelectService}
+                  // onClick={handleOpenSelectService}
+                  onClick={() => setOpenModal(true)}
                 >
                   <div className={classes.main14}>
                     <div className={classes.main15}>
@@ -849,7 +870,7 @@ export default function FormCreateEmployer() {
                     </div>
                   </div>
 
-                  {openService &&
+                  {/* {openService &&
                   UserProfileData?.userAccountServices &&
                   UserProfileData?.userAccountServices?.length > 0 && (
                     UserProfileData?.userAccountServices.map((comp) => (
@@ -883,7 +904,7 @@ export default function FormCreateEmployer() {
                   //   <div className={classes.dropdownItem}>
                   //     No service package available
                   //   </div>
-                  }
+                  } */}
                   {/* <input type="hidden" name="jobTypeId"></input> */}
                 </div>
               </label>
@@ -1287,7 +1308,7 @@ export default function FormCreateEmployer() {
               <label htmlFor="" className={classes.label}>
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    Salary
+                   Max Salary
                     <span className={classes.span}>*</span>
                   </div>
                 </div>

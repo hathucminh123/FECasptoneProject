@@ -7,6 +7,7 @@ interface Services {
   numberOfPost: number;
   description: string;
   price: number;
+  isHot?:boolean;
 }
 interface signal{
   signal:AbortSignal

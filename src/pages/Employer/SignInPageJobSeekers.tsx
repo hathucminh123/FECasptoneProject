@@ -440,7 +440,8 @@ export default function SignInPageJobSeekers() {
                     margin: 0,
                     fontWeight: 700,
                     fontFamily: "Lexend, sans-serif",
-                    color: "#fff",
+                    // color: "#fff",
+                    color: "#091615",
                     letterSpacing: 0,
                     lineHeight: 1.5,
                   }}
@@ -452,7 +453,8 @@ export default function SignInPageJobSeekers() {
                     fontSize: "18px",
                     margin: "8px 0 0 0",
                     textAlign: "center",
-                    color: "#fff",
+                    // color: "#fff",
+                    color: "#091615",
                     fontFamily: "Lexend, sans-serif",
                   }}
                 >

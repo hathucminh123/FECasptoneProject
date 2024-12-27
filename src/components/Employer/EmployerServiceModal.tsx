@@ -1,57 +1,84 @@
 import React from "react";
 import { createPortal } from "react-dom";
-import classes from "./PaymentModal.module.css";
+import classes from "./EmployerServiceModal.module.css";
 import { motion } from "framer-motion";
 import { Typography } from "@mui/material";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { Payment } from "../../Services/Payment/Payment";
-import { message } from "antd";
-import { GetServicePayment } from "../../Services/ServicePayment/GetServicePayment";
+import { useQuery } from "@tanstack/react-query";
+// import { Payment } from "../../Services/Payment/Payment";
+// import { message } from "antd";
+// import { GetServicePayment } from "../../Services/ServicePayment/GetServicePayment";
+import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 
 // import { redirect, useNavigate } from "react-router-dom";
-
-interface props {
-  onClose?: () => void;
-  // profile?: UserProfile | null;
-  // id?: number | null;
-  // idJob?: string;
+interface Services {
+  id: number;
+  name: string;
+  numberOfPost: number;
+  description: string;
+  price: number;
 }
-export default function PaymentModal({ onClose }: props) {
-  const modalRoot = document.getElementById("modalPayment");
+interface Props {
+  onClose?: () => void;
+  setSelectService: React.Dispatch<
+    React.SetStateAction<Services | null | undefined>
+  >;
+  setSelectServiceId: React.Dispatch<
+    React.SetStateAction<number | null | undefined> 
+  >;
+}
+export default function EmployerServiceModal({
+  onClose,
+  setSelectService,
+  setSelectServiceId,
+}: Props) {
+  const modalRoot = document.getElementById("EmployerServiceModal");
   // const Email = localStorage.getItem("Email");
+  const userId = localStorage.getItem("userId");
+  //   const {
+  //     data: SkillSetData,
+  //     // isLoading,
+  //     // isError,
+  //   } = useQuery({
+  //     queryKey: ["ServicePayment"],
+  //     queryFn: ({ signal }) => GetServicePayment({ signal }),
+  //     staleTime: 1000,
+  //   });
 
-  const {
-    data: SkillSetData,
-    // isLoading,
-    // isError,
-  } = useQuery({
-    queryKey: ["ServicePayment"],
-    queryFn: ({ signal }) => GetServicePayment({ signal }),
+  //   const skillSets = SkillSetData?.Services || [];
+  const handleSelectService = (service: Services) => {
+    setSelectService(service); // Set the selected service
+    setSelectServiceId(service.id); // Set the selected service ID
+    if (onClose) onClose(); // Close the modal after selection
+  };
+
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
   });
 
-  const skillSets = SkillSetData?.Services || [];
-  
+  const UserProfileData = UserProfile?.UserProfiles;
 
-  const { mutate } = useMutation({
-    mutationFn: Payment,
-    onSuccess: (data) => {
-      // console.log("okchua", data.result);
+  //   const { mutate } = useMutation({
+  //     mutationFn: Payment,
+  //     onSuccess: (data) => {
+  //       // console.log("okchua", data.result);
 
-      // message.success(`Payment successfully!`);
+  //       // message.success(`Payment successfully!`);
 
-      // Mở đường link data.result trong tab mới
-      // window.open(data.result, '_blank');
+  //       // Mở đường link data.result trong tab mới
+  //       // window.open(data.result, '_blank');
 
-      // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
-      window.location.href = data.result;
+  //       // Nếu bạn muốn chuyển hướng người dùng đến link đó trong cùng tab, dùng:
+  //       window.location.href = data.result;
 
-      // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
-    },
-    onError: () => {
-      message.error("Failed to Payment.");
-    },
-  });
+  //       // redirect(data.result); // Nếu bạn cần gọi hàm này sau khi mở, hãy giữ lại.
+  //     },
+  //     onError: () => {
+  //       message.error("Failed to Payment.");
+  //     },
+  //   });
   // const { mutate: Year } = useMutation({
   //   mutationFn: Payment,
   //   onSuccess: (data) => {
@@ -70,14 +97,14 @@ export default function PaymentModal({ onClose }: props) {
   //   },
   // });
 
-  const handlePayment = (e: React.MouseEvent<HTMLButtonElement>,id:number) => {
-    e.preventDefault();
-    mutate({
-      data: {
-        orderType: id,
-      },
-    });
-  };
+  //   const handlePayment = (e: React.MouseEvent<HTMLButtonElement>,id:number) => {
+  //     e.preventDefault();
+  //     mutate({
+  //       data: {
+  //         orderType: id,
+  //       },
+  //     });
+  //   };
   // const handlePaymentYear = (e: React.MouseEvent<HTMLButtonElement>) => {
   //   e.preventDefault();
   //   Year({
@@ -143,105 +170,119 @@ export default function PaymentModal({ onClose }: props) {
                   </div>
                 </div>
                 <div className={classes.main6}>
-                  {skillSets.map((item) => (
-                    <div key={item.id} className={classes.main7}>
-                      <div className={classes.main8}>
-                        <div className={classes.main9}>
-                          <Typography
-                            variant="h4"
-                            sx={{
-                              fontWeight: 700,
-                              fontSize: "100%",
-                              margin: 0,
-                              padding: 0,
-
-                              boxSizing: "border-box",
-                              borderWidth: 0,
-                              borderStyle: "solid",
-                            }}
-                          >
-                            {" "}
-                            {item.name}
-                          </Typography>
-                          <div className={classes.main10}>
-                            {/* Get Started posting Job */}
-                            {item.description}
-                          </div>
-                          <Typography
-                            variant="h3"
-                            sx={{
-                              fontSize: "14px",
-                              lineHeight: "20px",
-                              marginBottom: "24px",
-                              fontWeight: 400,
-                              boxSizing: "border-box",
-                              borderWidth: 0,
-                              borderStyle: "solid",
-                            }}
-                          >
-                            <span
-                              style={{
+                  {UserProfileData?.userAccountServices &&
+                  UserProfileData.userAccountServices.length > 0 ? (
+                    UserProfileData?.userAccountServices.map((item) => (
+                      <div key={item.id} className={classes.main7}>
+                        <div className={classes.main8}>
+                          <div className={classes.main9}>
+                            <Typography
+                              variant="h4"
+                              sx={{
                                 fontWeight: 700,
-                                fontSize: "24px",
-                                lineHeight: "30px",
+                                fontSize: "100%",
+                                margin: 0,
+                                padding: 0,
+
                                 boxSizing: "border-box",
                                 borderWidth: 0,
                                 borderStyle: "solid",
                               }}
                             >
-                             {item.price}/VNĐ
-                            </span>
-                          </Typography>
-                          <p className={classes.p1}>Includes:</p>
-                          <ul className={classes.ul}>
-                            <li className={classes.li}>
-                              <svg viewBox="0 0 24 24" className={classes.svg1}>
-                                <path
-                                  fillRule="evenodd"
-                                  clipRule="evenodd"
-                                  fill="currentColor"
-                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
-                                ></path>
-                              </svg>
-                              Post {item.numberOfPost} Jobs
-                            </li>
-                            <li className={classes.li}>
-                              <svg viewBox="0 0 24 24" className={classes.svg1}>
-                                <path
-                                  fillRule="evenodd"
-                                  clipRule="evenodd"
-                                  fill="currentColor"
-                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
-                                ></path>
-                              </svg>
-                              Review Applicants
-                            </li>
-                            <li className={classes.li}>
-                              <svg viewBox="0 0 24 24" className={classes.svg1}>
-                                <path
-                                  fillRule="evenodd"
-                                  clipRule="evenodd"
-                                  fill="currentColor"
-                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
-                                ></path>
-                              </svg>
-                              Quick Accept/Reject with Templates
-                            </li>
-                            <li className={classes.li}>
-                              <svg viewBox="0 0 24 24" className={classes.svg1}>
-                                <path
-                                  fillRule="evenodd"
-                                  clipRule="evenodd"
-                                  fill="currentColor"
-                                  d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
-                                ></path>
-                              </svg>
-                              Advanced Applicant Filters
-                            </li>
-                          </ul>
-                        </div>
-                        <footer className={classes.footer}>
-                          {/* {isPending ? (
+                              {" "}
+                              {item.serviceResponse.name}
+                            </Typography>
+                            <div className={classes.main10}>
+                              {item.serviceResponse.description}
+                            </div>
+                            <Typography
+                              variant="h3"
+                              sx={{
+                                fontSize: "14px",
+                                lineHeight: "20px",
+                                marginBottom: "24px",
+                                fontWeight: 400,
+                                boxSizing: "border-box",
+                                borderWidth: 0,
+                                borderStyle: "solid",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  fontWeight: 700,
+                                  fontSize: "24px",
+                                  lineHeight: "30px",
+                                  boxSizing: "border-box",
+                                  borderWidth: 0,
+                                  borderStyle: "solid",
+                                }}
+                              >
+                                {item.serviceResponse.price}/VNĐ
+                              </span>
+                            </Typography>
+                            <p className={classes.p1}>Includes:</p>
+                            <ul className={classes.ul}>
+                              <li className={classes.li}>
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  className={classes.svg1}
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    fill="currentColor"
+                                    d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                  ></path>
+                                </svg>
+                                Post {item.numberOfPostLeft} Jobs Left
+                              </li>
+
+                              <li className={classes.li}>
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  className={classes.svg1}
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    fill="currentColor"
+                                    d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                  ></path>
+                                </svg>
+                                Review Applicants
+                              </li>
+                              <li className={classes.li}>
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  className={classes.svg1}
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    fill="currentColor"
+                                    d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                  ></path>
+                                </svg>
+                                Quick Accept/Reject with Templates
+                              </li>
+                              <li className={classes.li}>
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  className={classes.svg1}
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    clipRule="evenodd"
+                                    fill="currentColor"
+                                    d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
+                                  ></path>
+                                </svg>
+                                Advanced Applicant Filters
+                              </li>
+                            </ul>
+                          </div>
+                          <footer className={classes.footer}>
+                            {/* {isPending ? (
                           <button
                             className={classes.button1}
                             // onClick={handlePayment}
@@ -249,18 +290,40 @@ export default function PaymentModal({ onClose }: props) {
                             wait a second...
                           </button>
                         ) : ( */}
-                          <button
-                            className={classes.button1}
-                            onClick={(e) =>handlePayment(e,item.id)}
-                            type="button"
-                          >
-                            Upgrade
-                          </button>
-                          {/* )} */}
-                        </footer>
+                            <button
+                              // className={classes.button1}
+                              className={`${classes.button1} ${
+                                item.numberOfPostLeft === 0
+                                  ? classes.disabled
+                                  : ""
+                              }`}
+                              // onClick={() =>handleSelectService(item.serviceResponse)}
+                              type="button"
+                              onClick={() => {
+                                if (item.numberOfPostLeft > 0)
+                                  handleSelectService(item.serviceResponse);
+                              }}
+                              disabled={
+                                item.numberOfPostLeft === 0 ? true : false
+                              }
+                              style={{
+                                pointerEvents:
+                                  item.numberOfPostLeft === 0 ? "none" : "auto",
+                                opacity: item.numberOfPostLeft === 0 ? 0.5 : 1,
+                              }}
+                            >
+                              Select
+                            </button>
+                            {/* )} */}
+                          </footer>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <Typography className={classes.noServicesMessage}>
+                      No service package yet.
+                    </Typography>
+                  )}
                   {/* <div className={classes.main7}>
                     <div className={classes.main8}>
                       <div className={classes.main9}>

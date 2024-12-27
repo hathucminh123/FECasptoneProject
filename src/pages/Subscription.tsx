@@ -484,6 +484,7 @@ export default function Subscription() {
                   fontSize: "22px",
                   fontWeight: 700,
                   boxSizing: "border-box",
+                  fontFamily: "Lexend, sans-serif",
                 }}
               >
                 Subscribe to Amazing Job for new jobs of company
@@ -502,6 +503,7 @@ export default function Subscription() {
                       fontSize: "18px",
                       fontWeight: 700,
                       boxSizing: "border-box",
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Skills you subscribed ({AlertData?.length})
@@ -913,6 +915,7 @@ export default function Subscription() {
                       fontSize: "18px",
                       fontWeight: 700,
                       boxSizing: "border-box",
+                      fontFamily: "Lexend, sans-serif",
                     }}
                   >
                     Company you subscribed ({FollowCompanydata?.length})

@@ -3,7 +3,7 @@ import classes from "./ServicePage.module.css";
 import HeaderSystem from "../../components/Employer/HeaderSystem";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-
+import EditIcon from "@mui/icons-material/Edit";
 import {
   Table as MuiTable,
   TableBody,
@@ -24,25 +24,34 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
-// import { GetBusinessStream } from "../../Services/BusinessStreamService/GetBusinessStream";
-// import { PostBusinessStream } from "../../Services/BusinessStreamService/PostBusinessStream";
 import { GetServicePayment } from "../../Services/ServicePayment/GetServicePayment";
 import { PostServices } from "../../Services/ServicePayment/PostServicePayment";
 import { DeleteServicePayment } from "../../Services/ServicePayment/DeleteServicePayment";
+import { PutServicesPayment } from "../../Services/ServicePayment/PutServicePayment";
 
 const headers = [
-  "name",
-  "Services description",
-  "NumberOfPost",
-  "price",
+  "Name",
+  "Services Description",
+  "Number Of Posts",
+  "Price",
+  "Is Hot",
   "Action",
 ];
 
+interface Services {
+  id: number;
+  name: string;
+  numberOfPost: number;
+  description: string;
+  price: number;
+  isHot?: boolean;
+}
+
 // Function to remove HTML tags from a string
-const stripHTML = (html: string) => {
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  return doc.body.textContent || "";
-};
+// const stripHTML = (html: string) => {
+//   const doc = new DOMParser().parseFromString(html, "text/html");
+//   return doc.body.textContent || "";
+// };
 
 // Modal styling
 const modalStyle = {
@@ -61,13 +70,13 @@ const ServicePage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [open, setOpen] = useState(false);
   const [nameSkill, setNameSkill] = useState("");
-  //   const [shorthand, setShorthand] = useState("");
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
   const [numberOfPost, setNumberOfPost] = useState("");
   const [isHot, setIsHot] = useState("false");
   const [price, setPrice] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   // Fetch skill sets
   const {
@@ -82,19 +91,27 @@ const ServicePage: React.FC = () => {
 
   const skillSets = SkillSetData?.Services || [];
 
-  // Create skill set mutation
-  const { mutate: createSkillSet, isPending: isCreating } = useMutation({
-    mutationFn: PostServices,
+  // Create or update skill set mutation
+  const { mutate: saveSkillSet, isPending: isSaving } = useMutation({
+    mutationFn: editingId ? PutServicesPayment : PostServices,
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["ServicePayment"],
         refetchType: "active",
       });
-      message.success("ServicesPayment set created successfully.");
+      message.success(
+        editingId
+          ? "Service Payment updated successfully."
+          : "Service Payment created successfully."
+      );
       handleClose();
     },
     onError: () => {
-      message.error("Failed to create  ServicesPayment.");
+      message.error(
+        editingId
+          ? "Failed to update Service Payment."
+          : "Failed to create Service Payment."
+      );
     },
   });
 
@@ -113,54 +130,66 @@ const ServicePage: React.FC = () => {
     },
   });
 
-  // Open/Close modal handlers
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // Open modal for creating or editing
+  const handleOpen = () => {
+    setOpen(true);
+    setEditingId(null); // Ensure it's for creating
+  };
 
-  // Handle form submission for skill set creation
+  const handleOpenEdit = (service: Services) => {
+    setEditingId(service.id); // Set the ID for editing
+    setNameSkill(service.name);
+    setDescriptionSkillSet(service.description);
+    setNumberOfPost(service.numberOfPost.toString());
+    setPrice(service.price.toString());
+    setIsHot(service.isHot ? "true" : "false");
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setEditingId(null); // Reset ID when closing modal
+    setNameSkill("");
+    setDescriptionSkillSet("");
+    setNumberOfPost("");
+    setPrice("");
+    setIsHot("false");
+  };
+
   const handleSubmitSkillSet = () => {
     if (!nameSkill || !descriptionSkillSet || !numberOfPost || !price) {
-      message.warning("Please fill in all the required fields.");
-      return;
+        message.warning("Please fill in all the required fields.");
+        return;
     }
-    createSkillSet({
+
+    const payload = {
+      ...(editingId && { id: editingId }), 
       data: {
-        name: nameSkill,
-        // shorthand: shorthand,
-        description: descriptionSkillSet,
-        numberOfPost: Number(numberOfPost),
-        price: Number(price),
-        isHot: isHot === "true",
+          name: nameSkill,
+          description: descriptionSkillSet,
+          numberOfPost: Number(numberOfPost),
+          price: Number(price),
+          isHot: isHot === "true",
       },
-    });
   };
+
+    saveSkillSet(payload); 
+};
 
   // Handle delete action
   const handleDeleteSkillSet = (id: number) => {
     deleteSkillSet({ id });
   };
 
-  // Format data for table
-  const formattedData =
-    skillSets.map((skill) => ({
-      id: skill.id,
-      name: skill.name,
-      //   businessStreamName: skill.businessStreamName,
-      //   Shorthand: skill.businessStreamName,
-      numberOfPost: skill.numberOfPost,
-      price: skill.price,
-      "Services Description": stripHTML(skill.description || ""),
-    })) || [];
-
   // Filter data based on search term
   const filteredData = searchTerm
-    ? formattedData.filter((row) =>
-        [row.name, row["Services Description"], row.numberOfPost, row.price]
+    ? skillSets.filter((row) =>
+        [row.name, row.description, row.numberOfPost, row.price.toString()]
           .join(" ")
           .toLowerCase()
           .includes(searchTerm.toLowerCase())
       )
-    : formattedData;
+    : skillSets;
 
   // Pagination logic
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
@@ -242,11 +271,18 @@ const ServicePage: React.FC = () => {
                   {paginatedData.map((row) => (
                     <TableRow key={row.id}>
                       <TableCell>{row.name}</TableCell>
-                      <TableCell>{row["Services Description"]}</TableCell>
+                      <TableCell>{row.description}</TableCell>
                       <TableCell>{row.numberOfPost}</TableCell>
                       <TableCell>{row.price}</TableCell>
-
+                      <TableCell>{row.isHot ? "Yes" : "No"}</TableCell>
                       <TableCell>
+                        <IconButton
+                          onClick={() => handleOpenEdit(row)}
+                          aria-label="edit"
+                          color="primary"
+                        >
+                          <EditIcon />
+                        </IconButton>
                         <IconButton
                           onClick={() => handleDeleteSkillSet(row.id)}
                           aria-label="delete"
@@ -285,7 +321,7 @@ const ServicePage: React.FC = () => {
           <Modal open={open} onClose={handleClose}>
             <Box sx={modalStyle}>
               <Typography variant="h6" component="h2">
-                Create Bussiness
+                {editingId ? "Edit Service" : "Create Service"}
               </Typography>
               <TextField
                 label="Name"
@@ -294,13 +330,6 @@ const ServicePage: React.FC = () => {
                 fullWidth
                 margin="normal"
               />
-              {/* <TextField
-                label="Shorthand"
-                value={shorthand}
-                onChange={(e) => setShorthand(e.target.value)}
-                fullWidth
-                margin="normal"
-              /> */}
               <TextField
                 label="Description"
                 value={descriptionSkillSet}
@@ -324,25 +353,31 @@ const ServicePage: React.FC = () => {
                 fullWidth
                 margin="normal"
               />
-                 <TextField
-            select
-            label="Service Type"
-            value={isHot}
-            onChange={(e) => setIsHot(e.target.value)}
-            fullWidth
-            margin="normal"
-            SelectProps={{ native: true }} // For native select dropdown
-          >
-            <option value="true">Hot</option>
-            <option value="false">Basic</option>
-          </TextField>
+              <TextField
+                select
+                label="Service Type"
+                value={isHot}
+                onChange={(e) => setIsHot(e.target.value)}
+                fullWidth
+                margin="normal"
+                SelectProps={{ native: true }}
+              >
+                <option value="true">Hot</option>
+                <option value="false">Basic</option>
+              </TextField>
               <Button
                 variant="contained"
                 onClick={handleSubmitSkillSet}
-                disabled={isCreating}
+                disabled={isSaving}
                 sx={{ mr: 2 }}
               >
-                {isCreating ? "Creating..." : "Create"}
+                {isSaving
+                  ? editingId
+                    ? "Updating..."
+                    : "Creating..."
+                  : editingId
+                  ? "Update"
+                  : "Create"}
               </Button>
               <Button onClick={handleClose} variant="outlined">
                 Cancel

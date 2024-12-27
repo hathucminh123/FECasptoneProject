@@ -118,6 +118,10 @@
   padding: 32px;
   gap: 16px;
   display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  width: 100%; 
   box-sizing: border-box;
   border-width: 0;
   border-style: solid;

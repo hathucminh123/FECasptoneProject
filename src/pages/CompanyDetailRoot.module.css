@@ -105,9 +105,12 @@
   }
   
   .button {
-    display: flex;
-    padding-top: 24px;
-    gap: 12px;
+    gap: 12px !important;
+    padding-bottom: 0px !important;
+    padding-top: 24px !important;
+    display: flex !important
+    ;
+    box-sizing: border-box;
   }
   
   .main {
@@ -275,3 +278,108 @@
     height: 100%;
 }
 
+
+
+.img{
+  opacity: 1;
+  transition: opacity 200ms;
+  object-fit: contain;
+  border-radius: 4px;
+  max-width: 100% !important;
+  vertical-align: middle;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-clip-margin: content-box;
+  overflow: clip;
+  text-align: center !important;
+  --i-gutter-x: 0;
+  --i-text-opacity: 1;
+  color: rgba(var(--i-white-rgb), var(--i-text-opacity)) !important;
+}
+
+
+.button2{
+  width: auto !important;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 11px 24px;
+  min-width: 180px;
+  border-radius: 4px;
+  color: #ed1b2f;
+  background-color: #fff;
+  border-color: #ed1b2f;
+  display: inline-flex
+  ;
+      justify-content: center;
+      align-items: center;
+      line-height: 1.5;
+      user-select: none;
+      border: 1px solid transparent;
+      gap: 8px;
+      text-decoration: none;
+      box-sizing: border-box;
+}
+
+.unfollow{
+  width: auto !important;
+  font-size: 16px;
+    font-weight: 600;
+    padding: 11px 24px;
+    min-width: 180px;
+    border-radius: 4px;
+    color: #ed1b2f;
+    background-color: #fff;
+    border-color: #ed1b2f;
+    line-height: 1.5;
+    user-select: none;
+    border: 1px solid transparent;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.main3{
+  display: block;
+  box-sizing: border-box;
+  font-size: 16px;
+    font-weight: 600;
+    color: #ed1b2f;
+}
+
+.main4{
+  gap: 20px !important;
+  white-space: nowrap !important;
+  align-items: center !important;
+  display: flex !important;
+  box-sizing: border-box;
+  /* justify-content: space-between; */
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.svg{
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: baseline;
+  fill: none;
+  box-sizing: border-box;
+  overflow-clip-margin: content-box;
+  overflow: hidden;
+  white-space: nowrap !important;
+  font-size: 16px;
+    font-weight: 600;
+    color: #ed1b2f;
+}
+
+.ok{
+  box-sizing: border-box;
+  transform-origin: 0px 0px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;fill: none;
+  white-space: nowrap !important;
+}

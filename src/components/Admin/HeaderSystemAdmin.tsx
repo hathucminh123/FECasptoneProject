@@ -104,7 +104,7 @@ interface props {
                 <Typography
                   variant="h2"
                   sx={{
-                    color: "#000000",
+                    color: "#fff",
                     fontWeight: 700,
                     fontSize: "22px",
                     fontFamily: "Lexend, sans-serif",
