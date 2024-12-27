@@ -313,7 +313,7 @@ const CompanyDetailRoot: React.FC = () => {
             </div>
           ) : (
             <div className={classes.container3}>
-              <div style={{ paddingRight: "14px" }}>
+              <div className={classes.main5} >
                 <img
                   src={
                     companyDataa?.imageUrl === null ||
