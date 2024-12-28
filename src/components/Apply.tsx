@@ -277,12 +277,12 @@ export default function Apply() {
               <div className={classes.back}>
                 <div className={classes.iconback}>
                   <ArrowBackIosNewOutlinedIcon
-                    sx={{ width: "20px", height: "20px", color: "#fff" }}
+                    sx={{ width: "20px", height: "20px", color: "#000000", }}
                   />
                   <Typography
                     sx={{
                       display: "flex",
-                      color: "#fff",
+                      color: "#000000",
                       textAlign: "center",
                       cursor: "pointer",
                       padding: "10px",

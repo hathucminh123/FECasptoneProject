@@ -23,6 +23,7 @@ import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompa
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import Followsucess from "../components/Followsucess";
 import { AnimatePresence } from "framer-motion";
+// import { GetReviewApprovedCompany } from "../Services/ReviewCompany/GetReviewApprovedCompany";
 interface JobType {
   id: number;
   name: string;
@@ -55,7 +56,7 @@ const CompanyDetailRoot: React.FC = () => {
   const navigate = useNavigate();
   const { CompanyId } = useParams();
   console.log("id", CompanyId);
-    const [openModal, setOpenModal] = useState<boolean>(false);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const Auth = localStorage.getItem("Auth");
   // Lấy chi tiết công ty bằng React Query
   const {
@@ -71,6 +72,16 @@ const CompanyDetailRoot: React.FC = () => {
 
   // Dữ liệu công ty (nếu có)
   const companyDataa = CompanyDa?.Companies;
+  //   const { data: ReviewApproved } = useQuery({
+  //     queryKey: ["Company-details", CompanyId],
+  //     queryFn: ({ signal }) =>
+  //       GetReviewApprovedCompany({ id: Number(CompanyId), signal }),
+  //     enabled: !!CompanyId,
+  //   });
+
+  // const ApprovedReview =ReviewApproved?.reviewDetails
+
+  // console.log("okchua",ApprovedReview)
 
   useScrollToTop();
 
@@ -193,7 +204,7 @@ const CompanyDetailRoot: React.FC = () => {
         refetchType: "active",
       });
       message.success(`Follow ${companyDataa?.companyName} Successfully`);
-      setOpenModal(true); 
+      setOpenModal(true);
     },
     onError: () => {
       // message.error(`Failed to Follow ${companyDataa?.companyName} `);
@@ -213,10 +224,24 @@ const CompanyDetailRoot: React.FC = () => {
     },
   });
   const handleCloseModal = () => {
-   
     setOpenModal(false);
-    // setPendingUpdate(null); 
+    // setPendingUpdate(null);
   };
+
+  const handleWriteReview = () => {
+    // Kiểm tra xác thực
+    if (!Auth || Auth.trim() === "") {
+      // Điều hướng tới login với trạng thái từ trang hiện tại
+      navigate("/JobSeekers/login", {
+        state: { from: window.location.pathname },
+      });
+      return;
+    }
+  
+    // Nếu đã đăng nhập, điều hướng tới trang viết đánh giá
+    navigate(`/company/detail/review/${CompanyId}`);
+  };
+  
 
   const handleFollow = () => {
     if (!Auth) {
@@ -271,7 +296,7 @@ const CompanyDetailRoot: React.FC = () => {
         {openModal && (
           <Followsucess
             onClose={handleCloseModal} // Đóng modal
-            // onConfirm={handleConfirmModal} 
+            // onConfirm={handleConfirmModal}
             companyDataa={companyDataa}
           />
         )}
@@ -313,7 +338,7 @@ const CompanyDetailRoot: React.FC = () => {
             </div>
           ) : (
             <div className={classes.container3}>
-              <div className={classes.main5} >
+              <div className={classes.main5}>
                 <img
                   src={
                     companyDataa?.imageUrl === null ||
@@ -448,6 +473,14 @@ const CompanyDetailRoot: React.FC = () => {
                      textHover="Unfollow"
                     // onClick={handleNavigate}
                   /> */}
+                  <button
+                    type="button"
+                    onClick={handleWriteReview}
+                    className={classes.link}
+                    style={{cursor:'pointer'}}
+                  >
+                    Write review
+                  </button>
                   {haveFollow ? (
                     <button
                       type="button"
@@ -460,8 +493,11 @@ const CompanyDetailRoot: React.FC = () => {
                       <div className={classes.main3}>
                         <div className={classes.main4}>
                           <svg className={classes.svg}>
-                            {hovered === "Following" ? <CloseIcon /> : <CheckIcon />}
-                           
+                            {hovered === "Following" ? (
+                              <CloseIcon />
+                            ) : (
+                              <CheckIcon />
+                            )}
                           </svg>
                           {hovered === "Following" ? "Unfollow" : "Following"}
                         </div>
@@ -528,7 +564,7 @@ const CompanyDetailRoot: React.FC = () => {
                       Overview
                     </NavLink>
                   </li>
-                  {/* <li className={classes.menuItem}>
+                  <li className={classes.menuItem}>
                     <NavLink
                       to="review"
                       state={companyDataa}
@@ -539,7 +575,7 @@ const CompanyDetailRoot: React.FC = () => {
                     >
                       Reviews
                     </NavLink>
-                  </li> */}
+                  </li>
                 </ul>
               </div>
 

@@ -332,9 +332,11 @@ export default function CardJob({
                   onClick={handleNavigateApply}
                   sx={{
                     minWidth: "140px",
-                    backgroundColor: "#ed1b2f",
+                    // backgroundColor: "#ed1b2f",
                     borderColor: "#ed1b2f",
-                    color: "#fff",
+                    backgroundColor:"#4cd681",
+                    // color: "#fff",
+                    color:"#091615",
                     borderRadius: "4px",
                     fontSize: "16px",
                     fontWeight: "bold",
@@ -362,7 +364,8 @@ export default function CardJob({
                     <FavoriteIcon
                       fontSize="large"
                       sx={{
-                        color: "#ed1b2f !important",
+                        // color: "#ed1b2f !important",
+                        color:"#4cd681 !important",
                         mr: 2,
                       }}
                     />
@@ -371,7 +374,8 @@ export default function CardJob({
                   <FavoriteBorderOutlinedIcon
                     fontSize="large"
                     sx={{
-                      color: "#ed1b2f !important",
+                      // color: "#ed1b2f !important",
+                      color:"#4cd681 !important",
                       mr: 2,
                     }}
                   />

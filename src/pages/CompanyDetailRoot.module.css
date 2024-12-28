@@ -262,8 +262,10 @@
 }
 
 .title1  a.active {
-    color: #ed1b2f;
-    border-bottom: 3px solid #ed1b2f;
+    /* color: #ed1b2f; */
+    color: #4cd681;
+    /* border-bottom: 3px solid #ed1b2f; */
+    border-bottom: 3px solid #4cd681;
     opacity: 1;
     text-decoration: none;
 }
@@ -392,5 +394,28 @@
     border-radius: 4px;
     margin-right: 24px !important;
     text-align: center !important;
+    box-sizing: border-box;
+}
+
+
+.link{
+  width: auto !important;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 11px 24px;
+  min-width: 180px;
+  border-radius: 4px;
+  color: #091615;
+  background-color: #4cd681;
+  border-color: #4cd681;
+  display: inline-flex
+;
+    justify-content: center;
+    align-items: center;
+    line-height: 1.5;
+    user-select: none;
+    border: 1px solid transparent;
+    gap: 8px;
+    text-decoration: none;
     box-sizing: border-box;
 }

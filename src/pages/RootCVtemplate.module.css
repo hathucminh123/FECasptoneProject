@@ -19,7 +19,8 @@ display: block;
 }
 .header{
     height: 65px;
-    background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%);
+    /* background: linear-gradient(269.85deg, #54151C 0%, #121212 54.89%); */
+    background: linear-gradient(269.85deg, #3cbc8c 0%, #cbe5de 54.89%);
     box-sizing: border-box;
     display: block;
 }

@@ -139,3 +139,27 @@
     align-items: center;
 
 }
+
+
+.main1{
+    position: relative;
+    top: 2px;
+    display: block !important;
+
+    box-sizing: border-box;
+    color: #121212 !important;
+    user-select: none !important;
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .ratingItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  

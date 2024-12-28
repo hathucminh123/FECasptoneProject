@@ -149,7 +149,7 @@ const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
   };
 
   return (
-    <Modal title="Education" onClose={onDone} onClickSubmit={handleSubmit} isPending={isPending}>
+    <Modal title="Education" onClose={onDone} text="Save" onClickSubmit={handleSubmit} isPending={isPending}>
       <Box component="form" noValidate autoComplete="off">
         <div className={classes.formInput}>
           <TextField

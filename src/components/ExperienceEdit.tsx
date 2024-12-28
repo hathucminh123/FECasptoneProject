@@ -153,7 +153,7 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
   };
 
   return (
-    <Modal title="Work Experience" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
+    <Modal title="Work Experience" text="Save" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
       <Box component="form" noValidate autoComplete="off">
         <div className={classes.formInput}>
           <TextField

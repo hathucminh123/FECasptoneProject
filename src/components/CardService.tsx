@@ -1,7 +1,7 @@
 import classes from "./CardService.module.css";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
+import React from "react";
 import { ReactNode } from "react";
 
 type inputCard = {
@@ -14,7 +14,7 @@ type inputCard = {
   children?: ReactNode;
 };
 
-export default function CardService({
+const CardService: React.FC<inputCard> = ({
   url,
   title,
   text,
@@ -22,7 +22,7 @@ export default function CardService({
   children,
   // className,
   onClick,
-}: inputCard) {
+}) => {
   return (
     <div className={`${classes.card_item} `}>
       <div className={classes.card}>
@@ -68,8 +68,10 @@ export default function CardService({
           onClick={onClick}
           variant="outlined"
           sx={{
-            borderColor: "#f60d00",
-            color: "#f60d00",
+            // borderColor: "#f60d00",
+            borderColor:"#4cd681",
+            color:"#4cd681",
+            // color: "#f60d00",
             marginTop: "10px",
             fontWeight: "bold",
             "&:hover": {
@@ -89,3 +91,4 @@ export default function CardService({
     </div>
   );
 }
+export default CardService

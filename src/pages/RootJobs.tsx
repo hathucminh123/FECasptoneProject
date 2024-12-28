@@ -3,8 +3,8 @@
 import { Outlet } from "react-router-dom";
 import HeaderJobsApply from "../components/HeaderJobsApply";
 import classes from "./RootJobs.module.css";
-
-export default function RootJobs() {
+import React from "react";
+  const   RootJobs: React.FC = () => {
   return (
     <div
       style={{
@@ -20,4 +20,5 @@ export default function RootJobs() {
       </main>
     </div>
   );
-}
+};
+export default RootJobs

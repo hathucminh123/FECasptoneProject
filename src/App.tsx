@@ -129,6 +129,9 @@ import UpdateStepCompany from "./pages/Employer/UpdateStepCompany";
 import VerifiCompanyUpdate from "./pages/Employer/verifiCompanyUpdate";
 import CompleteUpdate from "./pages/Employer/CompleteUpdate";
 import ServicePage from "./pages/Admin/ServicePage";
+import { CompanyReviewSeeker } from "./pages/CompanyReviewSeeker";
+import { ReviewSuccess } from "./pages/ReviewSuccess";
+import ReviewPage from "./pages/Admin/ReviewPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -168,6 +171,7 @@ const router = createBrowserRouter([
         path: "jobs/detail/:JobId",
         element: <JobDetails />,
       },
+
       {
         path: "company/detail/:CompanyId",
         element: <CompanyDetailRoot />,
@@ -319,6 +323,14 @@ const router = createBrowserRouter([
   {
     path: "thankyou/:JobId",
     element: <ApplySuccess />,
+  },
+  {
+    path: "company/detail/review/:CompanyId",
+    element: <CompanyReviewSeeker />,
+  },
+  {
+   path:"company/success/:CompanyId",
+   element:<ReviewSuccess/>
   },
   {
     path: "job/Apply/:JobId",
@@ -832,12 +844,16 @@ const router = createBrowserRouter([
       },
       {
         // path: "CompanyInfo",
-        index:true,
+        index: true,
         element: <ManageJobPosting />,
       },
       {
         path: "BusinessStream",
         element: <BusinessStreamPage />,
+      },
+      {
+        path: "Review",
+        element: <ReviewPage />,
       },
       {
         path: "Service",

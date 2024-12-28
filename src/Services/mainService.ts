@@ -162,6 +162,13 @@ export const apiLinks = {
   TaxCode: {
     GET: `https://api.vietqr.io/v2/business`,
   },
+  ReviewCompany:{
+    POST: `${baseURL}/Review`,
+    GETApproved: `${baseURL}/Review/GetApprovedReviewList`,
+    GETPending: `${baseURL}/Review/GetPendingReviewList`,
+    PUTRejected:`${baseURL}/Review/RejectReview`,
+    PUTAprroved:`${baseURL}/Review/ApproveReview`,
+  },
 
   Service: {
     GET: `${baseURL}/Service`,

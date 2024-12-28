@@ -16,8 +16,10 @@ const  RootCVtemplate:React.FC =()=> {
             <div className={classes.header1}>
               <div className={classes.header2}>
                 <Link to="/profile-cv" className={classes.link} style={{   fontFamily: "Lexend, sans-serif",}}>
-                  <ArrowBackIcon />
-                  <span>Back to update your Profile</span>
+                  <ArrowBackIcon  sx={{
+                    color:"#091615"
+                  }} />
+                  <span style={{color:"#091615"}}>Back to update your Profile</span>
                 </Link>
                 <div className={classes.header3}>
                   <Typography
@@ -31,6 +33,7 @@ const  RootCVtemplate:React.FC =()=> {
                       boxSizing: "border-box",
                       display: "block",
                  fontFamily: "Lexend, sans-serif",
+                 color:"#091615"
                     }}
                   >
                     CV Template

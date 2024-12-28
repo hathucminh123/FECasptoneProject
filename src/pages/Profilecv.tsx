@@ -502,7 +502,8 @@ export default function Profilecv() {
               <div className={classes.btnform}>
                 <RenderButton
                   text="Preview & Download CV"
-                  color="#ed1b2f"
+                  // color="#ed1b2f"
+                  color="#4cd681"
                   variant="contained"
                   sxOverrides={{width: "100%" }}
                   onClick={handleNavigate}
@@ -610,7 +611,7 @@ export default function Profilecv() {
             title="Education"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
-            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge2}
             data={EducationData}
@@ -619,7 +620,7 @@ export default function Profilecv() {
             title="Work Experience"
             text="Highlight detailed information about your job history"
             icon={<EditNoteOutlinedIcon />}
-            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge3}
             data={ExperienceDatas}
@@ -634,7 +635,7 @@ export default function Profilecv() {
           <CardSkill
             title="Skills"
             text="Highlight Your skills Set"
-            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
             onClick={handleStartAddNewChallenge4}
@@ -643,7 +644,7 @@ export default function Profilecv() {
           <CardBenefits
             title="Benefits"
             text="Highlight Your Benefits"
-            icon2={<AddCircleOutlineIcon sx={{ color: "red" }} />}
+            icon2={<AddCircleOutlineIcon sx={{  color: "#4cd681"  }} />}
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
             onClick={handleStartAddNewChallenge5}

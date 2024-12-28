@@ -91,7 +91,7 @@ export default function Modal({
             ) : (
               <RenderButton
                 text={text}
-                color="#ed1b2f"
+                color="#4cd681"
                 variant="contained"
                 sxOverrides={{ minWidth: "180px" }}
                 onClick={onClickSubmit}
