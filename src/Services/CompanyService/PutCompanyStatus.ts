@@ -3,7 +3,7 @@ import { apiLinks } from "../mainService";
 
 
 interface Company{
-    data: { [key: string]: string | number|undefined};
+    data: { [key: string]: string | number|undefined |null};
 }
 
 export const PutCompaniesStatus = async ({ data }: Company) => {

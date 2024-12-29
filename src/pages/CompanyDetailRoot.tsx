@@ -20,9 +20,10 @@ import { message } from "antd";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompany";
-import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
+// import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import Followsucess from "../components/Followsucess";
 import { AnimatePresence } from "framer-motion";
+import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 // import { GetReviewApprovedCompany } from "../Services/ReviewCompany/GetReviewApprovedCompany";
 interface JobType {
   id: number;
@@ -138,43 +139,43 @@ const CompanyDetailRoot: React.FC = () => {
   }, [handleScroll]);
 
   // Lấy danh sách công việc từ API
-  // const { data: JobPosts } = useQuery({
-  //   queryKey: ["JobPosts"],
-  //   queryFn: ({ signal }) => GetJobPost({ signal }),
-  //   staleTime: 5000,
-  // });
-  // const JobPostsdata = JobPosts?.JobPosts;
-
-  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
-
-  const { mutateAsync } = useMutation({
-    mutationFn: GetJobSearch,
-    onSuccess: (data) => {
-      if (data && data.result && data.result.items.length > 0) {
-        setJobSearch(data.result.items);
-        // setTotalJobs(data.result.totalCount);
-      } else {
-        setJobSearch([]);
-        // setTotalJobs(0);
-      }
-    },
-    onError: () => {
-      message.error("Failed to fetch job data");
-    },
+  const { data: JobPosts } = useQuery({
+    queryKey: ["JobPosts"],
+    queryFn: ({ signal }) => GetJobPost({ signal }),
+    staleTime: 5000,
   });
+  const JobPostsdata = JobPosts?.JobPosts;
 
-  // Fetch jobs whenever currentPage changes
-  useEffect(() => {
-    mutateAsync({
-      data: {
-        // pageIndex: currentPage,
-        pageSize: 1000,
-      },
-    });
-  }, [mutateAsync]);
+  // const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+
+  // const { mutateAsync } = useMutation({
+  //   mutationFn: GetJobSearch,
+  //   onSuccess: (data) => {
+  //     if (data && data.result && data.result.items.length > 0) {
+  //       setJobSearch(data.result.items);
+  //       // setTotalJobs(data.result.totalCount);
+  //     } else {
+  //       setJobSearch([]);
+  //       // setTotalJobs(0);
+  //     }
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to fetch job data");
+  //   },
+  // });
+
+  // // Fetch jobs whenever currentPage changes
+  // useEffect(() => {
+  //   mutateAsync({
+  //     data: {
+  //       // pageIndex: currentPage,
+  //       pageSize: 1000,
+  //     },
+  //   });
+  // }, [mutateAsync]);
 
   // Lọc các công việc thuộc về công ty hiện tại
-  const jobincompanyData = jobSearch?.filter(
+  const jobincompanyData = JobPostsdata?.filter(
     (item) => item.companyId === companyDataa?.id
   );
 

@@ -440,10 +440,11 @@
   
   .button {
     margin-bottom: 0px !important;
-    color: #fff !important;
+    /* color: #fff !important; */
     padding: 10px;
-    background-color: #ff6f61;
-    
+    /* background-color: #ff6f61; */
+    background-color: #4cd681;
+    color: #091615 !important;
     box-sizing: border-box;
     display: block;
   }

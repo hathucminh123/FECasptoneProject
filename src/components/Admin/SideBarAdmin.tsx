@@ -338,7 +338,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                     <div
                       className={`${open ? classes.div10 : classes.div10Open} `}
                     >
-                      <span className={classes.span5}>Services</span>
+                      <span className={classes.span5}>Manage Services</span>
                     </div>
                     <div className={classes.div11}></div>
                   </>
@@ -370,7 +370,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                     <div
                       className={`${open ? classes.div10 : classes.div10Open} `}
                     >
-                      <span className={classes.span5}>Review</span>
+                      <span className={classes.span5}>Manage Review</span>
                     </div>
                     <div className={classes.div11}></div>
                   </>

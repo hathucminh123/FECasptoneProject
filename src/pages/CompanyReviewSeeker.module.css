@@ -475,9 +475,13 @@
   padding: 15px 32px;
   min-width: 220px;
   border-radius: 4px;
-  color: #fff;
+  /* color: #fff;
   background-color: #ed1b2f;
-  border-color: #ed1b2f;
+  border-color: #ed1b2f; */
+  color:091615;
+  background-color: #4cd681;
+  border-color: #4cd681;
+ 
   display: inline-flex;
   justify-content: center;
   align-items: center;

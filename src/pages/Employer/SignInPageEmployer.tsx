@@ -667,7 +667,7 @@ export default function SignInPageEmployer() {
                   >
                     <p
                       style={{
-                        color: "#dd3f24",
+                        // color: "#dd3f24",
                         fontSize: "0.875rem",
                         fontWeight: 600,
                         marginBottom: "0.5rem",

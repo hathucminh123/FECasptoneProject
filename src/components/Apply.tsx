@@ -679,7 +679,8 @@ export default function Apply() {
                   <div>
                     <RenderButton
                       text="Send my cv"
-                      color="#ed1b2f"
+                      // color="#ed1b2f"
+                      color="#4cd681"
                       variant="contained"
                       sxOverrides={{ width: "100%" }}
                       // onClick={handleSendCvApply}

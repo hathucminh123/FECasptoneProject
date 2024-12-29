@@ -5,16 +5,19 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FormSelect from "../../components/Employer/FormSelect";
 // import TableJobs from "../../components/Admin/TableJobs";
 import TableAccount from "../../components/Admin/TableAccount";
-import ModeEditIcon from "@mui/icons-material/ModeEdit";
+// import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import Tooltip from "@mui/material/Tooltip";
 import PauseIcon from "@mui/icons-material/Pause";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
 import { AnimatePresence } from "framer-motion";
 import ModalCompany from "../../components/Admin/ModalCompany";
+import { queryClient } from "../../Services/mainService";
+import { message } from "antd";
+import { PutCompaniesStatus } from "../../Services/CompanyService/PutCompanyStatus";
 const jobStatusOptions = ["Pending", "Approved", "Suspended"];
 const statusToIdMap: { [key: string]: number } = {
   Pending: 0,
@@ -23,8 +26,6 @@ const statusToIdMap: { [key: string]: number } = {
 };
 
 // const jobTypeOptions = ["Full-time", "Part-time", "Contract"];
-
-
 
 interface BusinessStream {
   id: number;
@@ -37,14 +38,13 @@ interface JobType {
   description: string;
 }
 
-
 interface JobPost {
   id: number;
   jobTitle: string;
   jobDescription: string;
   salary: number;
   postingDate: string;
-  expiryDate: string; 
+  expiryDate: string;
   experienceRequired: number;
   qualificationRequired: string;
   benefits: string;
@@ -54,9 +54,9 @@ interface JobPost {
   companyName: string;
   websiteCompanyURL: string;
   jobType: JobType; // jobType là đối tượng JobType
-  jobLocationCities:string[];
-  jobLocationAddressDetail:string[]
-  skillSets: string[]; 
+  jobLocationCities: string[];
+  jobLocationAddressDetail: string[];
+  skillSets: string[];
 }
 interface Company {
   id: number;
@@ -70,9 +70,8 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
-  imageUrl:string
-  companyStatus?:number;
-  
+  imageUrl: string;
+  companyStatus?: number;
 }
 const headers: (keyof Company | "Action")[] = [
   "companyName",
@@ -83,68 +82,120 @@ const headers: (keyof Company | "Action")[] = [
 ];
 // Sample job data
 
-
-const  ManageJobPosting:React.FC =()=> {
+const ManageJobPosting: React.FC = () => {
   const [selectStatus, setSelectStatus] = useState<string>("");
-  console.log('statuss',selectStatus)
-    const [openModal, setOpenModal] = useState<boolean>(false);
+  console.log("statuss", selectStatus);
+  const [openModal, setOpenModal] = useState<boolean>(false);
   // const [selectJobType, setSelectJobType] = useState<string>("");
   const [hovered, setHovered] = useState<number | null>(null);
-   const [companyId, setCompanyId] = useState<number | null>(null);
+  const [companyId, setCompanyId] = useState<number | null>(null);
 
-  
-   
   const {
     data: Company,
     // isLoading: isCompanyLoading,
     // isError: isCompanyError,
   } = useQuery({
-    queryKey: ["Company", selectStatus], 
+    queryKey: ["Company", selectStatus],
     queryFn: ({ signal }) =>
       fetchCompanies({
         signal: signal,
-        id: statusToIdMap[selectStatus] || 0, 
+        id: statusToIdMap[selectStatus] || 0,
       }),
-      staleTime: 1000,
+    staleTime: 1000,
     // staleTime: 5000,
-    enabled:!! selectStatus ,
+    enabled: !!selectStatus,
   });
 
   const Companiesdata = Company?.Companies || [];
 
- 
+  const { mutate: Putstatus } = useMutation({
+    mutationFn: PutCompaniesStatus,
+    onSuccess: async () => {
+      // console.log("ok chua ta ", data);
+      await queryClient.invalidateQueries({
+        queryKey: ["Company-details"],
+        refetchType: "active",
+      });
+      await queryClient.invalidateQueries({
+        queryKey: ["Company"],
+        refetchType: "active",
+      });
+      // queryClient.invalidateQueries({
+      //   queryKey: ["Company"],
+      //   refetchType: "active", // Ensure an active refetch
+      // });
+      // onClose?.();
+      message.success(`Update status successfully!`);
+      // navigate(`/thankyou/${job?.id}`);
+    },
 
+    onError: () => {
+      message.error("Failed to Update Status");
+    },
+  });
+
+  const handleApproved = (
+    event: React.MouseEvent<HTMLDivElement>,
+    company: Company
+  ) => {
+    event.preventDefault();
+    Putstatus({
+      data: {
+        companyId: company.id,
+        companyStatus: 2,
+      },
+    });
+  };
+
+  const handleReject = (
+    event: React.MouseEvent<HTMLDivElement>,
+    company: Company
+  ) => {
+    event.preventDefault();
+    Putstatus({
+      data: {
+        companyId: company.id,
+        companyStatus: 1,
+      },
+    });
+  };
 
   const width = 230;
 
-  const handleViewDetail = (company:Company) => {
+  const handleViewDetail = (company: Company) => {
     console.log("View Detail clicked for:", openModal);
     // alert(`Viewing details for ${company.companyName}`);
-    
-    setOpenModal(true)
-    setCompanyId(company.id)
+
+    setOpenModal(true);
+    setCompanyId(company.id);
   };
   const handleCloseModal = () => {
-   
     setOpenModal(false);
-    // setPendingUpdate(null); 
+    // setPendingUpdate(null);
   };
 
   // Custom renderers for specific columns
-  const customRenderers: { [key: string]: (row: Company, index: number) => React.ReactNode } = {
+  const customRenderers: {
+    [key: string]: (row: Company, index: number) => React.ReactNode;
+  } = {
     companyName: (company: Company, index: number) => (
       <>
         <span>{company.companyName}</span>
         {hovered === index && (
-          <div className={classes.div6} onClick={()=>handleViewDetail(company)}>
+          <div
+            className={classes.div6}
+            onClick={() => handleViewDetail(company)}
+          >
             <Link to="#" className={classes.link2}>
-              View Job Details
+              View Company Details
             </Link>
           </div>
         )}
       </>
     ),
-    "Number Of Employees": (company: Company) => <span>{company.numberOfEmployees}</span>,
+    "Number Of Employees": (company: Company) => (
+      <span>{company.numberOfEmployees}</span>
+    ),
     Country: (company: Company) => <span>{company.country}</span>,
     companyStatus: (company: Company) => (
       <span
@@ -168,7 +219,11 @@ const  ManageJobPosting:React.FC =()=> {
     Action: (company: Company, index: number) => (
       <div className={classes.actions}>
         {company.companyStatus === 0 && (
-          <div className={classes.icon2}>
+          <div
+            className={classes.icon2}
+            style={{ cursor: "pointer" }}
+            onClick={(e) => handleApproved(e, company)}
+          >
             <Tooltip title="Approve">
               <CheckCircleIcon
                 fontSize="small"
@@ -182,7 +237,7 @@ const  ManageJobPosting:React.FC =()=> {
             </Tooltip>
           </div>
         )}
-        <div className={classes.icon2}>
+        {/* <div className={classes.icon2}>
           <Tooltip title="Edit">
             <ModeEditIcon
               fontSize="small"
@@ -194,8 +249,12 @@ const  ManageJobPosting:React.FC =()=> {
               }}
             />
           </Tooltip>
-        </div>
-        <div className={classes.icon2}>
+        </div> */}
+        <div
+          className={classes.icon2}
+          onClick={(e) => handleReject(e, company)}
+          style={{ cursor: "pointer" }}
+        >
           <Tooltip title="Suspend">
             <PauseIcon
               fontSize="small"
@@ -208,7 +267,7 @@ const  ManageJobPosting:React.FC =()=> {
             />
           </Tooltip>
         </div>
-        <div className={classes.icon2}>
+        {/* <div className={classes.icon2}>
           <Tooltip title="Delete">
             <DeleteIcon
               fontSize="small"
@@ -220,19 +279,18 @@ const  ManageJobPosting:React.FC =()=> {
               }}
             />
           </Tooltip>
-        </div>
+        </div> */}
       </div>
     ),
   };
-  
 
   return (
     <div className={classes.main}>
-       <AnimatePresence>
+      <AnimatePresence>
         {openModal && (
           <ModalCompany
             onClose={handleCloseModal} // Đóng modal
-            companyId ={companyId}
+            companyId={companyId}
             // onConfirm={handleConfirmModal} // Xác nhận trong modal
           />
         )}
@@ -291,7 +349,6 @@ const  ManageJobPosting:React.FC =()=> {
             <TableAccount
               headers={headers}
               data={Companiesdata}
-          
               customRenderers={customRenderers}
               hovered={hovered}
               setHovered={setHovered} // Correct prop name
@@ -301,7 +358,6 @@ const  ManageJobPosting:React.FC =()=> {
       </div>
     </div>
   );
-}
+};
 
-
-export default ManageJobPosting
+export default ManageJobPosting;

@@ -16,6 +16,7 @@ interface SearchState {
     jobTypes: string[] | null;
     pageIndex: number | null;
     pageSize: number | null;
+    benefits:string[]|null;
   };
 }
 
@@ -34,6 +35,7 @@ const initialState: SearchState = {
     jobTypes:  JSON.parse(localStorage.getItem("selectedType") || "[]"),
     pageIndex: 1,
     pageSize: 9,
+    benefits:JSON.parse(localStorage.getItem("selectedBenefits") || "[]"),
   },
 };
 
@@ -63,6 +65,13 @@ export const searchJobSlice = createSlice({
         ? state.search.skillSets.includes(action.payload)
           ? state.search.skillSets.filter(skill => skill !== action.payload)
           : [...state.search.skillSets, action.payload]
+        : [action.payload];
+    },
+    setBenefits: (state, action: PayloadAction<string>) => {
+      state.search.benefits = state.search.benefits
+        ? state.search.benefits.includes(action.payload)
+          ? state.search.benefits.filter(skill => skill !== action.payload)
+          : [...state.search.benefits, action.payload]
         : [action.payload];
     },
     setMinSalary: (state, action: PayloadAction<number>) => {
@@ -128,6 +137,7 @@ export const {
   setJobTypes,
   setPageIndex,
   setPageSize,
+  setBenefits,
   reset
 } = searchJobSlice.actions;
 

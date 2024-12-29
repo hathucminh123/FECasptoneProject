@@ -15,7 +15,8 @@ import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import { GetSkillSets } from "../Services/SkillSet/GetSkillSet";
 import { GetJobType } from "../Services/JobTypeService/GetJobType";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
-import { reset, setCities, setCompanyNames, setExperience, setJobTypes, setSkillSets } from "../redux/slices/searchJobSlice";
+import { reset, setCities, setCompanyNames, setExperience, setJobTypes, setSkillSets,setBenefits } from "../redux/slices/searchJobSlice";
+import { GetBenefits } from "../Services/Benefits/GetBenefits";
 // import { useQuery } from "@tanstack/react-query";
 // import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 // import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
@@ -53,6 +54,7 @@ interface SearchData {
   skillSets?: string[];
   city?: string;
   cities?: string[];
+  benefits?:string[];
   location?: string;
   locations?: string;
   experience?: number;
@@ -99,6 +101,10 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const [selectedSkill, setSelectedSkill] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("selectedSkill") || "[]")
   );
+
+  const [selectedBenefits, setSelectedBenefits] = useState<string[]>(() =>
+    JSON.parse(localStorage.getItem("selectedBenefits") || "[]")
+  );
   // const [selectedType, setSelectedType] = useState<string[]>([]);
   const [selectedType, setSelectedType] = useState<string[]>(() =>
     JSON.parse(localStorage.getItem("selectedType") || "[]")
@@ -115,6 +121,8 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [searchQueryCities, setSearchQueryCities] = useState<string>("");
   const [searchQuerySkills, setSearchQuerySkills] = useState<string>("");
+  const [searchQueryBenefits, setSearchQueryBenefits] = useState<string>("");
+
 
   //exp
   const [openExp, setOpenExp] = useState<boolean>(false);
@@ -204,6 +212,15 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
 
     dispatch(setSkillSets(name))
   };
+  const handleCheckboxChangeBenefits = (name: string) => {
+    setSelectedBenefits((prevSelected) =>
+      prevSelected.includes(name)
+        ? prevSelected.filter((company) => company !== name)
+        : [...prevSelected, name]
+    );
+
+    dispatch(setBenefits(name))
+  };
   // const CompanyName = filteredJobs?.map((name) => name.companyName);
   const {
     data: Company,
@@ -246,9 +263,30 @@ const FilterModal: React.FC<Props> = ({ onDone, setText }) => {
   const filterSkills = skillsColumns.filter((name) =>
     name.toLowerCase().includes(searchQuerySkills.toLowerCase())
   );
+
+
+ const { data: BenefitsData } = useQuery({
+    queryKey: ["Benefits"],
+    queryFn: ({ signal }) => GetBenefits({ signal }),
+    staleTime: 1000,
+  });
+
+  const BenefitsDatas = BenefitsData?.Benefits || [];
+
+
+  const benefits =BenefitsDatas?.map((benefits)=>benefits.name);
+  const flattenedArrayBenefits = benefits?.flat();
+  const uniqueArrayBenefits = [...new Set(flattenedArrayBenefits)];
+  const benefitsColumns =uniqueArrayBenefits
+
+  const filterBenefits =benefitsColumns.filter((name)=>name.toLowerCase().includes(searchQueryBenefits.toLowerCase()))
+
   useEffect(() => {
     localStorage.setItem("selectedSkill", JSON.stringify(selectedSkill));
   }, [selectedSkill]);
+  useEffect(() => {
+    localStorage.setItem("selectedBenefits", JSON.stringify(selectedBenefits));
+  }, [selectedBenefits]);
   //Jobtype
   const { data: JobTypedata } = useQuery({
     queryKey: ["JobType"],
@@ -301,6 +339,9 @@ console.log("okchua",jobSearch);
     if (selectedSkill.length > 0) {
       searchObject.skillSets = selectedSkill;
     }
+    if(selectedBenefits.length >0){
+      searchObject.benefits =selectedBenefits
+    }
 
     if (searchState.search.keyword) {
       searchObject.keyword = searchState.search.keyword
@@ -321,6 +362,7 @@ console.log("okchua",jobSearch);
     // Push to newSearchDataArray only if at least one filter is selected
     if (
       selectedSkill ||
+      selectedBenefits ||
       selectedType ||
       selectedCompany ||
       selectExp ||
@@ -333,6 +375,7 @@ console.log("okchua",jobSearch);
   }, [
     selectedSkill,
     selectedType,
+    selectedBenefits,
     // minSalary,
     // maxSalary,
     selectedCompany,
@@ -495,6 +538,36 @@ console.log("okchua",jobSearch);
                   className={classes.inputchecked}
                   checked={selectedSkill.includes(name)}
                   onChange={() => handleCheckboxChangeSkills(name)}
+                />
+                <span className={classes.span2}>{name}</span>
+              </label>
+            ))}
+          </div>
+        </section>
+        <section className={classes.main}>
+          <Typography variant="h6" className={classes.sectionTitle}>
+            Benefits
+          </Typography>
+          <input
+            placeholder="Search Benefits"
+            type="text"
+            className={classes.input}
+            onChange={(e) => setSearchQueryBenefits(e.target.value)}
+          />
+          <div className={classes.industryList}>
+            {filterBenefits.map((name) => (
+              <label key={name} className={classes.label}>
+                {/* <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedCompany === name}
+                  onChange={() => handleCheckboxChange(name)}
+                /> */}
+                <input
+                  type="checkbox"
+                  className={classes.inputchecked}
+                  checked={selectedBenefits.includes(name)}
+                  onChange={() => handleCheckboxChangeBenefits(name)}
                 />
                 <span className={classes.span2}>{name}</span>
               </label>

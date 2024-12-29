@@ -592,7 +592,7 @@ export default function FormCreateEmployer() {
         <nav className={classes.main4}>
           <NavLink to="" className={classes.link1}>
             <div className={classes.main5}>
-              <span>OverView</span>{" "}
+              <span>Overview</span>{" "}
             </div>{" "}
           </NavLink>
           <NavLink to="" className={classes.link2}>
@@ -1135,7 +1135,7 @@ export default function FormCreateEmployer() {
                               onClick={handleOpen}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>Create new Skills {inputSkill}</span>
+                              <span>No skills name: {inputSkill}</span>
                             </div>
                           )}
                         </div>
@@ -1224,7 +1224,7 @@ export default function FormCreateEmployer() {
                               onClick={handleOpenBenefit}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>Create new Benefits {inputBenefit}</span>
+                              <span>No Benefits name: {inputBenefit}</span>
                             </div>
                           )}
                         </div>

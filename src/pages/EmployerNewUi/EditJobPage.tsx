@@ -1123,7 +1123,7 @@ export default function EditJobPage() {
                               onClick={handleOpen}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>Create new Skills {inputSkill}</span>
+                              <span>No skills {inputSkill}</span>
                             </div>
                           )}
                         </div>
@@ -1226,7 +1226,7 @@ export default function EditJobPage() {
                               onClick={handleOpenBenefit}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>Create new Benefits {inputBenefit}</span>
+                              <span>No benefits name {inputBenefit}</span>
                             </div>
                           )}
                         </div>

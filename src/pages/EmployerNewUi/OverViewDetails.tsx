@@ -155,7 +155,7 @@ const OverViewDetails: React.FC = () => {
             />
           </div>
 
-          <p className={classes.p}>Salary: {job?.salary} USD</p>
+          <p className={classes.p}>Salary: {`${job?.minsalary} - ${job?.salary} USD`}</p>
           <div className={classes.main3}>
             <div className={classes.main4}>
               <Typography

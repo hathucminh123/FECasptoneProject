@@ -47,7 +47,7 @@ const OverViewJob:React.FC =()=> {
           >
             {({ isActive }) =>
             <div className={classes.main4}>
-              <span  style={isActive ?{color:'#050c26'} :undefined}>OverView</span>
+              <span  style={isActive ?{color:'#050c26'} :undefined}>Preview</span>
             </div>
 }
           </NavLink>

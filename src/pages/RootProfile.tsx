@@ -3,8 +3,8 @@
 import { Outlet } from "react-router-dom";
 import HeaderProfile from "../components/HeaderProfile";
 import classes from "./RootProfile.module.css";
-
-export default function RootProfile() {
+import React from "react";
+const RootProfile:React.FC =()=> {
   return (
     <div
       style={{
@@ -23,3 +23,4 @@ export default function RootProfile() {
     </div>
   );
 }
+export default RootProfile

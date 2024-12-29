@@ -177,7 +177,7 @@ const BenefitsPage: React.FC = () => {
                 <input
                   type="text"
                   className={classes.input}
-                  placeholder="Input Skill name,description"
+                  placeholder="Input Benefits name,description"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />

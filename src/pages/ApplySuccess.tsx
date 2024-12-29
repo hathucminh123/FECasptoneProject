@@ -11,6 +11,7 @@ import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { message } from "antd";
 import Pagination from "@mui/material/Pagination";
+import Box from "@mui/material/Box";
 
 interface JobType {
   id: number;
@@ -37,9 +38,10 @@ interface JobPost {
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
+  minsalary?:number;
 }
 
-const ApplySuccess:React.FC =()=> {
+const ApplySuccess: React.FC = () => {
   const { JobId } = useParams();
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", JobId],
@@ -78,10 +80,7 @@ const ApplySuccess:React.FC =()=> {
     });
   }, [currentPage, mutateAsync]);
 
-  const handlePageChange = (
-    _: React.ChangeEvent<unknown>,
-    page: number
-  ) => {
+  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
     // setDirection(page > currentPage ? 1 : -1);
     setCurrentPage(page);
     // scrollToTop();
@@ -122,12 +121,47 @@ const ApplySuccess:React.FC =()=> {
             <div className={classes.main5}>
               <div className={classes.main6}>
                 <div className={classes.logo}>
-                  <Typography
-                    variant="h3"
-                    sx={{ fontSize: 25, lineHeight: 1.5, fontWeight: 700 }}
-                  >
-                    Amazing
-                  </Typography>
+                <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight:'10px' // Căn giữa theo chiều dọc
+                }}
+              >
+                {/* Phần chữ "it" */}
+                <Box
+                  sx={{
+                    backgroundColor: "#3cbc8c",
+                    color: "#fff",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1",
+                    width: "32px",
+                    height: "32px",
+                    borderRadius: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginRight: "3px",
+                  }}
+                >
+                  A
+                </Box>
+
+                <Typography
+                  variant="h2"
+                  sx={{
+                    color: "#000000",
+                    fontWeight: 700,
+                    fontSize: "22px",
+                    fontFamily: "Lexend, sans-serif",
+                    lineHeight: "1.5",
+                  }}
+                >
+                  mazingJob
+                </Typography>
+              </Box>
                 </div>
               </div>
             </div>
@@ -207,7 +241,7 @@ const ApplySuccess:React.FC =()=> {
                             <div className={classes.main17}>
                               <MonetizationOnOutlinedIcon />
                               <span className={classes.span1}>
-                                {job.salary}
+                                {`${job?.minsalary} - ${job?.salary} USD`}
                               </span>
                             </div>
                           </div>
@@ -283,7 +317,6 @@ const ApplySuccess:React.FC =()=> {
       </div>
     </div>
   );
-}
+};
 
-
-export default ApplySuccess
+export default ApplySuccess;
