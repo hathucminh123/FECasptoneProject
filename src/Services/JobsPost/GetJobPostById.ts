@@ -37,7 +37,7 @@ interface JobPost {
   expiryDate: string; 
   experienceRequired: number;
   qualificationRequired: string;
-  minsalary?: number;
+  minsalary: number;
   isHot?: boolean;
   benefits: string;
   imageURL: string;

@@ -18,6 +18,7 @@ import TopEmployersSection from "../components/TopEmployersSection";
 import TopJobSection from "../components/TopJobSection";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { setKeyword } from "../redux/slices/searchJobSlice";
+import AiFeature from "../components/AiFeature";
 
 // const skillsColumns = [
 //   "Java",
@@ -379,8 +380,8 @@ const HomePage: React.FC = () => {
               </div>
             </div>
           </div>
+
           <div className={classes.main1}>
-    
             <img
               className={classes.img}
               src="https://itviec.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzdSVkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--470623509c0a85b21133c40fac9fa817aa009d2c/christmas.png"
@@ -473,10 +474,12 @@ const HomePage: React.FC = () => {
           src="https://itviec.com/assets/christmas_background-36b334a677f4f8d08aa5aa26805025e9fd35dbd2ccbf998146741b56f04cd244.svg"
           alt=""
         />
-
-
       </div>
 
+
+      <>
+<AiFeature/>
+</>
       {/* First section with tools for application journey */}
       <div className={classes.main}>
         <div className={classes.container1}>

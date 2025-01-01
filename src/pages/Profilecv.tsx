@@ -609,7 +609,7 @@ export default function Profilecv() {
           /> */}
           <CardProfile
             title="Education"
-            text="Highlight detailed information about your job history"
+            text="Highlight detailed information about your Education"
             icon={<EditNoteOutlinedIcon />}
             icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
@@ -618,7 +618,7 @@ export default function Profilecv() {
           />
           <CardExperience
             title="Work Experience"
-            text="Highlight detailed information about your job history"
+            text="Highlight detailed information about your Experience"
             icon={<EditNoteOutlinedIcon />}
             icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"

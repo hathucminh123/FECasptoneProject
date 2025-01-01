@@ -31,7 +31,6 @@ export default function PaymentModal({ onClose }: props) {
   });
 
   const skillSets = SkillSetData?.Services || [];
-  
 
   const { mutate } = useMutation({
     mutationFn: Payment,
@@ -70,7 +69,10 @@ export default function PaymentModal({ onClose }: props) {
   //   },
   // });
 
-  const handlePayment = (e: React.MouseEvent<HTMLButtonElement>,id:number) => {
+  const handlePayment = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) => {
     e.preventDefault();
     mutate({
       data: {
@@ -189,7 +191,7 @@ export default function PaymentModal({ onClose }: props) {
                                 borderStyle: "solid",
                               }}
                             >
-                             {item.price}/VNĐ
+                              {item.price}/VNĐ
                             </span>
                           </Typography>
                           <p className={classes.p1}>Includes:</p>
@@ -236,7 +238,7 @@ export default function PaymentModal({ onClose }: props) {
                                   d="M5.91 10.496L3.707 8.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.493-.09l7-8a1 1 0 10-1.572-1.235L5.91 10.496z"
                                 ></path>
                               </svg>
-                              Advanced Applicant Filters
+                              Recommend talents
                             </li>
                           </ul>
                         </div>
@@ -251,7 +253,7 @@ export default function PaymentModal({ onClose }: props) {
                         ) : ( */}
                           <button
                             className={classes.button1}
-                            onClick={(e) =>handlePayment(e,item.id)}
+                            onClick={(e) => handlePayment(e, item.id)}
                             type="button"
                           >
                             Upgrade

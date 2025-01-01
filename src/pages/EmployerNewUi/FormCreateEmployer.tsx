@@ -31,6 +31,7 @@ import { PostBenefits } from "../../Services/Benefits/PostBenefits";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { AnimatePresence } from "framer-motion";
 import EmployerServiceModal from "../../components/Employer/EmployerServiceModal";
+import { GetLocationService } from "../../Services/Location/GetLocationService";
 // type JobContextType = {
 //   selectJobId: number | null;
 //   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
@@ -71,6 +72,11 @@ interface Benefits {
   name: string;
   // shorthand: string;
   // description: string;
+}
+
+interface Locations {
+  id: number;
+  city: string;
 }
 interface JobType {
   id: number;
@@ -116,8 +122,12 @@ export default function FormCreateEmployer() {
 
   //service
   // const [openService, setOpenService] = useState<boolean>(false);
-  const [selectService, setSelectService] = useState<Services | null |  undefined>();
-  const [selectServiceId, setSelectServiceId] = useState<number | null|undefined>();
+  const [selectService, setSelectService] = useState<
+    Services | null | undefined
+  >();
+  const [selectServiceId, setSelectServiceId] = useState<
+    number | null | undefined
+  >();
 
   // skill
   const [open, setOpen] = useState(false);
@@ -151,12 +161,27 @@ export default function FormCreateEmployer() {
   const Benefitsdataa = BenefitsData?.Benefits;
   const [openBenefit, setOpenBenefit] = useState(false);
   const [benefitsdata, setBenefitsdata] = useState<Benefits[]>([]);
-    const [openModal, setOpenModal] = useState<boolean>(false);
+
+  const [openModal, setOpenModal] = useState<boolean>(false);
   const [dropdownOpenBenefit, setDropdownOpenBenefit] = useState(false);
   const [filteredBenefits, setFilteredBenefits] = useState(Benefitsdataa);
   const [benefitId, setBenefitId] = useState<number[]>([]);
   const [inputBenefit, setInputBenefit] = useState<string>("");
   const dropdownRefBenefit = useRef<HTMLDivElement>(null);
+
+  //location
+  const { data: LocationData } = useQuery({
+    queryKey: ["Locations"],
+    queryFn: ({ signal }) => GetLocationService({ signal }),
+    staleTime: 5000,
+  });
+  const Locationsdataa = LocationData?.Locations;
+  const [locationId, setLocationId] = useState<number[]>([]);
+  const [locationsdata, setLocationsdata] = useState<Locations[]>([]);
+  const [filteredLocations, setFilteredLocations] = useState(Locationsdataa);
+  const [inputLocation, setInputLocation] = useState<string>("");
+  const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
+  const dropdownRefLocation = useRef<HTMLDivElement>(null);
   //salary
   const [salary, setSalary] = useState<string>("");
   const [minsalary, setMinSalary] = useState<string>("");
@@ -286,6 +311,19 @@ export default function FormCreateEmployer() {
     setInputBenefit("");
   };
 
+  const handleLocation = (selectedLocation: Locations) => {
+    if (
+      !locationsdata.includes(selectedLocation) &&
+      !locationId.includes(selectedLocation.id)
+    ) {
+      setLocationsdata([...locationsdata, selectedLocation]);
+      // setBenefitId([...benefitId, selectedLocation.id]);
+      setLocationId([...locationId, selectedLocation.id]);
+    }
+    setDropdownOpenLocation(false);
+    setInputLocation("");
+  };
+
   const handleRemoveSkill = (skillToRemove: SkillSet) => {
     setSkills(skills.filter((skill) => skill !== skillToRemove));
     setSkillId(skillId.filter((skill) => skill !== skillToRemove.id));
@@ -295,6 +333,15 @@ export default function FormCreateEmployer() {
       benefitsdata.filter((benefit) => benefit !== BenefitToRemove)
     );
     setBenefitId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
+  };
+
+  const handleRemoveLocation = (LocationToRemove: Locations) => {
+    setLocationsdata(
+      locationsdata.filter((location) => location !== LocationToRemove)
+    );
+    setLocationId(
+      locationId.filter((location) => location !== LocationToRemove.id)
+    );
   };
 
   const handleClickOutside = (event: MouseEvent) => {
@@ -313,6 +360,20 @@ export default function FormCreateEmployer() {
       setDropdownOpenBenefit(false);
     }
   };
+  const handleClickOutsideLocation = (event: MouseEvent) => {
+    if (
+      dropdownRefLocation.current &&
+      !dropdownRefLocation.current.contains(event.target as Node)
+    ) {
+      setDropdownOpenLocation(false);
+    }
+  };
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutsideLocation);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideLocation);
+    };
+  }, []);
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -353,6 +414,23 @@ export default function FormCreateEmployer() {
     } else {
       setFilteredBenefits([]);
       setDropdownOpenBenefit(false);
+    }
+  };
+
+  //Locations
+  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setInputLocation(inputValue);
+    if (inputValue) {
+      setFilteredLocations(
+        Locationsdataa?.filter((comp) =>
+          comp.city.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+      setDropdownOpenLocation(true);
+    } else {
+      setFilteredLocations([]);
+      setDropdownOpenLocation(false);
     }
   };
 
@@ -427,7 +505,7 @@ export default function FormCreateEmployer() {
       setSelectTypeId(type.id);
     }
   };
-  
+
   // const handleSelectService = (type: Services) => {
   //   if (selectService?.id === type.id) {
   //     // Nếu mục được chọn lại giống mục hiện tại, đặt lại giá trị thành null
@@ -479,9 +557,9 @@ export default function FormCreateEmployer() {
     setOpenModal(false);
   };
   const handleOnCreate = async () => {
-    if(!selectServiceId){
-      message.warning("Please select a service package to post the job."); 
-      return; 
+    if (!selectServiceId) {
+      message.warning("Please select a service package to post the job.");
+      return;
     }
     try {
       // Kiểm tra nếu `selectedFile` tồn tại trước khi tiếp tục
@@ -499,7 +577,8 @@ export default function FormCreateEmployer() {
         !benefits ||
         !selectTypeId ||
         !skillId ||
-        !benefitId
+        !benefitId||
+        !locationId
       ) {
         message.error("Please fill in all the required fields.");
       }
@@ -547,6 +626,7 @@ export default function FormCreateEmployer() {
         expiryDate: selectedDate ? adjustTimezone(selectedDate) : "",
         serviceId: selectServiceId,
         minsalary: parseInt(minsalary) ?? 0,
+        locationIds: locationId,
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
@@ -560,7 +640,7 @@ export default function FormCreateEmployer() {
   };
   return (
     <div className={classes.main}>
-       <AnimatePresence>
+      <AnimatePresence>
         {openModal && (
           <EmployerServiceModal
             onClose={handleCloseModalPayment}
@@ -1233,6 +1313,95 @@ export default function FormCreateEmployer() {
                   </div>
                 </div>
               </label>
+              <label
+                htmlFor=""
+                className={classes.label}
+                style={{ marginTop: "50px" }}
+              >
+                <div className={classes.main9}>
+                  <div className={classes.main10}>
+                    Select Your Locations
+                    <span className={classes.span}>*</span>
+                  </div>
+                </div>
+                {locationsdata.length && locationsdata.length > 0 ? (
+                  <div className={classes.main24}>
+                    {locationsdata.map((locations) => (
+                      <span
+                        key={locations.id}
+                        className={classes.span2}
+                        onClick={() => handleRemoveLocation(locations)}
+                      >
+                        {locations.city}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                ) : undefined}
+
+                <div className={classes.div1} aria-expanded="false">
+                  <div className={inputLocation ? classes.divne : classes.div2}>
+                    <div className={classes.div3}>
+                      <div className={classes.div4}>
+                        <div className={classes.icon}>
+                          <SearchIcon />
+                        </div>
+                        <input
+                          value={inputLocation}
+                          onChange={handleChangeLocation}
+                          className={classes.input2}
+                          type="text"
+                          // placeholder="e.g. Python,Reactjs"
+                          aria-autocomplete="list"
+                          autoComplete="off"
+                          onFocus={() => setDropdownOpenLocation(true)}
+                        />
+                      </div>
+
+                      {dropdownOpenLocation && (
+                        <div
+                          className={classes.dropdown}
+                          ref={dropdownRefLocation}
+                        >
+                          {filteredLocations?.length &&
+                          filteredLocations?.length > 0 ? (
+                            filteredLocations?.map((comp, index) => (
+                              <div
+                                key={index}
+                                className={classes.dropdownItem}
+                                onClick={() => handleLocation(comp)}
+                              >
+                                {/* <img
+                          src={comp.imageUrl}
+                          alt={comp.companyName}
+                          className={classes.logo}
+                        /> */}
+                                <span className={classes.companyName}>
+                                  {comp.city}
+                                </span>
+                                {/* <span className={classes.companyUrl}>
+                          {comp.websiteURL}
+                        </span> */}
+                              </div>
+                            ))
+                          ) : (
+                            <div
+                              className={classes.createNewCompany}
+                              //   onClick={handleOpenRegister}
+                              // onClick={handleOpenBenefit}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <span>No Benefits name: {inputLocation}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </label>
               <div className={classes.div5}>
                 <div className={classes.main9}>
                   <div className={classes.main10}>
@@ -1308,7 +1477,7 @@ export default function FormCreateEmployer() {
               <label htmlFor="" className={classes.label}>
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                   Max Salary
+                    Max Salary
                     <span className={classes.span}>*</span>
                   </div>
                 </div>

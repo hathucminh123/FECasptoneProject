@@ -3,7 +3,7 @@ import classes from "./AuthVeritication.module.css";
 import Typography from "@mui/material/Typography";
 import { NavLink, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 import TextField from "@mui/material/TextField";
 // import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 // import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -16,7 +16,7 @@ import { message } from "antd";
 import { PutEmail } from "../../Services/AuthService/PutEmail";
 
 export default function PutEmailVeritication() {
-//   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
+  //   const [isPasswordShow, setIsPasswordShow] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<boolean | null>(null);
   const [verificationCode, setVerificationCode] = useState<string>("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -36,7 +36,7 @@ export default function PutEmailVeritication() {
       }, 3000);
     },
     onError: () => {
-        message.error("Failed to Update");
+      message.error("Failed to Update");
       setTimeout(() => {
         reset();
       }, 5000);
@@ -198,7 +198,7 @@ export default function PutEmailVeritication() {
                     margin: 0,
                     fontWeight: 700,
                     fontFamily: "Roboto, Helvetica, Verdana, Arial, sans-serif",
-                    color: "#fff",
+                    color: "#091615",
                     letterSpacing: 0,
                     lineHeight: 1.5,
                   }}
@@ -210,7 +210,7 @@ export default function PutEmailVeritication() {
                     fontSize: "18px",
                     margin: "8px 0 0 0",
                     textAlign: "center",
-                    color: "#fff",
+                    color: "#091615",
                   }}
                 >
                   Input your email verification code to continue using our
@@ -275,7 +275,7 @@ export default function PutEmailVeritication() {
                         lineHeight: 1.5,
                       }}
                     >
-                      Input your email verification code
+                      Input your New Update email
                     </Typography>
 
                     <Box
@@ -293,7 +293,7 @@ export default function PutEmailVeritication() {
                             marginBottom: ".5rem",
                           }}
                         >
-                          Verification Code
+                          Input your new email
                         </label>
                         <div className={classes.input1}>
                           <div className={classes.logoinput}>

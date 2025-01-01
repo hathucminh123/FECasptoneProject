@@ -1,0 +1,82 @@
+.aiFeature {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    padding: 2rem;
+    box-sizing: border-box;
+    margin: 2rem auto;
+    border-radius: 8px;
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+    max-width: 1200px;
+    width: 100%;
+    background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+}
+
+.aiFeatureCard {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+@media (min-width: 768px) {
+    .aiFeatureCard {
+        flex-direction: row;
+    }
+}
+
+.aiFeatureLeft {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aiFeatureRight {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.aiFeatureHeading {
+    font-size: 1.8rem;
+    font-weight: bold;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    color: #2b2b2b;
+}
+
+.aiFeatureDescription {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #5a5a5a;
+}
+
+.aiFeatureButton {
+    background: linear-gradient(to right, #3b82f6, #9333ea);
+    color: white;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.aiFeatureButton:hover {
+    background: linear-gradient(to right, #2563eb, #7c2ae8);
+    transform: translateY(-2px);
+}

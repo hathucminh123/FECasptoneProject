@@ -4,7 +4,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import SecurityIcon from "@mui/icons-material/Security";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 // import PostAddOutlinedIcon from "@mui/icons-material/PostAddOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+// import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 // import NotificationImportantOutlinedIcon from "@mui/icons-material/NotificationImportantOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
@@ -150,7 +150,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                 </ul>
               )}
             </li>
-            <li className={classes.li}>
+            {/* <li className={classes.li}>
               <div className={classes.div8}>
                 <NavLink
                   to="AccountSystem"
@@ -181,7 +181,7 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                   </>
                 </NavLink>
               </div>
-            </li>
+            </li> */}
 
             <li className={classes.li}>
               <div className={classes.div8}>

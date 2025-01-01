@@ -31,6 +31,8 @@ import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 import { PutJobPost } from "../../Services/JobsPost/PutJobPost";
 import { GetBenefits } from "../../Services/Benefits/GetBenefits";
 import { PostBenefits } from "../../Services/Benefits/PostBenefits";
+import { GetLocationService } from "../../Services/Location/GetLocationService";
+
 // import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 // type JobContextType = {
 //   selectJobId: number | null;
@@ -74,6 +76,10 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string;
+}
+interface Locations {
+  id: number;
+  city: string;
 }
 
 interface Benefits {
@@ -201,9 +207,67 @@ export default function EditJobPage() {
     );
     setBenefitId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
   };
+
+
+  //locations 
+  const { data: LocationData } = useQuery({
+    queryKey: ["Location"],
+    queryFn: ({ signal }) => GetLocationService({ signal }),
+    staleTime: 5000,
+  });
+  const Locationdata = LocationData?.Locations;
+  
+  // const [openBenefit, setOpenBenefit] = useState(false);
+  // const [nameBenefits, setNameBenefits] = useState<string>("");
+  const [locationsdata, setLocationsdata] = useState<Locations[]>([]);
+  const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
+  const [filteredLocations, setFilteredLocations] = useState(Locationdata);
+  const [locationId, setLocationId] = useState<number[]>([]);
+  const [locationFull, setLocationFull] = useState<Locations[]>([]);
+  console.log("location", setLocationFull);
+  const [inputLocation, setInputLocation] = useState<string>("");
+  const dropdownRefLocation = useRef<HTMLDivElement>(null);
+  // const handleOpenBenefit = () => setOpenBenefit(true);
+  // const handleCloseBenefit = () => setOpenBenefit(false);
+  const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setInputLocation(inputValue);
+    if (inputValue) {
+      setFilteredLocations(
+        Locationdata?.filter((comp) =>
+          comp.city.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+      setDropdownOpenLocation(true);
+    } else {
+      setFilteredLocations([]);
+      setDropdownOpenLocation(false);
+    }
+  };
+
+  const handleLocation = (selectedBenefit: Locations) => {
+    if (
+      !locationsdata.includes(selectedBenefit) &&
+      !locationId.includes(selectedBenefit.id)
+    ) {
+      setLocationsdata([...locationsdata, selectedBenefit]);
+      setLocationId([...benefitId, selectedBenefit.id]);
+    }
+    setDropdownOpenLocation(false);
+    setInputLocation("");
+  };
+
+  const handleRemoveLocations = (BenefitToRemove: Locations) => {
+    setLocationsdata(
+      locationsdata.filter((benefit) => benefit !== BenefitToRemove)
+    );
+    setLocationId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
+  };
+
+
   //salary
   const [salary, setSalary] = useState<string>("");
-    const [minsalary, setMinSalary] = useState<string>("");
+  const [minsalary, setMinSalary] = useState<string>("");
   //date
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -222,6 +286,9 @@ export default function EditJobPage() {
       setFileUrl(job.imageURL || "");
       setSkillsFull(job.skillSetObjects || []);
       setBenefitFull(job.benefitObjects || []);
+      setMinSalary(job?.minsalary.toString() || "0");
+      // setLocationFull(job.locationObjects || []);
+
       // setSkills(job.skillSets || []);
       console.log("skill", job.skillSets);
 
@@ -478,12 +545,12 @@ export default function EditJobPage() {
         queryKey: ["JobSearch"],
         refetchType: "active",
       });
-      message.success("Post Job successfully.");
+      message.success("Update Job successfully.");
       navigate(`/EmployerJob/listjobs/OverView/${job?.id}`);
       //   setShowAlert(true);
     },
     onError: () => {
-      message.error("Failed to post the job.");
+      message.error("Failed to Update the job.");
     },
   });
   const handleOnCreate = async () => {
@@ -493,9 +560,6 @@ export default function EditJobPage() {
     // }
 
     try {
-
-      
-
       let uploadedFileUrl = fileUrl;
 
       if (selectedFile) {
@@ -511,7 +575,15 @@ export default function EditJobPage() {
         message.warning("Salary must be more than 0");
         return;
       }
+      if (parseInt(minsalary) === 0) {
+        message.warning("Min Salary must be more than 0");
+        return;
+      }
 
+      if (parseInt(minsalary) >= parseInt(salary)) {
+        message.warning("Minimum salary must be less than the salary.");
+        return;
+      }
       if (selectedDate && new Date(selectedDate) <= new Date()) {
         message.warning("The expiry date must be a future date.");
         return;
@@ -1213,6 +1285,109 @@ export default function EditJobPage() {
                         /> */}
                                 <span className={classes.companyName}>
                                   {comp.name}
+                                </span>
+                                {/* <span className={classes.companyUrl}>
+                          {comp.websiteURL}
+                        </span> */}
+                              </div>
+                            ))
+                          ) : (
+                            <div
+                              className={classes.createNewCompany}
+                              //   onClick={handleOpenRegister}
+                              onClick={handleOpenBenefit}
+                              style={{ cursor: "pointer" }}
+                            >
+                              <span>No benefits name {inputBenefit}</span>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </label>
+              <label
+                htmlFor=""
+                className={classes.label}
+                style={{ marginTop: "50px" }}
+              >
+                <div className={classes.main9}>
+                  <div className={classes.main10}>
+                    Select Your Locations
+                    <span className={classes.span}>*</span>
+                  </div>
+                </div>
+                {locationsdata.length && locationsdata.length > 0 ? (
+                  <div className={classes.main24}>
+                    {locationsdata.map((location) => (
+                      <span
+                        key={location.id}
+                        className={classes.span2}
+                        onClick={() => handleRemoveLocations(location)}
+                      >
+                        {location.city}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                ) : locationFull.length && locationFull.length > 0 ? (
+                  <div className={classes.main24}>
+                    {locationFull.map((location) => (
+                      <span
+                        key={location.id}
+                        className={classes.span2}
+                        // onClick={() => handleRemoveSkill(skills)}
+                      >
+                        {location.city}
+                        <span className={classes.spanicon}>
+                          <CloseIcon />
+                        </span>
+                      </span>
+                    ))}
+                  </div>
+                ) : undefined}
+                <div className={classes.div1} aria-expanded="false">
+                  <div className={inputLocation ? classes.divne : classes.div2}>
+                    <div className={classes.div3}>
+                      <div className={classes.div4}>
+                        <div className={classes.icon}>
+                          <SearchIcon />
+                        </div>
+                        <input
+                          value={inputLocation}
+                          onChange={handleChangeLocation}
+                          className={classes.input2}
+                          type="text"
+                          // placeholder="e.g. Python,Reactjs"
+                          aria-autocomplete="list"
+                          autoComplete="off"
+                          onFocus={() => setDropdownOpenLocation(true)}
+                        />
+                      </div>
+
+                      {dropdownOpenLocation && (
+                        <div
+                          className={classes.dropdown}
+                          ref={dropdownRefLocation}
+                        >
+                          {filteredLocations?.length &&
+                          filteredLocations?.length > 0 ? (
+                            filteredLocations?.map((comp, index) => (
+                              <div
+                                key={index}
+                                className={classes.dropdownItem}
+                                onClick={() => handleLocation(comp)}
+                              >
+                                {/* <img
+                          src={comp.imageUrl}
+                          alt={comp.companyName}
+                          className={classes.logo}
+                        /> */}
+                                <span className={classes.companyName}>
+                                  {comp.city}
                                 </span>
                                 {/* <span className={classes.companyUrl}>
                           {comp.websiteURL}

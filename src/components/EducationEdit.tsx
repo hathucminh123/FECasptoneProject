@@ -58,9 +58,14 @@ const monthMap: { [key: string]: number } = {
 };
 
 
-const years = Array.from(new Array(60), (_, index) => index + 1970).map(
-  (year) => ({ value: year, label: year })
-);
+// const years = Array.from(new Array(60), (_, index) => index + 1970).map(
+//   (year) => ({ value: year, label: year })
+// );
+
+const years = Array.from(
+  { length: new Date().getFullYear() - 2000 + 1 },
+  (_, index) => 2000 + index
+).map((year) => ({ value: year, label: year }));
 
 const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
   // const navigate = useNavigate();
@@ -108,23 +113,96 @@ const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
     }
   });
 
+  // const handleSubmit = () => {
+  //   if (!formData.startYear || !formData.startMonth || !formData.endYear || !formData.endMonth) {
+  //     message.error("Please fill in all date fields");
+  //     return;
+  //   }
+
+  //   const startMonthNumber = monthMap[formData.startMonth];
+  //   const endMonthNumber = monthMap[formData.endMonth];
+
+  //   if (!startMonthNumber || !endMonthNumber) {
+  //     message.error("Invalid month value");
+  //     return;
+  //   }
+
+  //   const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
+  //   const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
+
+  //   // Gọi API mutation để gửi dữ liệu
+  //   mutate({
+  //     data: {
+  //       name: formData.name,
+  //       institutionName: formData.institutionName,
+  //       degree: formData.degree,
+  //       fieldOfStudy: formData.fieldOfStudy,
+  //       startDate,
+  //       endDate,
+  //       gpa: formData.gpa,
+  //       id: formData.id
+  //     }
+  //   });
+  // };
+
+
   const handleSubmit = () => {
-    if (!formData.startYear || !formData.startMonth || !formData.endYear || !formData.endMonth) {
-      message.error("Please fill in all date fields");
+    // Validate các trường bắt buộc
+    if (
+      // !formData.name ||
+      !formData.institutionName ||
+      !formData.degree ||
+      !formData.fieldOfStudy ||
+      !formData.startMonth ||
+      !formData.startYear ||
+      !formData.endMonth ||
+      !formData.endYear ||
+      formData.gpa === 0
+    ) {
+      message.error("Please fill in all the required fields.");
       return;
     }
-
+  
+    // Validate GPA
+    if (formData.gpa <= 0 || formData.gpa > 10) {
+      message.error("GPA must be greater than 0 and less than or equal to 10.");
+      return;
+    }
+  
+    // Validate năm bắt đầu và kết thúc
+    if (Number(formData.endYear) < Number(formData.startYear)) {
+      message.error("End year cannot be less than start year.");
+      return;
+    }
+  
     const startMonthNumber = monthMap[formData.startMonth];
     const endMonthNumber = monthMap[formData.endMonth];
-
+  
     if (!startMonthNumber || !endMonthNumber) {
-      message.error("Invalid month value");
+      message.error("Invalid month value.");
       return;
     }
-
-    const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
-    const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
-
+  
+    // Validate tháng bắt đầu và kết thúc
+    if (
+      Number(formData.startYear) === Number(formData.endYear) &&
+      startMonthNumber > endMonthNumber
+    ) {
+      message.error("Start month cannot be greater than end month in the same year.");
+      return;
+    }
+  
+    const startDate = new Date(
+      Number(formData.startYear),
+      startMonthNumber - 1,
+      1
+    ).toISOString();
+    const endDate = new Date(
+      Number(formData.endYear),
+      endMonthNumber - 1,
+      1
+    ).toISOString();
+  
     // Gọi API mutation để gửi dữ liệu
     mutate({
       data: {
@@ -135,11 +213,11 @@ const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
         startDate,
         endDate,
         gpa: formData.gpa,
-        id: formData.id
-      }
+        id: formData.id,
+      },
     });
   };
-
+  
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -152,7 +230,7 @@ const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
     <Modal title="Education" onClose={onDone} text="Save" onClickSubmit={handleSubmit} isPending={isPending}>
       <Box component="form" noValidate autoComplete="off">
         <div className={classes.formInput}>
-          <TextField
+          {/* <TextField
             label="School Name"
             name="name"
             required
@@ -160,7 +238,7 @@ const EducationEdit: React.FC<Props> = ({ onDone, data  }) => {
             onChange={handleChange}
             variant="outlined"
             className={classes.inputGroup}
-          />
+          /> */}
           <TextField
             label="Institution Name"
             name="institutionName"

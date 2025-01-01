@@ -21,7 +21,7 @@ import { queryClient } from "../../Services/mainService";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 // import { PostCVsAI } from "../../Services/CVService/PostCVAI";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
-import { PostCVsAI } from "../../Services/CVService/PostCVAI";
+// import { PostCVsAI } from "../../Services/CVService/PostCVAI";
 interface EducationDetail {
   id: number;
   institutionName: string;
@@ -175,36 +175,36 @@ export default function ModalSendEmail({ onClose, profile, idJob }: props) {
     });
   };
 
-  const { mutate: PostCVAi } = useMutation({
-    mutationFn: PostCVsAI,
-    onSuccess: (data) => {
-      console.log("ok chua ta ", data);
+  // const { mutate: PostCVAi } = useMutation({
+  //   mutationFn: PostCVsAI,
+  //   onSuccess: (data) => {
+  //     console.log("ok chua ta ", data);
 
-      // queryClient.invalidateQueries({
-      //   queryKey: ["JobPostActivity"],
-      //   refetchType: "active", // Ensure an active refetch
-      // });
-      // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-      // navigate(`/thankyou/${job?.id}`);
-    },
+  //     // queryClient.invalidateQueries({
+  //     //   queryKey: ["JobPostActivity"],
+  //     //   refetchType: "active", // Ensure an active refetch
+  //     // });
+  //     // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+  //     // navigate(`/thankyou/${job?.id}`);
+  //   },
 
-    onError: () => {
-      message.error("Failed to Apply CV.");
-    },
-  });
+  //   onError: () => {
+  //     message.error("Failed to Apply CV.");
+  //   },
+  // });
 
   const { mutate: Add, isPending: Adding } = useMutation({
     mutationFn: AddUserJobPostActivity,
     onSuccess: async () => {
       try {
-        await PostCVAi({
-          data: {
-            jobPostId: job?.id,
-            url: selectedCvUrl ?? "",
-            cvId: selectedCvId,
-            userId: profile?.id,
-          },
-        });
+        // await PostCVAi({
+        //   data: {
+        //     jobPostId: job?.id,
+        //     url: selectedCvUrl ?? "",
+        //     cvId: selectedCvId,
+        //     userId: profile?.id,
+        //   },
+        // });
         queryClient.invalidateQueries({
           queryKey: ["JobPostActivity"],
           refetchType: "active",

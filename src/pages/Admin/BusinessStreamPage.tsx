@@ -86,10 +86,10 @@ const BusinessStreamPage: React.FC = () => {
     mutationFn: DeleteSkillSet,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
-      message.success("Skill set deleted successfully.");
+      message.success("Business Stream deleted successfully.");
     },
     onError: () => {
-      message.error("Failed to delete skill set.");
+      message.error("Failed to delete Business streams.");
     },
   });
 
@@ -194,7 +194,7 @@ const BusinessStreamPage: React.FC = () => {
           <div className={classes.main8}>
             <div className={classes.main9}>
               <div className={classes.main10}>
-                Found <span className={classes.span}>{filteredData.length}</span> Skill(s)
+                Found <span className={classes.span}>{filteredData.length}</span> Business Stream(s)
               </div>
             </div>
           </div>

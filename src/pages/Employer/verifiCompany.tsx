@@ -320,6 +320,54 @@ export default function VerifiCompany() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!company.trim()) {
+      message.error("Company name is required.");
+      return;
+    }
+    if (!websiteURL.trim() || !/^https?:\/\/[^\s]+$/i.test(websiteURL)) {
+      message.error("A valid website URL is required.");
+      return;
+    }
+    if (!address.trim()) {
+      message.error("Address is required.");
+      return;
+    }
+    if (!city.trim()) {
+      message.error("City is required.");
+      return;
+    }
+    if (!selectedCountry && !country.trim()) {
+      message.error("Country is required.");
+      return;
+    }
+    if (!establishedYear || isNaN(Number(establishedYear))) {
+      message.error("Valid established year is required.");
+      return;
+    }
+    if (!selectedFile) {
+      message.error("Logo image is required.");
+      return;
+    }
+    if (!selectedFileEvi) {
+      message.error("Business evidence is required.");
+      return;
+    }
+    if (!taxCode || isNaN(Number(taxCode))) {
+      message.error("Valid tax code is required.");
+      return;
+    }
+    if (!selectedEm && (!numberOfEmployees || isNaN(Number(numberOfEmployees)))) {
+      message.error("Valid number of employees is required.");
+      return;
+    }
+    if (!selectedBu) {
+      message.error("Business stream is required.");
+      return;
+    }
+    if (!description.trim()) {
+      message.error("Company description is required.");
+      return;
+    }
     try {
       if (!selectedFile || !selectedFileEvi) {
         console.error("Missing files for upload");

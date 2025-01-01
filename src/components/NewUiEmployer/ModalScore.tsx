@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import classes from "./ModalScore.module.css";
 
 import Typography from "@mui/material/Typography";
-import PercentileChart from "./PercentileChart";
+// import PercentileChart from "./PercentileChart";
 import { NavLink } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
@@ -12,7 +12,7 @@ import moment from "moment";
 import { CustomEmail } from "../../Services/CustomEmail/CustomEmail";
 import { message } from "antd";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
-import GradientCircularProgress from "./GradientCircularProgress";
+// import GradientCircularProgress from "./GradientCircularProgress";
 interface EducationDetail {
   id: number;
   name: string;
@@ -468,7 +468,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                           </div>
                         </div>
                         {/* chart */}
-                        <div className={classes.main27}>
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.titleChart}>
                               Matching Details
@@ -507,9 +507,9 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               )}
                             </div>
                           </div>
-                        </div>
+                        </div> */}
 
-                        <div className={classes.main27}>
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>
                               Skills matching
@@ -538,8 +538,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               </div>
                             )}
                           </div>
-                        </div>
-                        <div className={classes.main27}>
+                        </div> */}
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>Skills Missing</div>
                             {profileResult?.analyzedResult.matchDetails && (
@@ -566,8 +566,8 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               </div>
                             )}
                           </div>
-                        </div>
-                        <div className={classes.main27}>
+                        </div> */}
+                        {/* <div className={classes.main27}>
                           <div className={classes.main16}>
                             <div className={classes.main28}>
                               Additional Skills
@@ -593,16 +593,12 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                 ) : (
                                   <>No Additional Skills</>
                                 )}
-                                {/* <div className={classes.main30}>
-                                  <div className={classes.additional}>
-                                    <span>React</span>
-                                  </div>
-                                </div> */}
+                             
                               </div>
                             )}
                           </div>
-                        </div>
-                        {profileResult?.extractedCVInfo ? (
+                        </div> */}
+                        {/* {profileResult?.extractedCVInfo ? (
                           <div className={classes.main27}>
                             {" "}
                             <div className={classes.main16}>
@@ -882,12 +878,10 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                                     }
                                   )
                                 : undefined}
-                              {/* <div className={classes.main28}>
-                              Contact:
-                              </div> */}
+                          
                             </div>
                           </div>
-                        ) : undefined}
+                        ) : undefined} */}
                       </div>
                     </div>
                   </div>

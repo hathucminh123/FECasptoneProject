@@ -29,7 +29,7 @@ export default function ManageCV() {
     return doc.body.textContent || "";
   };
   const userId = localStorage.getItem("userId");
-  const [value, setValue] = useState<string|undefined>("");
+  const [value, setValue] = useState<string | undefined>("");
   const [isCreatingNewChallenge, setIsCreatingNewChallenge] =
     useState<boolean>(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
@@ -81,7 +81,7 @@ export default function ManageCV() {
       setDeletingId(null);
     },
   });
-  const { mutate:Coverletter } = useMutation({
+  const { mutate: Coverletter } = useMutation({
     mutationFn: PutUser,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -117,18 +117,20 @@ export default function ManageCV() {
 
   const UserProfileData = UserProfile?.UserProfiles;
 
-  useEffect(() => {if(UserProfileData?.coverLetter !== null){
-    setValue(UserProfileData?.coverLetter);
-  }},[UserProfileData])
+  useEffect(() => {
+    if (UserProfileData?.coverLetter !== null) {
+      setValue(UserProfileData?.coverLetter);
+    }
+  }, [UserProfileData]);
 
   const handleConfirmModal = () => {
     Coverletter({
       data: {
-        firstName: UserProfileData?.firstName ,
+        firstName: UserProfileData?.firstName,
         lastName: UserProfileData?.lastName,
         email: UserProfileData?.email || "",
         phoneNumber: UserProfileData?.phoneNumber || null,
-        isLookingForJob:  UserProfileData?.isLookingForJob ,
+        isLookingForJob: UserProfileData?.isLookingForJob,
         coverLetter: value,
       },
     });
@@ -491,15 +493,15 @@ export default function ManageCV() {
 
                 <RenderButton
                   text="Save"
-                  color="#ed1b2f"
+                  color="#4cd681"
+                  // color="#ed1b2f"
                   variant="contained"
                   sxOverrides={{ minWidth: "180px" }}
                   onClick={handleConfirmModal}
                 />
               </div>
             </div>
-          ) : 
-          UserProfileData?.coverLetter  !== null ? (
+          ) : UserProfileData?.coverLetter !== null ? (
             <div className={classes.content}>
               <Typography
                 variant="body1"
@@ -513,9 +515,7 @@ export default function ManageCV() {
                 {stripHTML(UserProfileData?.coverLetter || "")}
               </Typography>
             </div>
-          ) :
-          
-          (
+          ) : (
             <div className={classes.content}>
               <Typography
                 variant="body1"

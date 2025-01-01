@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./CVScreeningPassedApplicants.module.css";
 import Typography from "@mui/material/Typography";
 // import CloseIcon from "@mui/icons-material/Close";
+import EmailIcon from '@mui/icons-material/Email';
 
 import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
@@ -17,7 +18,7 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
-import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+// import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
 // import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
@@ -516,20 +517,33 @@ const CVScreeningPassedApplicants: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 0 }}>
+                    <div className={classes.main33} style={{ top: 70 }}>
+                      <div>
+                      <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={() => handleOpenMdalScore(data.id, profile)}
+                        >
+                          <span className={classes.spanicon}>
+                            <EmailIcon />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    {/* <div className={classes.main33} style={{ top: 0 }}>
                       <div>
                         <button
                           type="button"
                           className={classes.button6}
                           onClick={() => handleOpenMdalScore(data.id, profile)}
                         >
-                          {/* <span className={classes.spanicon}> */}
-                          {/* <GradientCircularProgress
+                          <span className={classes.spanicon}>
+                          <GradientCircularProgress
                             percentage={
                               data.analyzedResult.matchDetails.scores
                                 .overallMatch
                             }
-                          /> */}
+                          />
                           {data.analyzedResult.matchDetails && (
                             <GradientCircularProgress
                               percentage={
@@ -538,11 +552,21 @@ const CVScreeningPassedApplicants: React.FC = () => {
                               }
                             />
                           )}
+                            <span className={classes.spanicon}>
+                            <EmailIcon />
+                            </span>
+                           <GradientCircularProgress
+                              percentage={
+                                data.analyzedResult.matchDetails.scores
+                                  .overallMatch
+                              }
+                            />
 
-                          {/* </span> */}
+                          </span>
                         </button>
                       </div>
-                    </div>
+                    </div> */}
+              
                     <div className={classes.main33} style={{ top: 125 }}>
                       <div>
                         <a

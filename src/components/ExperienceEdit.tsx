@@ -43,10 +43,14 @@ const months = [
   { value: "December", label: "December" },
 ];
 
-const years = Array.from(new Array(60), (_, index) => index + 1970).map(
-  (year) => ({ value: year, label: year })
-);
+// const years = Array.from(new Array(60), (_, index) => index + 1970).map(
+//   (year) => ({ value: year, label: year })
+// );
 
+const years = Array.from(
+  { length: new Date().getFullYear() - 2000 + 1 },
+  (_, index) => 2000 + index
+).map((year) => ({ value: year, label: year }));
 const monthMap: { [key: string]: number } = {
   January: 1,
   February: 2,
@@ -124,10 +128,22 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
       message.error("Please fill in all date fields");
       return;
     }
+       if (Number(formData.endYear) < Number(formData.startYear)) {
+          message.error("End year cannot be less than the start year");
+          return;
+        }
 
     const startMonthNumber = monthMap[formData.startMonth];
     const endMonthNumber = monthMap[formData.endMonth];
-
+ if (
+      Number(formData.startYear) === Number(formData.endYear) &&
+      startMonthNumber > endMonthNumber
+    ) {
+      message.error(
+        "Start month cannot be greater than end month in the same year"
+      );
+      return;
+    }
     const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
     const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
 

@@ -33,9 +33,13 @@ const months = [
   { value: "December", label: "December" },
 ];
 
-const years = Array.from(new Array(60), (_,index) => index + 1970).map(
-  (year) => ({ value: year, label: year })
-);
+// const years = Array.from(new Array(60), (_,index) => index + 1970).map(
+//   (year) => ({ value: year, label: year })
+// );
+const years = Array.from(
+  { length: new Date().getFullYear() - 2000 + 1 },
+  (_, index) => 2000 + index
+).map((year) => ({ value: year, label: year }));
 
 const monthMap: { [key: string]: number } = {
   January: 1,
@@ -97,7 +101,56 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
     },
   });
 
+  // const handleSubmit = () => {
+  //   if (
+  //     !formData.startYear ||
+  //     !formData.startMonth ||
+  //     !formData.endYear ||
+  //     !formData.endMonth ||
+  //     !formData.achievements ||
+  //     !formData.companyName ||
+  //     !formData.position ||
+  //     !formData.responsibilities 
+  //   ) {
+  //     message.error("Please fill in all the required fields");
+  //     return;
+  //   }
+
+  //   if (Number(formData.endYear) < Number(formData.startYear)) {
+  //     message.error("End year cannot be less than the start year");
+  //     return;
+  //   }
+
+  //   // Convert month and year into ISO date format
+  //   const startMonthNumber = monthMap[formData.startMonth];
+  //   const endMonthNumber = monthMap[formData.endMonth];
+
+  //   const startDate = new Date(
+  //     Number(formData.startYear),
+  //     startMonthNumber - 1,
+  //     1
+  //   ).toISOString();
+  //   const endDate = new Date(
+  //     Number(formData.endYear),
+  //     endMonthNumber - 1,
+  //     1
+  //   ).toISOString();
+
+  //   // Call mutation API with the form data
+  //   mutate({
+  //     data: {
+  //       companyName: formData.companyName,
+  //       position: formData.position,
+  //       startDate,
+  //       endDate,
+  //       responsibilities: formData.responsibilities,
+  //       achievements: formData.achievements,
+  //     },
+  //   });
+  // };
+
   const handleSubmit = () => {
+    // Validate các trường bắt buộc
     if (
       !formData.startYear ||
       !formData.startMonth ||
@@ -106,21 +159,39 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
       !formData.achievements ||
       !formData.companyName ||
       !formData.position ||
-      !formData.responsibilities 
+      !formData.responsibilities
     ) {
       message.error("Please fill in all the required fields");
       return;
     }
-
+  
+    // Validate năm
     if (Number(formData.endYear) < Number(formData.startYear)) {
       message.error("End year cannot be less than the start year");
       return;
     }
-
-    // Convert month and year into ISO date format
+  
+    // Lấy giá trị tháng từ `monthMap`
     const startMonthNumber = monthMap[formData.startMonth];
     const endMonthNumber = monthMap[formData.endMonth];
-
+  
+    if (!startMonthNumber || !endMonthNumber) {
+      message.error("Invalid month value");
+      return;
+    }
+  
+    // Validate tháng khi `startYear` và `endYear` giống nhau
+    if (
+      Number(formData.startYear) === Number(formData.endYear) &&
+      startMonthNumber > endMonthNumber
+    ) {
+      message.error(
+        "Start month cannot be greater than end month in the same year"
+      );
+      return;
+    }
+  
+    // Chuyển đổi tháng và năm sang định dạng ngày ISO
     const startDate = new Date(
       Number(formData.startYear),
       startMonthNumber - 1,
@@ -131,8 +202,8 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
       endMonthNumber - 1,
       1
     ).toISOString();
-
-    // Call mutation API with the form data
+  
+    // Gọi API mutation với dữ liệu form
     mutate({
       data: {
         companyName: formData.companyName,
@@ -144,7 +215,6 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
       },
     });
   };
-
   return (
     <Modal
       text="Save"

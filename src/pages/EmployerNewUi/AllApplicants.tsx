@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./AllApplicants.module.css";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
-
+import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { useParams } from "react-router-dom";
@@ -17,11 +17,11 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
-import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+// import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
 // import NotifiModal from "../../components/NewUiEmployer/NotifiModal";
 // import NoJob from "../../components/NewUiEmployer/NoJob";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
-import DescriptionIcon from '@mui/icons-material/Description';
+import DescriptionIcon from "@mui/icons-material/Description";
 import { CoverLetterModal } from "../../components/CoverModal";
 
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
@@ -90,11 +90,12 @@ const AllApplicants: React.FC = () => {
   >({});
 
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const [openModalCoverLetter, setOpenModalCoverLetter] = useState<boolean>(false);
+  const [openModalCoverLetter, setOpenModalCoverLetter] =
+    useState<boolean>(false);
 
   const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
   const [idApplicants, setIdApplicants] = useState<number | null>(null);
-const [description, setDescription] = useState<string|undefined>("");
+  const [description, setDescription] = useState<string | undefined>("");
   const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
     number | null
   >(null);
@@ -105,10 +106,9 @@ const [description, setDescription] = useState<string|undefined>("");
     setOpenModal(true);
     setSelectedIdJobPostActivity(id);
   };
-  const handleOpenModalCoverLetter = (data:string|undefined) => {
+  const handleOpenModalCoverLetter = (data: string | undefined) => {
     setOpenModalCoverLetter(true);
     setDescription(data);
-    
   };
 
   const handleCloseModal = () => {
@@ -437,7 +437,8 @@ const [description, setDescription] = useState<string|undefined>("");
                             <>
                               <div className={classes.main13}>
                                 {/* {skill.proficiencyLevel} */}
-                                {skill.proficiencyLevel}{skill.proficiencyLevel !== "" && " :"} 
+                                {skill.proficiencyLevel}
+                                {skill.proficiencyLevel !== "" && " :"}
                                 {/* <button
                 type="button"
                 className={classes.button1}
@@ -484,17 +485,30 @@ const [description, setDescription] = useState<string|undefined>("");
                         </div>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 230  }}>
+                    <div className={classes.main33} style={{ top: 70 }}>
                       <div>
                         <button
                           type="button"
                           className={classes.button5}
-                          onClick={()=>
+                          onClick={() => handleOpenMdalScore(data.id, profile)}
+                        >
+                          <span className={classes.spanicon}>
+                            <EmailIcon />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                    <div className={classes.main33} style={{ top: 230 }}>
+                      <div>
+                        <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={() =>
                             handleOpenModalCoverLetter(profile?.coverLetter)
                           }
                         >
                           <span className={classes.spanicon}>
-                          <DescriptionIcon/>
+                            <DescriptionIcon />
                           </span>
                         </button>
                       </div>
@@ -514,14 +528,14 @@ const [description, setDescription] = useState<string|undefined>("");
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 0 }}>
+                    {/* <div className={classes.main33} style={{ top: 0 }}>
                       <div>
                         <button
                           type="button"
                           className={classes.button6}
                           onClick={() => handleOpenMdalScore(data.id, profile)}
                         >
-                          {/* <span className={classes.spanicon}> */}
+                         
                           {data.analyzedResult.matchDetails && (
                             <GradientCircularProgress
                               percentage={
@@ -531,10 +545,10 @@ const [description, setDescription] = useState<string|undefined>("");
                             />
                           )}
 
-                          {/* </span> */}
+                     
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                     <div className={classes.main33} style={{ top: 125 }}>
                       <div>
                         <a

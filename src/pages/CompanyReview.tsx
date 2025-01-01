@@ -214,7 +214,7 @@ const CompanyReview: React.FC = () => {
                       Recommend
                     </div>
                   )}
-                  <Modal
+                  {/* <Modal
                     open={hoveredReview === item.id}
                     footer={null}
                     onCancel={handleCloseModal} // Đóng modal khi click ngoài
@@ -302,7 +302,66 @@ const CompanyReview: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                  </Modal>
+                  </Modal> */}
+                  <Modal
+  open={hoveredReview === item.id}
+  footer={null}
+  onCancel={handleCloseModal} // Close modal when clicking outside
+  title="Detailed Ratings"
+>
+  <div className={classes.modalContent} style={{ padding: '16px' }}>
+    {[
+      { label: "Salary & Benefits", value: item.salaryRating },
+      { label: "Training & Learning", value: item.trainingRating },
+      { label: "Management Cares", value: item.careRating },
+      { label: "Culture & Fun", value: item.cultureRating },
+      { label: "Office & Workspace", value: item.officeRating },
+    ].map((rating, index) => (
+      <div
+        key={index}
+        className={classes.ratingItem}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "12px",
+        }}
+      >
+        <Typography
+          variant="body1"
+          style={{
+            fontWeight: "bold",
+            flex: "1",
+            textAlign: "left",
+            marginRight: "16px",
+          }}
+        >
+          {rating.label}:
+        </Typography>
+        <Rate
+          value={rating.value}
+          disabled
+          style={{
+            color: "#fadb14",
+            flex: "1",
+            textAlign: "center",
+          }}
+        />
+        <span
+          style={{
+            marginLeft: "8px",
+            flex: "0.5",
+            textAlign: "right",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {rating.value} / 5
+        </span>
+      </div>
+    ))}
+  </div>
+</Modal>
+
                 </div>
 
                 <div className={classes.comment2}>

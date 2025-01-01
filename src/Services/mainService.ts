@@ -170,6 +170,10 @@ export const apiLinks = {
     PUTAprroved:`${baseURL}/Review/ApproveReview`,
   },
 
+  Location: {
+    GET: `${baseURL}/Location`,
+  },
+
   Service: {
     GET: `${baseURL}/Service`,
     POST: `${baseURL}/Service`,

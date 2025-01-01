@@ -25,7 +25,7 @@ import { storage } from "../firebase/config.ts";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 import { GetUserProfile } from "../Services/UserProfileService/UserProfile.ts";
-import { PostCVsAI } from "../Services/CVService/PostCVAI.ts";
+// import { PostCVsAI } from "../Services/CVService/PostCVAI.ts";
 
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState<string | undefined>("");
@@ -116,22 +116,22 @@ export default function Apply() {
 
   const selectedCv = dataCVS.find((item) => item.id === selectedCvId);
 
-  const { mutate: PostCVAi } = useMutation({
-    mutationFn: PostCVsAI,
-    onSuccess: () => {
-      // console.log("ok chua ta ", data);
-      // queryClient.invalidateQueries({
-      //   queryKey: ["JobPostActivity"],
-      //   refetchType: "active", // Ensure an active refetch
-      // });
-      // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
-      // navigate(`/thankyou/${job?.id}`);
-    },
+  // const { mutate: PostCVAi } = useMutation({
+  //   mutationFn: PostCVsAI,
+  //   onSuccess: () => {
+  //     // console.log("ok chua ta ", data);
+  //     // queryClient.invalidateQueries({
+  //     //   queryKey: ["JobPostActivity"],
+  //     //   refetchType: "active", // Ensure an active refetch
+  //     // });
+  //     // message.success(`CV Apply to ${job?.jobTitle} successfully!`);
+  //     // navigate(`/thankyou/${job?.id}`);
+  //   },
 
-    onError: () => {
-      message.error("Failed to Apply CV.");
-    },
-  });
+  //   onError: () => {
+  //     message.error("Failed to Apply CV.");
+  //   },
+  // });
 
   const { mutate, isPending } = useMutation({
     mutationFn: PostJobPostActivity,
@@ -147,14 +147,14 @@ export default function Apply() {
 
     onSuccess: async () => {
       try {
-        await PostCVAi({
-          data: {
-            jobPostId: job?.id,
-            url: selectedCv?.url ?? "",
-            cvId: selectedCv?.id,
-            userId: UserProfileData?.id,
-          },
-        });
+        // await PostCVAi({
+        //   data: {
+        //     jobPostId: job?.id,
+        //     url: selectedCv?.url ?? "",
+        //     cvId: selectedCv?.id,
+        //     userId: UserProfileData?.id,
+        //   },
+        // });
         message.success(`CV Apply to ${job?.jobTitle} successfully!`);
         navigate(`/thankyou/${job?.id}`);
         queryClient.invalidateQueries({

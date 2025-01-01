@@ -341,7 +341,7 @@ const ManageJobPosting: React.FC = () => {
               <div className={classes.main10}>
                 Found
                 <span className={classes.span}> {Companiesdata.length} </span>
-                Jobs
+                Company info
               </div>
             </div>
           </div>

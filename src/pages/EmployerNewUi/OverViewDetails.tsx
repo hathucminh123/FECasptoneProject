@@ -16,6 +16,7 @@ import { message } from "antd";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 import moment from "moment";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
+import { GetLocationService } from "../../Services/Location/GetLocationService";
 const OverViewDetails: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
@@ -44,6 +45,12 @@ const OverViewDetails: React.FC = () => {
   const CompanyEmployer = Companiesdata?.find(
     (company) => company.id === Number(companyId)
   );
+    const { data: LocationData } = useQuery({
+      queryKey: ["Locations"],
+      queryFn: ({ signal }) => GetLocationService({ signal }),
+      staleTime: 5000,
+    });
+    const Locationsdataa = LocationData?.Locations;
 
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [selectJobId, setselectJobId] = useState<number>();
@@ -329,12 +336,19 @@ const OverViewDetails: React.FC = () => {
             onChange={handleStatusChange}
             fullWidth
           >
-            <MenuItem value="1">Hồ Chí Minh</MenuItem>
+            {
+              Locationsdataa?.map((item) => (
+                <MenuItem value={item.id} key={item.id}>
+                  {item.city}
+                </MenuItem>
+              ))
+            }
+            {/* <MenuItem value="1">Hồ Chí Minh</MenuItem>
             <MenuItem value="2">Hà Nội</MenuItem>
             <MenuItem value="3">Đà Nẵng</MenuItem>
             <MenuItem value="4">Hải Phòng</MenuItem>
             <MenuItem value="5">Cần Thơ</MenuItem>
-            <MenuItem value="6">Nha Trang</MenuItem>
+            <MenuItem value="6">Nha Trang</MenuItem> */}
           </Select>
           <TextField
             fullWidth

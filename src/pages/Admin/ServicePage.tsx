@@ -156,25 +156,55 @@ const ServicePage: React.FC = () => {
     setIsHot("false");
   };
 
+  //   const handleSubmitSkillSet = () => {
+  //     if (!nameSkill || !descriptionSkillSet || !numberOfPost || !price) {
+  //         message.warning("Please fill in all the required fields.");
+  //         return;
+  //     }
+
+  //     const payload = {
+  //       ...(editingId && { id: editingId }),
+  //       data: {
+  //           name: nameSkill,
+  //           description: descriptionSkillSet,
+  //           numberOfPost: Number(numberOfPost),
+  //           price: Number(price),
+  //           isHot: isHot === "true",
+  //       },
+  //   };
+
+  //     saveSkillSet(payload);
+  // };
+
   const handleSubmitSkillSet = () => {
     if (!nameSkill || !descriptionSkillSet || !numberOfPost || !price) {
-        message.warning("Please fill in all the required fields.");
-        return;
+      message.warning("Please fill in all the required fields.");
+      return;
+    }
+
+    if (isNaN(Number(numberOfPost)) || Number(numberOfPost) <= 0) {
+      message.warning("Number of Posts must be a valid positive number.");
+      return;
+    }
+
+    if (isNaN(Number(price)) || Number(price) <= 0) {
+      message.warning("Price must be a valid positive number.");
+      return;
     }
 
     const payload = {
-      ...(editingId && { id: editingId }), 
+      ...(editingId && { id: editingId }),
       data: {
-          name: nameSkill,
-          description: descriptionSkillSet,
-          numberOfPost: Number(numberOfPost),
-          price: Number(price),
-          isHot: isHot === "true",
+        name: nameSkill,
+        description: descriptionSkillSet,
+        numberOfPost: Number(numberOfPost),
+        price: Number(price),
+        isHot: isHot === "true",
       },
-  };
+    };
 
-    saveSkillSet(payload); 
-};
+    saveSkillSet(payload);
+  };
 
   // Handle delete action
   const handleDeleteSkillSet = (id: number) => {

@@ -54,7 +54,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
       message.success("Comment and rating added successfully!");
     },
     onError: () => {
-      message.error("Failed to post the comment.");
+      message.error("Failed to post the comment/rating.");
     },
   });
 
@@ -70,7 +70,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
   });
 
   const handlePostComment = () => {
-    if (commentText.trim() || ratingValue !== null) {
+    if (commentText.trim() && ratingValue !== null) {
       PostComment({
         data: {
           commentText: commentText,
@@ -82,7 +82,7 @@ const CommentModal: React.FC<CommentModalProps> = ({
       setCommentText("");
       setRatingValue(2); // Reset the rating after submitting
     } else {
-      message.warning("Please provide a comment or rating before submitting.");
+      message.warning("Please provide a comment and rating before submitting.");
     }
   };
 

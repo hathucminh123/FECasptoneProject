@@ -45,9 +45,10 @@ const monthMap: { [key: string]: number } = {
   December: 12,
 };
 
-const years = Array.from(new Array(70), (_, index) => index + 1970).map(
-  (year) => ({ value: year, label: year })
-);
+const years = Array.from(
+  { length: new Date().getFullYear() - 2000 + 1 },
+  (_, index) => 2000 + index
+).map((year) => ({ value: year, label: year }));
 
 const Education: React.FC<Props> = ({ onDone }) => {
   const navigate = useNavigate();
@@ -129,6 +130,54 @@ const Education: React.FC<Props> = ({ onDone }) => {
   //   });
   // };
 
+  // const handleSubmit = () => {
+  //   // Ensure all fields are filled
+  //   if (
+  //     !formData.institutionName ||
+  //     !formData.degree ||
+  //     !formData.FieldOfStudy ||
+  //     !formData.startMonth ||
+  //     !formData.startYear ||
+  //     !formData.endMonth ||
+  //     !formData.endYear ||
+  //     formData.gpa === 0  
+  //   ) {
+  //     message.error("Please fill in all the required fields.");
+  //     return;
+  //   }
+  //   if (formData.gpa <= 0 || formData.gpa > 10) {
+  //     message.error("GPA must be greater than 0 and less than or equal to 10.");
+  //     return;
+  //   }
+  //   // Check if end date is valid
+  //   if (Number(formData.endYear) < Number(formData.startYear)) {
+  //     message.error("End year cannot be less than the start year");
+  //     return;
+  //   }
+  
+  //   const startMonthNumber = monthMap[formData.startMonth];
+  //   const endMonthNumber = monthMap[formData.endMonth];
+  
+  //   if (!startMonthNumber || !endMonthNumber) {
+  //     message.error("Invalid month value");
+  //     return;
+  //   }
+  
+  //   const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
+  //   const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
+  
+  //   // Submit data if all fields are valid
+  //   mutate({
+  //     data: {
+  //       institutionName: formData.institutionName,
+  //       degree: formData.degree,
+  //       FieldOfStudy: formData.FieldOfStudy,
+  //       startDate,
+  //       endDate,
+  //       gpa: formData.gpa,
+  //     },
+  //   });
+  // };
   const handleSubmit = () => {
     // Ensure all fields are filled
     if (
@@ -139,7 +188,7 @@ const Education: React.FC<Props> = ({ onDone }) => {
       !formData.startYear ||
       !formData.endMonth ||
       !formData.endYear ||
-      formData.gpa === 0  
+      formData.gpa === 0
     ) {
       message.error("Please fill in all the required fields.");
       return;
@@ -159,6 +208,14 @@ const Education: React.FC<Props> = ({ onDone }) => {
   
     if (!startMonthNumber || !endMonthNumber) {
       message.error("Invalid month value");
+      return;
+    }
+  
+    if (
+      Number(formData.startYear) === Number(formData.endYear) &&
+      startMonthNumber > endMonthNumber
+    ) {
+      message.error("Start month cannot be greater than end month in the same year.");
       return;
     }
   

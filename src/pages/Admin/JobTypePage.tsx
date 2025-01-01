@@ -195,7 +195,7 @@ const JobTypePage: React.FC = () => {
           <div className={classes.main8}>
             <div className={classes.main9}>
               <div className={classes.main10}>
-                Found <span className={classes.span}>{filteredData.length}</span> Skill(s)
+                Found <span className={classes.span}>{filteredData.length}</span> JobType(s)
               </div>
             </div>
           </div>

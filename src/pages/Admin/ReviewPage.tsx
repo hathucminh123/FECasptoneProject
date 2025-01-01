@@ -137,7 +137,7 @@ const ReviewPage: React.FC = () => {
     },
 
     onError: () => {
-      message.error("Rejected review Failed.");
+      message.error("Approved review Failed.");
     },
   });
 

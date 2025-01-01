@@ -414,7 +414,7 @@ export default function Subscription() {
       });
       // setFavorite(true)
       //   setShowAlert(true);
-      message.success(`Save ${selectCompany?.companyName} Successfully`);
+      message.success(`Follow ${selectCompany?.companyName} Successfully`);
     },
     onError: () => {
       message.error(`Failed to Follow ${selectCompany?.companyName} `);

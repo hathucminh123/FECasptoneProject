@@ -17,7 +17,8 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
-import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+// import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
+import EmailIcon from '@mui/icons-material/Email';
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 import { CoverLetterModal } from "../../components/CoverModal";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
@@ -497,6 +498,19 @@ const InterViewApplicants: React.FC = () => {
                         </button>
                       </div>
                     </div>
+                    <div className={classes.main33} style={{ top: 70 }}>
+                      <div>
+                      <button
+                          type="button"
+                          className={classes.button5}
+                          onClick={() => handleOpenMdalScore(data.id, profile)}
+                        >
+                          <span className={classes.spanicon}>
+                            <EmailIcon />
+                          </span>
+                        </button>
+                      </div>
+                    </div>
                     <div className={classes.main33} style={{ top: 175 }}>
                       <div>
                         <button
@@ -512,14 +526,14 @@ const InterViewApplicants: React.FC = () => {
                         </button>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 0 }}>
+                    {/* <div className={classes.main33} style={{ top: 0 }}>
                       <div>
                         <button
                           type="button"
                           className={classes.button6}
                           onClick={() => handleOpenMdalScore(data.id, profile)}
                         >
-                          {/* <span className={classes.spanicon}> */}
+                        
                           {data.analyzedResult.matchDetails && (
                             <GradientCircularProgress
                               percentage={
@@ -529,10 +543,10 @@ const InterViewApplicants: React.FC = () => {
                             />
                           )}
 
-                          {/* </span> */}
+                      
                         </button>
                       </div>
-                    </div>
+                    </div> */}
                     <div className={classes.main33} style={{ top: 125 }}>
                       <div>
                         <a

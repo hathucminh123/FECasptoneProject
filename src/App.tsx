@@ -132,6 +132,7 @@ import ServicePage from "./pages/Admin/ServicePage";
 import { CompanyReviewSeeker } from "./pages/CompanyReviewSeeker";
 import { ReviewSuccess } from "./pages/ReviewSuccess";
 import ReviewPage from "./pages/Admin/ReviewPage";
+import ChatBox from "./pages/ChatBox";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -300,6 +301,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+
   {
     path: "cv-templates",
 
@@ -329,8 +331,8 @@ const router = createBrowserRouter([
     element: <CompanyReviewSeeker />,
   },
   {
-   path:"company/success/:CompanyId",
-   element:<ReviewSuccess/>
+    path: "company/success/:CompanyId",
+    element: <ReviewSuccess />,
   },
   {
     path: "job/Apply/:JobId",
@@ -881,6 +883,10 @@ const router = createBrowserRouter([
         element: <NotificationSystemAdmin />,
       },
     ],
+  },
+  {
+    path: "Chatbox",
+    element: <ChatBox />,
   },
 ]);
 

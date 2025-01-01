@@ -200,7 +200,8 @@ export default function AuthVerification() {
                     margin: 0,
                     fontWeight: 700,
                   fontFamily: "Lexend, sans-serif",
-                    color: "#fff",
+                    // color: "#fff",
+                    color: "#091615",
                     letterSpacing: 0,
                     lineHeight: 1.5,
                   }}
@@ -212,7 +213,7 @@ export default function AuthVerification() {
                     fontSize: "18px",
                     margin: "8px 0 0 0",
                     textAlign: "center",
-                    color: "#fff",
+                    color: "#091615",
                     fontFamily: "Lexend, sans-serif"
                   }}
                 >
@@ -340,7 +341,7 @@ export default function AuthVerification() {
 
                       {isPending ? (
                         <div className={classes.button}>
-                          <button type="submit" className={classes.btn} style={{fontFamily: "Lexend, sans-serif"}}> 
+                          <button disabled={true} className={classes.btn} style={{fontFamily: "Lexend, sans-serif"}}> 
                             Wait a second
                           </button>
                         </div>

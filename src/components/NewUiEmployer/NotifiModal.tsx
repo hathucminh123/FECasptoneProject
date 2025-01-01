@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import WorkIcon from "@mui/icons-material/Work";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "./PaymentModal";
+import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
+import { useQuery } from "@tanstack/react-query";
 
 const NotifiModal: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +24,15 @@ const NotifiModal: React.FC = () => {
   //   return expirationDate < currentDate;
   // };
 
+  const userId = localStorage.getItem("userId");
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
 
   const handleCloseModalPayment = () => {
     setOpenModal(false);
@@ -30,18 +41,29 @@ const NotifiModal: React.FC = () => {
   // const handlePostJobs = () => {
   //   if (IsPremium === "True") {
   //     navigate("/EmployerJob/jobs/create");
-    
+
   //   } else {
   //     setOpenModal(true);
   //   }
   // };
+  // const handleNavigate = () => {
+  //   // if (isPremiumExpired()) {
+  //   //   setOpenModal(true);
+  //   //   return;
+  //   // } else {
+  //     navigate("/EmployerJob/jobs/create");
+  //   // }
+  // };
   const handleNavigate = () => {
-    // if (isPremiumExpired()) {
-    //   setOpenModal(true);
-    //   return;
-    // } else {
+    if (
+      UserProfileData?.userAccountServices &&
+      UserProfileData?.userAccountServices.length === 0
+    ) {
+      setOpenModal(true);
+      return;
+    } else {
       navigate("/EmployerJob/jobs/create");
-    // }
+    }
   };
   return (
     <div className={classes.main}>
@@ -83,5 +105,5 @@ const NotifiModal: React.FC = () => {
       </div>
     </div>
   );
-}
-export default NotifiModal
+};
+export default NotifiModal;

@@ -208,7 +208,7 @@ const CompanyDetailRoot: React.FC = () => {
       setOpenModal(true);
     },
     onError: () => {
-      // message.error(`Failed to Follow ${companyDataa?.companyName} `);
+      message.error(`Failed to Follow ${companyDataa?.companyName} `);
     },
   });
   const { mutate: Unfollow } = useMutation({

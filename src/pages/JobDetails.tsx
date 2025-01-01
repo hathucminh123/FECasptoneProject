@@ -189,7 +189,7 @@ const JobDetails: React.FC = () => {
       message.success(`Save ${job?.jobTitle} Successfully`);
     },
     onError: () => {
-      message.error(`Failed to Follow ${job?.jobTitle} `);
+      message.error(`Failed to Save ${job?.jobTitle} `);
     },
   });
   const { mutate: Unfollow } = useMutation({
@@ -200,10 +200,10 @@ const JobDetails: React.FC = () => {
         refetchType: "active",
       });
       // setFavorite(false)
-      message.success(`Unfollow ${job?.jobTitle} Successfully`);
+      message.success(`Unsave ${job?.jobTitle} Successfully`);
     },
     onError: () => {
-      message.error(`Failed to UnFollow ${job?.jobTitle} `);
+      message.error(`Failed to Unsave ${job?.jobTitle} `);
     },
   });
 
