@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import ChatBoxAnimation from "../components/ChatBoxAnimation";
+import axios from "axios";
 
 interface ChatMessage {
   role: "user" | "bot";
@@ -149,6 +150,49 @@ const ChatBox: React.FC = () => {
       behavior: "smooth",
     });
   }, [chatHistory]);
+
+
+  const handleUploadCV = async () => {
+    try {
+      // Select the file input element dynamically
+      const inputElement = document.createElement('input');
+      inputElement.type = 'file';
+      inputElement.accept = '.pdf'; // Accept only PDF files
+  
+      inputElement.onchange = async (event: Event) => {
+        const target = event.target as HTMLInputElement;
+        const file = target.files?.[0];
+  
+        if (file) {
+          // Create FormData and append the file
+          const formData = new FormData();
+          formData.append('file', file);
+  
+          try {
+            const response = await axios.post(
+              'https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/upload-cv',
+              formData,
+              {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              }
+            );
+  
+            console.log('CV uploaded successfully:', response.data);
+          } catch (error) {
+            console.error('Error uploading CV:', error);
+          }
+        }
+      };
+  
+      // Trigger the file input dialog
+      inputElement.click();
+    } catch (error) {
+      console.error('Error initializing upload:', error);
+    }
+  };
+
   return (
     <div className={classes.main}>
       <div className={classes.left}>
@@ -379,7 +423,7 @@ const ChatBox: React.FC = () => {
                             Explore openings by job title
                           </div>
                         </button> */}
-                        <button className={classes.button}>
+                        <button onClick={()=> handleUploadCV() } className={classes.button}>
                           <div className={classes.main17}>
                             Find Job by Using Your resume
                           </div>
