@@ -19,7 +19,7 @@ import TopJobSection from "../components/TopJobSection";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { setKeyword } from "../redux/slices/searchJobSlice";
 import AiFeature from "../components/AiFeature";
-import TetAnimation from "../Animation/TetAnimation";
+// import TetAnimation from "../Animation/TetAnimation";
 import TravelAnimation from "../Animation/TravelAnimation";
 import Boom from "../Animation/Boom";
 import NewYear from "../Animation/NewYear";
@@ -396,7 +396,7 @@ const HomePage: React.FC = () => {
             /> */}
           </div>
           <div className={classes.mainne}>
-            <TetAnimation />
+            {/* <TetAnimation /> */}
           </div>
           <div className={classes.mainne1}>
             <Boom />
