@@ -80,6 +80,7 @@ interface JobPost {
   jobLocationAddressDetail: string[];
   skillSets: string[];
   benefitObjects?: Benefits[];
+  minsalary?: number;
 }
 
 interface BusinessStream {
@@ -121,7 +122,7 @@ const FilterJobbySkill: React.FC = () => {
 
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [openSearch,setOpenSearch]=useState<boolean>(false)
+  const [openSearch, setOpenSearch] = useState<boolean>(false);
   // const [direction, setDirection] = useState(1);
 
   const itemsPerPage = 9;
@@ -577,17 +578,17 @@ const FilterJobbySkill: React.FC = () => {
   ) => {
     setCurrentPage(page); // Update current page state
     scrollToTop(); // Scroll back to the top of the page
-    
+
     // Prepare the search data object
     const searchData = {
       ...searchState,
       pageIndex: page,
       pageSize: itemsPerPage,
     };
-  
+
     try {
       const response = await mutateAsync({ data: searchData });
-  
+
       if (response && response.result && response.result.items.length > 0) {
         setJobSearch(response.result.items); // Update job search results
         const total = response.result.totalCount;
@@ -626,7 +627,7 @@ const FilterJobbySkill: React.FC = () => {
         const jobSearchResults = data.result.items;
         const total = data.result.totalCount;
         setJobSearch(data.result.items);
-        setOpenSearch(false)
+        setOpenSearch(false);
         // setCurrentPage(1)
         // setTotalJobs(data.result.totalCount);
         navigate("/it_jobs", {
@@ -669,7 +670,7 @@ const FilterJobbySkill: React.FC = () => {
     } else
       mutateAsync({
         data: {
-          // keyword: text,  
+          // keyword: text,
           pageIndex: currentPage,
           pageSize: itemsPerPage,
         },
@@ -688,7 +689,7 @@ const FilterJobbySkill: React.FC = () => {
   //     data: searchState, // Correct placement of the `data` key
   //   });
   // };
-  
+
   const handleNavigateJob = async () => {
     setCurrentPage(1);
     // Define the shape of job data returned by the mutation
@@ -786,7 +787,11 @@ const FilterJobbySkill: React.FC = () => {
     <div className={classes.main}>
       {openFilter && (
         // <FilterModal filteredJobs={filteredJobs} onDone={CloseHandleFilter} />
-        <FilterModal setText={setText} filteredJobs={JobPostsdata} onDone={CloseHandleFilter} />
+        <FilterModal
+          setText={setText}
+          filteredJobs={JobPostsdata}
+          onDone={CloseHandleFilter}
+        />
       )}
       <AnimatePresence>
         {openModalScore && (
@@ -1100,7 +1105,8 @@ const FilterJobbySkill: React.FC = () => {
                                     fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
-                                  {jobDetails?.salary} VNĐ
+                                  {`${jobDetails?.minsalary} - ${jobDetails?.salary} VNĐ`}
+                                  {/* {jobDetails?.salary} VNĐ */}
                                 </Typography>
                               </div>
                             </div>
