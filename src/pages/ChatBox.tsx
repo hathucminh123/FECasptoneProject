@@ -152,9 +152,9 @@ const ChatBox: React.FC = () => {
   }, [chatHistory]);
 
 
-  const handleUploadCV = async () => {
+  const handleUploadCV = async (): Promise<void> => {
     try {
-      // Select the file input element dynamically
+      // Create a file input element dynamically
       const inputElement = document.createElement('input');
       inputElement.type = 'file';
       inputElement.accept = '.pdf'; // Accept only PDF files
@@ -163,28 +163,59 @@ const ChatBox: React.FC = () => {
         const target = event.target as HTMLInputElement;
         const file = target.files?.[0];
   
-        if (file) {
-          // Create FormData and append the file
-          const formData = new FormData();
-          formData.append('file', file);
+        if (!file) {
+          console.error('No file selected');
+          return;
+        }
+  
+        // Create FormData and append the file
+        const formData = new FormData();
+        formData.append('file', file);
+  
+        try {
+          // Call the upload_and_process API
+          const uploadResponse = await axios.post(
+            'https://fb32-112-197-86-203.ngrok-free.app/upload_and_process',
+            formData,
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+            }
+          );
+  
+          console.log('CV uploaded successfully:', uploadResponse.data);
+  
+          // Extract data dynamically from the response
+          const { data, file_info, parser_used, message } = uploadResponse.data;
+  
+          // Prepare the payload for the compare-cv API
+          const compareCVPayload = {
+            status: "success",
+            data,
+            file_info,
+            parser_used,
+            message
+          };
   
           try {
-            const response = await axios.post(
-              'https://fb32-112-197-86-203.ngrok-free.app/upload_and_process',
-              formData,
+            // Call the compare-cv API
+            const compareResponse = await axios.post(
+              'https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/compare-cv',
+              compareCVPayload,
               {
                 headers: {
-                  'Content-Type': 'multipart/form-data',
+                  'Content-Type': 'application/json',
                 },
               }
             );
   
-            console.log('CV uploaded successfully:', response.data);
-
-            
-          } catch (error) {
-            console.error('Error uploading CV:', error);
+            console.log('Comparison result:', compareResponse.data);
+          } catch (compareError) {
+            console.error('Error comparing CV:', compareError);
           }
+        } catch (uploadError) {
+          console.error('Error uploading CV:', uploadError);
         }
       };
   
@@ -306,7 +337,7 @@ const ChatBox: React.FC = () => {
                       <div className={classes.mainlogo}>
                         <div className={classes.mainlogo1}>
                           <div className={classes.mainlogo2}>
-                            <ChatBoxAnimation/>
+                            <ChatBoxAnimation />
                           </div>
                         </div>
                       </div>
@@ -425,7 +456,7 @@ const ChatBox: React.FC = () => {
                             Explore openings by job title
                           </div>
                         </button> */}
-                        <button onClick={()=> handleUploadCV() } className={classes.button}>
+                        <button onClick={() => handleUploadCV()} className={classes.button}>
                           <div className={classes.main17}>
                             Find Job by Using Your resume
                           </div>
@@ -463,7 +494,7 @@ const ChatBox: React.FC = () => {
                                         className={classes.span3}
                                         role="button"
                                         disabled
-                                        // type="submit"
+                                      // type="submit"
                                       >
                                         Waiting
                                       </button>
@@ -485,7 +516,7 @@ const ChatBox: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  
+
                 </div>
               </div>
             </div>
