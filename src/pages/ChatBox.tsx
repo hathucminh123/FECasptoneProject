@@ -170,7 +170,7 @@ const ChatBox: React.FC = () => {
   
           try {
             const response = await axios.post(
-              'https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/upload-cv',
+              'https://fb32-112-197-86-203.ngrok-free.app/upload_and_process',
               formData,
               {
                 headers: {
@@ -180,6 +180,8 @@ const ChatBox: React.FC = () => {
             );
   
             console.log('CV uploaded successfully:', response.data);
+
+            
           } catch (error) {
             console.error('Error uploading CV:', error);
           }
