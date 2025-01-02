@@ -1,0 +1,27 @@
+.label1{
+    margin-bottom: 4px;
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}
+
+.label2{
+    -webkit-font-smoothing: antialiased;
+    --tw-text-opacity: 1;
+    color: rgb(5 12 38 / var(--tw-text-opacity));
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    box-sizing: border-box;
+
+    border-width: 0;
+    border-style: solid;
+}
+
+.span1{
+    --tw-text-opacity: 1;
+    color: rgb(113 117 132 / var(--tw-text-opacity));
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+}

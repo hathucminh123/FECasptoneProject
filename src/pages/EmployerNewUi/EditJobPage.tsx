@@ -8,15 +8,15 @@ import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
+// import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+// import Modal from "@mui/material/Modal";
+// import TextField from "@mui/material/TextField";
+// import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import DatePicker from "react-datepicker";
 // import { PostJobType } from "../../Services/JobTypeService/PostJobType";
@@ -30,8 +30,9 @@ import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 
 import { PutJobPost } from "../../Services/JobsPost/PutJobPost";
 import { GetBenefits } from "../../Services/Benefits/GetBenefits";
-import { PostBenefits } from "../../Services/Benefits/PostBenefits";
+// import { PostBenefits } from "../../Services/Benefits/PostBenefits";
 import { GetLocationService } from "../../Services/Location/GetLocationService";
+import { GetcompanyLocationService } from "../../Services/CompanyLocation/GetcompanyLocationService";
 
 // import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 // type JobContextType = {
@@ -46,17 +47,17 @@ import { GetLocationService } from "../../Services/Location/GetLocationService";
 //   description: string;
 //   price: number;
 // }
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+// const style = {
+//   position: "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 400,
+//   bgcolor: "background.paper",
+//   border: "2px solid #000",
+//   boxShadow: 24,
+//   p: 4,
+// };
 
 // const countrydata = ["dsa", "asdasd"];
 
@@ -80,6 +81,11 @@ interface SkillSet {
 interface Locations {
   id: number;
   city: string;
+}
+interface Locations {
+  id: number;
+  city: string;
+  stressAddressDetail: string;
 }
 
 interface Benefits {
@@ -111,7 +117,13 @@ export default function EditJobPage() {
   const [benefits, setBenefits] = useState<string>("");
   const [qualificationRequired, setQualificationRequired] =
     useState<string>("");
-  const companyId = localStorage.getItem("CompanyId");
+  // const companyId = localStorage.getItem("CompanyId");
+  const [companyId, setCompanyId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const CompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(CompanyId);
+  }, []);
   const userId = localStorage.getItem("userId");
   //imageurl
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -137,10 +149,10 @@ export default function EditJobPage() {
   // const [nameType, setNameType] = useState<string>("");
   // const [descriptionType, setDescriptionType] = useState<string>("");
   // skill
-  const [open, setOpen] = useState(false);
-  const [nameSkill, setNameSkill] = useState("");
-  const [shorthand, setShorthand] = useState("");
-  const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
+  // const [open, setOpen] = useState(false);
+  // const [nameSkill, setNameSkill] = useState("");
+  // const [shorthand, setShorthand] = useState("");
+  // const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
 
   const { data: SkillSetdata } = useQuery({
     queryKey: ["SkillSet"],
@@ -162,8 +174,8 @@ export default function EditJobPage() {
     staleTime: 5000,
   });
   const Benefitsdataa = BenefitsData?.Benefits;
-  const [openBenefit, setOpenBenefit] = useState(false);
-  const [nameBenefits, setNameBenefits] = useState<string>("");
+  // const [openBenefit, setOpenBenefit] = useState(false);
+  // const [nameBenefits, setNameBenefits] = useState<string>("");
   const [benefitsdata, setBenefitsdata] = useState<Benefits[]>([]);
   const [dropdownOpenBenefit, setDropdownOpenBenefit] = useState(false);
   const [filteredBenefits, setFilteredBenefits] = useState(Benefitsdataa);
@@ -171,8 +183,8 @@ export default function EditJobPage() {
   const [benefitFull, setBenefitFull] = useState<Benefits[]>([]);
   const [inputBenefit, setInputBenefit] = useState<string>("");
   const dropdownRefBenefit = useRef<HTMLDivElement>(null);
-  const handleOpenBenefit = () => setOpenBenefit(true);
-  const handleCloseBenefit = () => setOpenBenefit(false);
+  // const handleOpenBenefit = () => setOpenBenefit(true);
+  // const handleCloseBenefit = () => setOpenBenefit(false);
   const handleChangeBenefit = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setInputBenefit(inputValue);
@@ -208,23 +220,32 @@ export default function EditJobPage() {
     setBenefitId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
   };
 
-
-  //locations 
+  //locations
   const { data: LocationData } = useQuery({
     queryKey: ["Location"],
     queryFn: ({ signal }) => GetLocationService({ signal }),
     staleTime: 5000,
   });
   const Locationdata = LocationData?.Locations;
-  
+  console.log("location", Locationdata);
+  const { data: CompanyLocation } = useQuery({
+    queryKey: ["CompanyLocation"],
+    queryFn: ({ signal }) =>
+      GetcompanyLocationService({ id: Number(companyId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const CompanyLocationdata = CompanyLocation?.Locations;
+
   // const [openBenefit, setOpenBenefit] = useState(false);
   // const [nameBenefits, setNameBenefits] = useState<string>("");
-  const [locationsdata, setLocationsdata] = useState<Locations[]>([]);
+  const [locationsdata, setLocationsdata] = useState<Locations | null>(null);
   const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
-  const [filteredLocations, setFilteredLocations] = useState(Locationdata);
-  const [locationId, setLocationId] = useState<number[]>([]);
-  const [locationFull, setLocationFull] = useState<Locations[]>([]);
-  console.log("location", setLocationFull);
+  const [filteredLocations, setFilteredLocations] =
+    useState(CompanyLocationdata);
+  const [locationId, setLocationId] = useState<number | null>(null);
+  // const [locationFull, setLocationFull] = useState<Locations[]>([]);
+  // console.log("location", setLocationFull);
   const [inputLocation, setInputLocation] = useState<string>("");
   const dropdownRefLocation = useRef<HTMLDivElement>(null);
   // const handleOpenBenefit = () => setOpenBenefit(true);
@@ -234,7 +255,7 @@ export default function EditJobPage() {
     setInputLocation(inputValue);
     if (inputValue) {
       setFilteredLocations(
-        Locationdata?.filter((comp) =>
+        CompanyLocationdata?.filter((comp) =>
           comp.city.toLowerCase().includes(inputValue.toLowerCase())
         )
       );
@@ -245,25 +266,48 @@ export default function EditJobPage() {
     }
   };
 
-  const handleLocation = (selectedBenefit: Locations) => {
-    if (
-      !locationsdata.includes(selectedBenefit) &&
-      !locationId.includes(selectedBenefit.id)
-    ) {
-      setLocationsdata([...locationsdata, selectedBenefit]);
-      setLocationId([...benefitId, selectedBenefit.id]);
-    }
+  // const handleLocation = (selectedBenefit: Locations) => {
+  //   if (
+  //     !locationsdata.includes(selectedBenefit) &&
+  //     !locationId.includes(selectedBenefit.id)
+  //   ) {
+  //     setLocationsdata([...locationsdata, selectedBenefit]);
+  //     setLocationId([...benefitId, selectedBenefit.id]);
+  //   }
+  //   setDropdownOpenLocation(false);
+  //   setInputLocation("");
+  // };
+
+  const handleLocation = (selectedLocation: Locations) => {
+    // if (
+    //   !locationsdata.includes(selectedLocation) &&
+    //   !locationId.includes(selectedLocation.id)
+    // ) {
+    //   setLocationsdata([...locationsdata, selectedLocation]);
+    //   // setBenefitId([...benefitId, selectedLocation.id]);
+    //   setLocationId([...locationId, selectedLocation.id]);
+    // }
+
+    setLocationsdata(selectedLocation);
+    setLocationId(selectedLocation.id);
     setDropdownOpenLocation(false);
     setInputLocation("");
   };
 
-  const handleRemoveLocations = (BenefitToRemove: Locations) => {
-    setLocationsdata(
-      locationsdata.filter((benefit) => benefit !== BenefitToRemove)
-    );
-    setLocationId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
-  };
+  // const handleRemoveLocations = (BenefitToRemove: Locations) => {
+  //   setLocationsdata(
+  //     locationsdata.filter((benefit) => benefit !== BenefitToRemove)
+  //   );
+  //   setLocationId(
+  //     benefitId.filter((benefit) => benefit !== BenefitToRemove.id)
+  //   );
+  // };
 
+  const handleRemoveLocations = () => {
+    setLocationsdata(null); // Clear the selected location
+    setLocationId(null); // Clear the selected location ID
+    setInputLocation(""); // Clear the input field
+  };
 
   //salary
   const [salary, setSalary] = useState<string>("");
@@ -334,53 +378,68 @@ export default function EditJobPage() {
   };
 
   //skills
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
-    mutationFn: PostSkillSets,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
-      message.success("Skill set created successfully.");
-      handleClose();
-    },
-    onError: () => {
-      message.error("Failed to create skill set.");
-    },
-  });
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
+  // const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
+  //   mutationFn: PostSkillSets,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
+  //     message.success("Skill set created successfully.");
+  //     handleClose();
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to create skill set.");
+  //   },
+  // });
 
-  const { mutate: createBenefits, isPending: isLoadingBenefit } = useMutation({
-    mutationFn: PostBenefits,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Benefits"] });
-      message.success("Benefits created successfully.");
-      handleClose();
-    },
-    onError: () => {
-      message.error("Failed to create Benefits.");
-    },
-  });
+  // const { mutate: createBenefits, isPending: isLoadingBenefit } = useMutation({
+  //   mutationFn: PostBenefits,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["Benefits"] });
+  //     message.success("Benefits created successfully.");
+  //     handleClose();
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to create Benefits.");
+  //   },
+  // });
 
-  const handleSubmitBenefits = () => {
-    if (!nameBenefits.trim()) {
-      return message.error("Please enter a valid benefits name.");
-    }
-    createBenefits({
-      data: {
-        name: nameBenefits,
-        // shorthand: shorthand,
-        // description: descriptionSkillSet,
-      },
-    });
+  // const handleSubmitBenefits = () => {
+  //   if (!nameBenefits.trim()) {
+  //     return message.error("Please enter a valid benefits name.");
+  //   }
+  //   createBenefits({
+  //     data: {
+  //       name: nameBenefits,
+  //       // shorthand: shorthand,
+  //       // description: descriptionSkillSet,
+  //     },
+  //   });
+  // };
+  // const handleSubmitSkillSet = () => {
+  //   createSkillSet({
+  //     data: {
+  //       name: nameSkill,
+  //       shorthand: shorthand,
+  //       description: descriptionSkillSet,
+  //     },
+  //   });
+  // };
+
+  const handleInputFocus = () => {
+    setFilteredLocations(CompanyLocationdata); // Show all data initially
+    setDropdownOpenLocation(true);
   };
-  const handleSubmitSkillSet = () => {
-    createSkillSet({
-      data: {
-        name: nameSkill,
-        shorthand: shorthand,
-        description: descriptionSkillSet,
-      },
-    });
+  const handleInputFocusSkill = () => {
+    setFilteredSkills(SkillSetdataa); // Show all data initially
+    setDropdownOpen(true);
   };
+
+  const handleInputFocusBenefit = () => {
+    setFilteredBenefits(Benefitsdataa); // Show all data initially
+    setDropdownOpenBenefit(true);
+  };
+
   const handleSkill = (selectedSkill: SkillSet) => {
     if (
       !skills.includes(selectedSkill) &&
@@ -588,6 +647,10 @@ export default function EditJobPage() {
         message.warning("The expiry date must be a future date.");
         return;
       }
+      if (!locationId) {
+        message.warning("Please select a location");
+        return;
+      }
 
       const data = {
         jobtitle: jobTitle || job?.jobTitle,
@@ -602,6 +665,7 @@ export default function EditJobPage() {
         companyID: Number(companyId),
         imageURL: fileUrl,
         userID: Number(userId),
+        companyLocation: locationId,
         skillSetIds:
           skillId.length > 0 ? skillId : skillsFull.map((skill) => skill.id),
         expiryDate: selectedDate ? adjustTimezone(selectedDate) : "",
@@ -1161,7 +1225,8 @@ export default function EditJobPage() {
                           placeholder="e.g. Python,Reactjs"
                           aria-autocomplete="list"
                           autoComplete="off"
-                          onFocus={() => setDropdownOpen(true)}
+                          // onFocus={() => setDropdownOpen(true)}
+                          onFocus={handleInputFocusSkill}
                         />
                       </div>
 
@@ -1192,7 +1257,7 @@ export default function EditJobPage() {
                             <div
                               className={classes.createNewCompany}
                               //   onClick={handleOpenRegister}
-                              onClick={handleOpen}
+                              // onClick={handleOpen}
                               style={{ cursor: "pointer" }}
                             >
                               <span>No skills {inputSkill}</span>
@@ -1261,7 +1326,8 @@ export default function EditJobPage() {
                           // placeholder="e.g. Python,Reactjs"
                           aria-autocomplete="list"
                           autoComplete="off"
-                          onFocus={() => setDropdownOpenBenefit(true)}
+                          // onFocus={() => setDropdownOpenBenefit(true)}
+                          onFocus={handleInputFocusBenefit}
                         />
                       </div>
 
@@ -1295,7 +1361,7 @@ export default function EditJobPage() {
                             <div
                               className={classes.createNewCompany}
                               //   onClick={handleOpenRegister}
-                              onClick={handleOpenBenefit}
+                              // onClick={handleOpenBenefit}
                               style={{ cursor: "pointer" }}
                             >
                               <span>No benefits name {inputBenefit}</span>
@@ -1314,11 +1380,11 @@ export default function EditJobPage() {
               >
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    Select Your Locations
+                    Select Your Location
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
-                {locationsdata.length && locationsdata.length > 0 ? (
+                {/* {locationsdata.length && locationsdata.length > 0 ? (
                   <div className={classes.main24}>
                     {locationsdata.map((location) => (
                       <span
@@ -1348,7 +1414,25 @@ export default function EditJobPage() {
                       </span>
                     ))}
                   </div>
-                ) : undefined}
+                ) : undefined} */}
+                {locationsdata && (
+                  <div className={classes.main24}>
+                    {/* {locationsdata.map((locations) => ( */}
+                    <span
+                      key={locationsdata.id}
+                      className={classes.span2}
+                      // onClick={() => handleRemoveLocation(locationsdata)}
+                      onClick={handleRemoveLocations}
+                    >
+                      {locationsdata.city}, {locationsdata.stressAddressDetail}
+                      <span className={classes.spanicon}>
+                        <CloseIcon />
+                      </span>
+                    </span>
+                    {/* ))} */}
+                  </div>
+                )}
+
                 <div className={classes.div1} aria-expanded="false">
                   <div className={inputLocation ? classes.divne : classes.div2}>
                     <div className={classes.div3}>
@@ -1364,7 +1448,8 @@ export default function EditJobPage() {
                           // placeholder="e.g. Python,Reactjs"
                           aria-autocomplete="list"
                           autoComplete="off"
-                          onFocus={() => setDropdownOpenLocation(true)}
+                          // onFocus={() => setDropdownOpenLocation(true)}
+                          onFocus={handleInputFocus}
                         />
                       </div>
 
@@ -1387,7 +1472,7 @@ export default function EditJobPage() {
                           className={classes.logo}
                         /> */}
                                 <span className={classes.companyName}>
-                                  {comp.city}
+                                  {comp.city}, {comp.stressAddressDetail}
                                 </span>
                                 {/* <span className={classes.companyUrl}>
                           {comp.websiteURL}
@@ -1398,7 +1483,7 @@ export default function EditJobPage() {
                             <div
                               className={classes.createNewCompany}
                               //   onClick={handleOpenRegister}
-                              onClick={handleOpenBenefit}
+                              // onClick={handleOpenBenefit}
                               style={{ cursor: "pointer" }}
                             >
                               <span>No benefits name {inputBenefit}</span>
@@ -1519,7 +1604,7 @@ export default function EditJobPage() {
             </div>
           </div>
         </form>
-        <Modal open={open} onClose={handleClose}>
+        {/* <Modal open={open} onClose={handleClose}>
           <Box sx={style}>
             <Typography variant="h6" component="h2">
               Create Skillset
@@ -1558,8 +1643,8 @@ export default function EditJobPage() {
               Cancel
             </Button>
           </Box>
-        </Modal>
-        <Modal open={openBenefit} onClose={handleCloseBenefit}>
+        </Modal> */}
+        {/* <Modal open={openBenefit} onClose={handleCloseBenefit}>
           <Box sx={style}>
             <Typography variant="h6" component="h2">
               Create Benefits
@@ -1571,22 +1656,7 @@ export default function EditJobPage() {
               fullWidth
               margin="normal"
             />
-            {/* <TextField
-              label="Shorthand"
-              value={shorthand}
-              onChange={(e) => setShorthand(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Description"
-              value={descriptionSkillSet}
-              onChange={(e) => setDescriptionSkillSet(e.target.value)}
-              fullWidth
-              multiline
-              rows={4}
-              margin="normal"
-            /> */}
+          
             <Button
               variant="contained"
               onClick={handleSubmitBenefits}
@@ -1598,7 +1668,7 @@ export default function EditJobPage() {
               Cancel
             </Button>
           </Box>
-        </Modal>
+        </Modal> */}
       </div>
     </div>
   );

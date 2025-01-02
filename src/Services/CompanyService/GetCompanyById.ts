@@ -27,6 +27,13 @@ interface JobPost {
   skillSets: string[];
 }
 
+interface Location {
+  id: number;
+  stressAddressDetail: string;
+  city: string;
+  locationId: number;
+}
+
 interface Company {
   id: number;
   companyName: string;
@@ -39,10 +46,11 @@ interface Company {
   numberOfEmployees: number;
   businessStream: BusinessStream;
   jobPosts: JobPost[];
-  imageUrl:string;
-  evidence?:string;
-  taxCode?:string;
-  companyStatus?:number
+  imageUrl: string;
+  evidence?: string;
+  taxCode?: string;
+  companyStatus?: number;
+  companyLocations: Location[]; // Thêm thuộc tính này
 }
 
 interface FetchError extends Error {

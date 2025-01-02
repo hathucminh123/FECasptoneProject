@@ -4,6 +4,13 @@ import { QueryClient } from "@tanstack/react-query";
 
 // const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
 const baseURL = "https://finalcapstonebe-nd0l.onrender.com/api";
+
+
+// const baseURL = "https://6a43-115-73-106-242.ngrok-free.app/api";
+
+
+const baseURLLocation ="https://finalcapstonebe-nd0l.onrender.com"
+// const baseURLLocation ="https://6a43-115-73-106-242.ngrok-free.app"
 // const baseURL = "https://1ae3-115-73-106-242.ngrok-free.app/api";
 // const baseURL = "https://12e3-116-109-208-219.ngrok-free.app/api";
 // const baseURL ="https://6e7c-14-187-237-206.ngrok-free.app/api"
@@ -162,16 +169,19 @@ export const apiLinks = {
   TaxCode: {
     GET: `https://api.vietqr.io/v2/business`,
   },
-  ReviewCompany:{
+  ReviewCompany: {
     POST: `${baseURL}/Review`,
     GETApproved: `${baseURL}/Review/GetApprovedReviewList`,
     GETPending: `${baseURL}/Review/GetPendingReviewList`,
-    PUTRejected:`${baseURL}/Review/RejectReview`,
-    PUTAprroved:`${baseURL}/Review/ApproveReview`,
+    PUTRejected: `${baseURL}/Review/RejectReview`,
+    PUTAprroved: `${baseURL}/Review/ApproveReview`,
   },
 
   Location: {
     GET: `${baseURL}/Location`,
+    POST: `${baseURL}/Location`,
+    DELETE: `${baseURL}/Location`,
+    PUT: `${baseURL}/Location`,
   },
 
   Service: {
@@ -181,6 +191,11 @@ export const apiLinks = {
     DELETE: `${baseURL}/Service`,
     GETServiceById: `${baseURL}/Service`,
   },
+  companyLocation: {
+    GET: `${baseURLLocation}/Location`,
+  },
+
+ 
 };
 
 export const signalR = {

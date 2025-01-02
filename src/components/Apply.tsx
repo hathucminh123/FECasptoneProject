@@ -29,13 +29,14 @@ import { GetUserProfile } from "../Services/UserProfileService/UserProfile.ts";
 
 export default function Apply() {
   const [coverLetter, setCoverLetter] = useState<string | undefined>("");
+  console.log("coverLetter", coverLetter);
   const userId = localStorage.getItem("userId");
   const { JobId } = useParams();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const stripHTML = (html: string) => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent || "";
-  };
+  // const stripHTML = (html: string) => {
+  //   const doc = new DOMParser().parseFromString(html, "text/html");
+  //   return doc.body.textContent || "";
+  // };
 
   const { data: UserProfile } = useQuery({
     queryKey: ["UserProfile"],
@@ -599,7 +600,7 @@ export default function Apply() {
                   </div>
                 ))}
 
-                <div className={classes.input}>
+                {/* <div className={classes.input}>
                   <Typography
                     variant="h3"
                     sx={{
@@ -649,21 +650,8 @@ export default function Apply() {
                     disabled={true}
                     sx={{ width: "100%", height: "100%" }}
                   />
-                  {/* <Typography
-                    variant="h4"
-                    sx={{
-                      marginBottom: "12px",
-                      textAlign: "left",
-                      color: "#a6a6a6",
-                      lineHeight: 1.5,
-                      fontSize: "18px",
-                      display: "inline-block",
-                      marginTop: "0px",
-                    }}
-                  >
-                    {500 - coverLetter.length} of 500 characters remaining
-                  </Typography> */}
-                </div>
+                
+                </div> */}
                 {isPending ? (
                   <div>
                     <RenderButton

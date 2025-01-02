@@ -226,49 +226,53 @@ export default function CompanyInfoNew() {
                             </>
                           )}
                         </NavLink>
-                        <NavLink
-                          to="Settings"
-                          className={({ isActive }) =>
-                            isActive ? classes.active : undefined
-                          }
-                          end
-                        >
-                          {({ isActive }) => (
-                            <>
-                              <div
-                                className={classes.main19}
-                                style={{ marginLeft: 30 }}
-                              >
-                                <span
-                                  style={
-                                    isActive ? { color: "#050c26" } : undefined
-                                  }
+                        {CompanyEmployer?.companyStatus === 2 && (
+                          <NavLink
+                            to="Settings"
+                            className={({ isActive }) =>
+                              isActive ? classes.active : undefined
+                            }
+                            end
+                          >
+                            {({ isActive }) => (
+                              <>
+                                <div
+                                  className={classes.main19}
+                                  style={{ marginLeft: 30 }}
                                 >
-                                  Settings
-                                </span>
-                              </div>
-                              {/* <div className={classes.main37}>
-                                <div className={classes.main38}>
-                                  <span>
-                                    {" "}
-                                    {notifications &&
-                                      notifications.some(
-                                        (notify) => !notify.isRead
-                                      ) && (
-                                        <span className={classes.span5}>
-                                          {
-                                            notifications.filter(
-                                              (notify) => !notify.isRead
-                                            )?.length
-                                          }
-                                        </span>
-                                      )}
+                                  <span
+                                    style={
+                                      isActive
+                                        ? { color: "#050c26" }
+                                        : undefined
+                                    }
+                                  >
+                                    Settings
                                   </span>
                                 </div>
-                              </div> */}
-                            </>
-                          )}
-                        </NavLink>
+                                {/* <div className={classes.main37}>
+                                  <div className={classes.main38}>
+                                    <span>
+                                      {" "}
+                                      {notifications &&
+                                        notifications.some(
+                                          (notify) => !notify.isRead
+                                        ) && (
+                                          <span className={classes.span5}>
+                                            {
+                                              notifications.filter(
+                                                (notify) => !notify.isRead
+                                              )?.length
+                                            }
+                                          </span>
+                                        )}
+                                    </span>
+                                  </div>
+                                </div> */}
+                              </>
+                            )}
+                          </NavLink>
+                        )}
                       </nav>
                     </div>
                     <Outlet context={{ notifications, setNotifications }} />

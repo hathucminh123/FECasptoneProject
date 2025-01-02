@@ -12,6 +12,14 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 const data = ["Việt Nam", "Mỹ", "Lào"];
 import { v4 as uuidv4 } from "uuid";
 import { storage } from "../../firebase/config";
+import CompanyLocationsForm from "../../components/NewUiEmployer/CompanyLocationsForm";
+
+interface Location {
+  // id: number;
+  stressAddressDetail: string;
+  // city: string;
+  locationId: number;
+}
 const EditInfoCompany: React.FC = () => {
   const [companyId, setCompanyId] = useState<string | null>(null);
 
@@ -43,6 +51,10 @@ const EditInfoCompany: React.FC = () => {
   const [countrydata, setCountryData] = useState(data);
   const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [locations, setLocations] = useState<Location[]>([
+    { locationId: 0, stressAddressDetail: "" },
+  ]);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const stripHtmlTags = (html: string) => {
     const parser = new DOMParser();
@@ -63,6 +75,7 @@ const EditInfoCompany: React.FC = () => {
       setCity(companyDataa.city || "");
       setCountry(companyDataa.country || "");
       setEstablishedYear(companyDataa.establishedYear);
+      setLocations(companyDataa.companyLocations);
     }
   }, [companyDataa]);
 
@@ -136,10 +149,11 @@ const EditInfoCompany: React.FC = () => {
         id: Number(companyId),
         companyName,
         companyDescription,
-        numberOfEmployees:companySize,
-        websiteURL:website,
+        numberOfEmployees: companySize,
+        websiteURL: website,
         imageUrl: fileUrl ? fileUrl : imageUrl,
         address,
+        companyLocations:locations,
         city,
         country: selectedCountry ? selectedCountry : country,
         establishedYear,
@@ -286,7 +300,7 @@ const EditInfoCompany: React.FC = () => {
                   </label>
                 </div>
               </div>
-              <div className={classes.main15}>
+              {/* <div className={classes.main15}>
                 <div className={classes.main16}>
                   <label htmlFor="" className={classes.label}>
                     <div className={classes.main6}>
@@ -323,6 +337,15 @@ const EditInfoCompany: React.FC = () => {
                     </div>
                   </label>
                 </div>
+              </div> */}
+              <div className={classes.main15}>
+                <div style={{display:'block',width:'100%'}}>
+              <CompanyLocationsForm
+              width={true}
+                locations={locations}
+                setLocations={setLocations}
+              />
+              </div>
               </div>
               <div className={classes.main15}>
                 <label htmlFor="" className={classes.label}>

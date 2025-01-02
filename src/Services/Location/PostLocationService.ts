@@ -1,24 +1,20 @@
 import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
-interface Location {
-  locationId: number;
-  stressAddressDetail: string;
-}
-interface Company {
-  data: { [key: string]: string | number | undefined | Location[] |null};
+interface JobLocation {
+  data: { [key: string]: string | number |null };
 }
 
-export const PostCompanies = async ({ data }: Company) => {
+export const PostLocationService = async ({ data }: JobLocation) => {
   try {
     const response = await httpClient.post({
-      url: apiLinks.Company.POST,
+      url: apiLinks.Location.POST,
       data: data,
     });
     return response.data;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error("Post Companies request failed:", error.message);
+      console.error("Post Location request failed:", error.message);
     } else {
       console.error("Unexpected error", error);
     }

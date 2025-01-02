@@ -428,7 +428,17 @@ export default function HeaderEmployerSystem({
           )}
 
           <div className={classes.header8}>
-            <Link to="/employerJob/company" className={classes.link3}>
+            <Link 
+            
+            // to="/employerJob/company"
+            
+            to={
+              companyId && companyId !== "null"
+                ? `/EmployerJob/company`
+                : "/EmployerJob"
+            }
+            
+            className={classes.link3}>
               <div className={classes.header9}>
                 <svg
                   fill="none"

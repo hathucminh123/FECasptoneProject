@@ -569,7 +569,7 @@ const JobDetails: React.FC = () => {
                     }}
 
                   >
-                     {`${job?.minsalary} - ${job?.salary} USD`}
+                     {`${job?.minsalary} - ${job?.salary} VNĐ`}
                     {/* {job?.salary} USD */}
                   </Typography>
                 </div>
@@ -826,8 +826,10 @@ const JobDetails: React.FC = () => {
                         marginBottom: "7px",
                       }}
                     >
-                      From: {job?.postingDate.slice(0, 10)} - To:{" "}
-                      {job?.expiryDate.slice(0, 10)}
+                      From :{moment(job?.postingDate).format("DD-MM-YYYY")} - To:{" "}
+                      {moment(job?.expiryDate).format("DD-MM-YYYY")}
+                      {/* From: {job?.postingDate.slice(0, 10)} - To:{" "}
+                      {job?.expiryDate.slice(0, 10)} */}
                     </h5>
                   </div>
                   <div className={classes.location}>

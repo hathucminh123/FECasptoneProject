@@ -135,7 +135,7 @@ const  OverViewCompany:React.FC =()=> {
                     </div>
                     <span className={classes.span}>
                       <div className={classes.main18}>
-                        {item.salary} USD Amazing Job Est
+                        {item.salary} VNĐ Amazing Job Est
                       </div>
                     </span>
                   </div>

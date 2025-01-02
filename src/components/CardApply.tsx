@@ -153,7 +153,7 @@ const CardApply: React.FC<props> = ({ company, job, activity }) => {
           <div className={classes.main5}>
             <div className={classes.main6}>
               <MonetizationOnOutlinedIcon />
-              <span className={classes.span2}>{job?.salary} USD</span>
+              <span className={classes.span2}>{job?.salary} VNĐ</span>
             </div>
           </div>
           <div className={classes.main7}></div>

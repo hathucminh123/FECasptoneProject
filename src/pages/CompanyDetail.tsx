@@ -306,7 +306,8 @@ import { GetBusinessStream } from "../Services/BusinessStreamService/GetBusiness
 import { fetchCompanies } from "../Services/CompanyService/GetCompanies";
 import LanguageIcon from "@mui/icons-material/Language";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
-const CompanyDetail:React.FC=() =>{
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+const CompanyDetail: React.FC = () => {
   const { CompanyId } = useParams();
 
   const { data: CompanyData } = useQuery({
@@ -327,7 +328,6 @@ const CompanyDetail:React.FC=() =>{
     queryFn: ({ signal }) => GetBusinessStream({ signal }),
     staleTime: 5000,
   });
-
 
   const {
     data: JobPosts,
@@ -357,6 +357,15 @@ const CompanyDetail:React.FC=() =>{
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
   // console.log('sad',BusinessStreamDatainCompany?.businessStreamName)
+const handleAddressSelect = (address: string) => {
+    window.open(getGoogleMapsUrl(address), "_blank");
+  };
+  const getGoogleMapsUrl = (address: string) => {
+    return `https://www.google.com/maps/embed/v1/place?q=${encodeURIComponent(
+      address
+    )}&key=AIzaSyCPzg2m757mjL-h0lcm7gM-nSQQkw869CY`;
+  };
+  
 
   return (
     <>
@@ -397,12 +406,12 @@ const CompanyDetail:React.FC=() =>{
             <div className={classes.info3}>Country</div>
             <div className={classes.info4}>{companyDataa?.country}</div>
           </div>
-          <div className={classes.info2}>
+          {/* <div className={classes.info2}>
             <div className={classes.info3}>Company Address</div>
             <div className={classes.info4}>
               {companyDataa?.address}, {companyDataa?.city}
             </div>
-          </div>
+          </div> */}
           <div className={classes.info2}>
             <div className={classes.info3}>Company WebSite</div>
             <div className={classes.info5}>
@@ -476,16 +485,16 @@ const CompanyDetail:React.FC=() =>{
           Our key skills
         </Typography>
         <div className={classes.job1}>
-          {uniqueArray?.map((job,index) => (
+          {uniqueArray?.map((job, index) => (
             <div key={index}>
               {/* {job.skillSets.map((skill, index) => ( */}
-                <button
-                  style={{ fontFamily: "Lexend, sans-serif" }}
-                  key={index}
-                  className={classes.button1}
-                >
-                  {job}
-                </button>
+              <button
+                style={{ fontFamily: "Lexend, sans-serif" }}
+                key={index}
+                className={classes.button1}
+              >
+                {job}
+              </button>
               {/* ))} */}
             </div>
           ))}
@@ -506,7 +515,7 @@ const CompanyDetail:React.FC=() =>{
         >
           {companyDataa && (
             <div
-              style={{ fontFamily: "Lexend, sans-serif" , all: "unset",}}
+              style={{ fontFamily: "Lexend, sans-serif", all: "unset" }}
               dangerouslySetInnerHTML={{
                 __html: companyDataa?.companyDescription,
               }}
@@ -550,7 +559,68 @@ const CompanyDetail:React.FC=() =>{
           {/* {companyDataa?.companyDescription} */}
         </Typography>
       </div>
+      <div className={classes.overview}>
+        <div className={classes.main3}>
+          <Typography
+            variant="h2"
+            sx={{
+              fontSize: "22px",
+              fontWeight: 700,
+              lineHeight: 1.5,
+              borderBottom: "1px dashed #dedede",
+              paddingBottom: "16px",
+              fontFamily: "Lexend, sans-serif",
+            }}
+          >
+            Location
+          </Typography>
+          <div className={classes.main4}>
+            <div className={classes.main5}>
+              {companyDataa?.companyLocations.map((item, index) => (
+                <div key={index}  onClick={() => handleAddressSelect(item.stressAddressDetail)}>
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      paddingBottom: "12px",
+                      lineHeight: 1.5,
+                      fontSize: "18px",
+                      fontWeight: 700,
+                      marginTop: 0,
+                      marginBottom: 0,
+                    }}
+                  >
+                  {item.city}
+                  </Typography>
+                  <div className={classes.main6}>
+                    <div className={classes.main7}>
+                      <span className={classes.main8}>
+                        <svg className={classes.svg}>
+                          <LocationOnIcon style={{ color:" #4cd681" }} />
+                        </svg>
+                      </span>
+                      <span className={classes.main9}>
+                       {item.stressAddressDetail}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className={classes.main10}>
+              <div className={classes.main11}>
+                <iframe
+                  allowFullScreen
+                  className={classes.iframediv}
+                  title="map"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.294212379042!2d106.65662531480048!3d10.76262226232899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f0f7a4a4d5d%3A0x1b7e6e0a0e4d4d1!2zTmfDtSAxMjUgxJDhu6ljIFRo4bq_LCBUw6J5IE5hbQ!5e0!3m2!1svi!2s!4v1634706488343!5m2!1svi!2s"
+                  width="600"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
-}
-export default CompanyDetail
+};
+export default CompanyDetail;

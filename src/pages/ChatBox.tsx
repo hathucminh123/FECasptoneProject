@@ -373,12 +373,12 @@ const ChatBox: React.FC = () => {
                   <div className={classes.main14}>
                     <div className={classes.main15}>
                       <div className={classes.main16}>
-                        <button className={classes.button}>
+                        {/* <button className={classes.button}>
                           <div className={classes.main17}>Find Job by Role</div>
                           <div className={classes.main18}>
                             Explore openings by job title
                           </div>
-                        </button>
+                        </button> */}
                         <button className={classes.button}>
                           <div className={classes.main17}>
                             Find Job by Using Your resume
@@ -439,6 +439,7 @@ const ChatBox: React.FC = () => {
                       </div>
                     </div>
                   </div>
+                  
                 </div>
               </div>
             </div>

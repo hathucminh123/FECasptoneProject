@@ -7,7 +7,8 @@
   transition-duration: 0.15s;
   overflow: hidden;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  height: 100vh;
   display: flex;
   z-index: 0;
   position: relative;
@@ -233,6 +234,8 @@
   width: 100%;
   box-sizing: border-box;
   border: 0 solid #e5e7eb;
+ margin-top: auto;
+  
 }
 .main15 {
   border-color: #e4e4e7;
@@ -240,7 +243,7 @@
   border: 0 solid #e5e7eb;
 }
 .main16 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* grid-template-columns: repeat(2, minmax(0, 1fr)); */
   max-width: 40rem;
   padding-left: 1.25rem;
   padding-right: 1.25rem;
@@ -432,8 +435,10 @@
   font-weight: 500;
   font-size: 0.875rem;
   line-height: 1.5rem;
-  --tw-bg-opacity: 1;
-  background-color: rgb(228 228 231 / var(--tw-bg-opacity, 1));
+  /* --tw-bg-opacity: 1;
+  background-color: rgb(228 228 231 / var(--tw-bg-opacity, 1)); */
+  background-color: #3cbc8c;
+  /* backgroundColor: "#3cbc8c", */
   border-color: rgba(17, 24, 39, 0.05);
   border-width: 0;
   border-radius: calc(var(--radius) - 2px);
@@ -441,10 +446,11 @@
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
+  color: #000000;
   /* cursor: not-allowed; */
   min-width: 40px;
 cursor: pointer;
-  width: 40px;
+  width: 80px;
   min-height: 40px;
   height: 40px;
   display: inline-flex;
@@ -456,9 +462,9 @@ cursor: pointer;
 .main30{
 
     overflow: auto;
-    flex: 1 1 0%;
+    /* flex: 1 1 0%; */
     width: 100%;
-    height: 100%;
+    height: 70%;
     position: relative;
    
     

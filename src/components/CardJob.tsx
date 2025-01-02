@@ -245,7 +245,7 @@ export default function CardJob({
                   color: "#0ab305 !important",
                 }}
               >
-                {`${data?.minsalary} - ${data?.salary} USD`}
+                {`${data?.minsalary} - ${data?.salary} VNĐ`}
               </Typography>
             </div>
 

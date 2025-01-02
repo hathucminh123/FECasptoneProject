@@ -24,6 +24,7 @@ import { DeleteFollowCompany } from "../Services/FollowCompany/DeleteFollowCompa
 import Followsucess from "../components/Followsucess";
 import { AnimatePresence } from "framer-motion";
 import { GetJobPost } from "../Services/JobsPost/GetJobPosts";
+import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 // import { GetReviewApprovedCompany } from "../Services/ReviewCompany/GetReviewApprovedCompany";
 interface JobType {
   id: number;
@@ -145,37 +146,38 @@ const CompanyDetailRoot: React.FC = () => {
     staleTime: 5000,
   });
   const JobPostsdata = JobPosts?.JobPosts;
+  console.log("JobPostsdata", JobPostsdata);
 
-  // const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
+  const [jobSearch, setJobSearch] = useState<JobPost[]>([]);
 
-  // const { mutateAsync } = useMutation({
-  //   mutationFn: GetJobSearch,
-  //   onSuccess: (data) => {
-  //     if (data && data.result && data.result.items.length > 0) {
-  //       setJobSearch(data.result.items);
-  //       // setTotalJobs(data.result.totalCount);
-  //     } else {
-  //       setJobSearch([]);
-  //       // setTotalJobs(0);
-  //     }
-  //   },
-  //   onError: () => {
-  //     message.error("Failed to fetch job data");
-  //   },
-  // });
+  const { mutateAsync } = useMutation({
+    mutationFn: GetJobSearch,
+    onSuccess: (data) => {
+      if (data && data.result && data.result.items.length > 0) {
+        setJobSearch(data.result.items);
+        // setTotalJobs(data.result.totalCount);
+      } else {
+        setJobSearch([]);
+        // setTotalJobs(0);
+      }
+    },
+    onError: () => {
+      message.error("Failed to fetch job data");
+    },
+  });
 
   // // Fetch jobs whenever currentPage changes
-  // useEffect(() => {
-  //   mutateAsync({
-  //     data: {
-  //       // pageIndex: currentPage,
-  //       pageSize: 1000,
-  //     },
-  //   });
-  // }, [mutateAsync]);
+  useEffect(() => {
+    mutateAsync({
+      data: {
+        // pageIndex: currentPage,
+        pageSize: 1000,
+      },
+    });
+  }, [mutateAsync]);
 
   // Lọc các công việc thuộc về công ty hiện tại
-  const jobincompanyData = JobPostsdata?.filter(
+  const jobincompanyData = jobSearch?.filter(
     (item) => item.companyId === companyDataa?.id
   );
 

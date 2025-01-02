@@ -1100,7 +1100,7 @@ const FilterJobbySkill: React.FC = () => {
                                     fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
-                                  {jobDetails?.salary} USD
+                                  {jobDetails?.salary} VNĐ
                                 </Typography>
                               </div>
                             </div>

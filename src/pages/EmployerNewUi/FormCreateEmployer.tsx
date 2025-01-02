@@ -8,15 +8,15 @@ import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
+// import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+// import Modal from "@mui/material/Modal";
+// import TextField from "@mui/material/TextField";
+// import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+// import Box from "@mui/material/Box";
 import EventNoteOutlinedIcon from "@mui/icons-material/EventNoteOutlined";
 import DatePicker from "react-datepicker";
 // import { PostJobType } from "../../Services/JobTypeService/PostJobType";
@@ -27,26 +27,27 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { PostJobPosts } from "../../Services/JobsPost/PostJobPosts";
 import { GetJobPost } from "../../Services/JobsPost/GetJobPosts";
 import { GetBenefits } from "../../Services/Benefits/GetBenefits";
-import { PostBenefits } from "../../Services/Benefits/PostBenefits";
+// import { PostBenefits } from "../../Services/Benefits/PostBenefits";
 import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 import { AnimatePresence } from "framer-motion";
 import EmployerServiceModal from "../../components/Employer/EmployerServiceModal";
 import { GetLocationService } from "../../Services/Location/GetLocationService";
+import { GetcompanyLocationService } from "../../Services/CompanyLocation/GetcompanyLocationService";
 // type JobContextType = {
 //   selectJobId: number | null;
 //   setSelectJobId: React.Dispatch<React.SetStateAction<number | null>>;
 // };
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+// const style = {
+//   position: "absolute",
+//   top: "50%",
+//   left: "50%",
+//   transform: "translate(-50%, -50%)",
+//   width: 400,
+//   bgcolor: "background.paper",
+//   border: "2px solid #000",
+//   boxShadow: 24,
+//   p: 4,
+// };
 
 // const countrydata = ["dsa", "asdasd"];
 
@@ -77,6 +78,7 @@ interface Benefits {
 interface Locations {
   id: number;
   city: string;
+  stressAddressDetail:string;
 }
 interface JobType {
   id: number;
@@ -94,12 +96,19 @@ interface Services {
 export default function FormCreateEmployer() {
   const navigate = useNavigate();
 
+   const [companyId, setCompanyId] = useState<string | null>(null);
+  
+    useEffect(() => {
+      const CompanyId = localStorage.getItem("CompanyId");
+      setCompanyId(CompanyId);
+    }, []);
+
   const [jobDescription, setJobDescription] = useState<string>("");
   const [jobTitle, setJobTitle] = useState<string>("");
   const [benefits, setBenefits] = useState<string>("");
   const [qualificationRequired, setQualificationRequired] =
     useState<string>("");
-  const companyId = localStorage.getItem("CompanyId");
+  // const companyId = localStorage.getItem("CompanyId");
   const userId = localStorage.getItem("userId");
   //imageurl
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -130,10 +139,10 @@ export default function FormCreateEmployer() {
   >();
 
   // skill
-  const [open, setOpen] = useState(false);
-  const [nameSkill, setNameSkill] = useState("");
-  const [shorthand, setShorthand] = useState("");
-  const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
+  // const [open, setOpen] = useState(false);
+  // const [nameSkill, setNameSkill] = useState("");
+  // const [shorthand, setShorthand] = useState("");
+  // const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
 
   // const [shorthand, setShorthand] = useState("");
   // const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
@@ -143,7 +152,7 @@ export default function FormCreateEmployer() {
     queryFn: ({ signal }) => GetSkillSets({ signal }),
     staleTime: 5000,
   });
-  const [nameBenefits, setNameBenefits] = useState("");
+  // const [nameBenefits, setNameBenefits] = useState("");
   const SkillSetdataa = SkillSetdata?.SkillSets;
   const [skills, setSkills] = useState<SkillSet[]>([]);
   const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
@@ -159,7 +168,7 @@ export default function FormCreateEmployer() {
     staleTime: 5000,
   });
   const Benefitsdataa = BenefitsData?.Benefits;
-  const [openBenefit, setOpenBenefit] = useState(false);
+  // const [openBenefit, setOpenBenefit] = useState(false);
   const [benefitsdata, setBenefitsdata] = useState<Benefits[]>([]);
 
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -176,9 +185,19 @@ export default function FormCreateEmployer() {
     staleTime: 5000,
   });
   const Locationsdataa = LocationData?.Locations;
-  const [locationId, setLocationId] = useState<number[]>([]);
-  const [locationsdata, setLocationsdata] = useState<Locations[]>([]);
-  const [filteredLocations, setFilteredLocations] = useState(Locationsdataa);
+  console.log(Locationsdataa);
+
+  const { data: CompanyLocation } = useQuery({
+    queryKey: ["CompanyLocation"],
+    queryFn: ({ signal }) =>
+      GetcompanyLocationService({ id: Number(companyId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const CompanyLocationdata = CompanyLocation?.Locations;
+  const [locationId, setLocationId] = useState<number|null>(null);
+  const [locationsdata, setLocationsdata] = useState<Locations|null>(null);
+  const [filteredLocations, setFilteredLocations] = useState(CompanyLocationdata);
   const [inputLocation, setInputLocation] = useState<string>("");
   const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
   const dropdownRefLocation = useRef<HTMLDivElement>(null);
@@ -189,6 +208,17 @@ export default function FormCreateEmployer() {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+
+//companyLocation
+ 
+const { data: UserProfile } = useQuery({
+  queryKey: ["UserProfile"],
+  queryFn: ({ signal }) =>
+    GetUserProfile({ id: Number(userId), signal: signal }),
+  staleTime: 1000,
+});
+
+const UserProfileData = UserProfile?.UserProfiles;
   //Date
 
   const handleIconClick = () => {
@@ -196,14 +226,11 @@ export default function FormCreateEmployer() {
   };
 
   //profile
-  const { data: UserProfile } = useQuery({
-    queryKey: ["UserProfile"],
-    queryFn: ({ signal }) =>
-      GetUserProfile({ id: Number(userId), signal: signal }),
-    staleTime: 1000,
-  });
 
-  const UserProfileData = UserProfile?.UserProfiles;
+
+
+
+
   console.log(UserProfileData);
   //imageurl
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,67 +253,67 @@ export default function FormCreateEmployer() {
   };
 
   //skills
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleOpen = () => setOpen(true);
+  // const handleClose = () => setOpen(false);
 
-  const handleOpenBenefit = () => setOpenBenefit(true);
-  const handleCloseBenefit = () => setOpenBenefit(false);
+  // const handleOpenBenefit = () => setOpenBenefit(true);
+  // const handleCloseBenefit = () => setOpenBenefit(false);
 
-  const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
-    mutationFn: PostSkillSets,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
-      message.success("Skill set created successfully.");
-      handleClose();
-    },
-    onError: () => {
-      message.error("Failed to create skill set.");
-    },
-  });
-  const { mutate: createBenefits, isPending: isLoadingBenefit } = useMutation({
-    mutationFn: PostBenefits,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["Benefits"] });
-      message.success("Benefits created successfully.");
-      handleClose();
-    },
-    onError: () => {
-      message.error("Failed to create Benefits.");
-    },
-  });
+  // const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
+  //   mutationFn: PostSkillSets,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
+  //     message.success("Skill set created successfully.");
+  //     handleClose();
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to create skill set.");
+  //   },
+  // });
+  // const { mutate: createBenefits, isPending: isLoadingBenefit } = useMutation({
+  //   mutationFn: PostBenefits,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({ queryKey: ["Benefits"] });
+  //     message.success("Benefits created successfully.");
+  //     handleClose();
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to create Benefits.");
+  //   },
+  // });
 
-  const handleSubmitSkillSet = () => {
-    if (!nameSkill.trim()) {
-      return message.error("Please enter a valid skill name.");
-    }
-    if (!shorthand.trim()) {
-      return message.error("Please enter a shorthand for the skill.");
-    }
-    if (!descriptionSkillSet.trim()) {
-      return message.error("Please enter a description for the skill.");
-    }
+  // const handleSubmitSkillSet = () => {
+  //   if (!nameSkill.trim()) {
+  //     return message.error("Please enter a valid skill name.");
+  //   }
+  //   if (!shorthand.trim()) {
+  //     return message.error("Please enter a shorthand for the skill.");
+  //   }
+  //   if (!descriptionSkillSet.trim()) {
+  //     return message.error("Please enter a description for the skill.");
+  //   }
 
-    createSkillSet({
-      data: {
-        name: nameSkill.trim(),
-        shorthand: shorthand.trim(),
-        description: descriptionSkillSet.trim(),
-      },
-    });
-  };
+  //   createSkillSet({
+  //     data: {
+  //       name: nameSkill.trim(),
+  //       shorthand: shorthand.trim(),
+  //       description: descriptionSkillSet.trim(),
+  //     },
+  //   });
+  // };
 
-  const handleSubmitBenefits = () => {
-    if (!nameBenefits.trim()) {
-      return message.error("Please enter a valid benefits name.");
-    }
-    createBenefits({
-      data: {
-        name: nameBenefits,
-        // shorthand: shorthand,
-        // description: descriptionSkillSet,
-      },
-    });
-  };
+  // const handleSubmitBenefits = () => {
+  //   if (!nameBenefits.trim()) {
+  //     return message.error("Please enter a valid benefits name.");
+  //   }
+  //   createBenefits({
+  //     data: {
+  //       name: nameBenefits,
+  //       // shorthand: shorthand,
+  //       // description: descriptionSkillSet,
+  //     },
+  //   });
+  // };
   const handleSkill = (selectedSkill: SkillSet) => {
     if (
       !skills.includes(selectedSkill) &&
@@ -312,14 +339,17 @@ export default function FormCreateEmployer() {
   };
 
   const handleLocation = (selectedLocation: Locations) => {
-    if (
-      !locationsdata.includes(selectedLocation) &&
-      !locationId.includes(selectedLocation.id)
-    ) {
-      setLocationsdata([...locationsdata, selectedLocation]);
-      // setBenefitId([...benefitId, selectedLocation.id]);
-      setLocationId([...locationId, selectedLocation.id]);
-    }
+    // if (
+    //   !locationsdata.includes(selectedLocation) &&
+    //   !locationId.includes(selectedLocation.id)
+    // ) {
+    //   setLocationsdata([...locationsdata, selectedLocation]);
+    //   // setBenefitId([...benefitId, selectedLocation.id]);
+    //   setLocationId([...locationId, selectedLocation.id]);
+    // }
+
+    setLocationsdata(selectedLocation) ;
+    setLocationId(selectedLocation.id);
     setDropdownOpenLocation(false);
     setInputLocation("");
   };
@@ -335,14 +365,20 @@ export default function FormCreateEmployer() {
     setBenefitId(benefitId.filter((benefit) => benefit !== BenefitToRemove.id));
   };
 
-  const handleRemoveLocation = (LocationToRemove: Locations) => {
-    setLocationsdata(
-      locationsdata.filter((location) => location !== LocationToRemove)
-    );
-    setLocationId(
-      locationId.filter((location) => location !== LocationToRemove.id)
-    );
+  // const handleRemoveLocation = (LocationToRemove: Locations) => {
+  //   setLocationsdata(
+  //     locationsdata.filter((location) => location !== LocationToRemove)
+  //   );
+  //   setLocationId(
+  //     locationId.filter((location) => location !== LocationToRemove.id)
+  //   );
+  // };
+  const handleRemoveLocation = () => {
+    setLocationsdata(null); // Clear the selected location
+    setLocationId(null); // Clear the selected location ID
+    setInputLocation(""); // Clear the input field
   };
+  
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -417,13 +453,27 @@ export default function FormCreateEmployer() {
     }
   };
 
+  const handleInputFocus = () => {
+    setFilteredLocations(CompanyLocationdata); // Show all data initially
+    setDropdownOpenLocation(true);
+  };
+  const handleInputFocusSkill = () => {
+    setFilteredSkills(SkillSetdataa); // Show all data initially
+    setDropdownOpen(true);
+  };
+
+  const handleInputFocusBenefit = () => {
+    setFilteredBenefits(Benefitsdataa); // Show all data initially
+    setDropdownOpenBenefit(true);
+  };
+
   //Locations
   const handleChangeLocation = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     setInputLocation(inputValue);
     if (inputValue) {
       setFilteredLocations(
-        Locationsdataa?.filter((comp) =>
+        CompanyLocationdata?.filter((comp) =>
           comp.city.toLowerCase().includes(inputValue.toLowerCase())
         )
       );
@@ -626,7 +676,8 @@ export default function FormCreateEmployer() {
         expiryDate: selectedDate ? adjustTimezone(selectedDate) : "",
         serviceId: selectServiceId,
         minsalary: parseInt(minsalary) ?? 0,
-        locationIds: locationId,
+        // locationIds: locationId,
+        companyLocation:locationId
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
@@ -1181,7 +1232,8 @@ export default function FormCreateEmployer() {
                           placeholder="e.g. Python,Reactjs"
                           aria-autocomplete="list"
                           autoComplete="off"
-                          onFocus={() => setDropdownOpen(true)}
+                          onFocus={handleInputFocusSkill}
+                          // onFocus={() => setDropdownOpen(true)}
                         />
                       </div>
 
@@ -1212,7 +1264,7 @@ export default function FormCreateEmployer() {
                             <div
                               className={classes.createNewCompany}
                               //   onClick={handleOpenRegister}
-                              onClick={handleOpen}
+                              // onClick={handleOpen}
                               style={{ cursor: "pointer" }}
                             >
                               <span>No skills name: {inputSkill}</span>
@@ -1267,7 +1319,8 @@ export default function FormCreateEmployer() {
                           // placeholder="e.g. Python,Reactjs"
                           aria-autocomplete="list"
                           autoComplete="off"
-                          onFocus={() => setDropdownOpenBenefit(true)}
+                          // onFocus={() => setDropdownOpenBenefit(true)}
+                          onFocus={handleInputFocusBenefit}
                         />
                       </div>
 
@@ -1301,7 +1354,7 @@ export default function FormCreateEmployer() {
                             <div
                               className={classes.createNewCompany}
                               //   onClick={handleOpenRegister}
-                              onClick={handleOpenBenefit}
+                              // onClick={handleOpenBenefit}
                               style={{ cursor: "pointer" }}
                             >
                               <span>No Benefits name: {inputBenefit}</span>
@@ -1320,26 +1373,27 @@ export default function FormCreateEmployer() {
               >
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    Select Your Locations
+                    Select Your Location
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
-                {locationsdata.length && locationsdata.length > 0 ? (
+                {locationsdata &&  (
                   <div className={classes.main24}>
-                    {locationsdata.map((locations) => (
+                    {/* {locationsdata.map((locations) => ( */}
                       <span
-                        key={locations.id}
+                        key={locationsdata.id}
                         className={classes.span2}
-                        onClick={() => handleRemoveLocation(locations)}
+                        // onClick={() => handleRemoveLocation(locationsdata)}
+                        onClick={handleRemoveLocation}
                       >
-                        {locations.city}
+                        {locationsdata.city}, {locationsdata.stressAddressDetail}
                         <span className={classes.spanicon}>
                           <CloseIcon />
                         </span>
                       </span>
-                    ))}
+                    {/* ))} */}
                   </div>
-                ) : undefined}
+                ) }
 
                 <div className={classes.div1} aria-expanded="false">
                   <div className={inputLocation ? classes.divne : classes.div2}>
@@ -1356,7 +1410,8 @@ export default function FormCreateEmployer() {
                           // placeholder="e.g. Python,Reactjs"
                           aria-autocomplete="list"
                           autoComplete="off"
-                          onFocus={() => setDropdownOpenLocation(true)}
+                          // onFocus={() => setDropdownOpenLocation(true)}
+                          onFocus={handleInputFocus}
                         />
                       </div>
 
@@ -1379,7 +1434,7 @@ export default function FormCreateEmployer() {
                           className={classes.logo}
                         /> */}
                                 <span className={classes.companyName}>
-                                  {comp.city}
+                                  {comp.city}, {comp.stressAddressDetail}
                                 </span>
                                 {/* <span className={classes.companyUrl}>
                           {comp.websiteURL}
@@ -1393,7 +1448,7 @@ export default function FormCreateEmployer() {
                               // onClick={handleOpenBenefit}
                               style={{ cursor: "pointer" }}
                             >
-                              <span>No Benefits name: {inputLocation}</span>
+                              <span>No Location avalable: {inputLocation}</span>
                             </div>
                           )}
                         </div>
@@ -1496,7 +1551,7 @@ export default function FormCreateEmployer() {
             </div>
           </div>
         </form>
-        <Modal open={open} onClose={handleClose}>
+        {/* <Modal open={open} onClose={handleClose}>
           <Box sx={style}>
             <Typography variant="h6" component="h2">
               Create Skillset
@@ -1535,8 +1590,8 @@ export default function FormCreateEmployer() {
               Cancel
             </Button>
           </Box>
-        </Modal>
-        <Modal open={openBenefit} onClose={handleCloseBenefit}>
+        </Modal> */}
+        {/* <Modal open={openBenefit} onClose={handleCloseBenefit}>
           <Box sx={style}>
             <Typography variant="h6" component="h2">
               Create Benefits
@@ -1548,22 +1603,7 @@ export default function FormCreateEmployer() {
               fullWidth
               margin="normal"
             />
-            {/* <TextField
-              label="Shorthand"
-              value={shorthand}
-              onChange={(e) => setShorthand(e.target.value)}
-              fullWidth
-              margin="normal"
-            />
-            <TextField
-              label="Description"
-              value={descriptionSkillSet}
-              onChange={(e) => setDescriptionSkillSet(e.target.value)}
-              fullWidth
-              multiline
-              rows={4}
-              margin="normal"
-            /> */}
+           
             <Button
               variant="contained"
               onClick={handleSubmitBenefits}
@@ -1575,7 +1615,7 @@ export default function FormCreateEmployer() {
               Cancel
             </Button>
           </Box>
-        </Modal>
+        </Modal> */}
       </div>
     </div>
   );

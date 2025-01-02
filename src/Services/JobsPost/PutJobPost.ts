@@ -2,7 +2,7 @@ import httpClient from "../../httpClient/httpClient";
 import { apiLinks } from "../mainService";
 
 interface JobPosts {
-  data: { [key: string]: string | number | number[]|undefined };
+  data: { [key: string]: string | number | number[]|undefined |null};
   id: number;
 }
 

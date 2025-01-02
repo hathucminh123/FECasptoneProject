@@ -32,6 +32,12 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 // import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
 import { fetchCompaniesById } from "../../Services/CompanyService/GetCompanyById";
 import { PutCompanyRejected } from "../../Services/CompanyService/PutCompanyRejected";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import CompanyLocationsForm from "../../components/NewUiEmployer/CompanyLocationsForm";
+
 // import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
 
 // interface BusinessStreamprops {
@@ -128,16 +134,27 @@ interface Company {
   taxCode?:string;
   companyStatus?:number
 }
+interface Location {
+  // id: number;
+  stressAddressDetail: string;
+  // city: string;
+  locationId: number;
+}
+
 const data = ["Việt Nam", "Mỹ", "Lào"];
 
 const employees = ["1-10", "11-50", "51-200", "201-500", "501-1000"];
+
 
 type OutletContextType = {
   nextStep: boolean;
   setNextStep: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+
+const steps = ["Fill Company Details", "Add Company Locations"];
 export default function VerifiCompanyUpdate() {
+   const [activeStep, setActiveStep] = useState(0);
   // const {
   //   data: Company,
   //   // isLoading: isCompanyLoading,
@@ -187,6 +204,11 @@ export default function VerifiCompanyUpdate() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileEvidenceRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
+  
+  const [locations, setLocations] = useState<Location[]>([
+    { locationId: 0, stressAddressDetail: "" },
+  ]);
+  
   const isVerification = searchParams.get("mode") === "verification";
   // const userId = localStorage.getItem("userId");
   const [verificationCode, setVerificationCode] = useState<string>("");
@@ -225,11 +247,11 @@ export default function VerifiCompanyUpdate() {
       setEstablishedYear(companyDataa.establishedYear.toString() || "");
       setTaxCode(companyDataa.taxCode || "");
       setImageUrlEvi(companyDataa.evidence || "");
+      setLocations(companyDataa.companyLocations);
     }
   }, [companyDataa]);
 
 
-  
 
   // const { mutate: MutateBusinessStream, isPending: Pedingbusiness } =
   //   useMutation({
@@ -417,8 +439,58 @@ export default function VerifiCompanyUpdate() {
     },
   });
 
+  const handleNext = () => {
+    if (activeStep === 0) {
+      // Validation for step 1
+      const errors: string[] = [];
+  
+      if (!company.trim()) errors.push("Company Name is required.");
+      if (!websiteURL.trim() || !/^https?:\/\/[^\s]+$/i.test(websiteURL))
+        errors.push("A valid Website URL is required.");
+      if (!address.trim()) errors.push("Address is required.");
+      if (!city.trim()) errors.push("City is required.");
+      if (!country.trim()) errors.push("Country is required.");
+      if (!establishedYear.trim() || isNaN(Number(establishedYear)))
+        errors.push("A valid Established Year is required.");
+      if (!taxCode.trim() || isNaN(Number(taxCode)))
+        errors.push("A valid Tax Code is required.");
+      if (!numberOfEmployees.trim() || isNaN(Number(numberOfEmployees)))
+        errors.push("Number of Employees is required.");
+      if (!description.trim()) errors.push("Company Description is required.");
+      if (!selectedFile && !imageUrl)
+        errors.push("Logo Image is required.");
+      if (!selectedFileEvi && !imageUrlEvi)
+        errors.push("Evidence Image is required.");
+  
+      if (errors.length > 0) {
+        message.error({
+          content: (
+            <ul>
+              {errors.map((err, index) => (
+                <li key={index}>{err}</li>
+              ))}
+            </ul>
+          ),
+          duration: 5,
+          className: "custom-toast-message",
+        });
+        return;
+      }
+  
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (locations.length === 0 || locations.some((loc) => !loc.stressAddressDetail || !loc.locationId)) {
+      message.error("All locations must have valid Address Details and Location IDs.");
+      return;
+    }
     try {
       //   if (!selectedFile || !selectedFileEvi) {
       //     console.error("Missing files for upload");
@@ -471,6 +543,7 @@ export default function VerifiCompanyUpdate() {
         imageUrl: fileUrl ? fileUrl : imageUrl,
         evidence: fileUrlEvi ? fileUrlEvi : imageUrlEvi,
         taxCode: taxCode,
+        companyLocations:locations
       };
 
       mutate({ data: formData });
@@ -606,7 +679,15 @@ export default function VerifiCompanyUpdate() {
         <div className={classes.create1}>
           Keep in mind you can always update this later
         </div>
-        <div className={classes.create2}>
+        <Box className={classes.create2}>
+        <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === 0 && (     <form>
           <label htmlFor="" className={classes.label}>
             <div className={classes.label1}>
               <div className={classes.label2}>
@@ -711,7 +792,7 @@ export default function VerifiCompanyUpdate() {
               />
             </div>
           </label>
-          <div style={{ display: "flex", gap: 10, width: "100%" }}>
+          {/* <div style={{ display: "flex", gap: 10, width: "100%" }}>
             <label
               htmlFor=""
               className={classes.label}
@@ -752,7 +833,7 @@ export default function VerifiCompanyUpdate() {
                 />
               </div>
             </label>
-          </div>
+          </div> */}
           <label htmlFor="" className={classes.label}>
             <div className={classes.label1}>
               <div className={classes.label2}>
@@ -1197,6 +1278,36 @@ export default function VerifiCompanyUpdate() {
             >
               Back
             </button> */}
+            
+              <button
+                className={classes.btn1}
+                style={{ marginLeft: 10 }}
+                type="button"
+                onClick={handleNext}
+              >
+                Next up: Add Location
+              </button>
+          
+          </div>
+          </form>)}
+          {activeStep === 1 && (
+            <CompanyLocationsForm
+              locations={locations}
+              setLocations={setLocations}
+            />
+          )}
+      
+         
+         {
+          activeStep ==1 && (
+            <div className={classes.button}>
+            <button
+              className={classes.btn2}
+              onClick={handleBack}
+              type="button"
+            >
+              Back
+            </button>
             {isPending ? (
               <button
                 className={classes.btn1}
@@ -1215,7 +1326,11 @@ export default function VerifiCompanyUpdate() {
               </button>
             )}
           </div>
-        </div>
+          )
+         }
+
+       
+        </Box>
       </form>
       {/* {selectCompany && (
         <form

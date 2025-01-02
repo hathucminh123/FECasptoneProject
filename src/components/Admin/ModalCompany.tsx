@@ -284,8 +284,10 @@ const ModalCompany: React.FC<props> = ({ onClose, companyId }) => {
                       </div>
                     </label>
                   </div>
+           
                 </div>
-                <div className={classes.main15}>
+                {/* <div className={classes.main15}>
+            
                   <div className={classes.main16}>
                     <label htmlFor="" className={classes.label}>
                       <div className={classes.main6}>
@@ -324,6 +326,39 @@ const ModalCompany: React.FC<props> = ({ onClose, companyId }) => {
                       </div>
                     </label>
                   </div>
+                </div> */}
+                <div className={classes.label1}>
+                      <div className={classes.label2}>
+                        Location
+                        <span className={classes.span1}>*</span>
+                      </div>
+                    </div>
+                <div className={classes.main15}>
+                <div className={classes.locationsSection} style={{marginTop: '10px',width: '100%'}}>
+            {/* <h3>Locations</h3> */}
+            {companyDataa?.companyLocations && companyDataa?.companyLocations?.length > 0 ? (
+              companyDataa.companyLocations.map((location, index) => (
+                <div key={index} className={classes.locationCard}>
+                  <div className={classes.locationRow}>
+                    <span className={classes.locationLabel}>City:</span>
+                    <span className={classes.locationValue}>{location.city}</span>
+                  </div>
+                  <div className={classes.locationRow}>
+                    <span className={classes.locationLabel}>Address: {" "}</span>
+                    <span className={classes.locationValue}>
+                      {location.stressAddressDetail}
+                    </span>
+                  </div>
+                  {/* <div className={classes.locationRow}>
+                    <span className={classes.locationLabel}>Location ID:</span>
+                    <span className={classes.locationValue}>{location.locationId}</span>
+                  </div> */}
+                </div>
+              ))
+            ) : (
+              <p>No locations available</p>
+            )}
+          </div>
                 </div>
                 <div className={classes.main15}>
                   <label htmlFor="" className={classes.label}>

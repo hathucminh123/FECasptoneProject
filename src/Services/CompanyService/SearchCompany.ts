@@ -20,6 +20,12 @@ interface JobType {
   description: string;
 }
 
+interface Location {
+  id: number;
+  stressAddressDetail: string;
+  city: string;
+  locationId: number;
+}
 interface JobPost {
   id: number;
   jobTitle: string;
@@ -54,6 +60,7 @@ interface Company {
   businessStream: BusinessStream;
   jobPosts: JobPost[];
   imageUrl: string;
+  companyLocations: Location[];
 }
 
 interface ApiResponse {

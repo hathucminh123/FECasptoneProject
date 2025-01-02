@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import WorkIcon from "@mui/icons-material/Work";
 import { AnimatePresence } from "framer-motion";
 import PaymentModal from "./PaymentModal";
+import { useQuery } from "@tanstack/react-query";
+import { GetUserProfile } from "../../Services/UserProfileService/UserProfile";
 
 interface props {
   text?: string;
@@ -20,12 +22,26 @@ const NoJob: React.FC<props> = ({ text, des, appear }) => {
     setOpenModal(false);
   };
 
+  const userId = localStorage.getItem("userId");
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
+
+  const UserProfileData = UserProfile?.UserProfiles;
+
   const handlePostJobs = () => {
-    // if (IsPremium === "True") {
+    if (
+      UserProfileData?.userAccountServices &&
+      UserProfileData?.userAccountServices.length === 0
+    ) {
+      setOpenModal(true);
+      return;
+    } else {
       navigate("/EmployerJob/jobs/create");
-    // } else {
-    //   setOpenModal(true);
-    // }
+    }
   };
   return (
     <div className={classes.main}>

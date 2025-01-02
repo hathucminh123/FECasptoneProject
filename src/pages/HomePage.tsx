@@ -19,6 +19,10 @@ import TopJobSection from "../components/TopJobSection";
 import { useAppDispatch, useAppSelector } from "../redux/hooks/hooks";
 import { setKeyword } from "../redux/slices/searchJobSlice";
 import AiFeature from "../components/AiFeature";
+import TetAnimation from "../Animation/TetAnimation";
+import TravelAnimation from "../Animation/TravelAnimation";
+import Boom from "../Animation/Boom";
+import NewYear from "../Animation/NewYear";
 
 // const skillsColumns = [
 //   "Java",
@@ -60,7 +64,7 @@ interface JobPost {
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-
+  const auth = localStorage.getItem("Auth");
   // Handling profile navigation
   const handleProfileClick = () => {
     const auth = localStorage.getItem("Auth");
@@ -382,11 +386,20 @@ const HomePage: React.FC = () => {
           </div>
 
           <div className={classes.main1}>
-            <img
+            <div className={classes.img}>
+              <NewYear />
+            </div>
+            {/* <img
               className={classes.img}
               src="https://itviec.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzdSVkE9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--470623509c0a85b21133c40fac9fa817aa009d2c/christmas.png"
               alt="logo"
-            />
+            /> */}
+          </div>
+          <div className={classes.mainne}>
+            <TetAnimation />
+          </div>
+          <div className={classes.mainne1}>
+            <Boom />
           </div>
           {/* <div  className={classes.mainne}>
           <svg   className={classes.img}  viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
@@ -460,26 +473,29 @@ const HomePage: React.FC = () => {
 </g>
 </svg>
           </div> */}
-          <div className={classes.main2}>
+          <div className={classes.img1}>
             {/* <img
               style={{ width: "150px" }}
               className={classes.img}
               src="https://dathangsi.vn/upload/products/2021/11/0856-cay-thong-noel-45cm.jpg"
               alt="logo"
             /> */}
+            <TravelAnimation />
           </div>
         </div>
-        <img
+        {/* <img
           className={classes.img1}
           src="https://itviec.com/assets/christmas_background-36b334a677f4f8d08aa5aa26805025e9fd35dbd2ccbf998146741b56f04cd244.svg"
           alt=""
-        />
+        /> */}
       </div>
 
+      {auth && (
+        <>
+          <AiFeature />
+        </>
+      )}
 
-      <>
-<AiFeature/>
-</>
       {/* First section with tools for application journey */}
       <div className={classes.main}>
         <div className={classes.container1}>

@@ -241,7 +241,7 @@ const ApplySuccess: React.FC = () => {
                             <div className={classes.main17}>
                               <MonetizationOnOutlinedIcon />
                               <span className={classes.span1}>
-                                {`${job?.minsalary} - ${job?.salary} USD`}
+                                {`${job?.minsalary} - ${job?.salary} VNĐ`}
                               </span>
                             </div>
                           </div>

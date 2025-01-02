@@ -133,6 +133,7 @@ import { CompanyReviewSeeker } from "./pages/CompanyReviewSeeker";
 import { ReviewSuccess } from "./pages/ReviewSuccess";
 import ReviewPage from "./pages/Admin/ReviewPage";
 import ChatBox from "./pages/ChatBox";
+import LocationPage from "./pages/Admin/LocationPage";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -868,6 +869,10 @@ const router = createBrowserRouter([
       {
         path: "Benefits",
         element: <BenefitsPage />,
+      },
+      {
+        path: "Location",
+        element: <LocationPage />,
       },
       {
         path: "JobType",

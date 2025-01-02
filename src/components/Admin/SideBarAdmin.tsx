@@ -16,6 +16,8 @@ import RedeemOutlinedIcon from "@mui/icons-material/RedeemOutlined";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 import MonetizationOnOutlinedIcon from '@mui/icons-material/MonetizationOnOutlined';
 import RateReviewIcon from '@mui/icons-material/RateReview';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+
 interface props {
   open: boolean;
 }
@@ -241,6 +243,38 @@ const SideBarAdmin: React.FC<props> = ({ open }) => {
                       className={`${open ? classes.div10 : classes.div10Open} `}
                     >
                       <span className={classes.span5}>Manage JobType</span>
+                    </div>
+                    <div className={classes.div11}></div>
+                  </>
+                </NavLink>
+              </div>
+            </li>
+            <li className={classes.li}>
+              <div className={classes.div8}>
+                <NavLink
+                  to="Location"
+                  className={({ isActive }) =>
+                    isActive ? classes.active : undefined
+                  }
+                  end
+                >
+                  <>
+                    <div className={classes.div9}>
+                      <span className={classes.span4}>
+                        <LocationOnOutlinedIcon
+                          fontSize="large"
+                          sx={{
+                            fontSize: "14px",
+                            display: "block",
+                            fontWeight: 400,
+                          }}
+                        />
+                      </span>
+                    </div>
+                    <div
+                      className={`${open ? classes.div10 : classes.div10Open} `}
+                    >
+                      <span className={classes.span5}>Manage Location</span>
                     </div>
                     <div className={classes.div11}></div>
                   </>

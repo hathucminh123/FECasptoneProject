@@ -963,3 +963,12 @@
     border-width: 0;
     border-style: solid;
 }
+.custom-toast-message {
+    color: red;
+    font-weight: bold;
+    ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+  }
+  

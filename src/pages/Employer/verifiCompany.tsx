@@ -25,6 +25,12 @@ import { storage } from "../../firebase/config";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { PostCompanies } from "../../Services/CompanyService/PostCompanies";
 import { PostUserCompanyService } from "../../Services/UserCompanyService/UserCompanyService";
+import CompanyLocationsForm from "../../components/NewUiEmployer/CompanyLocationsForm";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+
 // import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
 
 interface BusinessStreamprops {
@@ -77,6 +83,12 @@ interface Company {
   jobPosts: JobPost[];
   imageUrl: string;
 }
+interface Location {
+  // id: number;
+  stressAddressDetail: string;
+  // city: string;
+  locationId: number;
+}
 
 const data = ["Việt Nam", "Mỹ", "Lào"];
 
@@ -87,7 +99,10 @@ type OutletContextType = {
   setNextStep: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+const steps = ["Fill Company Details", "Add Company Locations"];
 export default function VerifiCompany() {
+  const [activeStep, setActiveStep] = useState(0);
+
   // const {
   //   data: Company,
   //   // isLoading: isCompanyLoading,
@@ -100,14 +115,15 @@ export default function VerifiCompany() {
   // const Companiesdata = Company?.Companies;
   const [company, setCompany] = useState<string>("");
   const [websiteURL, setWebsiteURL] = useState<string>("");
+
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>("");
   const [selectedFileEvi, setSelectedFileEvi] = useState<File | null>(null);
   const [fileUrlEvi, setFileUrlEvi] = useState<string>("");
-  const [address, setAddress] = useState<string>("");
+  // const [address, setAddress] = useState<string>("");
   const [establishedYear, setEstablishedYear] = useState<string>("");
   const [taxCode, setTaxCode] = useState<string>("");
-  const [city, setCity] = useState<string>("");
+  // const [city, setCity] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [numberOfEmployees, setNumberOfEmployees] = useState<string>("");
 
@@ -138,6 +154,10 @@ export default function VerifiCompany() {
   // const userId = localStorage.getItem("userId");
   const [verificationCode, setVerificationCode] = useState<string>("");
   const { setNextStep } = useOutletContext<OutletContextType>();
+
+  const [locations, setLocations] = useState<Location[]>([
+    { locationId: 0, stressAddressDetail: "" },
+  ]);
 
   const { data: BusinessStream } = useQuery({
     queryKey: ["BusinessStream"],
@@ -317,6 +337,76 @@ export default function VerifiCompany() {
       message.error("Failed to update company details.");
     },
   });
+  const validateStep1 = () => {
+    let isValid = true;
+
+    if (!company.trim()) {
+      message.error("Company name is required.");
+      isValid = false;
+    }
+    if (!websiteURL.trim() || !/^https?:\/\/[^\s]+$/i.test(websiteURL)) {
+      message.error("A valid website URL is required.");
+      isValid = false;
+    }
+    // if (!address.trim()) {
+    //   message.error("Address is required.");
+    //   return;
+    // }
+    // if (!city.trim()) {
+    //   message.error("City is required.");
+    //   return;
+    // }
+    if (!selectedCountry && !country.trim()) {
+      message.error("Country is required.");
+      isValid = false;
+    }
+    if (!establishedYear || isNaN(Number(establishedYear))) {
+      message.error("Valid established year is required.");
+      isValid = false;
+    }
+    if (!selectedFile) {
+      message.error("Logo image is required.");
+      isValid = false;
+    }
+    if (!selectedFileEvi) {
+      message.error("Business evidence is required.");
+      isValid = false;
+    }
+    if (!taxCode || isNaN(Number(taxCode))) {
+      message.error("Valid tax code is required.");
+      isValid = false;
+    }
+    if (
+      !selectedEm &&
+      (!numberOfEmployees || isNaN(Number(numberOfEmployees)))
+    ) {
+      message.error("Valid number of employees is required.");
+      isValid = false;
+    }
+    if (!selectedBu) {
+      message.error("Business stream is required.");
+      isValid = false;
+    }
+    if (!description.trim()) {
+      message.error("Company description is required.");
+      isValid = false;
+    }
+    if (!selectedFile || !selectedFileEvi) {
+      console.error("Missing files for upload");
+      isValid = false;
+    }
+
+    return isValid;
+  };
+  const handleNext = () => {
+    if (activeStep === 0 && validateStep1()) {
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -328,14 +418,20 @@ export default function VerifiCompany() {
       message.error("A valid website URL is required.");
       return;
     }
-    if (!address.trim()) {
-      message.error("Address is required.");
-      return;
-    }
-    if (!city.trim()) {
-      message.error("City is required.");
-      return;
-    }
+    locations.forEach((loc, index) => {
+      if (loc.locationId === 0 || !loc.stressAddressDetail.trim()) {
+        message.error(`Location ${index + 1} is incomplete.`);
+        return;
+      }
+    });
+    // if (!address.trim()) {
+    //   message.error("Address is required.");
+    //   return;
+    // }
+    // if (!city.trim()) {
+    //   message.error("City is required.");
+    //   return;
+    // }
     if (!selectedCountry && !country.trim()) {
       message.error("Country is required.");
       return;
@@ -356,7 +452,10 @@ export default function VerifiCompany() {
       message.error("Valid tax code is required.");
       return;
     }
-    if (!selectedEm && (!numberOfEmployees || isNaN(Number(numberOfEmployees)))) {
+    if (
+      !selectedEm &&
+      (!numberOfEmployees || isNaN(Number(numberOfEmployees)))
+    ) {
       message.error("Valid number of employees is required.");
       return;
     }
@@ -392,8 +491,8 @@ export default function VerifiCompany() {
         websiteURL: websiteURL,
         establishedYear: parseInt(establishedYear),
         country: selectedCountry ? selectedCountry : country,
-        city,
-        address,
+        city: "test",
+        address: "test",
         numberOfEmployees: selectedEm
           ? parseInt(selectedEm.replace(/[^0-9]/g, "") || "0", 10)
           : parseInt(numberOfEmployees),
@@ -401,6 +500,7 @@ export default function VerifiCompany() {
         imageUrl: fileUrl,
         evidence: fileUrlEvi,
         taxCode: taxCode,
+        companyLocations: locations,
       };
 
       mutate({ data: formData });
@@ -536,102 +636,113 @@ export default function VerifiCompany() {
         <div className={classes.create1}>
           Keep in mind you can always update this later
         </div>
-        <div className={classes.create2}>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Company Name
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input4}>
-              <input
-                type="text"
-                className={classes.input5}
-                value={company}
-                onChange={handleChange}
-              />
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Logo Image
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input6}>
-              <div className={classes.input7}>
-                {selectedFile ? (
-                  <>
-                    <div className={classes.img1}>
-                      <img
-                        src={fileUrl}
-                        alt={selectedFile.name}
-                        className={classes.img2}
-                      />
-                    </div>
-                    <span className={classes.spanimg}>
-                      {selectedFile.name}
-                      <button
-                        className={classes.clear}
-                        onClick={() => setSelectedFile(null)}
-                      >
-                        (Clear)
-                      </button>
-                    </span>
 
-                    <div onClick={() => setSelectedFile(null)}>
-                      <CloseIcon
-                        sx={{
-                          position: "absolute",
-                          top: "-8px",
-                          right: 0,
-                          width: "16px",
-                          boxSizing: "border-box",
-                          borderWidth: 0,
-                          borderStyle: "solid",
-                        }}
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <button
-                    className={classes.input8}
-                    onClick={handleUploadClick}
-                  >
-                    <CloudUploadIcon />
-                    Upload Logo/Image
-                  </button>
-                )}
-              </div>
-              <input
-                ref={fileInputRef}
-                type="file"
-                accept="image/png,image/jpg,image/jpeg"
-                className={classes.upload}
-                onChange={handleFileChange}
-                hidden
-              />
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Website
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input4}>
-              <input
-                type="text"
-                className={classes.input5}
-                value={websiteURL}
-                onChange={(e) => setWebsiteURL(e.target.value)}
-              />
-            </div>
-          </label>
-          <div style={{ display: "flex", gap: 10, width: "100%" }}>
+        <Box className={classes.create2}>
+          <Stepper activeStep={activeStep} alternativeLabel>
+            {steps.map((label) => (
+              <Step key={label}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {activeStep === 0 && (
+            <form>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Company Name
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input4}>
+                  <input
+                    type="text"
+                    className={classes.input5}
+                    value={company}
+                    onChange={handleChange}
+                  />
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Logo Image
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input6}>
+                  <div className={classes.input7}>
+                    {selectedFile ? (
+                      <>
+                        <div className={classes.img1}>
+                          <img
+                            src={fileUrl}
+                            alt={selectedFile.name}
+                            className={classes.img2}
+                          />
+                        </div>
+                        <span className={classes.spanimg}>
+                          {selectedFile.name}
+                          <button
+                            className={classes.clear}
+                            onClick={() => setSelectedFile(null)}
+                          >
+                            (Clear)
+                          </button>
+                        </span>
+
+                        <div onClick={() => setSelectedFile(null)}>
+                          <CloseIcon
+                            sx={{
+                              position: "absolute",
+                              top: "-8px",
+                              right: 0,
+                              width: "16px",
+                              boxSizing: "border-box",
+                              borderWidth: 0,
+                              borderStyle: "solid",
+                            }}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <button
+                        className={classes.input8}
+                        onClick={handleUploadClick}
+                        type="button"
+                      >
+                        <CloudUploadIcon />
+                        Upload Logo/Image
+                      </button>
+                    )}
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/png,image/jpg,image/jpeg"
+                    className={classes.upload}
+                    onChange={handleFileChange}
+                    hidden
+                  />
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Website
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input4}>
+                  <input
+                    type="text"
+                    className={classes.input5}
+                    value={websiteURL}
+                    onChange={(e) => setWebsiteURL(e.target.value)}
+                  />
+                </div>
+              </label>
+              {/* <div style={{ display: "flex", gap: 10, width: "100%" }}>
             <label
               htmlFor=""
               className={classes.label}
@@ -672,179 +783,185 @@ export default function VerifiCompany() {
                 />
               </div>
             </label>
-          </div>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                country
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            {selectedCountry && (
-              <div className={classes.input13}>
-                <span className={classes.selectcountry}>
-                  {selectedCountry}{" "}
-                  <span
-                    className={classes.spanicon}
-                    onClick={() => setSelectedCountry(null)}
-                  >
-                    <CloseIcon />
-                  </span>
-                </span>
-              </div>
-            )}
-
-            <div className={classes.input9}>
-              <div className={classes.input10}>
-                <div className={classes.input11}>
-                  <input
-                    type="text"
-                    className={classes.input12}
-                    aria-autocomplete="list"
-                    autoComplete="off"
-                    onChange={handleChangeLocation}
-                    onFocus={() => setDropdownOpenLocation(true)}
-                  />
-                  <div className={classes.search}>
-                    <SearchIcon />
+          </div> */}
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    country
+                    <span className={classes.span1}>*</span>
                   </div>
                 </div>
-
-                {dropdownOpenLocation && (
-                  <div className={classes.dropdown} ref={dropdownRef}>
-                    {countrydata?.length && countrydata?.length > 0 ? (
-                      countrydata?.map((comp, index) => (
-                        <div
-                          key={index}
-                          className={classes.dropdownItem}
-                          onClick={() => handleSelectCountry(comp)}
-                        >
-                          {/* <img
-                          src={comp.imageUrl}
-                          alt={comp.companyName}
-                          className={classes.logo}
-                        /> */}
-                          <span className={classes.companyName}>{comp}</span>
-                          {/* <span className={classes.companyUrl}>
-                          {comp.websiteURL}
-                        </span> */}
-                        </div>
-                      ))
-                    ) : (
-                      <div
-                        className={classes.createNewCompany}
-                        // onClick={handleOpenRegister}
+                {selectedCountry && (
+                  <div className={classes.input13}>
+                    <span className={classes.selectcountry}>
+                      {selectedCountry}{" "}
+                      <span
+                        className={classes.spanicon}
+                        onClick={() => setSelectedCountry(null)}
                       >
-                        <span>Not found</span>
-                      </div>
-                    )}
+                        <CloseIcon />
+                      </span>
+                    </span>
                   </div>
                 )}
-              </div>
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                establishedYear
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input4}>
-              <input
-                type="number"
-                className={classes.input5}
-                value={establishedYear}
-                onChange={(e) => {
-                  const value = e.target.value;
 
-                  // const numberValue = value ? parseInt(value, 10) : undefined;
-                  setEstablishedYear(value);
-                }}
-              />
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Number of employees
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            {selectedEm && (
-              <div className={classes.input13}>
-                <span className={classes.selectcountry}>
-                  {selectedEm}{" "}
-                  <span
-                    className={classes.spanicon}
-                    onClick={() => setSelectedEm(null)}
-                  >
-                    <CloseIcon />
-                  </span>
-                </span>
-              </div>
-            )}
-            <div className={classes.em}>
-              <div className={classes.em1}>
-                <div className={classes.em2}>
-                  <div className={classes.em3}>-</div>
-                  <div className={classes.em4}>
-                    <div className={classes.em5}>
+                <div className={classes.input9}>
+                  <div className={classes.input10}>
+                    <div className={classes.input11}>
                       <input
                         type="text"
-                        className={classes.em6}
-                        // placeholder="asd"
-                        value={numberOfEmployees}
-                        onChange={(e) => setNumberOfEmployees(e.target.value)}
+                        className={classes.input12}
                         aria-autocomplete="list"
                         autoComplete="off"
-                        onFocus={() => setDropdownOpenEm(true)}
+                        onChange={handleChangeLocation}
+                        onFocus={() => setDropdownOpenLocation(true)}
                       />
-                      <div className={classes.em7}></div>
+                      <div className={classes.search}>
+                        <SearchIcon />
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className={classes.em8}>
-                  <span className={classes.em9}></span>
-                  <div className={classes.em10}>
-                    <ExpandMoreIcon />
-                  </div>
-                </div>
-                {dropdownOpenEm && (
-                  <div className={classes.dropdown} ref={dropdownRef}>
-                    {employees?.length && employees?.length > 0 ? (
-                      employees?.map((comp, index) => (
-                        <div
-                          key={index}
-                          className={classes.dropdownItem}
-                          onClick={() => handleSelectEm(comp)}
-                        >
-                          {/* <img
+
+                    {dropdownOpenLocation && (
+                      <div className={classes.dropdown} ref={dropdownRef}>
+                        {countrydata?.length && countrydata?.length > 0 ? (
+                          countrydata?.map((comp, index) => (
+                            <div
+                              key={index}
+                              className={classes.dropdownItem}
+                              onClick={() => handleSelectCountry(comp)}
+                            >
+                              {/* <img
                           src={comp.imageUrl}
                           alt={comp.companyName}
                           className={classes.logo}
                         /> */}
-                          <span className={classes.companyName}>{comp}</span>
-                          {/* <span className={classes.companyUrl}>
+                              <span className={classes.companyName}>
+                                {comp}
+                              </span>
+                              {/* <span className={classes.companyUrl}>
                           {comp.websiteURL}
                         </span> */}
-                        </div>
-                      ))
-                    ) : (
-                      <div
-                        className={classes.createNewCompany}
-                        onClick={handleOpenRegister}
-                      >
-                        <span>Create new company {company}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <div
+                            className={classes.createNewCompany}
+                            // onClick={handleOpenRegister}
+                          >
+                            <span>Not found</span>
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    establishedYear
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input4}>
+                  <input
+                    type="number"
+                    className={classes.input5}
+                    value={establishedYear}
+                    onChange={(e) => {
+                      const value = e.target.value;
+
+                      // const numberValue = value ? parseInt(value, 10) : undefined;
+                      setEstablishedYear(value);
+                    }}
+                  />
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Number of employees
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                {selectedEm && (
+                  <div className={classes.input13}>
+                    <span className={classes.selectcountry}>
+                      {selectedEm}{" "}
+                      <span
+                        className={classes.spanicon}
+                        onClick={() => setSelectedEm(null)}
+                      >
+                        <CloseIcon />
+                      </span>
+                    </span>
+                  </div>
                 )}
-                <input type="text" hidden />
-              </div>
-            </div>
-          </label>
-          {/* <div style={{ display: "flex", gap: 10, width: "100%" }}>
+                <div className={classes.em}>
+                  <div className={classes.em1}>
+                    <div className={classes.em2}>
+                      <div className={classes.em3}>-</div>
+                      <div className={classes.em4}>
+                        <div className={classes.em5}>
+                          <input
+                            type="text"
+                            className={classes.em6}
+                            // placeholder="asd"
+                            value={numberOfEmployees}
+                            onChange={(e) =>
+                              setNumberOfEmployees(e.target.value)
+                            }
+                            aria-autocomplete="list"
+                            autoComplete="off"
+                            onFocus={() => setDropdownOpenEm(true)}
+                          />
+                          <div className={classes.em7}></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className={classes.em8}>
+                      <span className={classes.em9}></span>
+                      <div className={classes.em10}>
+                        <ExpandMoreIcon />
+                      </div>
+                    </div>
+                    {dropdownOpenEm && (
+                      <div className={classes.dropdown} ref={dropdownRef}>
+                        {employees?.length && employees?.length > 0 ? (
+                          employees?.map((comp, index) => (
+                            <div
+                              key={index}
+                              className={classes.dropdownItem}
+                              onClick={() => handleSelectEm(comp)}
+                            >
+                              {/* <img
+                          src={comp.imageUrl}
+                          alt={comp.companyName}
+                          className={classes.logo}
+                        /> */}
+                              <span className={classes.companyName}>
+                                {comp}
+                              </span>
+                              {/* <span className={classes.companyUrl}>
+                          {comp.websiteURL}
+                        </span> */}
+                            </div>
+                          ))
+                        ) : (
+                          <div
+                            className={classes.createNewCompany}
+                            onClick={handleOpenRegister}
+                          >
+                            <span>Create new company {company}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
+                    <input type="text" hidden />
+                  </div>
+                </div>
+              </label>
+              {/* <div style={{ display: "flex", gap: 10, width: "100%" }}>
             <label
               htmlFor=""
               className={classes.label}
@@ -886,7 +1003,7 @@ export default function VerifiCompany() {
               </div>
             </label>
           </div> */}
-          {/* {Pedingbusiness ? (
+              {/* {Pedingbusiness ? (
             <button
               className={classes.btn1}
               style={{ marginBottom: 20 }}
@@ -904,216 +1021,249 @@ export default function VerifiCompany() {
             </button>
           )} */}
 
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Select Business Stream
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            {selectedBu && (
-              <div className={classes.input13}>
-                <span className={classes.selectcountry}>
-                  {selectedBu.businessStreamName}{" "}
-                  <span
-                    className={classes.spanicon}
-                    onClick={() => setSelectedEm(null)}
-                  >
-                    <CloseIcon />
-                  </span>
-                </span>
-              </div>
-            )}
-            <div className={classes.em}>
-              <div className={classes.em1}>
-                <div className={classes.em2}>
-                  <div className={classes.em3}>-</div>
-                  <div className={classes.em4}>
-                    <div className={classes.em5}>
-                      <input
-                        type="text"
-                        className={classes.em6}
-                        // placeholder="asd"
-                        aria-autocomplete="list"
-                        autoComplete="off"
-                        onFocus={() => setDropdownOpenBu(true)}
-                      />
-                      <div className={classes.em7}></div>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Select Business Stream
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                {selectedBu && (
+                  <div className={classes.input13}>
+                    <span className={classes.selectcountry}>
+                      {selectedBu.businessStreamName}{" "}
+                      <span
+                        className={classes.spanicon}
+                        onClick={() => setSelectedEm(null)}
+                      >
+                        <CloseIcon />
+                      </span>
+                    </span>
+                  </div>
+                )}
+                <div className={classes.em}>
+                  <div className={classes.em1}>
+                    <div className={classes.em2}>
+                      <div className={classes.em3}>-</div>
+                      <div className={classes.em4}>
+                        <div className={classes.em5}>
+                          <input
+                            type="text"
+                            className={classes.em6}
+                            // placeholder="asd"
+                            aria-autocomplete="list"
+                            autoComplete="off"
+                            onFocus={() => setDropdownOpenBu(true)}
+                          />
+                          <div className={classes.em7}></div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className={classes.em8}>
-                  <span className={classes.em9}></span>
-                  <div className={classes.em10}>
-                    <ExpandMoreIcon />
-                  </div>
-                </div>
-                {dropdownOpenBu && (
-                  <div className={classes.dropdown} ref={dropdownRef}>
-                    {BusinessStreamData?.length && employees?.length > 0 ? (
-                      BusinessStreamData?.map((comp, index) => (
-                        <div
-                          key={index}
-                          className={classes.dropdownItem}
-                          onClick={() => handleSelectBu(comp)}
-                        >
-                          {/* <img
+                    <div className={classes.em8}>
+                      <span className={classes.em9}></span>
+                      <div className={classes.em10}>
+                        <ExpandMoreIcon />
+                      </div>
+                    </div>
+                    {dropdownOpenBu && (
+                      <div className={classes.dropdown} ref={dropdownRef}>
+                        {BusinessStreamData?.length && employees?.length > 0 ? (
+                          BusinessStreamData?.map((comp, index) => (
+                            <div
+                              key={index}
+                              className={classes.dropdownItem}
+                              onClick={() => handleSelectBu(comp)}
+                            >
+                              {/* <img
                           src={comp.imageUrl}
                           alt={comp.companyName}
                           className={classes.logo}
                         /> */}
-                          <span className={classes.companyName}>
-                            {comp.businessStreamName}
-                          </span>
-                          {/* <span className={classes.companyUrl}>
+                              <span className={classes.companyName}>
+                                {comp.businessStreamName}
+                              </span>
+                              {/* <span className={classes.companyUrl}>
                           {comp.websiteURL}
                         </span> */}
-                        </div>
-                      ))
-                    ) : (
-                      <div
-                        className={classes.createNewCompany}
-                        onClick={handleOpenRegister}
-                      >
-                        <span>Create new company company</span>
+                            </div>
+                          ))
+                        ) : (
+                          <div
+                            className={classes.createNewCompany}
+                            onClick={handleOpenRegister}
+                          >
+                            <span>Create new company company</span>
+                          </div>
+                        )}
                       </div>
                     )}
+                    <input type="text" hidden />
                   </div>
-                )}
-                <input type="text" hidden />
-              </div>
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Company Description
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input4}>
-              {/* <input
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Company Description
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input4}>
+                  {/* <input
                   type="text"
                   className={classes.input5}
                   value={businessStreamName}
                   onChange={(e) => setBusinessStreamName(e.target.value)}
                 /> */}
-              <ReactQuill
-                value={description}
-                onChange={setDescription}
-                placeholder="Enter your summary"
-              />
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                Certificate of Business Registration / National ID Card
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input6}>
-              <div className={classes.input7}>
-                {selectedFileEvi ? (
-                  <>
-                    <div className={classes.img1}>
-                      <img
-                        src={fileUrlEvi}
-                        alt={selectedFileEvi.name}
-                        className={classes.img2}
-                      />
-                    </div>
-                    <span className={classes.spanimg}>
-                      {selectedFileEvi.name}
+                  <ReactQuill
+                    value={description}
+                    onChange={setDescription}
+                    placeholder="Enter your summary"
+                  />
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    Certificate of Business Registration / National ID Card
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input6}>
+                  <div className={classes.input7}>
+                    {selectedFileEvi ? (
+                      <>
+                        <div className={classes.img1}>
+                          <img
+                            src={fileUrlEvi}
+                            alt={selectedFileEvi.name}
+                            className={classes.img2}
+                          />
+                        </div>
+                        <span className={classes.spanimg}>
+                          {selectedFileEvi.name}
+                          <button
+                            className={classes.clear}
+                            onClick={() => setSelectedFileEvi(null)}
+                          >
+                            (Clear)
+                          </button>
+                        </span>
+
+                        <div onClick={() => setSelectedFileEvi(null)}>
+                          <CloseIcon
+                            sx={{
+                              position: "absolute",
+                              top: "-8px",
+                              right: 0,
+                              width: "16px",
+                              boxSizing: "border-box",
+                              borderWidth: 0,
+                              borderStyle: "solid",
+                            }}
+                          />
+                        </div>
+                      </>
+                    ) : (
                       <button
-                        className={classes.clear}
-                        onClick={() => setSelectedFileEvi(null)}
+                        className={classes.input8}
+                        onClick={handleUploadClickEvidence}
+                        type="button"
                       >
-                        (Clear)
+                        <CloudUploadIcon />
+                        Upload Evidence/Image
                       </button>
-                    </span>
+                    )}
+                  </div>
+                  <input
+                    ref={fileEvidenceRef}
+                    type="file"
+                    accept="image/png,image/jpg,image/jpeg"
+                    className={classes.upload}
+                    onChange={handleFileChangeEvidence}
+                    hidden
+                  />
+                </div>
+              </label>
+              <label htmlFor="" className={classes.label}>
+                <div className={classes.label1}>
+                  <div className={classes.label2}>
+                    TaxCode
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
+                <div className={classes.input4}>
+                  <input
+                    type="number"
+                    className={classes.input5}
+                    value={taxCode}
+                    onChange={(e) => {
+                      const value = e.target.value;
 
-                    <div onClick={() => setSelectedFileEvi(null)}>
-                      <CloseIcon
-                        sx={{
-                          position: "absolute",
-                          top: "-8px",
-                          right: 0,
-                          width: "16px",
-                          boxSizing: "border-box",
-                          borderWidth: 0,
-                          borderStyle: "solid",
-                        }}
-                      />
-                    </div>
-                  </>
-                ) : (
-                  <button
-                    className={classes.input8}
-                    onClick={handleUploadClickEvidence}
-                  >
-                    <CloudUploadIcon />
-                    Upload Evidence/Image
-                  </button>
-                )}
+                      // const numberValue = value ? parseInt(value, 10) : undefined;
+                      setTaxCode(value);
+                    }}
+                  />
+                </div>
+              </label>
+              <div className={classes.button}>
+                <button
+                  type="button"
+                  className={classes.btn2}
+                  onClick={() => setOpenRegister(false)}
+                  // onClick={handleBack}
+                >
+                  Back
+                </button>
+                <button
+                  className={classes.btn1}
+                  style={{ marginLeft: 10 }}
+                  type="button"
+                  onClick={handleNext}
+                >
+                  Next up: Add Location
+                </button>
               </div>
-              <input
-                ref={fileEvidenceRef}
-                type="file"
-                accept="image/png,image/jpg,image/jpeg"
-                className={classes.upload}
-                onChange={handleFileChangeEvidence}
-                hidden
-              />
-            </div>
-          </label>
-          <label htmlFor="" className={classes.label}>
-            <div className={classes.label1}>
-              <div className={classes.label2}>
-                TaxCode
-                <span className={classes.span1}>*</span>
-              </div>
-            </div>
-            <div className={classes.input4}>
-              <input
-                type="number"
-                className={classes.input5}
-                value={taxCode}
-                onChange={(e) => {
-                  const value = e.target.value;
+            </form>
+          )}
+          {activeStep === 1 && (
+            <CompanyLocationsForm
+              locations={locations}
+              setLocations={setLocations}
+            />
+          )}
 
-                  // const numberValue = value ? parseInt(value, 10) : undefined;
-                  setTaxCode(value);
-                }}
-              />
+          {activeStep === 1 && (
+            <div className={classes.button}>
+              <button
+                type="button"
+                className={classes.btn2}
+                // onClick={() => setOpenRegister(false)}
+                onClick={handleBack}
+              >
+                Back
+              </button>
+              {isPending ? (
+                <button
+                  className={classes.btn1}
+                  style={{ marginLeft: 10 }}
+                  // type="submit"
+                >
+                  Wait a seconds
+                </button>
+              ) : (
+                <button
+                  className={classes.btn1}
+                  style={{ marginLeft: 10 }}
+                  type="submit"
+                  // onClick={handleNext}
+                >
+                  Next up: Post Jobs
+                </button>
+              )}
             </div>
-          </label>
-          <div className={classes.button}>
-            <button
-              className={classes.btn2}
-              onClick={() => setOpenRegister(false)}
-            >
-              Back
-            </button>
-            {isPending ? (
-              <button
-                className={classes.btn1}
-                style={{ marginLeft: 10 }}
-                // type="submit"
-              >
-                Wait a seconds
-              </button>
-            ) : (
-              <button
-                className={classes.btn1}
-                style={{ marginLeft: 10 }}
-                type="submit"
-              >
-                Next up: Post Jobs
-              </button>
-            )}
-          </div>
-        </div>
+          )}
+        </Box>
       </form>
       {selectCompany && (
         <form

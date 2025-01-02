@@ -619,3 +619,70 @@
   border: 1px solid transparent;
   gap: 8px;
 }
+
+.infoSection,
+.locationsSection {
+  margin-bottom: 16px;
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  display: block;
+
+}
+
+.infoRow,
+.locationRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.infoLabel,
+.locationLabel {
+  font-weight: bold;
+}
+
+.locationCard {
+  border: 1px solid #ddd;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  background: #f9f9f9;
+}
+
+.taxAvailable {
+  color: green;
+  font-weight: bold;
+}
+
+.taxUnavailable {
+  color: red;
+  font-weight: bold;
+}
+
+.modalFooter {
+  padding: 16px;
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #ddd;
+  background: #f5f5f5;
+}
+
+.rejectButton {
+  background: #e74c3c;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.approveButton {
+  background: #2ecc71;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
