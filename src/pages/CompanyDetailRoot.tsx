@@ -191,6 +191,7 @@ const CompanyDetailRoot: React.FC = () => {
   const uniqueArrayCity = [...new Set(flattenedArrayCity)];
 
   const cityColumn = uniqueArrayCity;
+  console.log("cityColumn", cityColumn);
 
   const { data: Company } = useQuery({
     queryKey: ["Companies"],
@@ -240,11 +241,10 @@ const CompanyDetailRoot: React.FC = () => {
       });
       return;
     }
-  
+
     // Nếu đã đăng nhập, điều hướng tới trang viết đánh giá
     navigate(`/company/detail/review/${CompanyId}`);
   };
-  
 
   const handleFollow = () => {
     if (!Auth) {
@@ -383,7 +383,26 @@ const CompanyDetailRoot: React.FC = () => {
                       variant="body2"
                       sx={{ fontSize: "14px", fontWeight: 400, color: "white" }}
                     > */}
-                    {cityColumn.length && cityColumn.length > 0 ? (
+                    {/* {
+                      companyDataa.companyLocations.map((item, index) => ( */}
+                    <Typography
+                      variant="body2"
+                      // key={index}
+                      sx={{
+                        fontSize: "14px",
+                        fontWeight: 400,
+                        color: "#091615",
+                        fontFamily: "Lexend, sans-serif",
+                      }}
+                    >
+                      {companyDataa.companyLocations
+                        .map((item) => item.city)
+                        .join(" - ")}
+                    </Typography>
+                    {/* )
+                      )
+                    } */}
+                    {/* {cityColumn.length && cityColumn.length > 0 ? (
                       <>
                         {cityColumn?.slice(0, 3).map((city, index) => (
                           <Typography
@@ -432,7 +451,7 @@ const CompanyDetailRoot: React.FC = () => {
                           {companyDataa.city}
                         </Typography>
                       </>
-                    )}
+                    )} */}
                     {/* {jobincompanyData?.map((job) =>
                       job.jobLocationCities.map((item, index) => (
                         <Typography
@@ -480,7 +499,7 @@ const CompanyDetailRoot: React.FC = () => {
                     type="button"
                     onClick={handleWriteReview}
                     className={classes.link}
-                    style={{cursor:'pointer'}}
+                    style={{ cursor: "pointer" }}
                   >
                     Write review
                   </button>
