@@ -191,7 +191,12 @@ export default function PaymentModal({ onClose }: props) {
                                 borderStyle: "solid",
                               }}
                             >
-                              {item.price}/VNĐ
+                                  {item.price > 1_000_000
+                                  ? `${(
+                                      item.price / 1_000_000
+                                    ).toFixed(1)} triệu/VNĐ`
+                                  : `${item.price}/VNĐ`}
+                              {/* {item.price}/VNĐ */}
                             </span>
                           </Typography>
                           <p className={classes.p1}>Includes:</p>

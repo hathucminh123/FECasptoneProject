@@ -2,21 +2,21 @@ import React, { useEffect, useState } from "react";
 import classes from "./OverViewDetails.module.css";
 import Typography from "@mui/material/Typography";
 import { Link, useParams } from "react-router-dom";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { PostJobLcation } from "../../Services/JobPostLocation/PostJobLcation";
-import { queryClient } from "../../Services/mainService";
-import { message } from "antd";
+// import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+// import Modal from "@mui/material/Modal";
+// import Box from "@mui/material/Box";
+// import Select, { SelectChangeEvent } from "@mui/material/Select";
+// import MenuItem from "@mui/material/MenuItem";
+// import TextField from "@mui/material/TextField";
+// import Button from "@mui/material/Button";
+import { useQuery } from "@tanstack/react-query";
+// import { PostJobLcation } from "../../Services/JobPostLocation/PostJobLcation";
+// import { queryClient } from "../../Services/mainService";
+// import { message } from "antd";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
 import moment from "moment";
 import { fetchCompanies } from "../../Services/CompanyService/GetCompanies";
-import { GetLocationService } from "../../Services/Location/GetLocationService";
+// import { GetLocationService } from "../../Services/Location/GetLocationService";
 const OverViewDetails: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
@@ -45,17 +45,17 @@ const OverViewDetails: React.FC = () => {
   const CompanyEmployer = Companiesdata?.find(
     (company) => company.id === Number(companyId)
   );
-    const { data: LocationData } = useQuery({
-      queryKey: ["Locations"],
-      queryFn: ({ signal }) => GetLocationService({ signal }),
-      staleTime: 5000,
-    });
-    const Locationsdataa = LocationData?.Locations;
+  //   const { data: LocationData } = useQuery({
+  //     queryKey: ["Locations"],
+  //     queryFn: ({ signal }) => GetLocationService({ signal }),
+  //     staleTime: 5000,
+  //   });
+  //   const Locationsdataa = LocationData?.Locations;
 
-  const [openModal, setOpenModal] = useState<boolean>(false);
-  const [selectJobId, setselectJobId] = useState<number>();
-  const [stressAddressDetail, setStressAddressDetail] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("1");
+  // const [openModal, setOpenModal] = useState<boolean>(false);
+  // // const [selectJobId, setselectJobId] = useState<number>();
+  // const [stressAddressDetail, setStressAddressDetail] = useState<string>("");
+  // const [selectedStatus, setSelectedStatus] = useState<string>("1");
   const { data: jobData } = useQuery({
     queryKey: ["Job-details", JobId],
     queryFn: ({ signal }) => GetJobPostById({ id: Number(JobId), signal }),
@@ -70,40 +70,40 @@ const OverViewDetails: React.FC = () => {
 
   const cityColumn = uniqueArrayCity;
 
-  const handleStatusChange = (event: SelectChangeEvent) => {
-    setSelectedStatus(event.target.value as string);
-  };
+  // const handleStatusChange = (event: SelectChangeEvent) => {
+  //   setSelectedStatus(event.target.value as string);
+  // };
 
-  const handleEditClick = (id: number | undefined) => {
-    setselectJobId(id);
-    setOpenModal(true);
-  };
+  // const handleEditClick = (id: number | undefined) => {
+  //   setselectJobId(id);
+  //   setOpenModal(true);
+  // };
 
-  const { mutate } = useMutation({
-    mutationFn: PostJobLcation,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["Job-details"],
-        refetchType: "active",
-      });
-      message.success("Add Job location Successfully");
-      setOpenModal(false);
-    },
-    onError: () => {
-      message.error("Failed to Add job location set");
-    },
-  });
-  const handleSave = () => {
-    if (selectJobId) {
-      mutate({
-        data: {
-          locationId: Number(selectedStatus),
-          jobPostId: selectJobId,
-          stressAddressDetail: stressAddressDetail,
-        },
-      });
-    }
-  };
+  // const { mutate } = useMutation({
+  //   mutationFn: PostJobLcation,
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries({
+  //       queryKey: ["Job-details"],
+  //       refetchType: "active",
+  //     });
+  //     message.success("Add Job location Successfully");
+  //     setOpenModal(false);
+  //   },
+  //   onError: () => {
+  //     message.error("Failed to Add job location set");
+  //   },
+  // });
+  // const handleSave = () => {
+  //   if (selectJobId) {
+  //     mutate({
+  //       data: {
+  //         locationId: Number(selectedStatus),
+  //         jobPostId: selectJobId,
+  //         stressAddressDetail: stressAddressDetail,
+  //       },
+  //     });
+  //   }
+  // };
   return (
     <div className={classes.main}>
       <section className={classes.section}>
@@ -162,7 +162,19 @@ const OverViewDetails: React.FC = () => {
             />
           </div>
 
-          <p className={classes.p}>Salary: {`${job?.minsalary} - ${job?.salary} VNĐ`}</p>
+          <p className={classes.p}>
+            Salary:{" "}
+            {/* {`${job?.minsalary} - ${job?.salary} VNĐ`} */}
+            {job?.minsalary && job?.salary
+              ? `${
+                  job.minsalary >= 1000000
+                    ? job.minsalary / 1000000
+                    : job.minsalary
+                } ${job.minsalary >= 1000000 ? "triệu" : "VNĐ"} - ${
+                  job.salary >= 1000000 ? job.salary / 1000000 : job.salary
+                } ${job.salary >= 1000000 ? "triệu" : "VNĐ"}`
+              : "Salary not specified"}
+          </p>
           <div className={classes.main3}>
             <div className={classes.main4}>
               <Typography
@@ -262,7 +274,7 @@ const OverViewDetails: React.FC = () => {
                     </dt>
                   ))}
 
-                  <dt className={classes.main9}>
+                  {/* <dt className={classes.main9}>
                     <Link
                       to=""
                       className={classes.link2}
@@ -271,7 +283,7 @@ const OverViewDetails: React.FC = () => {
                       <AddCircleOutlineIcon />
                       Add Location
                     </Link>
-                  </dt>
+                  </dt> */}
                 </div>
               </dl>
               <dl className={classes.main6}>
@@ -326,7 +338,7 @@ const OverViewDetails: React.FC = () => {
           </div>
         </main>
       </section>
-      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+      {/* <Modal open={openModal} onClose={() => setOpenModal(false)}>
         <Box className={classes.modalBox}>
           <Typography variant="h6" component="h2">
             Update Status
@@ -343,12 +355,7 @@ const OverViewDetails: React.FC = () => {
                 </MenuItem>
               ))
             }
-            {/* <MenuItem value="1">Hồ Chí Minh</MenuItem>
-            <MenuItem value="2">Hà Nội</MenuItem>
-            <MenuItem value="3">Đà Nẵng</MenuItem>
-            <MenuItem value="4">Hải Phòng</MenuItem>
-            <MenuItem value="5">Cần Thơ</MenuItem>
-            <MenuItem value="6">Nha Trang</MenuItem> */}
+          
           </Select>
           <TextField
             fullWidth
@@ -373,7 +380,7 @@ const OverViewDetails: React.FC = () => {
             Cancel
           </Button>
         </Box>
-      </Modal>
+      </Modal> */}
     </div>
   );
 };

@@ -78,7 +78,7 @@ interface Benefits {
 interface Locations {
   id: number;
   city: string;
-  stressAddressDetail:string;
+  stressAddressDetail: string;
 }
 interface JobType {
   id: number;
@@ -96,12 +96,12 @@ interface Services {
 export default function FormCreateEmployer() {
   const navigate = useNavigate();
 
-   const [companyId, setCompanyId] = useState<string | null>(null);
-  
-    useEffect(() => {
-      const CompanyId = localStorage.getItem("CompanyId");
-      setCompanyId(CompanyId);
-    }, []);
+  const [companyId, setCompanyId] = useState<string | null>(null);
+
+  useEffect(() => {
+    const CompanyId = localStorage.getItem("CompanyId");
+    setCompanyId(CompanyId);
+  }, []);
 
   const [jobDescription, setJobDescription] = useState<string>("");
   const [jobTitle, setJobTitle] = useState<string>("");
@@ -195,9 +195,10 @@ export default function FormCreateEmployer() {
   });
 
   const CompanyLocationdata = CompanyLocation?.Locations;
-  const [locationId, setLocationId] = useState<number|null>(null);
-  const [locationsdata, setLocationsdata] = useState<Locations|null>(null);
-  const [filteredLocations, setFilteredLocations] = useState(CompanyLocationdata);
+  const [locationId, setLocationId] = useState<number | null>(null);
+  const [locationsdata, setLocationsdata] = useState<Locations | null>(null);
+  const [filteredLocations, setFilteredLocations] =
+    useState(CompanyLocationdata);
   const [inputLocation, setInputLocation] = useState<string>("");
   const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
   const dropdownRefLocation = useRef<HTMLDivElement>(null);
@@ -208,17 +209,16 @@ export default function FormCreateEmployer() {
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
+  //companyLocation
 
-//companyLocation
- 
-const { data: UserProfile } = useQuery({
-  queryKey: ["UserProfile"],
-  queryFn: ({ signal }) =>
-    GetUserProfile({ id: Number(userId), signal: signal }),
-  staleTime: 1000,
-});
+  const { data: UserProfile } = useQuery({
+    queryKey: ["UserProfile"],
+    queryFn: ({ signal }) =>
+      GetUserProfile({ id: Number(userId), signal: signal }),
+    staleTime: 1000,
+  });
 
-const UserProfileData = UserProfile?.UserProfiles;
+  const UserProfileData = UserProfile?.UserProfiles;
   //Date
 
   const handleIconClick = () => {
@@ -226,10 +226,6 @@ const UserProfileData = UserProfile?.UserProfiles;
   };
 
   //profile
-
-
-
-
 
   console.log(UserProfileData);
   //imageurl
@@ -348,7 +344,7 @@ const UserProfileData = UserProfile?.UserProfiles;
     //   setLocationId([...locationId, selectedLocation.id]);
     // }
 
-    setLocationsdata(selectedLocation) ;
+    setLocationsdata(selectedLocation);
     setLocationId(selectedLocation.id);
     setDropdownOpenLocation(false);
     setInputLocation("");
@@ -378,7 +374,6 @@ const UserProfileData = UserProfile?.UserProfiles;
     setLocationId(null); // Clear the selected location ID
     setInputLocation(""); // Clear the input field
   };
-  
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -627,7 +622,7 @@ const UserProfileData = UserProfile?.UserProfiles;
         !benefits ||
         !selectTypeId ||
         !skillId ||
-        !benefitId||
+        !benefitId ||
         !locationId
       ) {
         message.error("Please fill in all the required fields.");
@@ -677,7 +672,7 @@ const UserProfileData = UserProfile?.UserProfiles;
         serviceId: selectServiceId,
         minsalary: parseInt(minsalary) ?? 0,
         // locationIds: locationId,
-        companyLocation:locationId
+        companyLocation: locationId,
       };
 
       // Gửi yêu cầu tạo công việc mới với dữ liệu đã chuẩn bị
@@ -711,9 +706,15 @@ const UserProfileData = UserProfile?.UserProfiles;
           <div className={classes.main3}>
             <div>
               {PostPending ? (
-                <button className={classes.button}>Wait a seconds</button>
+                <button className={classes.button} disabled={true}>
+                  Wait a seconds
+                </button>
               ) : (
-                <button className={classes.button} onClick={handleOnCreate}>
+                <button
+                  disabled={PostPending ? true : false}
+                  className={classes.button}
+                  onClick={handleOnCreate}
+                >
                   Publish
                 </button>
               )}
@@ -874,7 +875,7 @@ const UserProfileData = UserProfile?.UserProfiles;
               >
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    QualificationRequired
+                    Qualification Required
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
@@ -1377,23 +1378,23 @@ const UserProfileData = UserProfile?.UserProfiles;
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
-                {locationsdata &&  (
+                {locationsdata && (
                   <div className={classes.main24}>
                     {/* {locationsdata.map((locations) => ( */}
-                      <span
-                        key={locationsdata.id}
-                        className={classes.span2}
-                        // onClick={() => handleRemoveLocation(locationsdata)}
-                        onClick={handleRemoveLocation}
-                      >
-                        {locationsdata.city}, {locationsdata.stressAddressDetail}
-                        <span className={classes.spanicon}>
-                          <CloseIcon />
-                        </span>
+                    <span
+                      key={locationsdata.id}
+                      className={classes.span2}
+                      // onClick={() => handleRemoveLocation(locationsdata)}
+                      onClick={handleRemoveLocation}
+                    >
+                      {locationsdata.city}, {locationsdata.stressAddressDetail}
+                      <span className={classes.spanicon}>
+                        <CloseIcon />
                       </span>
+                    </span>
                     {/* ))} */}
                   </div>
-                ) }
+                )}
 
                 <div className={classes.div1} aria-expanded="false">
                   <div className={inputLocation ? classes.divne : classes.div2}>
@@ -1521,7 +1522,7 @@ const UserProfileData = UserProfile?.UserProfiles;
                   <input
                     type="text"
                     name="salary"
-                    placeholder="10,000"
+                    placeholder="1 triệu"
                     className={classes.input3}
                     value={minsalary}
                     onChange={(e) => setMinSalary(e.target.value)}
@@ -1540,7 +1541,7 @@ const UserProfileData = UserProfile?.UserProfiles;
                   <input
                     type="text"
                     name="salary"
-                    placeholder="10,000"
+                    placeholder="10 triệu"
                     className={classes.input3}
                     value={salary}
                     onChange={(e) => setSalary(e.target.value)}

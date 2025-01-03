@@ -23,7 +23,7 @@ interface Props {
     React.SetStateAction<Services | null | undefined>
   >;
   setSelectServiceId: React.Dispatch<
-    React.SetStateAction<number | null | undefined> 
+    React.SetStateAction<number | null | undefined>
   >;
 }
 export default function EmployerServiceModal({
@@ -217,7 +217,12 @@ export default function EmployerServiceModal({
                                   borderStyle: "solid",
                                 }}
                               >
-                                {item.serviceResponse.price}/VNĐ
+                                {item.serviceResponse.price > 1_000_000
+                                  ? `${(
+                                      item.serviceResponse.price / 1_000_000
+                                    ).toFixed(2)} triệu`
+                                  : `${item.serviceResponse.price}/VNĐ`}
+                                {/* {item.serviceResponse.price}/VNĐ */}
                               </span>
                             </Typography>
                             <p className={classes.p1}>Includes:</p>

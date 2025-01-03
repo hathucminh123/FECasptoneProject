@@ -147,6 +147,7 @@ export default function VerifiCompany() {
   // const [businessStreamName, setBusinessStreamName] = useState<string>("");
   // const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
+   const dropdownRefEm = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileEvidenceRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
@@ -262,6 +263,23 @@ export default function VerifiCompany() {
   const handleOpenRegister = () => {
     setOpenRegister(true);
   };
+  // number of employees
+    useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (
+          dropdownRefEm.current &&
+          !dropdownRefEm.current.contains(event.target as Node)
+        ) {
+          setDropdownOpenEm(false); // Close the dropdown if clicked outside
+        }
+      };
+    
+      document.addEventListener("mousedown", handleClickOutside);
+    
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, []);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -271,6 +289,8 @@ export default function VerifiCompany() {
       setDropdownOpen(false);
     }
   };
+
+
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -364,6 +384,10 @@ export default function VerifiCompany() {
       message.error("Valid established year is required.");
       isValid = false;
     }
+    if ((Number(establishedYear))<1990) {
+      message.error("Valid established year must be more than 1990 .");
+      isValid = false;
+    }
     if (!selectedFile) {
       message.error("Logo image is required.");
       isValid = false;
@@ -438,6 +462,10 @@ export default function VerifiCompany() {
     }
     if (!establishedYear || isNaN(Number(establishedYear))) {
       message.error("Valid established year is required.");
+      return;
+    }
+    if ((Number(establishedYear))<1990) {
+      message.error("Valid established year must be more than 1990 .");
       return;
     }
     if (!selectedFile) {
@@ -926,13 +954,19 @@ export default function VerifiCompany() {
                       </div>
                     </div>
                     {dropdownOpenEm && (
-                      <div className={classes.dropdown} ref={dropdownRef}>
+                      <div className={classes.dropdown} ref={dropdownRefEm}>
                         {employees?.length && employees?.length > 0 ? (
                           employees?.map((comp, index) => (
                             <div
                               key={index}
                               className={classes.dropdownItem}
-                              onClick={() => handleSelectEm(comp)}
+                              
+                              onClick={
+                                ()=> {
+                                  const maxEmployees = Math.max(...comp.split("-").map(Number));
+                                 handleSelectEm(maxEmployees.toString());
+                                }
+                               }
                             >
                               {/* <img
                           src={comp.imageUrl}

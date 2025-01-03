@@ -569,7 +569,14 @@ const JobDetails: React.FC = () => {
                     }}
 
                   >
-                     {`${job?.minsalary} - ${job?.salary} VNĐ`}
+                     {/* {`${job?.minsalary} - ${job?.salary} VNĐ`} */}
+                     {job?.minsalary && job?.salary
+      ? `${job.minsalary >= 1000000 ? job.minsalary / 1000000 : job.minsalary} ${
+          job.minsalary >= 1000000 ? "triệu" : "VNĐ"
+        } - ${job.salary >= 1000000 ? job.salary / 1000000 : job.salary} ${
+          job.salary >= 1000000 ? "triệu" : "VNĐ"
+        }`
+      : "Salary not specified"}
                     {/* {job?.salary} USD */}
                   </Typography>
                 </div>

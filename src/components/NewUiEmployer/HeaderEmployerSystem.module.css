@@ -596,13 +596,15 @@
 
 .discover {
   background-color: transparent;
-  color: #dbc0f8;
-  border-color: #dbc0f8;
+  /* color: #dbc0f8; */
+  color: #3cbc8c;
+  border-color: #3cbc8c;
+  /* border-color: #dbc0f8; */
   transition: color 0.1s ease, border-color 0.1s ease;
   will-change: color, border-color;
   text-decoration-line: none;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 20px;
   text-align: center;
   padding-top: 4px;
@@ -618,8 +620,8 @@
   white-space: nowrap;
   cursor: pointer;
   margin: 0;
-  font-family: Graphik, Helvetica Neue, arial, Noto Sans, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+  /* font-family: Graphik, Helvetica Neue, arial, Noto Sans, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji; */
   box-sizing: border-box;
 }
 

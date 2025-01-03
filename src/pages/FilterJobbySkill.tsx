@@ -1105,7 +1105,14 @@ const FilterJobbySkill: React.FC = () => {
                                     fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
-                                  {`${jobDetails?.minsalary} - ${jobDetails?.salary} VNĐ`}
+                                  {/* {`${jobDetails?.minsalary} - ${jobDetails?.salary} VNĐ`} */}
+                                  {jobDetails?.minsalary && jobDetails?.salary
+      ? `${jobDetails.minsalary >= 1000000 ? jobDetails.minsalary / 1000000 : jobDetails.minsalary} ${
+        jobDetails.minsalary >= 1000000 ? "triệu" : "VNĐ"
+        } - ${jobDetails.salary >= 1000000 ? jobDetails.salary / 1000000 : jobDetails.salary} ${
+          jobDetails.salary >= 1000000 ? "triệu" : "VNĐ"
+        }`
+      : "Salary not specified"}
                                   {/* {jobDetails?.salary} VNĐ */}
                                 </Typography>
                               </div>

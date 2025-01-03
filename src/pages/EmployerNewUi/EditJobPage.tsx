@@ -866,7 +866,7 @@ export default function EditJobPage() {
               >
                 <div className={classes.main9}>
                   <div className={classes.main10}>
-                    QualificationRequired
+                    Qualification Required
                     <span className={classes.span}>*</span>
                   </div>
                 </div>
@@ -1559,7 +1559,7 @@ export default function EditJobPage() {
                   <input
                     type="text"
                     name="salary"
-                    placeholder="10,000"
+                    placeholder="1 triệu"
                     className={classes.input3}
                     value={minsalary}
                     onChange={(e) => setMinSalary(e.target.value)}
@@ -1578,7 +1578,7 @@ export default function EditJobPage() {
                   <input
                     type="text"
                     name="salary"
-                    placeholder="10,000"
+                    placeholder="10 triệu"
                     className={classes.input3}
                     value={salary}
                     onChange={(e) => setSalary(e.target.value)}

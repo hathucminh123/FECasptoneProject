@@ -245,7 +245,14 @@ export default function CardJob({
                   color: "#0ab305 !important",
                 }}
               >
-                {`${data?.minsalary} - ${data?.salary} VNĐ`}
+                {/* {`${data?.minsalary} - ${data?.salary} VNĐ`} */}
+                {data?.minsalary && data?.salary
+      ? `${data.minsalary >= 1000000 ? data.minsalary / 1000000 : data.minsalary} ${
+          data.minsalary >= 1000000 ? "triệu" : "VNĐ"
+        } - ${data.salary >= 1000000 ? data.salary / 1000000 : data.salary} ${
+          data.salary >= 1000000 ? "triệu" : "VNĐ"
+        }`
+      : "Salary not specified"}
               </Typography>
             </div>
 

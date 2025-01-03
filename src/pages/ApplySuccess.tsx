@@ -38,7 +38,7 @@ interface JobPost {
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
-  minsalary?:number;
+  minsalary?: number;
 }
 
 const ApplySuccess: React.FC = () => {
@@ -121,47 +121,47 @@ const ApplySuccess: React.FC = () => {
             <div className={classes.main5}>
               <div className={classes.main6}>
                 <div className={classes.logo}>
-                <Box
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight:'10px' // Căn giữa theo chiều dọc
-                }}
-              >
-                {/* Phần chữ "it" */}
-                <Box
-                  sx={{
-                    backgroundColor: "#3cbc8c",
-                    color: "#fff",
-                    fontWeight: 700,
-                    fontSize: "22px",
-                    fontFamily: "Lexend, sans-serif",
-                    lineHeight: "1",
-                    width: "32px",
-                    height: "32px",
-                    borderRadius: "50%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    marginRight: "3px",
-                  }}
-                >
-                  A
-                </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px", // Căn giữa theo chiều dọc
+                    }}
+                  >
+                    {/* Phần chữ "it" */}
+                    <Box
+                      sx={{
+                        backgroundColor: "#3cbc8c",
+                        color: "#fff",
+                        fontWeight: 700,
+                        fontSize: "22px",
+                        fontFamily: "Lexend, sans-serif",
+                        lineHeight: "1",
+                        width: "32px",
+                        height: "32px",
+                        borderRadius: "50%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        marginRight: "3px",
+                      }}
+                    >
+                      A
+                    </Box>
 
-                <Typography
-                  variant="h2"
-                  sx={{
-                    color: "#000000",
-                    fontWeight: 700,
-                    fontSize: "22px",
-                    fontFamily: "Lexend, sans-serif",
-                    lineHeight: "1.5",
-                  }}
-                >
-                  mazingJob
-                </Typography>
-              </Box>
+                    <Typography
+                      variant="h2"
+                      sx={{
+                        color: "#000000",
+                        fontWeight: 700,
+                        fontSize: "22px",
+                        fontFamily: "Lexend, sans-serif",
+                        lineHeight: "1.5",
+                      }}
+                    >
+                      mazingJob
+                    </Typography>
+                  </Box>
                 </div>
               </div>
             </div>
@@ -241,7 +241,22 @@ const ApplySuccess: React.FC = () => {
                             <div className={classes.main17}>
                               <MonetizationOnOutlinedIcon />
                               <span className={classes.span1}>
-                                {`${job?.minsalary} - ${job?.salary} VNĐ`}
+                                {/* {`${job?.minsalary} - ${job?.salary} VNĐ`} */}
+                                {job?.minsalary && job?.salary
+                                  ? `${
+                                      job.minsalary >= 1000000
+                                        ? job.minsalary / 1000000
+                                        : job.minsalary
+                                    } ${
+                                      job.minsalary >= 1000000 ? "triệu" : "VNĐ"
+                                    } - ${
+                                      job.salary >= 1000000
+                                        ? job.salary / 1000000
+                                        : job.salary
+                                    } ${
+                                      job.salary >= 1000000 ? "triệu" : "VNĐ"
+                                    }`
+                                  : "Salary not specified"}
                               </span>
                             </div>
                           </div>

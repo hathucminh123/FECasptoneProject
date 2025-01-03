@@ -79,7 +79,8 @@ const UpdateStepCompany: React.FC = () => {
                 {/* Phần chữ "it" */}
                 <Box
                   sx={{
-                    backgroundColor: "#ff0000",
+                    // backgroundColor: "#ff0000",
+                    backgroundColor: "#3cbc8c",
                     color: "#fff",
                     fontWeight: 700,
                     fontSize: "22px",
@@ -114,10 +115,13 @@ const UpdateStepCompany: React.FC = () => {
               <div className={classes.main2}>
                 <NavLink
                   to={
-                    !nextStep && !isCompletePage ? "/onboarding/UpdateCompany" : "#"
+                    !nextStep && !isCompletePage
+                      ? "/onboarding/UpdateCompany"
+                      : "#"
                   }
                   className={({ isActive }) =>
-                    isActive && location.pathname === "/onboarding/UpdateCompany"
+                    isActive &&
+                    location.pathname === "/onboarding/UpdateCompany"
                       ? classes.active
                       : undefined
                   }

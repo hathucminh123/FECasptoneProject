@@ -204,6 +204,46 @@ export default function VerifiCompanyUpdate() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileEvidenceRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
+
+
+  const dropdownRefEm = useRef<HTMLDivElement>(null);
+
+
+
+  // location
+  useEffect(() => {
+    const handleClickOutsideLocation = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpenLocation(false); // Close the dropdown if clicked outside
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutsideLocation);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideLocation);
+    };
+  }, []);
+// number of employees
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRefEm.current &&
+        !dropdownRefEm.current.contains(event.target as Node)
+      ) {
+        setDropdownOpenEm(false); // Close the dropdown if clicked outside
+      }
+    };
+  
+    document.addEventListener("mousedown", handleClickOutside);
+  
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   
   const [locations, setLocations] = useState<Location[]>([
     { locationId: 0, stressAddressDetail: "" },
@@ -454,8 +494,8 @@ export default function VerifiCompanyUpdate() {
         errors.push("A valid Established Year is required.");
       if (!taxCode.trim() || isNaN(Number(taxCode)))
         errors.push("A valid Tax Code is required.");
-      if (!numberOfEmployees.trim() || isNaN(Number(numberOfEmployees)))
-        errors.push("Number of Employees is required.");
+      // if (  !selectedEm|| !numberOfEmployees.trim() || isNaN(Number(numberOfEmployees)))
+      //   errors.push("Number of Employees is required.");
       if (!description.trim()) errors.push("Company Description is required.");
       if (!selectedFile && !imageUrl)
         errors.push("Logo Image is required.");
@@ -538,7 +578,7 @@ export default function VerifiCompanyUpdate() {
         address,
         numberOfEmployees: selectedEm
           ? parseInt(selectedEm.replace(/[^0-9]/g, "") || "0", 10)
-          : parseInt(numberOfEmployees),
+          : parseInt(numberOfEmployees) ,
         // businessStreamId: selectedBu?.id,
         imageUrl: fileUrl ? fileUrl : imageUrl,
         evidence: fileUrlEvi ? fileUrlEvi : imageUrlEvi,
@@ -984,13 +1024,19 @@ export default function VerifiCompanyUpdate() {
                   </div>
                 </div>
                 {dropdownOpenEm && (
-                  <div className={classes.dropdown} ref={dropdownRef}>
+                  <div className={classes.dropdown} ref={dropdownRefEm}>
                     {employees?.length && employees?.length > 0 ? (
                       employees?.map((comp, index) => (
                         <div
                           key={index}
                           className={classes.dropdownItem}
-                          onClick={() => handleSelectEm(comp)}
+                          // onClick={() => handleSelectEm(comp)}
+                          onClick={() => {
+                            const maxEmployees = Math.max(
+                              ...comp.split("-").map(Number)
+                            );
+                            handleSelectEm(maxEmployees.toString());
+                          }}
                         >
                           {/* <img
                           src={comp.imageUrl}

@@ -406,8 +406,19 @@ export default function CompanyInfoNew() {
                             >
                               <li className={classes.main36}>
                                 <Link to={""} className={classes.main4}>
-                                  {CompanyEmployer?.address} in{" "}
-                                  {CompanyEmployer?.city}
+                                  {/* {CompanyEmployer?.address} in{" "}
+                                  {CompanyEmployer?.city} */}
+                                  {CompanyEmployer?.companyLocations.map(
+                                    (location, index) => (
+                                      <div key={index}>
+                                        {location.city}
+                                        {index !==
+                                          CompanyEmployer.companyLocations
+                                            ?.length -
+                                            1 && " - "}
+                                      </div>
+                                    )
+                                  )}
                                 </Link>
                               </li>
                             </ul>
