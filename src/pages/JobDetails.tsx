@@ -105,7 +105,7 @@ interface JobPost {
   // jobLocation: JobLocation;
   jobLocationCities: string[];
   jobLocationAddressDetail: string[]; // jobLocation là đối tượng JobLocation
-  skillSets: string[]; 
+  skillSets: string[];
   benefitObjects?: Benefits[];
 }
 const JobDetails: React.FC = () => {
@@ -567,16 +567,19 @@ const JobDetails: React.FC = () => {
                       color: "#0ab305 !important",
                       fontFamily: "Lexend, sans-serif",
                     }}
-
                   >
-                     {/* {`${job?.minsalary} - ${job?.salary} VNĐ`} */}
-                     {job?.minsalary && job?.salary
-      ? `${job.minsalary >= 1000000 ? job.minsalary / 1000000 : job.minsalary} ${
-          job.minsalary >= 1000000 ? "triệu" : "VNĐ"
-        } - ${job.salary >= 1000000 ? job.salary / 1000000 : job.salary} ${
-          job.salary >= 1000000 ? "triệu" : "VNĐ"
-        }`
-      : "Salary not specified"}
+                    {/* {`${job?.minsalary} - ${job?.salary} VNĐ`} */}
+                    {job?.minsalary && job?.salary
+                      ? `${
+                          job.minsalary >= 1000000
+                            ? job.minsalary / 1000000
+                            : job.minsalary
+                        } ${job.minsalary >= 1000000 ? "triệu" : "VNĐ"} - ${
+                          job.salary >= 1000000
+                            ? job.salary / 1000000
+                            : job.salary
+                        } ${job.salary >= 1000000 ? "triệu" : "VNĐ"}`
+                      : "Salary not specified"}
                     {/* {job?.salary} USD */}
                   </Typography>
                 </div>
@@ -685,7 +688,7 @@ const JobDetails: React.FC = () => {
                         },
                       }}
                     >
-                      Apply now 
+                      Apply now
                     </Button>
                     {haveFavorite ? (
                       <div
@@ -833,8 +836,8 @@ const JobDetails: React.FC = () => {
                         marginBottom: "7px",
                       }}
                     >
-                      From :{moment(job?.postingDate).format("DD-MM-YYYY")} - To:{" "}
-                      {moment(job?.expiryDate).format("DD-MM-YYYY")}
+                      From :{moment(job?.postingDate).format("DD-MM-YYYY")} -
+                      To: {moment(job?.expiryDate).format("DD-MM-YYYY")}
                       {/* From: {job?.postingDate.slice(0, 10)} - To:{" "}
                       {job?.expiryDate.slice(0, 10)} */}
                     </h5>

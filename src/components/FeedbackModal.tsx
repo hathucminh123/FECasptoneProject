@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import classes from './FeedbackModal.module.css';
 import Modal from "./Modal"; 
+import moment from "moment";
 
 interface Comment {
   id: number;
@@ -33,7 +34,7 @@ const FeedbackModal: React.FC<Props> = ({ onDone, data }) => {
                 <strong>Comment:</strong> {comment.commentText}
               </Typography>
               <Typography variant="body2" color="textSecondary">
-                <strong>Date:</strong> {new Date(comment.commentDate).toLocaleDateString()}
+                <strong>Date:</strong> {moment(comment.commentDate).format("DD/MM/YYYY")}
               </Typography>
               <Box display="flex" alignItems="center">
                 <Typography variant="body2" color="textSecondary">
