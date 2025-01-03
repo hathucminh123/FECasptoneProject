@@ -6,14 +6,34 @@ import Typography from "@mui/material/Typography";
 import ChatBoxAnimation from "../components/ChatBoxAnimation";
 import axios from "axios";
 
+interface JobMatch {
+  id: string;
+  title: string;
+  location: string;
+  skills: string[];
+  salary?: number;
+  experience?: string;
+  company?: string;
+  similarity_score?: number;
+}
+
+// interface ChatMessage {
+//   role: "user" | "bot";
+//   text: string |   JobMatch[];
+// }
 interface ChatMessage {
   role: "user" | "bot";
-  text: string;
+  text: string | JobMatch[] | React.ReactNode;
 }
+
 const ChatBox: React.FC = () => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
+  console.log("chatHistory:", chatHistory);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const chatBodyRef = useRef<HTMLDivElement>(null);
+  // const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
+
+  console.log("chatHistory:", chatHistory);
   //   const generateBotResponse = (history: ChatMessage[]) => {
   //     // Chuyển đổi lịch sử tin nhắn thành định dạng API yêu cầu
   //     const formattedHistory = history.map(({ role, text }) => ({
@@ -138,6 +158,7 @@ const ChatBox: React.FC = () => {
     // }, 1000);
     //call function to generate bot response
     const newMessage: ChatMessage = { role: "user", text: userMessage };
+    // setSelectedFileName(null);
     // generateBotResponse([...chatHistory, { role: "user", text: userMessage }]);
     setChatHistory((prev) => [...prev, newMessage]);
     generateBotResponse(newMessage);
@@ -151,78 +172,211 @@ const ChatBox: React.FC = () => {
     });
   }, [chatHistory]);
 
+  // const handleUploadCV = async (): Promise<void> => {
+  //   try {
+  //     const inputElement = document.createElement("input");
+  //     inputElement.type = "file";
+  //     inputElement.accept = ".pdf";
+
+  //     inputElement.onchange = async (event: Event) => {
+  //       const target = event.target as HTMLInputElement;
+  //       const file = target.files?.[0];
+
+  //       if (!file) {
+  //         console.error("No file selected");
+  //         return;
+  //       }
+  //       setSelectedFileName(file.name);
+
+  //       // Create FormData and append the file
+  //       const formData = new FormData();
+  //       formData.append("file", file);
+
+  //       try {
+  //         // Call the upload_and_process API
+  //         const uploadResponse = await axios.post(
+  //           "https://fb32-112-197-86-203.ngrok-free.app/upload_and_process",
+  //           formData,
+  //           {
+  //             headers: {
+  //               "Content-Type": "multipart/form-data",
+  //             },
+  //           }
+  //         );
+
+  //         console.log("CV uploaded successfully:", uploadResponse.data);
+
+  //         // Extract data dynamically from the response
+  //         const { data, file_info, parser_used, message } = uploadResponse.data;
+
+  //         // Prepare the payload for the compare-cv API
+  //         const compareCVPayload = {
+  //           status: "success",
+  //           data,
+  //           file_info,
+  //           parser_used,
+  //           message,
+  //         };
+
+  //         try {
+  //           // Call the compare-cv API
+  //           const compareResponse = await axios.post(
+  //             "https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/compare-cv",
+  //             compareCVPayload,
+  //             {
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //             }
+  //           );
+
+  //           console.log("Comparison result:", compareResponse.data);
+  //         } catch (compareError) {
+  //           console.error("Error comparing CV:", compareError);
+  //         }
+  //       } catch (uploadError) {
+  //         console.error("Error uploading CV:", uploadError);
+  //       }
+  //     };
+
+  //     // Trigger the file input dialog
+  //     inputElement.click();
+  //   } catch (error) {
+  //     console.error("Error initializing upload:", error);
+  //   }
+  // };
 
   const handleUploadCV = async (): Promise<void> => {
     try {
-      // Create a file input element dynamically
-      const inputElement = document.createElement('input');
-      inputElement.type = 'file';
-      inputElement.accept = '.pdf'; // Accept only PDF files
-  
+      const inputElement = document.createElement("input");
+      inputElement.type = "file";
+      inputElement.accept = ".pdf";
+
       inputElement.onchange = async (event: Event) => {
         const target = event.target as HTMLInputElement;
         const file = target.files?.[0];
-  
+
         if (!file) {
-          console.error('No file selected');
+          console.error("No file selected");
           return;
         }
-  
-        // Create FormData and append the file
+
+        // setSelectedFileName(file.name);
+
+        // const newMessage: ChatMessage = {
+        //   role: "user",
+        //   text: `Uploaded file: ${file.name}`,
+        // };
+        // setChatHistory((prev) => [...prev, newMessage]);
+        const fileDownloadURL = URL.createObjectURL(file);
+
+        // Add the uploaded file as a downloadable link in the chat
+        const newMessage: ChatMessage = {
+          role: "user",
+          text: (
+            <a
+              href={fileDownloadURL}
+              download={file.name}
+              style={{ color: "#3cbc8c", textDecoration: "underline" }}
+            >
+              {file.name}
+            </a>
+          ),
+        };
+
+        setChatHistory((prev) => [...prev, newMessage]);
+
+        // Thêm trạng thái "Bot is typing..."
+        setChatHistory((prev) => [
+          ...prev,
+          { role: "bot", text: "Bot is typing..." },
+        ]);
+
+        // Tạo FormData và thêm tệp đã chọn
         const formData = new FormData();
-        formData.append('file', file);
-  
+        formData.append("file", file);
+
         try {
-          // Call the upload_and_process API
+          // Gửi file đến API upload
           const uploadResponse = await axios.post(
-            'https://fb32-112-197-86-203.ngrok-free.app/upload_and_process',
+            "https://fb32-112-197-86-203.ngrok-free.app/upload_and_process",
             formData,
             {
               headers: {
-                'Content-Type': 'multipart/form-data',
+                "Content-Type": "multipart/form-data",
               },
             }
           );
-  
-          console.log('CV uploaded successfully:', uploadResponse.data);
-  
-          // Extract data dynamically from the response
+
+          console.log("CV uploaded successfully:", uploadResponse.data);
+
+          // Extract thông tin cần thiết từ phản hồi
           const { data, file_info, parser_used, message } = uploadResponse.data;
-  
-          // Prepare the payload for the compare-cv API
+
+          // Chuẩn bị payload cho API compare
           const compareCVPayload = {
             status: "success",
             data,
             file_info,
             parser_used,
-            message
+            message,
           };
-  
+
           try {
-            // Call the compare-cv API
+            // Gửi payload đến API compare
             const compareResponse = await axios.post(
-              'https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/compare-cv',
+              "https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/compare-cv",
               compareCVPayload,
               {
                 headers: {
-                  'Content-Type': 'application/json',
+                  "Content-Type": "application/json",
                 },
               }
             );
-  
-            console.log('Comparison result:', compareResponse.data);
+
+            console.log("Comparison result:", compareResponse.data);
+
+            // Xóa trạng thái "Bot is typing..."
+            setChatHistory((prev) =>
+              prev.filter((message) => message.text !== "Bot is typing...")
+            );
+
+            // Thêm phản hồi từ API compare vào lịch sử chat
+            const jobMatches = compareResponse.data.matches;
+            setChatHistory((prev) => [
+              ...prev,
+              {
+                role: "bot",
+                text: jobMatches,
+              },
+            ]);
           } catch (compareError) {
-            console.error('Error comparing CV:', compareError);
+            console.error("Error comparing CV:", compareError);
+
+            // Xóa trạng thái "Bot is typing..." nếu có lỗi
+            setChatHistory((prev) =>
+              prev.filter((message) => message.text !== "Bot is typing...")
+            );
           }
         } catch (uploadError) {
-          console.error('Error uploading CV:', uploadError);
+          console.error("Error uploading CV:", uploadError);
+
+          // Xóa trạng thái "Bot is typing..." nếu có lỗi
+          setChatHistory((prev) =>
+            prev.filter((message) => message.text !== "Bot is typing...")
+          );
         }
       };
-  
-      // Trigger the file input dialog
+
+      // Kích hoạt hộp thoại chọn file
       inputElement.click();
     } catch (error) {
-      console.error('Error initializing upload:', error);
+      console.error("Error initializing upload:", error);
+
+      // Xóa trạng thái "Bot is typing..." nếu có lỗi
+      setChatHistory((prev) =>
+        prev.filter((message) => message.text !== "Bot is typing...")
+      );
     }
   };
 
@@ -368,10 +522,101 @@ const ChatBox: React.FC = () => {
                                           <div className={classes.main40}>
                                             <div className={classes.main41}>
                                               <div className={classes.main42}>
-                                                {message.text}
+                                                {typeof message.text ===
+                                                "string"
+                                                  ? message.text
+                                                  : React.isValidElement(
+                                                      message.text
+                                                    )
+                                                  ? message.text
+                                                  : ""}
+                                                {/* {typeof message.text ===
+                                                "string"
+                                                  ? message.text
+                                                  : Array.isArray(message.text)
+                                                  ? message.text.map((job) => (
+                                                      <span key={job.id}>
+                                                        {" "}
+                                                        {job.title}
+                                                      </span>
+                                                    ))
+                                                  : message.text // Render JSX elements directly
+                                                } */}
+
+                                                {/* {message.text} */}
                                               </div>
                                             </div>
                                           </div>
+                                          {/* {selectedFileName ? (
+                                            <div className={classes.main50}>
+                                              <div className={classes.main51}>
+                                                <div className={classes.main52}>
+                                                  <div
+                                                    className={classes.main53}
+                                                  >
+                                                    <div
+                                                      className={classes.main54}
+                                                    >
+                                                      <div
+                                                        className={
+                                                          classes.main55
+                                                        }
+                                                      >
+                                                        <div
+                                                          className={
+                                                            classes.main56
+                                                          }
+                                                        >
+                                                          <div
+                                                            className={
+                                                              classes.main57
+                                                            }
+                                                          >
+                                                            <div
+                                                              className={
+                                                                classes.main58
+                                                              }
+                                                            >
+                                                              <div
+                                                                className={
+                                                                  classes.main59
+                                                                }
+                                                              >
+                                                                <label
+                                                                  htmlFor=""
+                                                                  className={
+                                                                    classes.label
+                                                                  }
+                                                                >
+                                                                  <div
+                                                                    className={
+                                                                      classes.main60
+                                                                    }
+                                                                  >
+                                                                    <span
+                                                                      className={
+                                                                        classes.main61
+                                                                      }
+                                                                    >
+                                                                      {selectedFileName
+                                                                        ? selectedFileName
+                                                                        : "cvs"}
+                                                                    </span>
+                                                                  </div>
+                                                                </label>
+                                                              </div>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          ) : (
+                                            ""
+                                          )} */}
                                         </div>
                                       </div>
                                     </div>
@@ -407,15 +652,212 @@ const ChatBox: React.FC = () => {
                                             </Box>
                                           </div>
                                         </div>
-                                        <div className={classes.main47}>
-                                          <div className={classes.main48}>
-                                            <div className={classes.main49}>
-                                              <p className={classes.p}>
-                                                {message.text}
-                                              </p>
+                                        {typeof message.text === "string" ? (
+                                          <div className={classes.main47}>
+                                            <div className={classes.main48}>
+                                              <div className={classes.main49}>
+                                                <p className={classes.p}>
+                                                  {message.text}
+                                                </p>
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
+                                        ) : Array.isArray(message.text) ? (
+                                          <div className={classes.mainjob}>
+                                            <div className={classes.mainjob1}>
+                                              <div className={classes.mainjob2}>
+                                                <div
+                                                  className={classes.mainjob3}
+                                                >
+                                                  <div
+                                                    className={classes.mainjob4}
+                                                  >
+                                                    <div
+                                                      className={
+                                                        classes.mainjob5
+                                                      }
+                                                    >
+                                                      <div
+                                                        className={
+                                                          classes.mainjob6
+                                                        }
+                                                      >
+                                                        {message.text.map(
+                                                          (job) => (
+                                                            <div
+                                                              key={job.id}
+                                                              className={
+                                                                classes.mainjob7
+                                                              }
+                                                            >
+                                                              <div
+                                                                className={
+                                                                  classes.mainjob8
+                                                                }
+                                                              >
+                                                                <div
+                                                                  className={
+                                                                    classes.mainjob9
+                                                                  }
+                                                                >
+                                                                  <div>
+                                                                    <Typography
+                                                                      variant="h3"
+                                                                      sx={{
+                                                                        color:
+                                                                          "#fafafa",
+                                                                        letterSpacing:
+                                                                          "-.025em",
+                                                                        fontWeight: 600,
+                                                                        fontsize:
+                                                                          "1rem",
+                                                                        lineHeight:
+                                                                          "1.75rem",
+                                                                        margin:
+                                                                          "0",
+                                                                      }}
+                                                                    >
+                                                                      {
+                                                                        job.title
+                                                                      }
+                                                                    </Typography>
+                                                                  </div>
+                                                                </div>
+                                                              </div>
+                                                              <div
+                                                                className={
+                                                                  classes.mainjob10
+                                                                }
+                                                              >
+                                                                <p
+                                                                  className={
+                                                                    classes.mainjob12
+                                                                  }
+                                                                >
+                                                                  <strong
+                                                                    style={{
+                                                                      fontWeight:
+                                                                        "bold",
+                                                                      color:
+                                                                        "#fff",
+                                                                    }}
+                                                                  >
+                                                                    Locations:{" "}
+                                                                  </strong>
+                                                                  {job.location}
+                                                                </p>
+                                                                <p
+                                                                  className={
+                                                                    classes.mainjob12
+                                                                  }
+                                                                >
+                                                                  <strong
+                                                                    style={{
+                                                                      fontWeight:
+                                                                        "bold",
+                                                                      color:
+                                                                        "#fff",
+                                                                    }}
+                                                                  >
+                                                                    Experiecne:{" "}
+                                                                  </strong>
+                                                                  {
+                                                                    job.experience
+                                                                  }
+                                                                </p>
+                                                                <p
+                                                                  className={
+                                                                    classes.mainjob13
+                                                                  }
+                                                                  style={{
+                                                                    color:
+                                                                      "#fff",
+                                                                  }}
+                                                                >
+                                                                  <strong>
+                                                                    Skills:
+                                                                  </strong>
+                                                                  <span
+                                                                    className={
+                                                                      classes.spanskill
+                                                                    }
+                                                                  >
+                                                                    {job.skills.map(
+                                                                      (
+                                                                        skill,
+                                                                        index
+                                                                      ) => (
+                                                                        <span
+                                                                          className={
+                                                                            classes.spanskill1
+                                                                          }
+                                                                          key={
+                                                                            index
+                                                                          }
+                                                                        >
+                                                                          {
+                                                                            skill
+                                                                          }
+                                                                        </span>
+                                                                      )
+                                                                    )}
+                                                                  </span>
+                                                                </p>
+                                                                <p
+                                                                  className={
+                                                                    classes.mainjob12
+                                                                  }
+                                                                >
+                                                                  <strong
+                                                                    style={{
+                                                                      fontWeight:
+                                                                        "bold",
+                                                                      color:
+                                                                        "#fff",
+                                                                    }}
+                                                                  >
+                                                                    Similarity:{" "}
+                                                                  </strong>
+                                                                  {job.similarity_score && (
+                                                                    <p
+                                                                      className={
+                                                                        classes.mainjob12
+                                                                      }
+                                                                    >
+                                                                      {(
+                                                                        job.similarity_score *
+                                                                        100
+                                                                      ).toFixed(
+                                                                        2
+                                                                      )}
+                                                                      %
+                                                                    </p>
+                                                                  )}
+                                                                </p>
+                                                              </div>
+                                                            </div>
+                                                          )
+                                                        )}
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
+                                        {/* <div className={classes.main47}>
+                                            <div className={classes.main48}>
+                                              <div className={classes.main49}>
+                                                <p className={classes.p}>
+                                                  {message.text}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                      */}
                                       </div>
                                     </div>
                                   </article>
@@ -456,7 +898,11 @@ const ChatBox: React.FC = () => {
                             Explore openings by job title
                           </div>
                         </button> */}
-                        <button onClick={() => handleUploadCV()} className={classes.button}>
+                        <button
+                          onClick={() => handleUploadCV()}
+                          className={classes.button}
+                          style={{ cursor: "pointer" }}
+                        >
                           <div className={classes.main17}>
                             Find Job by Using Your resume
                           </div>
@@ -494,7 +940,7 @@ const ChatBox: React.FC = () => {
                                         className={classes.span3}
                                         role="button"
                                         disabled
-                                      // type="submit"
+                                        // type="submit"
                                       >
                                         Waiting
                                       </button>
@@ -516,7 +962,6 @@ const ChatBox: React.FC = () => {
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             </div>

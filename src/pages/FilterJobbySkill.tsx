@@ -1437,7 +1437,7 @@ const FilterJobbySkill: React.FC = () => {
                                     fontFamily: "Lexend, sans-serif",
                                   }}
                                 >
-                                  Benefits :
+                                  Benefits:
                                 </Typography>
 
                                 {jobDetails?.benefitObjects &&
@@ -1446,7 +1446,10 @@ const FilterJobbySkill: React.FC = () => {
                                     <button
                                       style={{
                                         fontFamily: "Lexend, sans-serif",
+                                        lineHeight:1.5,
+                                        fontSize: "14px",
                                       }}
+                                      
                                       key={item.id}
                                       className={classes.button}
                                     >

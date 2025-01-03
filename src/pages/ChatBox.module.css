@@ -733,3 +733,247 @@ cursor: pointer;
   --tw-enter-opacity: 0;
   animation-duration: 1s;
 }
+
+.main50{
+  width: 100%;
+  display: flex;
+  position: relative;
+  border-color: #e4e4e7;
+  box-sizing: border-box;
+  border: 0 solid #e5e7eb;
+}
+
+.main51{
+  flex-direction: column;
+  max-width: 100%;
+  display: flex;
+  border-color: #e4e4e7;
+  box-sizing: border-box;
+  margin-left: auto;
+    border: 0 solid #e5e7eb;
+   
+}
+
+.main52{
+  overflow-wrap: break-word;
+  white-space: normal;
+  gap: .5rem;
+  align-items: flex-end;
+  flex-direction: column;
+  width: 100%;
+  min-height: 20px;
+  display: flex;
+  border-color: #e4e4e7;
+  box-sizing: border-box;
+    border: 0 solid #e5e7eb;
+}
+
+.main53{
+  padding-top: 3px;
+  gap: .25rem;
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+
+}
+
+.main54{
+  overflow-wrap: break-word;
+  width: 100%;
+}
+
+.main55{
+  font-size: 1rem;
+  line-height: 1.75rem;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.main56{
+  max-width: 24rem;
+  width: 100%;
+}
+
+.main57{
+  position: relative;
+  --radix-scroll-area-corner-width: 0px;
+  --radix-scroll-area-corner-height: 0px;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  width: 100%;
+  height: fit-content;
+
+}
+
+.main58{
+  outline: none;
+  padding: .25rem;
+  gap: .5rem;
+  display: grid;
+
+}
+
+
+.main59{
+  padding: .5rem;
+  align-items: center;
+  min-width: 0;
+  display: flex;
+}
+
+.label{
+  background-color: rgba(99, 102, 241, .2);
+  font-weight: 500;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding: .5rem;
+  --tw-border-opacity: 1;
+  border-color: rgb(99 102 241 / var(--tw-border-opacity, 1));
+  border-width: 2px;
+  border-radius: 0.5rem;
+
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  flex-grow: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.main60{
+  overflow: hidden;
+  align-items: center;
+  display: flex;
+}
+
+.mainjob{
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  position: relative;
+}
+
+.mainjob1{
+  flex-direction: column;
+  max-width: 100%;
+  display: flex;
+}
+
+.mainjob2{
+  overflow-wrap: break-word;
+  white-space: normal;
+  gap: .5rem;
+  align-items: flex-end;
+  flex-direction: column;
+  width: 100%;
+  min-height: 20px;
+  display: flex;
+}
+
+.mainjob3{
+  padding-top: 3px;
+  gap: .25rem;
+  flex-direction: column;
+  width: 100%;
+  display: flex;
+}
+
+.mainjob4{
+  overflow-wrap: break-word;
+  width: 100%;
+}
+
+.mainjob5{
+  font-size: 1rem;
+  line-height: 1.75rem;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  max-width: 40rem;
+}
+
+.mainjob6{
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  display:  grid;
+  margin-bottom: 1rem;
+}
+
+.mainjob7{
+  --tw-shadow: 0 1px 2px 0 rgba(0, 0, 0, .05);
+  --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+  background-color: #09090b;
+  color: #fff;
+  border-width: 1px;
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+.mainjob8{
+  padding-bottom: .5rem;
+  padding: 1.5rem;
+  flex-direction: column;
+  display: flex;
+}
+
+.mainjob9{
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  display: flex;
+}
+
+.mainjob10{
+  padding-top: 0;
+  padding: 1.5rem;
+}
+
+.mainjob11{
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+}
+
+.mainjob12{
+  font-size: .8125rem;
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+ margin-bottom: 1.5rem;
+color: #fff;
+}
+
+.mainjob13{
+  font-size: .8125rem;
+  line-height: 1.5rem;
+  margin-top: 1.5rem;
+ margin-bottom: 1.5rem;
+ display: flex;
+}
+
+.spanskill{
+  gap: .25rem;
+  flex-wrap: wrap;
+  display: flex;
+  margin-left: .5rem;
+}
+
+.spanskill1{
+  --tw-ring-color: rgba(52, 211, 153, .3);
+  --tw-text-opacity: 1;
+  color: rgb(52 211 153 / var(--tw-text-opacity, 1));
+  background-color: rgba(52, 211, 153, .1);
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-inset: inset;
+  font-weight: 600; 
+  padding-left: .375rem;
+    padding-right: .375rem;
+    border-radius: .5rem;
+    font-size: .625rem;
+}
