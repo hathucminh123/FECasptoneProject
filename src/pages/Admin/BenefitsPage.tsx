@@ -30,7 +30,7 @@ import { PostBenefits } from "../../Services/Benefits/PostBenefits";
 import { GetBenefits } from "../../Services/Benefits/GetBenefits";
 import { DeleteBenefits } from "../../Services/Benefits/DeleteBenefits";
 
-const headers = ["SkillName",  "Action"];
+const headers = ["Benefits Name",  "Action"];
 
 // Function to remove HTML tags from a string
 // const stripHTML = (html: string) => {

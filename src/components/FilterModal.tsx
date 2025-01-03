@@ -388,16 +388,16 @@ console.log("okchua",jobSearch);
 
       if (data && data.result && data.result.items.length > 0) {
         const jobSearchResults = data.result.items;
-        // const total = data.result.totalCount;
+        const total = data.result.totalCount;
         setJobSearch(data.result.items);
         setText("")
         navigate("/it_jobs", {
           state: {
             jobSearch: jobSearchResults,
             // text: text,
-            text: ""
+            text: "",
             // location: location,
-            // total: total,
+            total: total,
           },
         });
         onDone?.();

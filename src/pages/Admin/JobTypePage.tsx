@@ -30,7 +30,7 @@ import { GetJobType } from "../../Services/JobTypeService/GetJobType";
 import { PostJobType } from "../../Services/JobTypeService/PostJobType";
 import { DeleteJobType } from "../../Services/JobTypeService/DeleteJobType";
 
-const headers = ["SkillName", "Shorthand", "Action"];
+const headers = ["JobType Name", "Shorthand", "Action"];
 
 // Function to remove HTML tags from a string
 const stripHTML = (html: string) => {

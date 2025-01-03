@@ -58,6 +58,13 @@ interface BusinessStream {
   description: string;
 }
 
+interface Location {  
+  id: number;
+  stressAddressDetail: string;
+  city: string;
+  locationId: number;
+}
+
 interface Company {
   id: number;
   companyName: string;
@@ -71,6 +78,7 @@ interface Company {
   businessStream: BusinessStream;
   jobPosts: JobPost[];
   imageUrl: string;
+  companyLocations: Location[];
 }
 
 interface MyComponentProps {
@@ -284,7 +292,15 @@ export default function CardJob({
                       maxWidth: "100%",
                     }}
                   >
-                    {company?.address} {" in "} {company?.city}
+                    {/* {company?.address} {" in "} {company?.city} */}
+                    {
+                      company?.companyLocations.map((location, index) => (
+                        <div key={index}>
+                          {location.city}
+                          {index !== company?.companyLocations.length - 1 && " - "}
+                        </div>
+                      ))
+                    }
                   </span>
                 )}
               </span>

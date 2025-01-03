@@ -42,9 +42,14 @@ const CompanyLocationsForm: React.FC<CompanyLocationsFormProps> = ({
     setLocations([...locations, { locationId: 0, stressAddressDetail: "" }]);
   };
 
-  const removeLocation = (locationId: number) => {
+  // const removeLocation = (locationId: number) => {
+  //   setLocations((prevLocations) =>
+  //     prevLocations.filter((loc) => loc.locationId !== locationId)
+  //   );
+  // };
+  const removeLocation = (index: number) => {
     setLocations((prevLocations) =>
-      prevLocations.filter((loc) => loc.locationId !== locationId)
+      prevLocations.filter((_, i) => i !== index) // Chỉ xóa mục tại index cụ thể
     );
   };
 
@@ -60,7 +65,7 @@ const CompanyLocationsForm: React.FC<CompanyLocationsFormProps> = ({
     );
   };
 
-  const selectedLocationIds = locations.map((loc) => loc.locationId);
+  // const selectedLocationIds = locations.map((loc) => loc.locationId);
 
   return (
     <Box
@@ -90,7 +95,7 @@ const CompanyLocationsForm: React.FC<CompanyLocationsFormProps> = ({
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={4}>
               <Typography variant="body1" sx={{ mb: 1 }}>
-                Location ID
+                City
               </Typography>
               <Select
                 fullWidth
@@ -108,7 +113,11 @@ const CompanyLocationsForm: React.FC<CompanyLocationsFormProps> = ({
                   <MenuItem
                     key={location.id}
                     value={location.id}
-                    disabled={selectedLocationIds.includes(location.id)}
+                    // disabled={
+                    //   selectedLocationIds.includes(location.id) &&
+                    //   location.id !== loc.locationId // Cho phép chọn lại locationId hiện tại
+                    // }
+                    // disabled={selectedLocationIds.includes(location.id)}
                   >
                     {location.city}
                   </MenuItem>
@@ -130,7 +139,8 @@ const CompanyLocationsForm: React.FC<CompanyLocationsFormProps> = ({
             </Grid>
           </Grid>
           <IconButton
-            onClick={() => removeLocation(loc.locationId)}
+            // onClick={() => removeLocation(loc.locationId)}
+            onClick={() => removeLocation(index)} 
             sx={{
               position: "absolute",
               top: "8px",
