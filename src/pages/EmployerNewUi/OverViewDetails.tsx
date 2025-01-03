@@ -156,7 +156,7 @@ const OverViewDetails: React.FC = () => {
               Job name: {job?.jobTitle}
             </Typography>
             <img
-              style={{ width: "100px", height: "90px", marginRight: "50px" }}
+              style={{ width: "140px", height: "100px", marginRight: "50px" ,borderColor: "#ddd ",borderWidth: "0.5px",borderStyle: "solid"}}
               src={CompanyEmployer?.imageUrl}
               alt="Companylogo"
             />

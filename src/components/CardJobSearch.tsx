@@ -200,12 +200,16 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
                 {" "}
                 {/* {`${data?.minsalary} - ${data?.salary} VNĐ`} */}
                 {data?.minsalary && data?.salary
-      ? `${data.minsalary >= 1000000 ? data.minsalary / 1000000 : data.minsalary} ${
-          data.minsalary >= 1000000 ? "triệu" : "VNĐ"
-        } - ${data.salary >= 1000000 ? data.salary / 1000000 : data.salary} ${
-          data.salary >= 1000000 ? "triệu" : "VNĐ"
-        }`
-      : "Salary not specified"}
+                  ? `${
+                      data.minsalary >= 1000000
+                        ? data.minsalary / 1000000
+                        : data.minsalary
+                    } ${data.minsalary >= 1000000 ? "triệu" : "VNĐ"} - ${
+                      data.salary >= 1000000
+                        ? data.salary / 1000000
+                        : data.salary
+                    } ${data.salary >= 1000000 ? "triệu" : "VNĐ"}`
+                  : "Salary not specified"}
               </span>
             </div>
           </div>
@@ -246,7 +250,9 @@ const CardJobSearch: React.FC<MyComponentProps> = ({
                 </span>
               ) : (
                 <span>
-                  {company?.address} {" in "} {company?.city}{" "}
+                  {data?.jobLocationCities.join(", ")}
+
+                  {/* {company?.address} {" in "} {company?.city}{" "} */}
                 </span>
               )}
             </Typography>
