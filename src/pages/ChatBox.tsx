@@ -787,7 +787,7 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                     className={
                                                                       classes.des1
                                                                     }
-                                                                    style={{color: "#fff !important"}} 
+                                                                    style={{color: "#fff"}} 
                                                                   >
                                                                     <div
                                                                       dangerouslySetInnerHTML={{

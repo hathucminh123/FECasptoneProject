@@ -49,6 +49,7 @@ interface JobPost {
   jobLocationAddressDetail: string[];
   skillSets: string[];
   benefitObjects?: Benefits[];
+  minsalary: number;
 }
 interface Company {
   id: number;
@@ -153,7 +154,18 @@ const CardApply: React.FC<props> = ({ company, job, activity }) => {
           <div className={classes.main5}>
             <div className={classes.main6}>
               <MonetizationOnOutlinedIcon />
-              <span className={classes.span2}>{job?.salary} VNĐ</span>
+              <span className={classes.span2}>
+                {/* {job?.salary} VNĐ */}
+                {job?.minsalary && job?.salary
+                  ? `${
+                      job.minsalary >= 1000000
+                        ? job.minsalary / 1000000
+                        : job.minsalary
+                    } ${job.minsalary >= 1000000 ? "triệu" : "VNĐ"} - ${
+                      job.salary >= 1000000 ? job.salary / 1000000 : job.salary
+                    } ${job.salary >= 1000000 ? "triệu" : "VNĐ"}`
+                  : "Salary not specified"}
+              </span>
             </div>
           </div>
           <div className={classes.main7}></div>
