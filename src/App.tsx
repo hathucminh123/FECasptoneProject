@@ -134,6 +134,7 @@ import { ReviewSuccess } from "./pages/ReviewSuccess";
 import ReviewPage from "./pages/Admin/ReviewPage";
 import ChatBox from "./pages/ChatBox";
 import LocationPage from "./pages/Admin/LocationPage";
+import SearchTalents from "./pages/EmployerNewUi/SearchTalents";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -554,10 +555,10 @@ const router = createBrowserRouter([
                 element: <RecommendTalents />,
               },
 
-              // {
-              //   path: "Passed",
-              //   element: <PassiveTalents />,
-              // },
+              {
+                path: "Search",
+                element: <SearchTalents />,
+              },
               // {
               //   path: "Rejected",
               //   element: <RejectedApplicants />,

@@ -700,7 +700,7 @@ cursor: pointer;
     margin-left: 0;
     margin-right: 0;
     margin-bottom: 0 !important;
-
+color: #fff;
     margin-top: 0 !important;
     max-width: 40rem;
 
@@ -915,7 +915,7 @@ cursor: pointer;
 }
 
 .mainjob8{
-  padding-bottom: .5rem;
+  padding-bottom: .5rem !important;
   padding: 1.5rem;
   flex-direction: column;
   display: flex;
@@ -929,7 +929,7 @@ cursor: pointer;
 }
 
 .mainjob10{
-  padding-top: 0;
+  padding-top: 0 !important;
   padding: 1.5rem;
 }
 
@@ -976,4 +976,84 @@ color: #fff;
     padding-right: .375rem;
     border-radius: .5rem;
     font-size: .625rem;
+}
+
+.des{
+  font-size: .8125rem;
+  line-height: 1.5rem;
+  
+}
+
+.des1{
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  margin: 0;
+  color: #fff !important;
+}
+
+.Apply{
+  padding-top: 0;
+  padding: 1.5rem;
+  align-items: flex-start;
+  flex-direction: column;
+  display: flex;
+
+}
+
+.buttonApply{
+
+  transition-duration: .15s;
+  color:#18181b;
+  font-weight: 500;
+  font-size: .875rem;
+  line-height: 1.5rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+background-color: #fafafa;
+border-color: #0000;
+border-width: 1px;
+border-radius: 0.5rem;
+white-space: nowrap;
+justify-content: center;
+align-items: center;
+width: 100%;
+height: 2.5rem;
+display: inline-flex;
+cursor: pointer;
+
+}
+
+.buttonSave{
+  font-weight: 500;
+  font-size: .8125rem;
+  line-height: 1.5rem;
+  padding-left: .5rem;
+  padding-right: .5rem;
+  border-width: 2px;
+  border-color: 1px solid red; 
+  border-radius: 0.5rem;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 26px;
+  height: 26px;
+  display: inline-flex;
+  cursor: pointer;
+  background-color: #0000;
+  color: #fff;
+
+}
+
+.companyName{
+color: #a1a1aa;
+font-size: .8125rem;
+line-height: 1.5rem;
+margin: 0;
+border-color: #27272a;
+
 }

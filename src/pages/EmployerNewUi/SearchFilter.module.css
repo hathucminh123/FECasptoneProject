@@ -1,0 +1,147 @@
+.container {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  max-width: 300px;
+  margin: auto;
+}
+
+h4 {
+  margin: 12px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.input {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.select {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  margin: 8px 0;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.searchButton {
+  width: 100%;
+  padding: 10px;
+  margin-top: 16px;
+  background-color: #e6f8e6;
+  color: #2e7d32;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.searchButton:hover {
+    background-color: #e6f8e6;
+   
+}
+
+.skillFilter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.addButton {
+  background-color: #e6f8e6;
+  color: #2e7d32;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #d5f2d5;
+  /* background-color: #4a148c; */
+}
+.addButton:active {
+  background-color: #c4ebc4;
+}
+
+.skillFilter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* .addButton {
+  background-color: #6a1b9a;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.addButton:hover {
+  background-color: #4a148c;
+} */
+
+.skillList {
+  margin-top: 16px;
+}
+
+.skillItem {
+  background-color: #f3f3f3;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.removeButton {
+  background-color: #d32f2f;
+  color: white;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 8px;
+}
+
+.removeButton:hover {
+  background-color: #b71c1c;
+}
+
+.resetButton {
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  background-color: #616161;
+  color: #fff;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  background-color: #424242;
+}

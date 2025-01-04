@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import classes from "./ChatBox.module.css";
 import Box from "@mui/material/Box";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import ChatBoxAnimation from "../components/ChatBoxAnimation";
 import axios from "axios";
@@ -10,11 +10,13 @@ interface JobMatch {
   id: string;
   title: string;
   location: string;
-  skills: string[];
-  salary?: number;
+  skills: string;
+  salary: string;
   experience?: string;
   company?: string;
   similarity_score?: number;
+  exact_skills: string;
+  description: string;
 }
 
 // interface ChatMessage {
@@ -34,6 +36,11 @@ const ChatBox: React.FC = () => {
   // const [selectedFileName, setSelectedFileName] = useState<string | null>(null);
 
   console.log("chatHistory:", chatHistory);
+
+  const navigate =useNavigate();
+const   handleNavigate = (id:string) => {
+navigate(`/jobs/detail/${Number(id)}`);  
+};
   //   const generateBotResponse = (history: ChatMessage[]) => {
   //     // Chuyển đổi lịch sử tin nhắn thành định dạng API yêu cầu
   //     const formattedHistory = history.map(({ role, text }) => ({
@@ -657,7 +664,26 @@ const ChatBox: React.FC = () => {
                                             <div className={classes.main48}>
                                               <div className={classes.main49}>
                                                 <p className={classes.p}>
-                                                  {message.text}
+                                                  {typeof message.text ===
+                                                  "string" ? (
+                                                    message.text
+                                                      .split("\n")
+                                                      .map((line, index) => (
+                                                        <span key={index}>
+                                                          {line}
+                                                          <br />
+                                                        </span>
+                                                      ))
+                                                  ) : Array.isArray(
+                                                      message.text
+                                                    ) ? (
+                                                    // Render your job matches or other structured responses here
+                                                    <div>
+                                                      {/* Job match rendering logic */}
+                                                    </div>
+                                                  ) : (
+                                                    message.text // Render JSX elements directly
+                                                  )}
                                                 </p>
                                               </div>
                                             </div>
@@ -708,11 +734,9 @@ const ChatBox: React.FC = () => {
                                                                           "#fafafa",
                                                                         letterSpacing:
                                                                           "-.025em",
-                                                                        fontWeight: 600,
-                                                                        fontsize:
-                                                                          "1rem",
-                                                                        lineHeight:
-                                                                          "1.75rem",
+                                                                        fontWeight:600,
+                                                                        fontSize:"2rem",
+
                                                                         margin:
                                                                           "0",
                                                                       }}
@@ -721,7 +745,14 @@ const ChatBox: React.FC = () => {
                                                                         job.title
                                                                       }
                                                                     </Typography>
+                                                                    <p className={classes.companyName}>
+                                                                      companyName:{" "}
+                                                                      {job.company}
+                                                                    </p>
                                                                   </div>
+                                                                 {/* <button className={classes.buttonSave}>
+                                                                  Save
+                                                                 </button> */}
                                                                 </div>
                                                               </div>
                                                               <div
@@ -729,6 +760,7 @@ const ChatBox: React.FC = () => {
                                                                   classes.mainjob10
                                                                 }
                                                               >
+                                                               
                                                                 <p
                                                                   className={
                                                                     classes.mainjob12
@@ -746,6 +778,26 @@ const ChatBox: React.FC = () => {
                                                                   </strong>
                                                                   {job.location}
                                                                 </p>
+                                                                <div
+                                                                  className={
+                                                                    classes.des
+                                                                  }
+                                                                >
+                                                                  <p
+                                                                    className={
+                                                                      classes.des1
+                                                                    }
+                                                                    style={{color: "#fff !important"}} 
+                                                                  >
+                                                                    <div
+                                                                      dangerouslySetInnerHTML={{
+                                                                        __html:
+                                                                          job?.description,
+                                                                      }}
+                                                                    />
+                                                                 
+                                                                  </p>
+                                                                </div>
                                                                 <p
                                                                   className={
                                                                     classes.mainjob12
@@ -767,6 +819,35 @@ const ChatBox: React.FC = () => {
                                                                 </p>
                                                                 <p
                                                                   className={
+                                                                    classes.mainjob12
+                                                                  }
+                                                                >
+                                                                  <strong
+                                                                    style={{
+                                                                      fontWeight:
+                                                                        "bold",
+                                                                      color:
+                                                                        "#fff",
+                                                                    }}
+                                                                  >
+                                                                    Salary:{" "}
+                                                                  </strong>
+                                                                  {parseInt(
+                                                                    job.salary
+                                                                  ) >= 1000000
+                                                                    ? parseInt(
+                                                                        job.salary
+                                                                      ) /
+                                                                      1000000
+                                                                    : job.salary}{" "}
+                                                                  {parseInt(
+                                                                    job.salary
+                                                                  ) >= 1000000
+                                                                    ? "triệu"
+                                                                    : "VNĐ"}
+                                                                </p>
+                                                                <p
+                                                                  className={
                                                                     classes.mainjob13
                                                                   }
                                                                   style={{
@@ -782,58 +863,76 @@ const ChatBox: React.FC = () => {
                                                                       classes.spanskill
                                                                     }
                                                                   >
-                                                                    {job.skills.map(
-                                                                      (
-                                                                        skill,
-                                                                        index
-                                                                      ) => (
-                                                                        <span
-                                                                          className={
-                                                                            classes.spanskill1
-                                                                          }
-                                                                          key={
-                                                                            index
-                                                                          }
-                                                                        >
-                                                                          {
-                                                                            skill
-                                                                          }
-                                                                        </span>
+                                                                    {job.skills
+                                                                      .split(
+                                                                        ","
                                                                       )
-                                                                    )}
+                                                                      .map(
+                                                                        (
+                                                                          skill,
+                                                                          index
+                                                                        ) => (
+                                                                          <span
+                                                                            className={
+                                                                              classes.spanskill1
+                                                                            }
+                                                                            key={
+                                                                              index
+                                                                            }
+                                                                          >
+                                                                            {skill.trim()}{" "}
+                                                                            {/* Xóa khoảng trắng thừa */}
+                                                                          </span>
+                                                                        )
+                                                                      )}
                                                                   </span>
                                                                 </p>
                                                                 <p
                                                                   className={
-                                                                    classes.mainjob12
+                                                                    classes.mainjob13
                                                                   }
+                                                                  style={{
+                                                                    color:
+                                                                      "#fff",
+                                                                  }}
                                                                 >
-                                                                  <strong
-                                                                    style={{
-                                                                      fontWeight:
-                                                                        "bold",
-                                                                      color:
-                                                                        "#fff",
-                                                                    }}
-                                                                  >
-                                                                    Similarity:{" "}
+                                                                  <strong>
+                                                                    Your Skills:
                                                                   </strong>
-                                                                  {job.similarity_score && (
-                                                                    <p
-                                                                      className={
-                                                                        classes.mainjob12
-                                                                      }
-                                                                    >
-                                                                      {(
-                                                                        job.similarity_score *
-                                                                        100
-                                                                      ).toFixed(
-                                                                        2
+                                                                  <span
+                                                                    className={
+                                                                      classes.spanskill
+                                                                    }
+                                                                  >
+                                                                    {job.exact_skills
+                                                                      .split(
+                                                                        ","
+                                                                      )
+                                                                      .map(
+                                                                        (
+                                                                          skill,
+                                                                          index
+                                                                        ) => (
+                                                                          <span
+                                                                            className={
+                                                                              classes.spanskill1
+                                                                            }
+                                                                            key={
+                                                                              index
+                                                                            }
+                                                                          >
+                                                                            {skill.trim()}{" "}
+                                                                            {/* Xóa khoảng trắng thừa */}
+                                                                          </span>
+                                                                        )
                                                                       )}
-                                                                      %
-                                                                    </p>
-                                                                  )}
+                                                                  </span>
                                                                 </p>
+                                                              </div>
+                                                              <div className={classes.Apply}>
+                                                                <button className={classes.buttonApply} onClick={()=>handleNavigate(job.id)}>
+                                                                  Apply Now
+                                                                </button>
                                                               </div>
                                                             </div>
                                                           )

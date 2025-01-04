@@ -188,7 +188,7 @@ const  SaveJobs:React.FC =()=> {
                     <CardJob
                       setShowAlert={setShowAlert}
                       // setUndoData={setUndoData} 
-                      className={classes.carditem}
+                      // className={classes.carditem}
                       data={jobsfavorite}
                       key={job.id}
                       company={companys}

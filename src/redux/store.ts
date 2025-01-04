@@ -5,6 +5,7 @@ import ViewJobRducer from './slices/viewJob';
 import  createJobReducer  from './slices/createJobs';
 import companyJobReducer from "./slices/companyJobslice";
 import searchJobSlice from "./slices/searchJobSlice";
+import  searchFilterSlice  from './slices/searchUserSlice';
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     favorite:favoriteJobReducer,
     view:ViewJobRducer,
     create:createJobReducer,
-    companyJobs: companyJobReducer
+    companyJobs: companyJobReducer,
+    searchFilter: searchFilterSlice,
   }
 });
 

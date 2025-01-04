@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./RecommendNew.module.css";
 import {
   NavLink,
@@ -7,9 +7,11 @@ import {
   //  useParams
 } from "react-router-dom";
 // import Typography from "@mui/material/Typography";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 // import { GetSeekerJobPost } from "../../Services/JobsPost/GetSeekerJobPost";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
+import { GetUserSearchService } from "../../Services/UserSearchSevice/GetUserSearchService";
+import { message } from "antd";
 const RecommendNew: React.FC = () => {
   const { id } = useParams();
   const JobId = Number(id);
@@ -22,6 +24,34 @@ const RecommendNew: React.FC = () => {
   //   queryFn: ({ signal }) => GetSeekerJobPost({ id: Number(JobId), signal }),
   //   enabled: !!JobId,
   // });
+  // const [currentPage, setCurrentPage] = useState(1);
+    const [totalJobs, setTotalJobs] = useState<number>(0);
+  const { mutateAsync } = useMutation({
+    mutationFn: GetUserSearchService,
+    onSuccess: (data) => {
+      if (data && data.result && data.result.items.length > 0) {
+        // setJobSearch(data.result.items);
+        setTotalJobs(data.result.totalCount);
+      } else {
+        // setJobSearch([]);
+        setTotalJobs(0);
+      }
+    },
+    onError: () => {
+      message.error("Failed to fetch User data");
+    },
+  });
+
+  useEffect(() => {
+    mutateAsync({
+      data: {
+        pageIndex: 1,
+        pageSize: 1000,
+      },
+    });
+  }, [ mutateAsync]);
+
+
   const {
     data: ListSeeker,
     // isLoading: isSeekerLoading,
@@ -92,7 +122,7 @@ const RecommendNew: React.FC = () => {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                      Active
+                   Passive
                     </span>
                   </div>
                   <div className={classes.main7}>
@@ -103,8 +133,8 @@ const RecommendNew: React.FC = () => {
                 </>
               )}
             </NavLink>
-            {/* <NavLink
-              to="Passed"
+            <NavLink
+              to="Search"
               style={{ marginLeft: "24px" }}
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
@@ -115,17 +145,17 @@ const RecommendNew: React.FC = () => {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                      Passive
+                    Active
                     </span>
                   </div>
                   <div className={classes.main7}>
                     <div className={classes.main8}>
-                      <span>{PassedDataSeekerApply?.length}</span>
+                      <span>{totalJobs}</span>
                     </div>
                   </div>
                 </>
               )}
-            </NavLink> */}
+            </NavLink>
             {/* <NavLink
               to="Rejected"
               style={{ marginLeft: "24px" }}
