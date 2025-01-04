@@ -38,6 +38,11 @@ const ChatBox: React.FC = () => {
   console.log("chatHistory:", chatHistory);
 
   function extractJobs(jobString:string) {
+    // Check if the message explicitly states no jobs were found
+    if (/No matching job postings were found\./.test(jobString)) {
+      return []; // Return an empty array if no jobs are found
+    }
+  
     // Define the two regex patterns
     const regexPatterns = [
       /Job #\d+:\s+- ID:\s+(\d+)\s+- Title:\s+(.+?)\s+- Location:\s+(.+?)\s+- Skills:\s+(.+?)\s+- Salary:\s+([\d.]+)\s+- Experience:\s+(.+?)\s+- Company:\s+(.+?)(?:\n-+|\n----------------------------------------------------)?/gs,
@@ -69,10 +74,10 @@ const ChatBox: React.FC = () => {
   
     return jobs;
   }
-
-  function extractText(message: string) {
+  
+  function extractText(message:string) {
     // Regex to extract the header/general text before jobs
-    const textRegex = /^(.+?)\n\nJob #/s;
+    const textRegex = /^(.+?)\n\n(?:Job #|\-+|\nNo matching job postings were found)/s;
     const textMatch = message.match(textRegex);
     const text = textMatch ? textMatch[1].trim() : '';
     return text;
@@ -131,7 +136,7 @@ const ChatBox: React.FC = () => {
           {
             role: "bot",
             // text: botResponse,
-            botText: botText,
+            botText: botSkillList.length > 0 ? botText : "Found 0 job that match your requirement",
             botSkill: botSkillList.length > 0 ? botSkillList : []
           },
         ]);
