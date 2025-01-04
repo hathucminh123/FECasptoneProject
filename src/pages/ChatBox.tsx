@@ -711,8 +711,8 @@ const ChatBox: React.FC = () => {
                                                                         fontWeight: 600,
                                                                         fontsize:
                                                                           "1rem",
-                                                                        // lineHeight:
-                                                                        //   "1.75rem",
+                                                                        lineHeight:
+                                                                          "1.75rem",
                                                                         margin:
                                                                           "0",
                                                                       }}
@@ -745,23 +745,6 @@ const ChatBox: React.FC = () => {
                                                                     Locations:{" "}
                                                                   </strong>
                                                                   {job.location}
-                                                                </p>
-                                                                <p
-                                                                  className={
-                                                                    classes.mainjob12
-                                                                  }
-                                                                >
-                                                                  <strong
-                                                                    style={{
-                                                                      fontWeight:
-                                                                        "bold",
-                                                                      color:
-                                                                        "#fff",
-                                                                    }}
-                                                                  >
-                                                                    Company:{" "}
-                                                                  </strong>
-                                                                  {job.company}
                                                                 </p>
                                                                 <p
                                                                   className={
