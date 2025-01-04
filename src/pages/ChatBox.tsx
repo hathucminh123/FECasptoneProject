@@ -37,25 +37,36 @@ const ChatBox: React.FC = () => {
 
   console.log("chatHistory:", chatHistory);
 
-  function extractJobs(jobString: string) {
-    const jobRegex =
-      /Job #\d+:\s+- ID:\s+(\d+)\s+- Title:\s+(.+?)\s+- Location:\s+(.+?)\s+- Skills:\s+(.+?)\s+- Salary:\s+([\d.]+)\s+- Experience:\s+(.+?)\s+- Company:\s+(.+?)\s+----------------------------------------------------/gs;
-
+  function extractJobs(jobString:string) {
+    // Define the two regex patterns
+    const regexPatterns = [
+      /Job #\d+:\s+- ID:\s+(\d+)\s+- Title:\s+(.+?)\s+- Location:\s+(.+?)\s+- Skills:\s+(.+?)\s+- Salary:\s+([\d.]+)\s+- Experience:\s+(.+?)\s+- Company:\s+(.+?)(?:\n-+|\n----------------------------------------------------)?/gs,
+      /Job #\d+:\n-+\n- ID:\s+(\d+)\n- Title:\s+(.+?)\n- Location:\s+(.+?)\n- Skills:\s+(.+?)\n- Salary:\s+([\d.]+)\n- Experience:\s+(.+?)\n- Company:\s+(.+?)(?:\n-+|$)/gs,
+    ];
+  
     const jobs = [];
-    let match;
-
-    while ((match = jobRegex.exec(jobString)) !== null) {
-      jobs.push({
-        id: match[1],
-        title: match[2],
-        location: match[3],
-        skills: match[4].split(', ').map(skill => skill.trim()),
-        salary: parseFloat(match[5]),
-        experience: match[6],
-        company: match[7],
-      });
+  
+    // Try each regex pattern
+    for (const jobRegex of regexPatterns) {
+      let match;
+  
+      // Execute the regex and collect matches
+      while ((match = jobRegex.exec(jobString)) !== null) {
+        jobs.push({
+          id: match[1],
+          title: match[2],
+          location: match[3],
+          skills: match[4].split(', ').map(skill => skill.trim()),
+          salary: parseFloat(match[5]),
+          experience: match[6],
+          company: match[7],
+        });
+      }
+  
+      // If we find matches, stop trying other patterns
+      if (jobs.length > 0) break;
     }
-
+  
     return jobs;
   }
 
@@ -105,8 +116,8 @@ const ChatBox: React.FC = () => {
       .then((data) => {
         const botResponse = data.output;
 
-        var botText = extractText(botResponse)
-        var botSkillList = extractJobs(botResponse)
+        const botText = extractText(botResponse)
+        const botSkillList = extractJobs(botResponse)
         console.log(botText);
 
         // Xóa tin nhắn "Bot is typing..."

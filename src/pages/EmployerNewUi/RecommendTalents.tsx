@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./RecommendTalents.module.css";
 import Typography from "@mui/material/Typography";
 
@@ -16,12 +16,13 @@ import CheckIcon from "@mui/icons-material/Check";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
 import { AnimatePresence } from "framer-motion";
 import ModalSendEmail from "../../components/NewUiEmployer/ModalSendEmail";
-// import SearchIcon from "@mui/icons-material/Search";
+import SearchIcon from "@mui/icons-material/Search";
 // import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
 import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
 import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
+import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
 // import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -96,24 +97,24 @@ export default function RecommendTalents() {
   // const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  // const [openSkills, setOpenSkills] = useState<boolean>(false);
+  const [openSkills, setOpenSkills] = useState<boolean>(false);
 
-  // const { data: SkillSetdata } = useQuery({
-  //   queryKey: ["SkillSet"],
-  //   queryFn: ({ signal }) => GetSkillSets({ signal }),
-  //   staleTime: 5000,
-  // });
-  // const SkillSetdataa = SkillSetdata?.SkillSets;
+  const { data: SkillSetdata } = useQuery({
+    queryKey: ["SkillSet"],
+    queryFn: ({ signal }) => GetSkillSets({ signal }),
+    staleTime: 5000,
+  });
+  const SkillSetdataa = SkillSetdata?.SkillSets;
   const [nameSkill, setNameSkill] = useState("");
   const [shorthand, setShorthand] = useState("");
   const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
-  // const [skills, setSkills] = useState<SkillSet[]>([]);
-  // const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
-  // const [dropdownOpen, setDropdownOpen] = useState(false);
-  // const [skillId, setSkillId] = useState<number[]>([]);
-  // const [inputSkill, setInputSkill] = useState<string>("");
+  const [skills, setSkills] = useState<SkillSet[]>([]);
+  const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [skillId, setSkillId] = useState<number[]>([]);
+  const [inputSkill, setInputSkill] = useState<string>("");
   const [open, setOpen] = useState(false);
-  // const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   // const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -131,41 +132,41 @@ export default function RecommendTalents() {
   //     document.removeEventListener("mousedown", handleClickOutside);
   //   };
   // }, []);
-  // const handleOpenSkills = () => {
-  //   setOpenSkills((prev) => !prev);
-  // };
-  // const handleSkill = (selectedSkill: SkillSet) => {
-  //   if (
-  //     !skills.includes(selectedSkill) &&
-  //     !skillId.includes(selectedSkill.id)
-  //   ) {
-  //     setSkills([...skills, selectedSkill]);
-  //     setSkillId([...skillId, selectedSkill.id]);
-  //   }
-  //   setDropdownOpen(false);
-  //   setInputSkill("");
-  // };
+  const handleOpenSkills = () => {
+    setOpenSkills((prev) => !prev);
+  };
+  const handleSkill = (selectedSkill: SkillSet) => {
+    if (
+      !skills.includes(selectedSkill) &&
+      !skillId.includes(selectedSkill.id)
+    ) {
+      setSkills([...skills, selectedSkill]);
+      setSkillId([...skillId, selectedSkill.id]);
+    }
+    setDropdownOpen(false);
+    setInputSkill("");
+  };
 
   // const handleRemoveSkill = (skillToRemove: SkillSet) => {
   //   setSkills(skills.filter((skill) => skill !== skillToRemove));
   //   setSkillId(skillId.filter((skill) => skill !== skillToRemove.id));
   // };
 
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const inputValue = e.target.value;
-  //   setInputSkill(inputValue);
-  //   if (inputValue) {
-  //     setFilteredSkills(
-  //       SkillSetdataa?.filter((comp) =>
-  //         comp.name.toLowerCase().includes(inputValue.toLowerCase())
-  //       )
-  //     );
-  //     setDropdownOpen(true);
-  //   } else {
-  //     setFilteredSkills([]);
-  //     setDropdownOpen(false);
-  //   }
-  // };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+    setInputSkill(inputValue);
+    if (inputValue) {
+      setFilteredSkills(
+        SkillSetdataa?.filter((comp) =>
+          comp.name.toLowerCase().includes(inputValue.toLowerCase())
+        )
+      );
+      setDropdownOpen(true);
+    } else {
+      setFilteredSkills([]);
+      setDropdownOpen(false);
+    }
+  };
 
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
@@ -606,7 +607,7 @@ export default function RecommendTalents() {
           </div>
         </div>
       </div>
-      {/* <div className={classes.main35}>
+      <div className={classes.main35}>
         <div className={classes.main36}>
           <div className={classes.main37}>
             <div className={classes.main38}>
@@ -614,6 +615,19 @@ export default function RecommendTalents() {
               <h6 className={classes.main40}>
                 Specific keywords , Education, degrees or skills
               </h6>
+              <div className={classes.main50}>
+                          <input
+                            type="text"
+                            className={classes.input}
+                            placeholder="find a skills"
+                            value={inputSkill}
+                            onChange={handleChange}
+                            onFocus={() => setDropdownOpen(true)}
+                          />
+                          <div className={classes.main51}>
+                            <SearchIcon />
+                          </div>
+                        </div>
             </div>
           </div>
           <div>
@@ -669,26 +683,25 @@ export default function RecommendTalents() {
                                   onClick={() => handleSkill(comp)}
                                 >
                                   <img
-                          src={comp.imageUrl}
-                          alt={comp.companyName}
+                          // src={comp.imageUrl}
+                          // alt={comp.companyName}
                           className={classes.logo}
                         />
                                   <span className={classes.companyName}>
                                     {comp.name}
                                   </span>
                                   <span className={classes.companyUrl}>
-                          {comp.websiteURL}
+                          {/* {comp.websiteURL} */}
                         </span>
                                 </div>
                               ))
                             ) : (
                               <div
                                 className={classes.createNewCompany}
-                                  onClick={handleOpenRegister}
-                                onClick={handleOpen}
+                             
                                 style={{ cursor: "pointer" }}
                               >
-                                <span>Create new Skills {inputSkill}</span>
+                                <span>No skill {inputSkill}</span>
                               </div>
                             )}
                           </div>
@@ -701,7 +714,7 @@ export default function RecommendTalents() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
       <Modal open={open} onClose={handleClose}>
         <Box sx={style}>
           <Typography variant="h6" component="h2">
