@@ -30,7 +30,7 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-
+import { dataCountry } from "../../assets/data/Country";
 // import { SelectCompany } from "../../Services/AuthService/SelectCompanyService";
 
 interface BusinessStreamprops {
@@ -90,7 +90,7 @@ interface Location {
   locationId: number;
 }
 
-const data = ["Việt Nam", "Mỹ", "Lào"];
+// const data = ["Việt Nam", "Mỹ", "Lào"];
 
 const employees = ["1-10", "11-50", "51-200", "201-500", "501-1000"];
 
@@ -135,7 +135,7 @@ export default function VerifiCompany() {
   const [selectedBu, setSelectedBu] = useState<BusinessStreamprops | null>(
     null
   );
-  const [countrydata, setCountryData] = useState(data);
+  const [countrydata, setCountryData] = useState(dataCountry);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [dropdownOpenLocation, setDropdownOpenLocation] = useState(false);
   const [dropdownOpenEm, setDropdownOpenEm] = useState<boolean>(false);
@@ -147,7 +147,8 @@ export default function VerifiCompany() {
   // const [businessStreamName, setBusinessStreamName] = useState<string>("");
   // const [descriptionBusiness, setDescriptionBusiness] = useState<string>("");
   const dropdownRef = useRef<HTMLDivElement>(null);
-   const dropdownRefEm = useRef<HTMLDivElement>(null);
+  const dropdownRefEm = useRef<HTMLDivElement>(null);
+  const dropdownRefCountry = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const fileEvidenceRef = useRef<HTMLInputElement>(null);
   const [searchParams] = useSearchParams();
@@ -249,7 +250,7 @@ export default function VerifiCompany() {
     setCountry(inputValue);
     if (inputValue) {
       setCountryData(
-        data?.filter((comp) =>
+        dataCountry?.filter((comp) =>
           comp.toLowerCase().includes(inputValue.toLowerCase())
         )
       );
@@ -264,22 +265,22 @@ export default function VerifiCompany() {
     setOpenRegister(true);
   };
   // number of employees
-    useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (
-          dropdownRefEm.current &&
-          !dropdownRefEm.current.contains(event.target as Node)
-        ) {
-          setDropdownOpenEm(false); // Close the dropdown if clicked outside
-        }
-      };
-    
-      document.addEventListener("mousedown", handleClickOutside);
-    
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRefEm.current &&
+        !dropdownRefEm.current.contains(event.target as Node)
+      ) {
+        setDropdownOpenEm(false); // Close the dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleClickOutside = (event: MouseEvent) => {
     if (
@@ -290,7 +291,23 @@ export default function VerifiCompany() {
     }
   };
 
+  //Country
+  useEffect(() => {
+    const handleClickOutsideCountry = (event: MouseEvent) => {
+      if (
+        dropdownRefCountry.current &&
+        !dropdownRefCountry.current.contains(event.target as Node)
+      ) {
+        setDropdownOpenLocation(false); // Close the dropdown if clicked outside
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutsideCountry);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideCountry);
+    };
+  }, []);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -308,6 +325,7 @@ export default function VerifiCompany() {
   const handleSelectCountry = (country: string) => {
     setSelectedCountry(country);
     setDropdownOpenLocation(false);
+    setCountry("");
   };
   const handleSelectEm = (employees: string) => {
     setSelectedEm(employees);
@@ -384,7 +402,7 @@ export default function VerifiCompany() {
       message.error("Valid established year is required.");
       isValid = false;
     }
-    if ((Number(establishedYear))<1990) {
+    if (Number(establishedYear) < 1990) {
       message.error("Valid established year must be more than 1990 .");
       isValid = false;
     }
@@ -464,7 +482,7 @@ export default function VerifiCompany() {
       message.error("Valid established year is required.");
       return;
     }
-    if ((Number(establishedYear))<1990) {
+    if (Number(establishedYear) < 1990) {
       message.error("Valid established year must be more than 1990 .");
       return;
     }
@@ -850,7 +868,11 @@ export default function VerifiCompany() {
                     </div>
 
                     {dropdownOpenLocation && (
-                      <div className={classes.dropdown} ref={dropdownRef}>
+                      <div
+                        className={classes.dropdown}
+                        style={{ maxHeight: "100px" }}
+                        ref={dropdownRefCountry}
+                      >
                         {countrydata?.length && countrydata?.length > 0 ? (
                           countrydata?.map((comp, index) => (
                             <div
@@ -960,13 +982,12 @@ export default function VerifiCompany() {
                             <div
                               key={index}
                               className={classes.dropdownItem}
-                              
-                              onClick={
-                                ()=> {
-                                  const maxEmployees = Math.max(...comp.split("-").map(Number));
-                                 handleSelectEm(maxEmployees.toString());
-                                }
-                               }
+                              onClick={() => {
+                                const maxEmployees = Math.max(
+                                  ...comp.split("-").map(Number)
+                                );
+                                handleSelectEm(maxEmployees.toString());
+                              }}
                             >
                               {/* <img
                           src={comp.imageUrl}

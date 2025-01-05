@@ -657,7 +657,7 @@ export default function Profilecv() {
             img="https://itviec.com/assets/profile/certificate_no_info-26fedfa95c272adfe65f1136c3c04973002bea978cc21f91d04f7ce81caeda3f.svg"
             onClick={handleStartAddNewChallenge5}
           /> */}
-          <CardExperience
+          {/* <CardExperience
             title="Award"
             text="Highlight your awards or recognitions"
             icon={<EditNoteOutlinedIcon />}
@@ -665,7 +665,7 @@ export default function Profilecv() {
             img="https://itviec.com/assets/profile/experience_no_info-c25e08f6ba4db4a16e0b948d42a90451c7895790324da6420ffeba9525c9c6eb.svg"
             onClick={handleStartAddNewChallenge3}
             data={ExperienceDatas}
-          />
+          /> */}
         </div>
       </div>
       <AnimatePresence>
