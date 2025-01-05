@@ -49,7 +49,7 @@ interface JobPost {
   jobLocationAddressDetail: string[];
   skillSets: string[];
   benefitObjects?: Benefits[];
-  minsalary: number;
+  minsalary?: number;
 }
 interface Company {
   id: number;

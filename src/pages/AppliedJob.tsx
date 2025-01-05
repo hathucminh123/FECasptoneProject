@@ -23,10 +23,22 @@ import CardApply from "../components/CardApply";
 import { GetJobSearch } from "../Services/JobSearchService/JobSearchService";
 import { message } from "antd";
 
+// interface BusinessStream {
+//   id: number;
+//   businessStreamName: string;
+//   description: string;
+// }
 interface JobType {
   id: number;
   name: string;
   description: string;
+}
+
+interface Benefits {
+  id: number;
+  name: string;
+  // shorthand: string;
+  // description: string;
 }
 
 interface JobPost {
@@ -44,10 +56,12 @@ interface JobPost {
   companyId: number;
   companyName: string;
   websiteCompanyURL: string;
-  jobType: JobType;
+  jobType: JobType; // jobType là đối tượng JobType
   jobLocationCities: string[];
   jobLocationAddressDetail: string[];
   skillSets: string[];
+  benefitObjects?: Benefits[];
+  minsalary: number;
 }
 const  AppliedJob:React.FC =()=> {
   //   const data = useAppSelector((state) => state.favorite.item);
