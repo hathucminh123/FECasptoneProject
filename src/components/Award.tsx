@@ -3,78 +3,64 @@ import Modal from "./Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import classes from "./Education.module.css";
+
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+
 import { message } from "antd";
 import { queryClient } from "../Services/mainService";
-import { PostCertificates } from "../Services/CertificatesService/PostCertificates";
+import { PostAwards } from "../Services/AwardsService/PostAwards";
 
 interface Props {
   onDone?: () => void;
 }
 
-const Certificates: React.FC<Props> = ({ onDone }) => {
+// Bản đồ tháng (chuyển từ tên tháng sang số tháng)
+
+const Award: React.FC<Props> = ({ onDone }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    certificateName: "",
-    certificateOrganization: "",
+    awardName: "",
+    awardOrganization: "",
     description: "",
-    certificateURL: "",
     issueDate: "", // ISO format expected
   });
 
   const { mutate, isPending } = useMutation({
-    mutationFn: PostCertificates,
+    mutationFn: PostAwards,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["Certificates"],
-        refetchType: "active",
-      });
+    //   queryClient.invalidateQueries({
+    //     queryKey: ["Awards"],
+    //     refetchType: "active",
+    //   });
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
         refetchType: "active",
       });
       navigate("#");
       setFormData({
-        certificateName: "",
-        certificateOrganization: "",
+        awardName: "",
+        awardOrganization: "",
         description: "",
-        certificateURL: "",
         issueDate: "",
       });
       onDone?.();
-      message.success("Certificate details successfully added!");
+      message.success("Award details successfully updated!");
     },
     onError: () => {
-      message.error("Failed to add certificate details");
+      message.error("Failed to update award details");
     },
   });
 
-  const isValidURL = (url: string): boolean => {
-    try {
-      new URL(url);
-      return true;
-    } catch (error) {
-      console.error("Invalid URL:", error);
-      return false;
-    }
-  };
   const handleSubmit = () => {
     // Ensure all fields are filled
     if (
-      !formData.certificateName ||
-      !formData.certificateOrganization ||
-      !formData.certificateURL ||
+      !formData.awardName ||
+      !formData.awardOrganization ||
       !formData.issueDate
     ) {
       message.error("Please fill in all the required fields.");
-      return;
-    }
-
-    // Validate URL
-    if (!isValidURL(formData.certificateURL)) {
-      message.error("Please enter a valid URL for the certificate.");
       return;
     }
 
@@ -101,7 +87,7 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
   return (
     <Modal
       text="Save"
-      title="Certificates"
+      title="Awards"
       onClose={onDone}
       onClickSubmit={handleSubmit}
       isPending={isPending}
@@ -109,29 +95,29 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>
-            <TextField
-              label="Certificate Name"
-              name="certificateName"
+            {/* <TextField
+              label="School Name"
+              name="name"
               required
-              value={formData.certificateName}
+              value={formData.name}
+              onChange={handleChange}
+              variant="outlined"
+              className={classes.inputGroup}
+            /> */}
+            <TextField
+              label="Award Name"
+              name="awardName"
+              required
+              value={formData.awardName}
               onChange={handleChange}
               variant="outlined"
               className={classes.inputGroup}
             />
             <TextField
-              label="Certificate Organization"
-              name="certificateOrganization"
+              label="Award Organization"
+              name="awardOrganization"
               required
-              value={formData.certificateOrganization}
-              onChange={handleChange}
-              variant="outlined"
-              className={classes.inputGroup}
-            />
-            <TextField
-              label="Certificate URL"
-              name="certificateURL"
-              required
-              value={formData.certificateURL}
+              value={formData.awardOrganization}
               onChange={handleChange}
               variant="outlined"
               className={classes.inputGroup}
@@ -147,6 +133,7 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
               variant="outlined"
               className={classes.inputGroup}
             />
+
             <TextField
               label="Description"
               name="description"
@@ -154,8 +141,6 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
               rows={4}
               variant="outlined"
               fullWidth
-              value={formData.description}
-              onChange={handleChange}
               className={classes.inputGroup}
             />
           </div>
@@ -165,4 +150,4 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
   );
 };
 
-export default Certificates;
+export default Award;

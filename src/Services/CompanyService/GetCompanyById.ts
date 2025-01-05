@@ -51,6 +51,7 @@ interface Company {
   taxCode?: string;
   companyStatus?: number;
   companyLocations: Location[]; // Thêm thuộc tính này
+  companyEmails?:string[]
 }
 
 interface FetchError extends Error {

@@ -5,7 +5,7 @@ import { QueryClient } from "@tanstack/react-query";
 // const baseURL = "https://finalcapstonebe-aib5.onrender.com/api";
 const baseURL = "https://finalcapstonebe-nd0l.onrender.com/api";
 
-
+// const baseURL = "https://ca4b-104-28-237-70.ngrok-free.app/api";
 // const baseURL = "https://5f7c-14-161-0-210.ngrok-free.app/api";
 
 
@@ -80,6 +80,16 @@ export const apiLinks = {
     POST: `${baseURL}/Benefit`,
     GET: `${baseURL}/Benefit`,
     DELETE: `${baseURL}/Benefit`,
+  },
+  Award: {
+    POST: `${baseURL}/Awards`,
+    PUT: `${baseURL}/Awards`,
+    DELETE: `${baseURL}/Awards`,
+  },
+  Certificates: {
+    POST: `${baseURL}/Certificates`,
+    PUT: `${baseURL}/Certificates`,
+    DELETE: `${baseURL}/Certificates`,
   },
   JobLocation: {
     POST: `${baseURL}/JobLocation`,
@@ -197,6 +207,9 @@ export const apiLinks = {
   companyLocation: {
     GET: `${baseURLLocation}/Location`,
   },
+  EmailReject:{
+    POST: `${baseURL}/Email/SendEmailRejectCompany`,
+  }
 
  
 };

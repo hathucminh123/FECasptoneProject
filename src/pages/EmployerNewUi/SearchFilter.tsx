@@ -52,19 +52,41 @@ interface EducationDetail {
     id: number;
     name: string;
   }
+  interface certificates {
+    id: number;
+    certificateName: string;
+    certificateOrganization: string;
+    description: string;
+    certificateURL: string;
+    issueDate: string;
+  }
+  
+  interface Awards {
+    id: number;
+    awardName: string;
+    awardOrganization: string;
+    description: string;
+    issueDate: string;
+  }
+  
   interface UserProfile {
     id: number;
+    userName: string;
+    isLookingForJob: boolean;
     firstName: string;
     lastName: string;
     email: string;
     phoneNumber: string | null;
+    coverLetter?: string;
     educationDetails: EducationDetail[];
     experienceDetails: ExperienceDetail[];
     cvs: CVs[];
     skillSets: SkillSet[];
-    benefits?: Benefits[];
+    benefits: Benefits[];
+    awards: Awards[];
+    certificates: certificates[];
+    // userAccountServices?:data[];
   }
-  
 
 interface SkillSetFilter {
   totalJobs: number;

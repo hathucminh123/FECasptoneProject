@@ -37,7 +37,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
-  proficiencyLevel?:string;
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -48,6 +48,23 @@ interface CVs {
 interface Benefits {
   id: number;
   name: string;
+}
+
+interface certificates {
+  id: number;
+  certificateName: string;
+  certificateOrganization: string;
+  description: string;
+  certificateURL: string;
+  issueDate: string;
+}
+
+interface Awards {
+  id: number;
+  awardName: string;
+  awardOrganization: string;
+  description: string;
+  issueDate: string;
 }
 interface UserProfile {
   id: number;
@@ -60,6 +77,8 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
+  awards: Awards[];
+  certificates: certificates[];
   benefits: Benefits[];
 }
 interface props {
@@ -282,7 +301,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                             </div> */}
                             <div className={classes.main144}>
                               {profile?.experienceDetails &&
-                              profile?.educationDetails.length > 0
+                              profile?.experienceDetails.length > 0
                                 ? profile.experienceDetails.map((exp) => (
                                     <div
                                       className={classes.main155}
@@ -392,7 +411,7 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                             {profile?.educationDetails &&
                             profile?.educationDetails.length > 0
                               ? profile.educationDetails.map((edu) => (
-                                  <div key={edu.id} className={classes.main255}>
+                                  <div key={edu.id} className={classes.main255} style={{marginBottom:'10px'}}>
                                     <div className={classes.main266}>
                                       <span>
                                         School name: {edu.institutionName}
@@ -421,6 +440,155 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               : null}
                           </div>
                         </div>
+                        <div className={classes.main15}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>Certificates</div>
+                            {/* {profile?.educationDetails &&
+                            profile.educationDetails.length > 0
+                              ? profile.educationDetails.map((edu) => (
+                                  <div className={classes.main32}>
+                                    <div className={classes.main33}>
+                                      <span>{edu.name}</span>
+                                    </div>
+                                    <div className={classes.main34}>
+                                      <span>
+                                        <span>
+                                          {edu.institutionName} {" • "}{" "}
+                                          <span>
+                                            {" "}
+                                            From:{" "}
+                                            {moment(edu.startDate).format(
+                                              "DD-MM-YYYY"
+                                            )}{" "}
+                                            - To:{" "}
+                                            {moment(edu.endDate).format(
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>{" "}
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              : undefined} */}
+                            {profile?.certificates &&
+                            profile?.certificates.length > 0
+                              ? profile.certificates.map((edu) => (
+                                  <div
+                                    key={edu.id}
+                                    className={classes.main255}
+                                    style={{ marginBottom: "10px" }}
+                                  >
+                                    <div className={classes.main266}>
+                                      <span>
+                                        certificates name: {edu.certificateName}
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Organization:{" "}
+                                        {edu.certificateOrganization} - URL:{" "}
+                                        <a
+                                          href={edu.certificateURL}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          style={{
+                                            textDecoration: "underline",
+                                            color: "blue",
+                                          }}
+                                        >
+                                          {edu.certificateURL.length > 50
+                                            ? `${edu.certificateURL.substring(
+                                                0,
+                                                47
+                                              )}...`
+                                            : edu.certificateURL}
+                                        </a>
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Issue Date:{" "}
+                                        {moment(edu.issueDate).format(
+                                          "DD-MM-YYYY"
+                                        )}{" "}
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Description: (edu.description)
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              : null}
+                          </div>
+                        </div>
+                        <div className={classes.main15}>
+                          <div className={classes.main16}>
+                            <div className={classes.main28}>Awards</div>
+                            {/* {profile?.educationDetails &&
+                            profile.educationDetails.length > 0
+                              ? profile.educationDetails.map((edu) => (
+                                  <div className={classes.main32}>
+                                    <div className={classes.main33}>
+                                      <span>{edu.name}</span>
+                                    </div>
+                                    <div className={classes.main34}>
+                                      <span>
+                                        <span>
+                                          {edu.institutionName} {" • "}{" "}
+                                          <span>
+                                            {" "}
+                                            From:{" "}
+                                            {moment(edu.startDate).format(
+                                              "DD-MM-YYYY"
+                                            )}{" "}
+                                            - To:{" "}
+                                            {moment(edu.endDate).format(
+                                              "DD-MM-YYYY"
+                                            )}
+                                          </span>{" "}
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              : undefined} */}
+                            {profile?.awards && profile?.awards.length > 0
+                              ? profile.awards.map((edu) => (
+                                  <div
+                                    key={edu.id}
+                                    className={classes.main255}
+                                    style={{ marginBottom: "10px" }}
+                                  >
+                                    <div className={classes.main266}>
+                                      <span>Awards name: {edu.awardName}</span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Organization: {edu.awardOrganization}
+                                    
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Issue Date:{" "}
+                                        {moment(edu.issueDate).format(
+                                          "DD-MM-YYYY"
+                                        )}{" "}
+                                      </span>
+                                    </div>
+                                    <div className={classes.main277}>
+                                      <span>
+                                        Description: (edu.description)
+                                      </span>
+                                    </div>
+                                  </div>
+                                ))
+                              : null}
+                          </div>
+                        </div>
                         {/* Skills */}
                         <div className={classes.main27}>
                           <div className={classes.main16}>
@@ -429,16 +597,18 @@ export default function ModalScore({ onClose, profile, id, idJob }: props) {
                               {profile?.skillSets &&
                               profile.skillSets.length > 0
                                 ? profile?.skillSets.map((skill) => (
-                                  <>
-                                    <div
-                                      className={classes.main30}
-                                      key={skill.id}
-                                    >
-                                       <div className={classes.main28}>{skill.proficiencyLevel}</div>
-                                      <div className={classes.main31}>
-                                        <span>{skill.name}</span>
+                                    <>
+                                      <div
+                                        className={classes.main30}
+                                        key={skill.id}
+                                      >
+                                        <div className={classes.main28}>
+                                          {skill.proficiencyLevel}
+                                        </div>
+                                        <div className={classes.main31}>
+                                          <span>{skill.name}</span>
+                                        </div>
                                       </div>
-                                    </div>
                                     </>
                                   ))
                                 : undefined}

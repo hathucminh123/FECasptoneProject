@@ -409,7 +409,7 @@ const MinimalTemplate: React.FC = () => {
         doc.setFont("Helvetica", "normal");
         doc.setFontSize(10);
         doc.setTextColor("#121212");
-        
+
         doc.text(`${skill.proficiencyLevel}: ${skill.name}`, marginLeft, leftY);
         leftY += 12;
 
@@ -439,24 +439,25 @@ const MinimalTemplate: React.FC = () => {
     // Right Column: Work Experience
     const renderRightColumn = () => {
       const startXRight = marginLeft + columnWidth + marginLeft; // Starting X position for the right column
-
+    
+      // WORK EXPERIENCE Section
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(12);
       doc.setTextColor("#ed1b2f");
       doc.text("WORK EXPERIENCE", startXRight, rightY);
       rightY += 8;
-
+    
       UserProfileData?.experienceDetails.forEach((exp) => {
         doc.setFont("Helvetica", "bold");
         doc.setFontSize(10);
         doc.setTextColor("#121212");
         doc.text(`Position: ${exp.position}`, startXRight, rightY);
         rightY += 6;
-
+    
         doc.setFont("Helvetica", "normal");
         doc.text(`Company: ${exp.companyName}`, startXRight, rightY);
         rightY += 6;
-
+    
         doc.text(
           `From: ${moment(exp.startDate).format("DD-MM-YYYY")} To: ${
             moment(exp.endDate).format("DD-MM-YYYY") || "Present"
@@ -465,10 +466,10 @@ const MinimalTemplate: React.FC = () => {
           rightY
         );
         rightY += 6;
-
+    
         doc.text("Responsibilities:", startXRight, rightY);
         rightY += 6;
-
+    
         const responsibilities = doc.splitTextToSize(
           extractTextFromHTML(exp.responsibilities || ""),
           columnWidth
@@ -476,11 +477,11 @@ const MinimalTemplate: React.FC = () => {
         responsibilities.forEach((task: string) => {
           doc.text(`- ${task}`, startXRight + 5, rightY);
           rightY += 6;
-
+    
           // Check for page break
           rightY = checkPageBreak(rightY);
         });
-
+    
         const achievements = doc.splitTextToSize(
           extractTextFromHTML(exp.achievements || ""),
           columnWidth
@@ -488,15 +489,90 @@ const MinimalTemplate: React.FC = () => {
         achievements.forEach((ach: string) => {
           doc.text(`- ${ach.trim()}`, startXRight + 5, rightY);
           rightY += 6;
-
+    
           // Check for page break
           rightY = checkPageBreak(rightY);
         });
-
+    
         rightY += 10; // Add spacing between experiences
         rightY = checkPageBreak(rightY); // Check for page break
       });
+    
+      // CERTIFICATES Section
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor("#ed1b2f");
+      doc.text("CERTIFICATES", startXRight, rightY);
+      rightY += 8;
+    
+      UserProfileData?.certificates.forEach((cert) => {
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor("#121212");
+        doc.text(`Certificate: ${cert.certificateName}`, startXRight, rightY);
+        rightY += 6;
+    
+        doc.text(`Organization: ${cert.certificateOrganization}`, startXRight, rightY);
+        rightY += 6;
+    
+        doc.text(
+          `Issue Date: ${moment(cert.issueDate).format("DD-MM-YYYY")}`,
+          startXRight,
+          rightY
+        );
+        rightY += 6;
+    
+        // Handle certificate URL (with wrapping for long URLs)
+        if (cert.certificateURL) {
+          const wrappedURL = doc.splitTextToSize(
+            `URL: ${cert.certificateURL}`,
+            columnWidth
+          );
+          wrappedURL.forEach((line: string) => {
+            doc.text(line, startXRight, rightY);
+            rightY += 6;
+          });
+        }
+    
+        doc.text(`Description: ${cert.description || "Not Provided"}`, startXRight, rightY);
+        rightY += 12;
+    
+        // Check for page break
+        rightY = checkPageBreak(rightY);
+      });
+    
+      // AWARDS Section
+      doc.setFont("Helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor("#ed1b2f");
+      doc.text("AWARDS", startXRight, rightY);
+      rightY += 8;
+    
+      UserProfileData?.awards.forEach((award) => {
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.setTextColor("#121212");
+        doc.text(`Award: ${award.awardName}`, startXRight, rightY);
+        rightY += 6;
+    
+        doc.text(`Organization: ${award.awardOrganization}`, startXRight, rightY);
+        rightY += 6;
+    
+        doc.text(
+          `Issue Date: ${moment(award.issueDate).format("DD-MM-YYYY")}`,
+          startXRight,
+          rightY
+        );
+        rightY += 6;
+    
+        doc.text(`Description: ${award.description || "Not Provided"}`, startXRight, rightY);
+        rightY += 12;
+    
+        // Check for page break
+        rightY = checkPageBreak(rightY);
+      });
     };
+    
 
     // Render the two columns
     renderLeftColumn();
@@ -973,7 +1049,9 @@ const MinimalTemplate: React.FC = () => {
                                 <div
                                   style={{ fontFamily: "Lexend, sans-serif" }}
                                   dangerouslySetInnerHTML={{
-                                    __html: skills.description ?? "No Description yet",
+                                    __html:
+                                      skills.description ??
+                                      "No Description yet",
                                   }}
                                 />
                               </span>
@@ -993,7 +1071,7 @@ const MinimalTemplate: React.FC = () => {
                                 <div
                                   style={{ fontFamily: "Lexend, sans-serif" }}
                                   dangerouslySetInnerHTML={{
-                                    __html: skills.proficiencyLevel ??"",
+                                    __html: skills.proficiencyLevel ?? "",
                                   }}
                                 />
                               </span>
@@ -1127,6 +1205,129 @@ const MinimalTemplate: React.FC = () => {
                                 __html: exp.achievements,
                               }}
                             />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={classes.education}>
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          color: "#ed1b2f",
+                          paddingBottom: "12px",
+                          fontWeight: 700,
+                          fontSize: "16px",
+                          textTransform: "uppercase",
+                          lineHeight: 1.5,
+                          marginTop: 0,
+                          marginBottom: 0,
+                          boxSizing: "border-box",
+                          display: "block",
+                          fontFamily: "Lexend, sans-serif",
+                        }}
+                      >
+                        Certificate
+                      </Typography>
+                      {UserProfileData?.certificates.map((edu) => (
+                        <div className={classes.education1} key={edu.id}>
+                          <div
+                            className={classes.education2}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Certificate name: {edu.certificateName}
+                          </div>
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Organization: {edu.certificateOrganization}
+                          </div>
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            {" "}
+                            Issue Date:{""}
+                            {moment(edu.issueDate).format("DD-MM-YYYY")}
+                            {/* {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                          </div>
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Certificate URL:{" "}
+                            <a
+                              href={edu.certificateURL}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                textDecoration: "underline",
+                                color: "blue",
+                                fontFamily: "Lexend, sans-serif",
+                              }}
+                            >
+                              {edu.certificateURL.length > 50
+                                ? `${edu.certificateURL.substring(0, 47)}...`
+                                : edu.certificateURL}
+                            </a>
+                          </div>
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Description: {edu.description}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={classes.education}>
+                      <Typography
+                        variant="h5"
+                        sx={{
+                          color: "#ed1b2f",
+                          paddingBottom: "12px",
+                          fontWeight: 700,
+                          fontSize: "16px",
+                          textTransform: "uppercase",
+                          lineHeight: 1.5,
+                          marginTop: 0,
+                          marginBottom: 0,
+                          boxSizing: "border-box",
+                          display: "block",
+                          fontFamily: "Lexend, sans-serif",
+                        }}
+                      >
+                        Award
+                      </Typography>
+                      {UserProfileData?.awards.map((edu) => (
+                        <div className={classes.education1} key={edu.id}>
+                          <div
+                            className={classes.education2}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Award name: {edu.awardName}
+                          </div>
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Organization: {edu.awardOrganization}
+                          </div>
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            {" "}
+                            Issue Date:{""}
+                            {moment(edu.issueDate).format("DD-MM-YYYY")}
+                            {/* {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                          </div>
+                      
+                          <div
+                            className={classes.education3}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Description: {edu.description}
                           </div>
                         </div>
                       ))}

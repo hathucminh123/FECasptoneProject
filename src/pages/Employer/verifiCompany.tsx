@@ -870,7 +870,7 @@ export default function VerifiCompany() {
                     {dropdownOpenLocation && (
                       <div
                         className={classes.dropdown}
-                        style={{ maxHeight: "100px" }}
+                        style={{ maxHeight: "150px" }}
                         ref={dropdownRefCountry}
                       >
                         {countrydata?.length && countrydata?.length > 0 ? (

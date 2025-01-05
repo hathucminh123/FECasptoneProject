@@ -32,6 +32,10 @@ import { useNavigate } from "react-router-dom";
 import GradientCircularProgress from "../components/GradientCircularProgress";
 import BenefitProfile from "../components/BenefitProfile";
 import CardBenefits from "../components/CardBenefits";
+import CardAwards from "../components/CardAwards";
+import Award from "../components/Award";
+import Cardcertificates from "../components/Cardcertificates";
+import Certificates from "../components/Certificates";
 
 // import { useNavigate } from "react-router-dom";
 export default function Profilecv() {
@@ -48,6 +52,12 @@ export default function Profilecv() {
   const [isCreatingNewChallenge4, setIsCreatingNewChallenge4] =
     useState<boolean>(false);
   const [isCreatingNewChallenge5, setIsCreatingNewChallenge5] =
+    useState<boolean>(false);
+
+  const [isCreatingNewChallenge6, setIsCreatingNewChallenge6] =
+    useState<boolean>(false);
+
+    const [isCreatingNewChallenge7, setIsCreatingNewChallenge7] =
     useState<boolean>(false);
   const userId = localStorage.getItem("userId");
 
@@ -99,6 +109,27 @@ export default function Profilecv() {
   function handleStartAddNewChallenge5() {
     setIsCreatingNewChallenge5(true);
   }
+
+  function handleStartAddNewChallenge6() {
+
+    setIsCreatingNewChallenge6(true)
+
+  }
+
+  function handleStartAddNewChallenge7(){
+    setIsCreatingNewChallenge7(true)
+  }
+
+  function handleDone7(){
+    setIsCreatingNewChallenge7(false)
+  }
+
+  function handleDone6(){
+    setIsCreatingNewChallenge6(false)
+  }
+
+
+
   function handleDone5() {
     setIsCreatingNewChallenge5(false);
   }
@@ -151,11 +182,11 @@ export default function Profilecv() {
   // });
 
   const { data: UserProfile } = useQuery({
-    queryKey: ["UserProfile",userId],
+    queryKey: ["UserProfile", userId],
     queryFn: ({ signal }) =>
       GetUserProfile({ id: Number(userId), signal: signal }),
     staleTime: 1000,
-    enabled:!!Number(userId)
+    enabled: !!Number(userId),
   });
 
   const UserProfileData = UserProfile?.UserProfiles;
@@ -201,7 +232,7 @@ export default function Profilecv() {
   //     if (UserProfileData.benefits.length > 0) {
   //       newPercent += 33.3;
   //     }
-    
+
   //     if (
   //       UserProfileData.educationDetails.length > 0 &&
   //       UserProfileData.experienceDetails.length > 0 &&
@@ -216,10 +247,10 @@ export default function Profilecv() {
   // }, [UserProfileData]);
   useEffect(() => {
     let newPercent = 0;
-  
+
     if (UserProfileData) {
       const weight = 25; // Mỗi yếu tố chiếm 25%
-  
+
       if (UserProfileData.educationDetails.length > 0) {
         newPercent += weight;
       }
@@ -233,7 +264,7 @@ export default function Profilecv() {
         newPercent += weight;
       }
     }
-  
+
     setPercent(newPercent);
   }, [UserProfileData]);
 
@@ -505,7 +536,7 @@ export default function Profilecv() {
                   // color="#ed1b2f"
                   color="#4cd681"
                   variant="contained"
-                  sxOverrides={{width: "100%" }}
+                  sxOverrides={{ width: "100%" }}
                   onClick={handleNavigate}
                 />
               </div>
@@ -641,10 +672,28 @@ export default function Profilecv() {
             onClick={handleStartAddNewChallenge4}
             data={UserProfileData?.skillSets}
           />
+          <CardAwards
+            title="Awards"
+            text="Highlight Your Adwards"
+            icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
+            icon={<EditNoteOutlinedIcon />}
+            img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
+            onClick={handleStartAddNewChallenge6}
+            data={UserProfileData?.awards}
+          />
+            <Cardcertificates
+            title="Certificates"
+            text="Highlight Your Certificates"
+            icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
+            icon={<EditNoteOutlinedIcon />}
+            img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
+            onClick={handleStartAddNewChallenge7}
+            data={UserProfileData?.certificates}
+          />
           <CardBenefits
             title="Benefits"
             text="Highlight Your Benefits"
-            icon2={<AddCircleOutlineIcon sx={{  color: "#4cd681"  }} />}
+            icon2={<AddCircleOutlineIcon sx={{ color: "#4cd681" }} />}
             icon={<EditNoteOutlinedIcon />}
             img="https://itviec.com/assets/profile/project_no_info-393d7f7ad578814bcce189f5681ba7e90f6a33343cdb0172eb9761ece4094b5d.svg"
             onClick={handleStartAddNewChallenge5}
@@ -692,6 +741,12 @@ export default function Profilecv() {
 
       <AnimatePresence>
         {isCreatingNewChallenge3 && <WorkExperience onDone={handleDone3} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isCreatingNewChallenge6 && <Award onDone={handleDone6} />}
+      </AnimatePresence>
+      <AnimatePresence>
+        {isCreatingNewChallenge7 && <Certificates onDone={handleDone7} />}
       </AnimatePresence>
 
       {/* <AnimatePresence>

@@ -1,14 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, {  useState } from "react";
 import classes from "./RecommendTalents.module.css";
 import Typography from "@mui/material/Typography";
 
 import { useParams } from "react-router-dom";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import { useMutation, useQuery } from "@tanstack/react-query";
+
+import {  useQuery } from "@tanstack/react-query";
 import Pagination from "@mui/material/Pagination";
-import Box from "@mui/material/Box";
+
 
 import moment from "moment";
 import CheckIcon from "@mui/icons-material/Check";
@@ -16,13 +14,10 @@ import CheckIcon from "@mui/icons-material/Check";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
 import { AnimatePresence } from "framer-motion";
 import ModalSendEmail from "../../components/NewUiEmployer/ModalSendEmail";
-import SearchIcon from "@mui/icons-material/Search";
-// import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
-import { PostSkillSets } from "../../Services/SkillSet/PostSkillSet";
-import { queryClient } from "../../Services/mainService";
-import { message } from "antd";
+
+
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
-import { GetSkillSets } from "../../Services/SkillSet/GetSkillSet";
+
 // import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -67,57 +62,56 @@ interface Benefits {
   id: number;
   name: string;
 }
+interface certificates {
+  id: number;
+  certificateName: string;
+  certificateOrganization: string;
+  description: string;
+  certificateURL: string;
+  issueDate: string;
+}
+
+interface Awards {
+  id: number;
+  awardName: string;
+  awardOrganization: string;
+  description: string;
+  issueDate: string;
+}
+
 interface UserProfile {
   id: number;
+  userName: string;
+  isLookingForJob: boolean;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string | null;
+  coverLetter?: string;
   educationDetails: EducationDetail[];
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits?: Benefits[];
+  benefits: Benefits[];
+  awards: Awards[];
+  certificates: certificates[];
+  // userAccountServices?:data[];
 }
 
-const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+
 
 export default function RecommendTalents() {
   const { id } = useParams();
   // const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-  const [openSkills, setOpenSkills] = useState<boolean>(false);
 
-  const { data: SkillSetdata } = useQuery({
-    queryKey: ["SkillSet"],
-    queryFn: ({ signal }) => GetSkillSets({ signal }),
-    staleTime: 5000,
-  });
-  const SkillSetdataa = SkillSetdata?.SkillSets;
-  const [nameSkill, setNameSkill] = useState("");
-  const [shorthand, setShorthand] = useState("");
-  const [descriptionSkillSet, setDescriptionSkillSet] = useState("");
-  const [skills, setSkills] = useState<SkillSet[]>([]);
-  const [filteredSkills, setFilteredSkills] = useState(SkillSetdataa);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [skillId, setSkillId] = useState<number[]>([]);
-  const [inputSkill, setInputSkill] = useState<string>("");
-  const [open, setOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+
+
+
 
   // const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   // const handleClickOutside = (event: MouseEvent) => {
   //   if (
   //     dropdownRef.current &&
@@ -132,41 +126,13 @@ export default function RecommendTalents() {
   //     document.removeEventListener("mousedown", handleClickOutside);
   //   };
   // }, []);
-  const handleOpenSkills = () => {
-    setOpenSkills((prev) => !prev);
-  };
-  const handleSkill = (selectedSkill: SkillSet) => {
-    if (
-      !skills.includes(selectedSkill) &&
-      !skillId.includes(selectedSkill.id)
-    ) {
-      setSkills([...skills, selectedSkill]);
-      setSkillId([...skillId, selectedSkill.id]);
-    }
-    setDropdownOpen(false);
-    setInputSkill("");
-  };
+  
 
   // const handleRemoveSkill = (skillToRemove: SkillSet) => {
   //   setSkills(skills.filter((skill) => skill !== skillToRemove));
   //   setSkillId(skillId.filter((skill) => skill !== skillToRemove.id));
   // };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = e.target.value;
-    setInputSkill(inputValue);
-    if (inputValue) {
-      setFilteredSkills(
-        SkillSetdataa?.filter((comp) =>
-          comp.name.toLowerCase().includes(inputValue.toLowerCase())
-        )
-      );
-      setDropdownOpen(true);
-    } else {
-      setFilteredSkills([]);
-      setDropdownOpen(false);
-    }
-  };
 
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
@@ -214,26 +180,8 @@ export default function RecommendTalents() {
     setExpandedId((prevId) => (prevId === id ? null : id));
   };
 
-  const { mutate: createSkillSet, isPending: isLoadingSkillSet } = useMutation({
-    mutationFn: PostSkillSets,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["SkillSet"] });
-      message.success("Skill set created successfully.");
-      handleClose();
-    },
-    onError: () => {
-      message.error("Failed to create skill set.");
-    },
-  });
-  const handleSubmitSkillSet = () => {
-    createSkillSet({
-      data: {
-        name: nameSkill,
-        shorthand: shorthand,
-        description: descriptionSkillSet,
-      },
-    });
-  };
+
+
 
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
@@ -354,7 +302,7 @@ export default function RecommendTalents() {
                       {/* map Exprience*/}
                       <div className={classes.main14}>
                         {data.experienceDetails &&
-                        data.educationDetails.length > 0
+                        data.experienceDetails.length > 0
                           ? data.experienceDetails.map((exp) => (
                               <div className={classes.main15} key={exp.id}>
                                 <div className={classes.main16}>
@@ -425,7 +373,7 @@ export default function RecommendTalents() {
                     <div className={classes.main11}>
                       <div className={classes.main12}>
                         <div className={classes.main13}>
-                          Education{" -"}
+                          Education{" :"}
                           {/* <button
                               type="button"
                               className={classes.button1}
@@ -438,7 +386,7 @@ export default function RecommendTalents() {
                       </div>
                       {data.educationDetails && data.educationDetails.length > 0
                         ? data.educationDetails.map((edu) => (
-                            <div key={edu.id} className={classes.main25}>
+                            <div key={edu.id} className={classes.main25} style={{marginBottom:"10px"}}>
                               <div className={classes.main26}>
                                 <span>School name: {edu.institutionName}</span>
                               </div>
@@ -460,6 +408,107 @@ export default function RecommendTalents() {
                         : null}
                     </div>
                   </div>
+                  <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
+                            Certificates:
+                            {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                          </div>
+                        </div>
+                        {data.certificates && data.certificates.length > 0
+                          ? data.certificates.map((edu) => (
+                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
+                                <div className={classes.main26}>
+                                  <span>
+                                    Certificates name: {edu.certificateName}
+                                  </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                     Organization:{" "}
+                                    {edu.certificateOrganization} - URL:{" "}
+                                    <a
+                                      href={edu.certificateURL}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "underline",
+                                        color: "blue",
+                                      }}
+                                    >
+                                      {edu.certificateURL.length > 50
+                                        ? `${edu.certificateURL.substring(
+                                            0,
+                                            47
+                                          )}...`
+                                        : edu.certificateURL}
+                                    </a>
+                                  </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                    {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
+                            Award{":"}
+                            {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                          </div>
+                        </div>
+                        {data.awards && data.awards.length > 0
+                          ? data.awards.map((edu) => (
+                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}> 
+                                <div className={classes.main26}>
+                                  <span>Awards name: {edu.awardName}</span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Organization: {edu.awardOrganization} -
+                                    description: {edu.description}
+                                  </span>
+                                </div>
+                                
+                                <div className={classes.main27}>
+                                  <span>
+                                  Issue Date:{" "}
+                                    {moment(edu.issueDate).format(
+                                      "DD-MM-YYYY"
+                                    )}{" "}
+                                    {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    </div>
                   <div>
                     <div className={classes.main11}>
                       <div className={classes.main12}>
@@ -607,154 +656,7 @@ export default function RecommendTalents() {
           </div>
         </div>
       </div>
-      <div className={classes.main35}>
-        <div className={classes.main36}>
-          <div className={classes.main37}>
-            <div className={classes.main38}>
-              <h5 className={classes.main39}>Keyword Search ✦</h5>
-              <h6 className={classes.main40}>
-                Specific keywords , Education, degrees or skills
-              </h6>
-              <div className={classes.main50}>
-                          <input
-                            type="text"
-                            className={classes.input}
-                            placeholder="find a skills"
-                            value={inputSkill}
-                            onChange={handleChange}
-                            onFocus={() => setDropdownOpen(true)}
-                          />
-                          <div className={classes.main51}>
-                            <SearchIcon />
-                          </div>
-                        </div>
-            </div>
-          </div>
-          <div>
-            <div
-              className={classes.main41}
-              style={openSkills ? { backgroundColor: "#EAF7E9" } : undefined}
-            >
-              <div className={classes.main42} onClick={handleOpenSkills}>
-                <div className={classes.main43}>
-                  <div className={classes.main44}>
-                    <div className={classes.main45}>
-                      <h5 className={classes.h5}>Skill ✦</h5>
-                      {openSkills ? (
-                        <span className={classes.span2}>
-                          <span className={classes.span3}>Close</span>
-                        </span>
-                      ) : (
-                        <span className={classes.span2}>
-                          <span className={classes.span3}>Preview</span>
-                        </span>
-                      )}
-                    </div>
-                    <h6 className={classes.h6}>Programming languages</h6>
-                  </div>
-                </div>
-              </div>
-              {openSkills && (
-                <div className={classes.main46}>
-                  <div className={classes.main47}>
-                    <div className={classes.main48}>
-                      <div className={classes.main49}>
-                        <div className={classes.main50}>
-                          <input
-                            type="text"
-                            className={classes.input}
-                            placeholder="find a skills"
-                            value={inputSkill}
-                            onChange={handleChange}
-                            onFocus={() => setDropdownOpen(true)}
-                          />
-                          <div className={classes.main51}>
-                            <SearchIcon />
-                          </div>
-                        </div>
-                        {dropdownOpen && (
-                          <div className={classes.dropdown} ref={dropdownRef}>
-                            {filteredSkills?.length &&
-                            filteredSkills?.length > 0 ? (
-                              filteredSkills?.map((comp, index) => (
-                                <div
-                                  key={index}
-                                  className={classes.dropdownItem}
-                                  onClick={() => handleSkill(comp)}
-                                >
-                                  <img
-                          // src={comp.imageUrl}
-                          // alt={comp.companyName}
-                          className={classes.logo}
-                        />
-                                  <span className={classes.companyName}>
-                                    {comp.name}
-                                  </span>
-                                  <span className={classes.companyUrl}>
-                          {/* {comp.websiteURL} */}
-                        </span>
-                                </div>
-                              ))
-                            ) : (
-                              <div
-                                className={classes.createNewCompany}
-                             
-                                style={{ cursor: "pointer" }}
-                              >
-                                <span>No skill {inputSkill}</span>
-                              </div>
-                            )}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-      <Modal open={open} onClose={handleClose}>
-        <Box sx={style}>
-          <Typography variant="h6" component="h2">
-            Create Skillset
-          </Typography>
-          <TextField
-            label="Name"
-            value={nameSkill}
-            onChange={(e) => setNameSkill(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Shorthand"
-            value={shorthand}
-            onChange={(e) => setShorthand(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
-            label="Description"
-            value={descriptionSkillSet}
-            onChange={(e) => setDescriptionSkillSet(e.target.value)}
-            fullWidth
-            multiline
-            rows={4}
-            margin="normal"
-          />
-          <Button
-            variant="contained"
-            onClick={handleSubmitSkillSet}
-            disabled={isLoadingSkillSet}
-          >
-            {isLoadingSkillSet ? "Creating..." : "Create"}
-          </Button>
-          <Button onClick={handleClose} variant="text">
-            Cancel
-          </Button>
-        </Box>
-      </Modal>
+
     </div>
   );
 }

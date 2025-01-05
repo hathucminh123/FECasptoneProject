@@ -18,7 +18,7 @@ import { message } from "antd";
 import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
 // import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 import { CoverLetterModal } from "../../components/CoverModal";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
@@ -49,7 +49,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string; // HTML content as a string
-  proficiencyLevel?:string;
+  proficiencyLevel?: string;
 }
 
 interface CVs {
@@ -61,9 +61,26 @@ interface Benefits {
   id: number;
   name: string;
 }
+interface certificates {
+  id: number;
+  certificateName: string;
+  certificateOrganization: string;
+  description: string;
+  certificateURL: string;
+  issueDate: string;
+}
+interface Awards {
+  id: number;
+  awardName: string;
+  awardOrganization: string;
+  description: string;
+  issueDate: string;
+}
+
 interface UserProfile {
   id: number;
   userName: string;
+  isLookingForJob: boolean;
   firstName: string;
   lastName: string;
   email: string;
@@ -74,6 +91,9 @@ interface UserProfile {
   cvs: CVs[];
   skillSets: SkillSet[];
   benefits: Benefits[];
+  awards: Awards[];
+  certificates: certificates[];
+  // userAccountServices?:data[];
 }
 const InterViewApplicants: React.FC = () => {
   const { id } = useParams();
@@ -96,9 +116,9 @@ const InterViewApplicants: React.FC = () => {
   const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
     number | null
   >(null);
-   const [openModalCoverLetter, setOpenModalCoverLetter] =
-      useState<boolean>(false);
-    const [description, setDescription] = useState<string | undefined>("");
+  const [openModalCoverLetter, setOpenModalCoverLetter] =
+    useState<boolean>(false);
+  const [description, setDescription] = useState<string | undefined>("");
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
 
@@ -222,11 +242,11 @@ const InterViewApplicants: React.FC = () => {
         selectedIdJobPostActivity={selectedIdJobPostActivity}
       />
 
-  <CoverLetterModal
-                    open={openModalCoverLetter}
-                    onClose={() => setOpenModalCoverLetter(false)}
-                    description={description}
-                  />
+      <CoverLetterModal
+        open={openModalCoverLetter}
+        onClose={() => setOpenModalCoverLetter(false)}
+        description={description}
+      />
       <AnimatePresence>
         {openModalScore && (
           <ModalScore
@@ -305,7 +325,7 @@ const InterViewApplicants: React.FC = () => {
                         {/* map Exprience*/}
                         <div className={classes.main14}>
                           {profile.experienceDetails &&
-                          profile.educationDetails.length > 0
+                          profile.experienceDetails.length > 0
                             ? profile.experienceDetails.map((exp) => (
                                 <div className={classes.main15} key={exp.id}>
                                   <div className={classes.main16}>
@@ -390,7 +410,7 @@ const InterViewApplicants: React.FC = () => {
                         {profile.educationDetails &&
                         profile.educationDetails.length > 0
                           ? profile.educationDetails.map((edu) => (
-                              <div key={edu.id} className={classes.main25}>
+                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
                                 <div className={classes.main26}>
                                   <span>
                                     School name: {edu.institutionName}
@@ -419,6 +439,113 @@ const InterViewApplicants: React.FC = () => {
                       <div className={classes.main11}>
                         <div className={classes.main12}>
                           <div className={classes.main13}>
+                            Certificates:
+                            {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                          </div>
+                        </div>
+                        {profile.certificates && profile.certificates.length > 0
+                          ? profile.certificates.map((edu) => (
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
+                                <div className={classes.main26}>
+                                  <span>
+                                    Certificates name: {edu.certificateName}
+                                  </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Organization: {edu.certificateOrganization}{" "}
+                                    - URL:{" "}
+                                    <a
+                                      href={edu.certificateURL}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "underline",
+                                        color: "blue",
+                                      }}
+                                    >
+                                      {edu.certificateURL.length > 50
+                                        ? `${edu.certificateURL.substring(
+                                            0,
+                                            47
+                                          )}...`
+                                        : edu.certificateURL}
+                                    </a>
+                                  </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                    {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
+                            Award{":"}
+                            {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                          </div>
+                        </div>
+                        {profile.awards && profile.awards.length > 0
+                          ? profile.awards.map((edu) => (
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
+                                <div className={classes.main26}>
+                                  <span>Awards name: {edu.awardName}</span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Organization: {edu.awardOrganization} -
+                                    description: {edu.description}
+                                  </span>
+                                </div>
+
+                                <div className={classes.main27}>
+                                  <span>
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                    {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
                             Skills{" :"}
                             {/* <button
                 type="button"
@@ -434,9 +561,13 @@ const InterViewApplicants: React.FC = () => {
                         <div className={classes.main28}>
                           {profile.skillSets.map((skill) => (
                             <>
-                              <div className={classes.main13} style={{marginTop:'5px'}}>
-                            {skill.proficiencyLevel}{skill.proficiencyLevel !== "" && " :"} 
-                            {/* <button
+                              <div
+                                className={classes.main13}
+                                style={{ marginTop: "5px" }}
+                              >
+                                {skill.proficiencyLevel}
+                                {skill.proficiencyLevel !== "" && " :"}
+                                {/* <button
                 type="button"
                 className={classes.button1}
                 onClick={() => setOpenExp((prev) => !prev)}
@@ -444,11 +575,17 @@ const InterViewApplicants: React.FC = () => {
                 {" "}
                 - View More
               </button> */}
-                          </div>
-                            <div className={classes.main29} style={{display:'flex' ,alignItems:'center'}} key={skill.id}>
-                            
-                              <span>{" "} {skill.name}</span>
-                            </div>
+                              </div>
+                              <div
+                                className={classes.main29}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                                key={skill.id}
+                              >
+                                <span> {skill.name}</span>
+                              </div>
                             </>
                           ))}
                         </div>
@@ -500,7 +637,7 @@ const InterViewApplicants: React.FC = () => {
                     </div>
                     <div className={classes.main33} style={{ top: 70 }}>
                       <div>
-                      <button
+                        <button
                           type="button"
                           className={classes.button5}
                           onClick={() => handleOpenMdalScore(data.id, profile)}

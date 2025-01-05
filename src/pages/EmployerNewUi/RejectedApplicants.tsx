@@ -17,7 +17,7 @@ import { queryClient } from "../../Services/mainService";
 import { message } from "antd";
 import ModalScore from "../../components/NewUiEmployer/ModalScore";
 import { AnimatePresence } from "framer-motion";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 // import GradientCircularProgress from "../../components/NewUiEmployer/GradientCircularProgress";
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 import { CoverLetterModal } from "../../components/CoverModal";
@@ -61,19 +61,39 @@ interface Benefits {
   id: number;
   name: string;
 }
+interface certificates {
+  id: number;
+  certificateName: string;
+  certificateOrganization: string;
+  description: string;
+  certificateURL: string;
+  issueDate: string;
+}
+interface Awards {
+  id: number;
+  awardName: string;
+  awardOrganization: string;
+  description: string;
+  issueDate: string;
+}
+
 interface UserProfile {
   id: number;
   userName: string;
+  isLookingForJob: boolean;
   firstName: string;
   lastName: string;
   email: string;
-  coverLetter?: string;
   phoneNumber: string | null;
+  coverLetter?: string;
   educationDetails: EducationDetail[];
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
   benefits: Benefits[];
+  awards: Awards[];
+  certificates: certificates[];
+  // userAccountServices?:data[];
 }
 const RejectedApplicants: React.FC = () => {
   const { id } = useParams();
@@ -301,7 +321,7 @@ const RejectedApplicants: React.FC = () => {
                         {/* map Exprience*/}
                         <div className={classes.main14}>
                           {profile.experienceDetails &&
-                          profile.educationDetails.length > 0
+                          profile.experienceDetails.length > 0
                             ? profile.experienceDetails.map((exp) => (
                                 <div className={classes.main15} key={exp.id}>
                                   <div className={classes.main16}>
@@ -386,7 +406,11 @@ const RejectedApplicants: React.FC = () => {
                         {profile.educationDetails &&
                         profile.educationDetails.length > 0
                           ? profile.educationDetails.map((edu) => (
-                              <div key={edu.id} className={classes.main25}>
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>
                                     School name: {edu.institutionName}
@@ -404,6 +428,113 @@ const RejectedApplicants: React.FC = () => {
                                     {moment(edu.startDate).format("DD-MM-YYYY")}{" "}
                                     - To:{" "}
                                     {moment(edu.endDate).format("DD-MM-YYYY")}
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
+                            Certificates:
+                            {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                          </div>
+                        </div>
+                        {profile.certificates && profile.certificates.length > 0
+                          ? profile.certificates.map((edu) => (
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
+                                <div className={classes.main26}>
+                                  <span>
+                                    Certificates name: {edu.certificateName}
+                                  </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Organization: {edu.certificateOrganization}{" "}
+                                    - URL:{" "}
+                                    <a
+                                      href={edu.certificateURL}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      style={{
+                                        textDecoration: "underline",
+                                        color: "blue",
+                                      }}
+                                    >
+                                      {edu.certificateURL.length > 50
+                                        ? `${edu.certificateURL.substring(
+                                            0,
+                                            47
+                                          )}...`
+                                        : edu.certificateURL}
+                                    </a>
+                                  </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                    {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                                  </span>
+                                </div>
+                              </div>
+                            ))
+                          : null}
+                      </div>
+                    </div>
+                    <div>
+                      <div className={classes.main11}>
+                        <div className={classes.main12}>
+                          <div className={classes.main13}>
+                            Award{":"}
+                            {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                          </div>
+                        </div>
+                        {profile.awards && profile.awards.length > 0
+                          ? profile.awards.map((edu) => (
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
+                                <div className={classes.main26}>
+                                  <span>Awards name: {edu.awardName}</span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>
+                                    Organization: {edu.awardOrganization} -
+                                    description: {edu.description}
+                                  </span>
+                                </div>
+
+                                <div className={classes.main27}>
+                                  <span>
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                    {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
                                   </span>
                                 </div>
                               </div>
@@ -511,7 +642,7 @@ const RejectedApplicants: React.FC = () => {
                     </div>
                     <div className={classes.main33} style={{ top: 70 }}>
                       <div>
-                      <button
+                        <button
                           type="button"
                           className={classes.button5}
                           onClick={() => handleOpenMdalScore(data.id, profile)}

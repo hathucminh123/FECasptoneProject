@@ -1,6 +1,6 @@
 import { createPortal } from "react-dom";
 import classes from "./ModalCompany.module.css";
-import React from "react";
+import React, { useState } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
@@ -11,6 +11,8 @@ import { Image, message } from "antd";
 import { TaxCode } from "../../Services/TaxCode/TaxCode";
 import { PutCompaniesStatus } from "../../Services/CompanyService/PutCompanyStatus";
 import { queryClient } from "../../Services/mainService";
+import EmailModal from "./EmailModal";
+import { CustomEmailReject } from "../../Services/CustomEmail/CustomEmailReject";
 interface props {
   onClose?: () => void;
   // onConfirm?: () => void;
@@ -18,6 +20,36 @@ interface props {
 }
 
 const ModalCompany: React.FC<props> = ({ onClose, companyId }) => {
+  const [emailModalVisible, setEmailModalVisible] = useState(false);
+
+  const handleEmailClick = () => {
+    setEmailModalVisible(true);
+  };
+
+    const { mutate, } = useMutation({
+      mutationFn: CustomEmailReject,
+      onSuccess: () => {
+        // queryClient.invalidateQueries({
+        //   queryKey: ["JobPostActivity"],
+        //   refetchType: "active", // Ensure an active refetch
+        // });
+        message.success(`Send Email successfully!`);
+        // navigate(`/thankyou/${job?.id}`);
+      },
+      onError: () => {
+        message.error("Failed to Send Email.");
+      },
+    });
+    const handleSendEmail = (emailData: { email: string; body: string }) => {
+      mutate({
+        data: {
+          companyEmail: emailData.email,
+          emailContent: emailData.body,
+        
+        },
+      });
+    };
+
   const stripHtmlTags = (html: string) => {
     const parser = new DOMParser();
     const parsedHtml = parser.parseFromString(html, "text/html");
@@ -284,7 +316,6 @@ const ModalCompany: React.FC<props> = ({ onClose, companyId }) => {
                       </div>
                     </label>
                   </div>
-           
                 </div>
                 {/* <div className={classes.main15}>
             
@@ -328,37 +359,45 @@ const ModalCompany: React.FC<props> = ({ onClose, companyId }) => {
                   </div>
                 </div> */}
                 <div className={classes.label1}>
-                      <div className={classes.label2}>
-                        Location
-                        <span className={classes.span1}>*</span>
-                      </div>
-                    </div>
+                  <div className={classes.label2}>
+                    Location
+                    <span className={classes.span1}>*</span>
+                  </div>
+                </div>
                 <div className={classes.main15}>
-                <div className={classes.locationsSection} style={{marginTop: '10px',width: '100%'}}>
-            {/* <h3>Locations</h3> */}
-            {companyDataa?.companyLocations && companyDataa?.companyLocations?.length > 0 ? (
-              companyDataa.companyLocations.map((location, index) => (
-                <div key={index} className={classes.locationCard}>
-                  <div className={classes.locationRow}>
-                    <span className={classes.locationLabel}>City:</span>
-                    <span className={classes.locationValue}>{location.city}</span>
-                  </div>
-                  <div className={classes.locationRow}>
-                    <span className={classes.locationLabel}>Address: {" "}</span>
-                    <span className={classes.locationValue}>
-                      {location.stressAddressDetail}
-                    </span>
-                  </div>
-                  {/* <div className={classes.locationRow}>
+                  <div
+                    className={classes.locationsSection}
+                    style={{ marginTop: "10px", width: "100%" }}
+                  >
+                    {/* <h3>Locations</h3> */}
+                    {companyDataa?.companyLocations &&
+                    companyDataa?.companyLocations?.length > 0 ? (
+                      companyDataa.companyLocations.map((location, index) => (
+                        <div key={index} className={classes.locationCard}>
+                          <div className={classes.locationRow}>
+                            <span className={classes.locationLabel}>City:</span>
+                            <span className={classes.locationValue}>
+                              {location.city}
+                            </span>
+                          </div>
+                          <div className={classes.locationRow}>
+                            <span className={classes.locationLabel}>
+                              Address:{" "}
+                            </span>
+                            <span className={classes.locationValue}>
+                              {location.stressAddressDetail}
+                            </span>
+                          </div>
+                          {/* <div className={classes.locationRow}>
                     <span className={classes.locationLabel}>Location ID:</span>
                     <span className={classes.locationValue}>{location.locationId}</span>
                   </div> */}
-                </div>
-              ))
-            ) : (
-              <p>No locations available</p>
-            )}
-          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No locations available</p>
+                    )}
+                  </div>
                 </div>
                 <div className={classes.main15}>
                   <label htmlFor="" className={classes.label}>
@@ -514,13 +553,30 @@ const ModalCompany: React.FC<props> = ({ onClose, companyId }) => {
               </div>
               <div className={classes.formbtn}>
                 <div className={classes.formbtn1}></div>
-                <button
-                  className={classes.btn}
-                  onClick={handleReject}
-                  aria-label="Reject the company"
-                >
-                  Reject
-                </button>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  <button
+                    className={classes.btn}
+                    onClick={handleReject}
+                    aria-label="Reject the company"
+                  >
+                    Reject
+                  </button>
+                  <button
+                    className={classes.btnEmail}
+                    onClick={handleEmailClick}
+                    type="button"
+                    aria-label="Reason the company"
+                  >
+                    Email
+                  </button>
+                  <EmailModal
+                    visible={emailModalVisible}
+                    onClose={() => setEmailModalVisible(false)}
+                    onSend={handleSendEmail}
+                    companyDataa={companyDataa}
+                  />
+                </div>
+
                 <button
                   className={classes.button}
                   onClick={handleApproved}

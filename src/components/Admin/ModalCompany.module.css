@@ -620,6 +620,31 @@
   gap: 8px;
 }
 
+.btnEmail{
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  padding-top: 8px;
+    padding-bottom: 8px;
+    padding-left: 16px;
+    padding-right: 16px;
+  /* min-width: 180px; */
+  border-radius: 4px;
+  color: #fff;
+  background-color: #050c26;
+  border-color: #050c26;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 1.5;
+  user-select: none;
+  border: 1px solid transparent;
+  gap: 8px;
+}
+
+
 .infoSection,
 .locationsSection {
   margin-bottom: 16px;

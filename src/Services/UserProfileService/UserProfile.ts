@@ -32,6 +32,25 @@ interface Services {
   description: string;
   price: number;
 }
+
+interface certificates{
+  id:number;
+  certificateName:string;
+  certificateOrganization:string;
+  description:string;
+  certificateURL:string;
+  issueDate:string;
+}
+
+interface Awards{
+  id:number;
+  awardName:string;
+  awardOrganization:string;
+  description:string;
+  issueDate:string
+}
+
+
 interface SkillSet {
   id: number;
   name: string;
@@ -63,8 +82,10 @@ interface UserProfile {
   experienceDetails: ExperienceDetail[];
   cvs: CVs[];
   skillSets: SkillSet[];
-  benefits:Benefits[]
-  userAccountServices?:data[]
+  benefits:Benefits[];
+  awards:Awards[];
+  certificates:certificates[];
+  userAccountServices?:data[];
 }
 
 interface FetchError extends Error {

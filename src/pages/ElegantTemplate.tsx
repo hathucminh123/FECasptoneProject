@@ -13,7 +13,7 @@ interface SkillSet {
   name: string;
   shorthand: string;
   description: string;
-  proficiencyLevel?:string;
+  proficiencyLevel?: string;
 }
 interface EducationDetail {
   id: number;
@@ -24,6 +24,22 @@ interface EducationDetail {
   startDate: string;
   endDate: string;
   gpa: number;
+}
+interface certificates {
+  id: number;
+  certificateName: string;
+  certificateOrganization: string;
+  description: string;
+  certificateURL: string;
+  issueDate: string;
+}
+
+interface Awards {
+  id: number;
+  awardName: string;
+  awardOrganization: string;
+  description: string;
+  issueDate: string;
 }
 interface Benefits {
   id: number;
@@ -145,6 +161,122 @@ const ElegantTemplate: React.FC = () => {
     // Example call for the above function
     addEducationSection(UserProfileData?.educationDetails || []);
 
+
+    const addCertificatesSection = (certificatesDetails: certificates[]) => {
+      // Title for Certificates Section
+      addSectionTitle("Certificates");
+    
+      // Iterate through each certificate detail
+      certificatesDetails.forEach((edu) => {
+        // Certificate Name
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(
+          `Certificate Name: ${edu?.certificateName || "Not Provided"}`,
+          marginLeft,
+          currentY
+        );
+    
+        // Organization and Issue Date
+        const dateRange = `Issue Date: ${moment(edu.issueDate).format("DD-MM-YYYY")}`;
+        const organization = `Organization: ${edu?.certificateOrganization || "Not Provided"}`;
+        const separator = " | ";
+    
+        const combinedText = `${dateRange}${separator}${organization}`;
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "normal");
+        doc.text(combinedText, marginLeft, currentY + 6);
+    
+        // URL with Text Wrapping or Clickable Link
+        currentY += 12;
+        if (edu.certificateURL) {
+          doc.textWithLink("Certificate URL", marginLeft, currentY, {
+            url: edu.certificateURL,
+          });
+        } else {
+          doc.text("Certificate URL: Not Provided", marginLeft, currentY);
+        }
+    
+        // Description
+        currentY += 12;
+        const wrappedDescription = doc.splitTextToSize(
+          `Description: ${edu.description || "Not Provided"}`,
+          sectionWidth
+        );
+        doc.text(wrappedDescription, marginLeft, currentY);
+    
+        // Update currentY for the next certificate
+        currentY += wrappedDescription.length * 6 + 6;
+    
+        // Add a new page if content overflows
+        if (currentY > pageHeight - 30) {
+          doc.addPage();
+          currentY = marginTop;
+        }
+      });
+    };
+
+    // Example call for the above function
+    addCertificatesSection(UserProfileData?.certificates || []);
+
+
+
+    const addAwardsSection = (certificatesDetails: Awards[]) => {
+      // Title for Certificates Section
+      addSectionTitle("Adward");
+    
+      // Iterate through each certificate detail
+      certificatesDetails.forEach((edu) => {
+        // Certificate Name
+        doc.setFont("Helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(
+          `Award Name: ${edu?.awardName || "Not Provided"}`,
+          marginLeft,
+          currentY
+        );
+    
+        // Organization and Issue Date
+        const dateRange = `Issue Date: ${moment(edu.issueDate).format("DD-MM-YYYY")}`;
+        const organization = `Organization: ${edu?.awardOrganization || "Not Provided"}`;
+        const separator = " | ";
+    
+        const combinedText = `${dateRange}${separator}${organization}`;
+        doc.setFontSize(12);
+        doc.setFont("Helvetica", "normal");
+        doc.text(combinedText, marginLeft, currentY + 6);
+    
+        // URL with Text Wrapping or Clickable Link
+        // currentY += 12;
+        // if (edu.certificateURL) {
+        //   doc.textWithLink("Certificate URL", marginLeft, currentY, {
+        //     url: edu.certificateURL,
+        //   });
+        // } else {
+        //   doc.text("Certificate URL: Not Provided", marginLeft, currentY);
+        // }
+    
+        // Description
+        currentY += 12;
+        const wrappedDescription = doc.splitTextToSize(
+          `Description: ${edu.description || "Not Provided"}`,
+          sectionWidth
+        );
+        doc.text(wrappedDescription, marginLeft, currentY);
+    
+        // Update currentY for the next certificate
+        currentY += wrappedDescription.length * 6 + 6;
+    
+        // Add a new page if content overflows
+        if (currentY > pageHeight - 30) {
+          doc.addPage();
+          currentY = marginTop;
+        }
+      });
+    };
+
+    // Example call for the above function
+    addAwardsSection(UserProfileData?.awards || []);
     // Add Education Section
     // addSectionTitle("Education");
 
@@ -195,8 +327,9 @@ const ElegantTemplate: React.FC = () => {
 
       skillSets.forEach((skill) => {
         const skillText = skill.name || "Skill";
-        const skillLevel =skill.proficiencyLevel || "Level"
-        const textWidth = doc.getTextWidth(`${skillLevel}: ${skillText}`) + boxPadding * 2;
+        const skillLevel = skill.proficiencyLevel || "Level";
+        const textWidth =
+          doc.getTextWidth(`${skillLevel}: ${skillText}`) + boxPadding * 2;
 
         // Wrap to next row if it exceeds the page width
         if (currentX + textWidth > maxWidth) {
@@ -214,7 +347,7 @@ const ElegantTemplate: React.FC = () => {
         doc.setFontSize(10);
         doc.setTextColor(33, 33, 33); // Dark text color
         doc.text(
-         ` ${skillLevel}: ${skillText} `,
+          ` ${skillLevel}: ${skillText} `,
           currentX + boxPadding,
           currentY + boxHeight / 2 + 2.5
         ); // Center text vertically
@@ -464,8 +597,11 @@ const ElegantTemplate: React.FC = () => {
                           {UserProfileData?.skillSets.map((skill) => (
                             <>
                               <div
-                                className={classes.skill4} 
-                                style={{ fontFamily: "Lexend, sans-serif" ,marginLeft:5}}
+                                className={classes.skill4}
+                                style={{
+                                  fontFamily: "Lexend, sans-serif",
+                                  marginLeft: 5,
+                                }}
                               >
                                 {skill.proficiencyLevel}
                               </div>
@@ -609,6 +745,150 @@ const ElegantTemplate: React.FC = () => {
                       </div>
                     ))}
                   </div>
+                </div>
+                <div className={classes.education}>
+                  <div
+                    className={classes.education1}
+                    style={{ fontFamily: "Lexend, sans-serif" }}
+                  >
+                    Certificates
+                  </div>
+
+                  <div className={classes.education2}>
+                    {UserProfileData?.certificates.map((edu) => (
+                      <div className={classes.education3} key={edu.id}>
+                        <span
+                          className={classes.span}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          Certificate name: {edu.certificateName}
+                        </span>
+                        <div className={classes.education4}>
+                          <p
+                            className={classes.p1}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            IssueDate:{""}
+                            {moment(edu.issueDate).format("DD-MM-YYYY")} - To:{" "}
+                            {/* {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                          </p>
+                          <div className={classes.line}></div>
+                          <p
+                            className={classes.education5}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Organization: {edu.certificateOrganization}
+                          </p>
+                          
+                        </div>
+                        {/* <span
+                          className={classes.span1}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          URL: {edu.certificateURL}
+                        </span> */}
+                        <span
+                          className={classes.span1}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          Certificate URL:{" "}
+                          <a
+                            href={edu.certificateURL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              textDecoration: "underline",
+                              color: "blue",
+                              fontFamily: "Lexend, sans-serif",
+                            }}
+                          >
+                            {edu.certificateURL}
+                          </a>
+                        </span>
+                        <span
+                          className={classes.span1}
+                         
+                          style={{ fontFamily: "Lexend, sans-serif",display:"block" }}
+                        >
+                          Description: {edu.description}
+                        </span>
+                      
+                      </div>
+                    ))}
+                  </div>
+                
+                </div>
+                <div className={classes.education}>
+                  <div
+                    className={classes.education1}
+                    style={{ fontFamily: "Lexend, sans-serif" }}
+                  >
+                    Award
+                  </div>
+
+                  <div className={classes.education2}>
+                    {UserProfileData?.awards.map((edu) => (
+                      <div className={classes.education3} key={edu.id}>
+                        <span
+                          className={classes.span}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          Award name: {edu.awardName}
+                        </span>
+                        <div className={classes.education4}>
+                          <p
+                            className={classes.p1}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            IssueDate:{""}
+                            {moment(edu.issueDate).format("DD-MM-YYYY")} - To:{" "}
+                            {/* {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                          </p>
+                          <div className={classes.line}></div>
+                          <p
+                            className={classes.education5}
+                            style={{ fontFamily: "Lexend, sans-serif" }}
+                          >
+                            Organization: {edu.awardOrganization}
+                          </p>
+                          
+                        </div>
+                        {/* <span
+                          className={classes.span1}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          URL: {edu.certificateURL}
+                        </span> */}
+                        {/* <span
+                          className={classes.span1}
+                          style={{ fontFamily: "Lexend, sans-serif" }}
+                        >
+                          Certificate URL:{" "}
+                          <a
+                            href={edu.}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              textDecoration: "underline",
+                              color: "blue",
+                              fontFamily: "Lexend, sans-serif",
+                            }}
+                          >
+                            {edu.certificateURL}
+                          </a>
+                        </span> */}
+                        <span
+                          className={classes.span1}
+                         
+                          style={{ fontFamily: "Lexend, sans-serif",display:"block" }}
+                        >
+                          Description: {edu.description}
+                        </span>
+                      
+                      </div>
+                    ))}
+                  </div>
+                
                 </div>
               </div>
             </div>
