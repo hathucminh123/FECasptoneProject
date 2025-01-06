@@ -2,10 +2,7 @@ import React, { useState } from "react";
 import Modal from "./Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-// import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
-import "react-quill/dist/quill.snow.css";
 import ReactQuill from "react-quill";
 import { useMutation } from "@tanstack/react-query";
 import { PostExperienceDetails } from "../Services/ExperienceDetailService/PostExperienceDetail";
@@ -18,54 +15,12 @@ interface Props {
   onDone?: () => void;
 }
 
-const months = [
-  { value: "January", label: "January" },
-  { value: "February", label: "February" },
-  { value: "March", label: "March" },
-  { value: "April", label: "April" },
-  { value: "May", label: "May" },
-  { value: "June", label: "June" },
-  { value: "July", label: "July" },
-  { value: "August", label: "August" },
-  { value: "September", label: "September" },
-  { value: "October", label: "October" },
-  { value: "November", label: "November" },
-  { value: "December", label: "December" },
-];
-
-// const years = Array.from(new Array(60), (_,index) => index + 1970).map(
-//   (year) => ({ value: year, label: year })
-// );
-const years = Array.from(
-  { length: new Date().getFullYear() - 2000 + 1 },
-  (_, index) => 2000 + index
-).map((year) => ({ value: year, label: year }));
-
-const monthMap: { [key: string]: number } = {
-  January: 1,
-  February: 2,
-  March: 3,
-  April: 4,
-  May: 5,
-  June: 6,
-  July: 7,
-  August: 8,
-  September: 9,
-  October: 10,
-  November: 11,
-  December: 12,
-};
-
 const WorkExperience: React.FC<Props> = ({ onDone }) => {
-  // const [value, setValue] = useState<string>("");
-  // const [valueProject, setValueProject] = useState<string>("");
   const [formData, setFormData] = useState({
     companyName: "",
     position: "",
-    startMonth: "",
-    startYear: "",
-    endMonth: "",
-    endYear: "",
+    startDate: "",
+    endDate: "",
     responsibilities: "",
     achievements: "",
   });
@@ -86,10 +41,8 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
       setFormData({
         companyName: "",
         position: "",
-        startMonth: "",
-        startYear: "",
-        endMonth: "",
-        endYear: "",
+        startDate: "",
+        endDate: "",
         responsibilities: "",
         achievements: "",
       });
@@ -101,61 +54,10 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
     },
   });
 
-  // const handleSubmit = () => {
-  //   if (
-  //     !formData.startYear ||
-  //     !formData.startMonth ||
-  //     !formData.endYear ||
-  //     !formData.endMonth ||
-  //     !formData.achievements ||
-  //     !formData.companyName ||
-  //     !formData.position ||
-  //     !formData.responsibilities 
-  //   ) {
-  //     message.error("Please fill in all the required fields");
-  //     return;
-  //   }
-
-  //   if (Number(formData.endYear) < Number(formData.startYear)) {
-  //     message.error("End year cannot be less than the start year");
-  //     return;
-  //   }
-
-  //   // Convert month and year into ISO date format
-  //   const startMonthNumber = monthMap[formData.startMonth];
-  //   const endMonthNumber = monthMap[formData.endMonth];
-
-  //   const startDate = new Date(
-  //     Number(formData.startYear),
-  //     startMonthNumber - 1,
-  //     1
-  //   ).toISOString();
-  //   const endDate = new Date(
-  //     Number(formData.endYear),
-  //     endMonthNumber - 1,
-  //     1
-  //   ).toISOString();
-
-  //   // Call mutation API with the form data
-  //   mutate({
-  //     data: {
-  //       companyName: formData.companyName,
-  //       position: formData.position,
-  //       startDate,
-  //       endDate,
-  //       responsibilities: formData.responsibilities,
-  //       achievements: formData.achievements,
-  //     },
-  //   });
-  // };
-
   const handleSubmit = () => {
-    // Validate các trường bắt buộc
     if (
-      !formData.startYear ||
-      !formData.startMonth ||
-      !formData.endYear ||
-      !formData.endMonth ||
+      !formData.startDate ||
+      !formData.endDate ||
       !formData.achievements ||
       !formData.companyName ||
       !formData.position ||
@@ -164,57 +66,27 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
       message.error("Please fill in all the required fields");
       return;
     }
-  
-    // Validate năm
-    if (Number(formData.endYear) < Number(formData.startYear)) {
-      message.error("End year cannot be less than the start year");
+
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+
+    if (endDate < startDate) {
+      message.error("End date cannot be earlier than start date");
       return;
     }
-  
-    // Lấy giá trị tháng từ `monthMap`
-    const startMonthNumber = monthMap[formData.startMonth];
-    const endMonthNumber = monthMap[formData.endMonth];
-  
-    if (!startMonthNumber || !endMonthNumber) {
-      message.error("Invalid month value");
-      return;
-    }
-  
-    // Validate tháng khi `startYear` và `endYear` giống nhau
-    if (
-      Number(formData.startYear) === Number(formData.endYear) &&
-      startMonthNumber > endMonthNumber
-    ) {
-      message.error(
-        "Start month cannot be greater than end month in the same year"
-      );
-      return;
-    }
-  
-    // Chuyển đổi tháng và năm sang định dạng ngày ISO
-    const startDate = new Date(
-      Number(formData.startYear),
-      startMonthNumber - 1,
-      1
-    ).toISOString();
-    const endDate = new Date(
-      Number(formData.endYear),
-      endMonthNumber - 1,
-      1
-    ).toISOString();
-  
-    // Gọi API mutation với dữ liệu form
+
     mutate({
       data: {
         companyName: formData.companyName,
         position: formData.position,
-        startDate,
-        endDate,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
         responsibilities: formData.responsibilities,
         achievements: formData.achievements,
       },
     });
   };
+
   return (
     <Modal
       text="Save"
@@ -247,81 +119,36 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
               className={classes.inputGroup}
             />
             <div className={classes.form}>
-              {/* From Date */}
-              <div className={classes.inputGroup1}>
-                <TextField
-                  select
-                  label="From Month"
-                  value={formData.startMonth}
-                  onChange={(e) =>
-                    setFormData({ ...formData, startMonth: e.target.value })
-                  }
-                  required
-                  variant="outlined"
-                  className={classes.inputGroup2}
-                >
-                  {months.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  select
-                  label="From Year"
-                  value={formData.startYear}
-                  onChange={(e) =>
-                    setFormData({ ...formData, startYear: e.target.value })
-                  }
-                  required
-                  variant="outlined"
-                  className={classes.inputGroup2}
-                >
-                  {years.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </div>
-
-              {/* To Date */}
-              <div className={classes.inputGroup1}>
-                <TextField
-                  select
-                  label="To Month"
-                  value={formData.endMonth}
-                  onChange={(e) =>
-                    setFormData({ ...formData, endMonth: e.target.value })
-                  }
-                  required
-                  variant="outlined"
-                  className={classes.inputGroup2}
-                >
-                  {months.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  select
-                  label="To Year"
-                  value={formData.endYear}
-                  onChange={(e) =>
-                    setFormData({ ...formData, endYear: e.target.value })
-                  }
-                  required
-                  variant="outlined"
-                  className={classes.inputGroup2}
-                >
-                  {years.map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </div>
+              <TextField
+                label="Start Date"
+                type="date"
+                name="startDate"
+                value={formData.startDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, startDate: e.target.value })
+                }
+                required
+                variant="outlined"
+                className={classes.inputGroup}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                label="End Date"
+                type="date"
+                name="endDate"
+                value={formData.endDate}
+                onChange={(e) =>
+                  setFormData({ ...formData, endDate: e.target.value })
+                }
+                required
+                variant="outlined"
+                className={classes.inputGroup}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
             </div>
 
             <div className={classes.description}>
@@ -347,9 +174,6 @@ const WorkExperience: React.FC<Props> = ({ onDone }) => {
               />
             </div>
           </div>
-          {/* <button type="button" onClick={handleSubmit}>
-            Submit
-          </button> */}
         </div>
       </Box>
     </Modal>

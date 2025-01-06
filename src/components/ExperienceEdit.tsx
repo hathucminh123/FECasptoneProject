@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import Modal from "./Modal";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -28,73 +27,29 @@ interface Props {
   data: ExperienceDetail | null;
 }
 
-const months = [
-  { value: "January", label: "January" },
-  { value: "February", label: "February" },
-  { value: "March", label: "March" },
-  { value: "April", label: "April" },
-  { value: "May", label: "May" },
-  { value: "June", label: "June" },
-  { value: "July", label: "July" },
-  { value: "August", label: "August" },
-  { value: "September", label: "September" },
-  { value: "October", label: "October" },
-  { value: "November", label: "November" },
-  { value: "December", label: "December" },
-];
-
-// const years = Array.from(new Array(60), (_, index) => index + 1970).map(
-//   (year) => ({ value: year, label: year })
-// );
-
-const years = Array.from(
-  { length: new Date().getFullYear() - 2000 + 1 },
-  (_, index) => 2000 + index
-).map((year) => ({ value: year, label: year }));
-const monthMap: { [key: string]: number } = {
-  January: 1,
-  February: 2,
-  March: 3,
-  April: 4,
-  May: 5,
-  June: 6,
-  July: 7,
-  August: 8,
-  September: 9,
-  October: 10,
-  November: 11,
-  December: 12,
-};
-
-const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
+const ExperienceEdit: React.FC<Props> = ({ onDone, data }) => {
   const [formData, setFormData] = useState({
-    companyName: data?.companyName || "",
-    position: data?.position || "",
-    startMonth: "",
-    startYear: "",
-    endMonth: "",
-    endYear: "",
-    responsibilities: data?.responsibilities || "",
-    achievements: data?.achievements || "",
-    id: data?.id || 0
+    companyName: "",
+    position: "",
+    startDate: "",
+    endDate: "",
+    responsibilities: "",
+    achievements: "",
+    id: 0,
   });
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
-      const start = new Date(data.startDate);
-      const end = new Date(data.endDate);
       setFormData({
-        ...formData,
-        startMonth: Object.keys(monthMap).find(
-          (key) => monthMap[key] === start.getMonth() + 1
-        ) || "",
-        startYear: start.getFullYear().toString(),
-        endMonth: Object.keys(monthMap).find(
-          (key) => monthMap[key] === end.getMonth() + 1
-        ) || "",
-        endYear: end.getFullYear().toString()
+        companyName: data.companyName,
+        position: data.position,
+        startDate: data.startDate.split("T")[0], // Extract YYYY-MM-DD
+        endDate: data.endDate.split("T")[0], // Extract YYYY-MM-DD
+        responsibilities: data.responsibilities,
+        achievements: data.achievements,
+        id: data.id,
       });
     }
   }, [data]);
@@ -102,19 +57,11 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: PutExperienceDetail,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['ExperienceDetails'], refetchType: 'active' });
-      navigate('#');
-      setFormData({
-        companyName: "",
-        position: "",
-        startMonth: "",
-        startYear: "",
-        endMonth: "",
-        endYear: "",
-        responsibilities: "",
-        achievements: "",
-        id: 0,
+      queryClient.invalidateQueries({
+        queryKey: ["ExperienceDetails"],
+        refetchType: "active",
       });
+      navigate("#");
       onDone?.();
       message.success("Experience Details Updated Successfully");
     },
@@ -124,35 +71,25 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
   });
 
   const handleSubmit = () => {
-    if (!formData.startYear || !formData.startMonth || !formData.endYear || !formData.endMonth) {
-      message.error("Please fill in all date fields");
+    if (!formData.startDate || !formData.endDate) {
+      message.error("Please fill in all date fields.");
       return;
     }
-       if (Number(formData.endYear) < Number(formData.startYear)) {
-          message.error("End year cannot be less than the start year");
-          return;
-        }
 
-    const startMonthNumber = monthMap[formData.startMonth];
-    const endMonthNumber = monthMap[formData.endMonth];
- if (
-      Number(formData.startYear) === Number(formData.endYear) &&
-      startMonthNumber > endMonthNumber
-    ) {
-      message.error(
-        "Start month cannot be greater than end month in the same year"
-      );
+    const startDate = new Date(formData.startDate);
+    const endDate = new Date(formData.endDate);
+
+    if (endDate < startDate) {
+      message.error("End date cannot be earlier than start date.");
       return;
     }
-    const startDate = new Date(Number(formData.startYear), startMonthNumber - 1, 1).toISOString();
-    const endDate = new Date(Number(formData.endYear), endMonthNumber - 1, 1).toISOString();
 
     mutate({
       data: {
         companyName: formData.companyName,
         position: formData.position,
-        startDate,
-        endDate,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
         responsibilities: formData.responsibilities,
         achievements: formData.achievements,
         id: formData.id,
@@ -160,16 +97,22 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
     });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <Modal title="Work Experience" text="Save" onClose={onDone} isPending={isPending} onClickSubmit={handleSubmit}>
+    <Modal
+      title="Edit Work Experience"
+      text="Save"
+      onClose={onDone}
+      isPending={isPending}
+      onClickSubmit={handleSubmit}
+    >
       <Box component="form" noValidate autoComplete="off">
         <div className={classes.formInput}>
           <TextField
@@ -191,82 +134,41 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
             className={classes.inputGroup}
           />
           <div className={classes.form}>
-            <div className={classes.inputGroup1}>
-              <TextField
-                select
-                label="From Month"
-                name="startMonth"
-                value={formData.startMonth}
-                onChange={handleChange}
-                required
-                variant="outlined"
-                className={classes.inputGroup2}
-              >
-                {months.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                label="From Year"
-                name="startYear"
-                value={formData.startYear}
-                onChange={handleChange}
-                required
-                variant="outlined"
-                className={classes.inputGroup2}
-              >
-                {years.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
-
-            <div className={classes.inputGroup1}>
-              <TextField
-                select
-                label="To Month"
-                name="endMonth"
-                value={formData.endMonth}
-                onChange={handleChange}
-                required
-                variant="outlined"
-                className={classes.inputGroup2}
-              >
-                {months.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-              <TextField
-                select
-                label="To Year"
-                name="endYear"
-                value={formData.endYear}
-                onChange={handleChange}
-                required
-                variant="outlined"
-                className={classes.inputGroup2}
-              >
-                {years.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </div>
+            <TextField
+              label="Start Date"
+              type="date"
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleChange}
+              required
+              variant="outlined"
+              className={classes.inputGroup}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+            <TextField
+              label="End Date"
+              type="date"
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleChange}
+              required
+              variant="outlined"
+              className={classes.inputGroup}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </div>
 
           <div className={classes.description}>
             <Typography variant="h6">Responsibilities</Typography>
             <ReactQuill
               value={formData.responsibilities}
-              onChange={(value) => setFormData({ ...formData, responsibilities: value })}
+              onChange={(value) =>
+                setFormData({ ...formData, responsibilities: value })
+              }
               placeholder="Describe your responsibilities"
               style={{ height: 200 }}
             />
@@ -275,7 +177,9 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
             <Typography variant="h6">Achievements</Typography>
             <ReactQuill
               value={formData.achievements}
-              onChange={(value) => setFormData({ ...formData, achievements: value })}
+              onChange={(value) =>
+                setFormData({ ...formData, achievements: value })
+              }
               placeholder="Describe your achievements"
               style={{ height: 200 }}
             />
@@ -284,5 +188,6 @@ const ExperienceEdit: React.FC<Props> = ({ onDone, data  }) => {
       </Box>
     </Modal>
   );
-}
-export default ExperienceEdit
+};
+
+export default ExperienceEdit;

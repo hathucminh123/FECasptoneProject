@@ -133,7 +133,7 @@ const ApplicantView:React.FC =() =>{
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                      InterView
+                      Interview
                     </span>
                   </div>
                   <div className={classes.main7}>
