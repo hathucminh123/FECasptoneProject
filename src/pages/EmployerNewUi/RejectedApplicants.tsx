@@ -423,6 +423,9 @@ const RejectedApplicants: React.FC = () => {
                                   </span>
                                 </div>
                                 <div className={classes.main27}>
+                                  <span>Degree: {edu.degree}</span>
+                                </div>
+                                <div className={classes.main27}>
                                   <span>
                                     From:{" "}
                                     {moment(edu.startDate).format("DD-MM-YYYY")}{" "}

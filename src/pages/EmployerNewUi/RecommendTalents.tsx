@@ -1,12 +1,11 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import classes from "./RecommendTalents.module.css";
 import Typography from "@mui/material/Typography";
 
 import { useParams } from "react-router-dom";
 
-import {  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import Pagination from "@mui/material/Pagination";
-
 
 import moment from "moment";
 import CheckIcon from "@mui/icons-material/Check";
@@ -14,7 +13,6 @@ import CheckIcon from "@mui/icons-material/Check";
 import { ListSeekers } from "../../Services/ListSeekers/ListSeekers";
 import { AnimatePresence } from "framer-motion";
 import ModalSendEmail from "../../components/NewUiEmployer/ModalSendEmail";
-
 
 import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 
@@ -50,7 +48,7 @@ interface SkillSet {
   name: string;
   shorthand: string | null;
   description: string | null;
-  proficiencyLevel?: string |null;
+  proficiencyLevel?: string | null;
 }
 
 interface CVs {
@@ -98,17 +96,11 @@ interface UserProfile {
   // userAccountServices?:data[];
 }
 
-
-
 export default function RecommendTalents() {
   const { id } = useParams();
   // const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-
-
-
-
 
   // const handleOpen = () => setOpen(true);
 
@@ -126,13 +118,11 @@ export default function RecommendTalents() {
   //     document.removeEventListener("mousedown", handleClickOutside);
   //   };
   // }, []);
-  
 
   // const handleRemoveSkill = (skillToRemove: SkillSet) => {
   //   setSkills(skills.filter((skill) => skill !== skillToRemove));
   //   setSkillId(skillId.filter((skill) => skill !== skillToRemove.id));
   // };
-
 
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
@@ -179,9 +169,6 @@ export default function RecommendTalents() {
   const handleExpandClick = (id: number) => {
     setExpandedId((prevId) => (prevId === id ? null : id));
   };
-
-
-
 
   const [openModalScore, setOpenModalScore] = useState<boolean>(false);
   const [profileScore, setProfileScore] = useState<UserProfile | null>(null);
@@ -386,7 +373,11 @@ export default function RecommendTalents() {
                       </div>
                       {data.educationDetails && data.educationDetails.length > 0
                         ? data.educationDetails.map((edu) => (
-                            <div key={edu.id} className={classes.main25} style={{marginBottom:"10px"}}>
+                            <div
+                              key={edu.id}
+                              className={classes.main25}
+                              style={{ marginBottom: "10px" }}
+                            >
                               <div className={classes.main26}>
                                 <span>School name: {edu.institutionName}</span>
                               </div>
@@ -395,6 +386,9 @@ export default function RecommendTalents() {
                                   Field of Study: {edu.fieldOfStudy} - GPA:{" "}
                                   {edu.gpa}
                                 </span>
+                              </div>
+                              <div className={classes.main27}>
+                                <span>Degree: {edu.degree}</span>
                               </div>
                               <div className={classes.main27}>
                                 <span>
@@ -409,11 +403,11 @@ export default function RecommendTalents() {
                     </div>
                   </div>
                   <div>
-                      <div className={classes.main11}>
-                        <div className={classes.main12}>
-                          <div className={classes.main13}>
-                            Certificates:
-                            {/* <button
+                    <div className={classes.main11}>
+                      <div className={classes.main12}>
+                        <div className={classes.main13}>
+                          Certificates:
+                          {/* <button
                               type="button"
                               className={classes.button1}
                               onClick={() => setOpenExp((prev) => !prev)}
@@ -421,94 +415,100 @@ export default function RecommendTalents() {
                               {" "}
                               - View More
                             </button> */}
-                          </div>
                         </div>
-                        {data.certificates && data.certificates.length > 0
-                          ? data.certificates.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
-                                <div className={classes.main26}>
-                                  <span>
-                                    Certificates name: {edu.certificateName}
-                                  </span>
-                                </div>
-                                <div className={classes.main27}>
-                                  <span>
-                                     Organization:{" "}
-                                    {edu.certificateOrganization} - URL:{" "}
-                                    <a
-                                      href={edu.certificateURL}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      style={{
-                                        textDecoration: "underline",
-                                        color: "blue",
-                                      }}
-                                    >
-                                      {edu.certificateURL.length > 50
-                                        ? `${edu.certificateURL.substring(
-                                            0,
-                                            47
-                                          )}...`
-                                        : edu.certificateURL}
-                                    </a>
-                                  </span>
-                                </div>
-                                <div className={classes.main27}>
-                                  <span>
-                                    Issue Date:{" "}
-                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
-                                    {/* - To:{" "}
-                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
-                                  </span>
-                                </div>
-                              </div>
-                            ))
-                          : null}
                       </div>
-                    </div>
-                    <div>
-                      <div className={classes.main11}>
-                        <div className={classes.main12}>
-                          <div className={classes.main13}>
-                            Award{":"}
-                            {/* <button
-                              type="button"
-                              className={classes.button1}
-                              onClick={() => setOpenExp((prev) => !prev)}
+                      {data.certificates && data.certificates.length > 0
+                        ? data.certificates.map((edu) => (
+                            <div
+                              key={edu.id}
+                              className={classes.main25}
+                              style={{ marginBottom: "10px" }}
                             >
-                              {" "}
-                              - View More
-                            </button> */}
-                          </div>
-                        </div>
-                        {data.awards && data.awards.length > 0
-                          ? data.awards.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}> 
-                                <div className={classes.main26}>
-                                  <span>Awards name: {edu.awardName}</span>
-                                </div>
-                                <div className={classes.main27}>
-                                  <span>
-                                    Organization: {edu.awardOrganization} -
-                                    description: {edu.description}
-                                  </span>
-                                </div>
-                                
-                                <div className={classes.main27}>
-                                  <span>
+                              <div className={classes.main26}>
+                                <span>
+                                  Certificates name: {edu.certificateName}
+                                </span>
+                              </div>
+                              <div className={classes.main27}>
+                                <span>
+                                  Organization: {edu.certificateOrganization} -
+                                  URL:{" "}
+                                  <a
+                                    href={edu.certificateURL}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    style={{
+                                      textDecoration: "underline",
+                                      color: "blue",
+                                    }}
+                                  >
+                                    {edu.certificateURL.length > 50
+                                      ? `${edu.certificateURL.substring(
+                                          0,
+                                          47
+                                        )}...`
+                                      : edu.certificateURL}
+                                  </a>
+                                </span>
+                              </div>
+                              <div className={classes.main27}>
+                                <span>
                                   Issue Date:{" "}
-                                    {moment(edu.issueDate).format(
-                                      "DD-MM-YYYY"
-                                    )}{" "}
-                                    {/* - To:{" "}
+                                  {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                  {/* - To:{" "}
                                     {moment(edu.endDate).format("DD-MM-YYYY")} */}
-                                  </span>
-                                </div>
+                                </span>
                               </div>
-                            ))
-                          : null}
-                      </div>
+                            </div>
+                          ))
+                        : null}
                     </div>
+                  </div>
+                  <div>
+                    <div className={classes.main11}>
+                      <div className={classes.main12}>
+                        <div className={classes.main13}>
+                          Award{":"}
+                          {/* <button
+                              type="button"
+                              className={classes.button1}
+                              onClick={() => setOpenExp((prev) => !prev)}
+                            >
+                              {" "}
+                              - View More
+                            </button> */}
+                        </div>
+                      </div>
+                      {data.awards && data.awards.length > 0
+                        ? data.awards.map((edu) => (
+                            <div
+                              key={edu.id}
+                              className={classes.main25}
+                              style={{ marginBottom: "10px" }}
+                            >
+                              <div className={classes.main26}>
+                                <span>Awards name: {edu.awardName}</span>
+                              </div>
+                              <div className={classes.main27}>
+                                <span>
+                                  Organization: {edu.awardOrganization} -
+                                  description: {edu.description}
+                                </span>
+                              </div>
+
+                              <div className={classes.main27}>
+                                <span>
+                                  Issue Date:{" "}
+                                  {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
+                                  {/* - To:{" "}
+                                    {moment(edu.endDate).format("DD-MM-YYYY")} */}
+                                </span>
+                              </div>
+                            </div>
+                          ))
+                        : null}
+                    </div>
+                  </div>
                   <div>
                     <div className={classes.main11}>
                       <div className={classes.main12}>
@@ -525,12 +525,16 @@ export default function RecommendTalents() {
                         </div>
                       </div>
 
-                      <div className={classes.main28} >
+                      <div className={classes.main28}>
                         {data.skillSets.map((skill) => (
                           <>
-                              <div className={classes.main13} style={{ marginTop:5 }}>
-                          {skill.proficiencyLevel}{skill.proficiencyLevel !== "" && " :"} 
-                          {/* <button
+                            <div
+                              className={classes.main13}
+                              style={{ marginTop: 5 }}
+                            >
+                              {skill.proficiencyLevel}
+                              {skill.proficiencyLevel !== "" && " :"}
+                              {/* <button
                 type="button"
                 className={classes.button1}
                 onClick={() => setOpenExp((prev) => !prev)}
@@ -538,9 +542,8 @@ export default function RecommendTalents() {
                 {" "}
                 - View More
               </button> */}
-                        </div>
+                            </div>
                             <div className={classes.main29} key={skill.id}>
-                              
                               <span>{skill.name}</span>
                             </div>
                           </>
@@ -656,7 +659,6 @@ export default function RecommendTalents() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }

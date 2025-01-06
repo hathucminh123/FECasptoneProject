@@ -410,7 +410,11 @@ const InterViewApplicants: React.FC = () => {
                         {profile.educationDetails &&
                         profile.educationDetails.length > 0
                           ? profile.educationDetails.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>
                                     School name: {edu.institutionName}
@@ -421,6 +425,9 @@ const InterViewApplicants: React.FC = () => {
                                     Field of Study: {edu.fieldOfStudy} - GPA:{" "}
                                     {edu.gpa}
                                   </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>Degree: {edu.degree}</span>
                                 </div>
                                 <div className={classes.main27}>
                                   <span>

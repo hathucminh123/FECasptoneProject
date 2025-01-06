@@ -215,11 +215,11 @@ export default function SearchTalents() {
     return <div className={classes.loading}>Loading talents...</div>;
   }
 
-//   if (!user || user.length === 0) {
-//     return (
-//       <NoJobApplicants text="There are no talents available for the job yet" />
-//     );
-//   }
+  //   if (!user || user.length === 0) {
+  //     return (
+  //       <NoJobApplicants text="There are no talents available for the job yet" />
+  //     );
+  //   }
 
   return (
     <div className={classes.main}>
@@ -379,7 +379,11 @@ export default function SearchTalents() {
                         {data.educationDetails &&
                         data.educationDetails.length > 0
                           ? data.educationDetails.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>
                                     School name: {edu.institutionName}
@@ -390,6 +394,9 @@ export default function SearchTalents() {
                                     Field of Study: {edu.fieldOfStudy} - GPA:{" "}
                                     {edu.gpa}
                                   </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>Degree: {edu.degree}</span>
                                 </div>
                                 <div className={classes.main27}>
                                   <span>
@@ -421,7 +428,11 @@ export default function SearchTalents() {
                         </div>
                         {data.certificates && data.certificates.length > 0
                           ? data.certificates.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>
                                     Certificates name: {edu.certificateName}
@@ -429,8 +440,8 @@ export default function SearchTalents() {
                                 </div>
                                 <div className={classes.main27}>
                                   <span>
-                                     Organization:{" "}
-                                    {edu.certificateOrganization} - URL:{" "}
+                                    Organization: {edu.certificateOrganization}{" "}
+                                    - URL:{" "}
                                     <a
                                       href={edu.certificateURL}
                                       target="_blank"
@@ -479,7 +490,11 @@ export default function SearchTalents() {
                         </div>
                         {data.awards && data.awards.length > 0
                           ? data.awards.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}> 
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>Awards name: {edu.awardName}</span>
                                 </div>
@@ -489,13 +504,11 @@ export default function SearchTalents() {
                                     description: {edu.description}
                                   </span>
                                 </div>
-                                
+
                                 <div className={classes.main27}>
                                   <span>
-                                  Issue Date:{" "}
-                                    {moment(edu.issueDate).format(
-                                      "DD-MM-YYYY"
-                                    )}{" "}
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
                                     {/* - To:{" "}
                                     {moment(edu.endDate).format("DD-MM-YYYY")} */}
                                   </span>

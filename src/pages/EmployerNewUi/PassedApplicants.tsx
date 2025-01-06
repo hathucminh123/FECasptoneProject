@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import classes from "./AllApplicants.module.css";
 import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
-import EmailIcon from '@mui/icons-material/Email';
+import EmailIcon from "@mui/icons-material/Email";
 import EditIcon from "@mui/icons-material/Edit";
 import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
 import { useParams } from "react-router-dom";
@@ -23,7 +23,7 @@ import { CoverLetterModal } from "../../components/CoverModal";
 // import { PostJobActivityComment } from "../../Services/JobActivityComment/PostJobActivityComment";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
-import DescriptionIcon from '@mui/icons-material/Description';
+import DescriptionIcon from "@mui/icons-material/Description";
 interface EducationDetail {
   id: number;
   name: string;
@@ -116,8 +116,9 @@ const PassedApplicants: React.FC = () => {
   const [selectedIdJobPostActivity, setSelectedIdJobPostActivity] = useState<
     number | null
   >(null);
-   const [openModalCoverLetter, setOpenModalCoverLetter] = useState<boolean>(false);
-     const [description, setDescription] = useState<string|undefined>("");
+  const [openModalCoverLetter, setOpenModalCoverLetter] =
+    useState<boolean>(false);
+  const [description, setDescription] = useState<string | undefined>("");
   //   const [commentText, setCommentText] = useState<string>("");
   //   const [value, setValue] = React.useState<number | null>(2);
 
@@ -130,10 +131,9 @@ const PassedApplicants: React.FC = () => {
     setOpenModal(false);
   };
 
-  const handleOpenModalCoverLetter = (data:string|undefined) => {
+  const handleOpenModalCoverLetter = (data: string | undefined) => {
     setOpenModalCoverLetter(true);
     setDescription(data);
-    
   };
 
   const {
@@ -239,11 +239,11 @@ const PassedApplicants: React.FC = () => {
         selectedIdJobPostActivity={selectedIdJobPostActivity}
       />
 
- <CoverLetterModal
-              open={openModalCoverLetter}
-              onClose={() => setOpenModalCoverLetter(false)}
-              description={description}
-            />
+      <CoverLetterModal
+        open={openModalCoverLetter}
+        onClose={() => setOpenModalCoverLetter(false)}
+        description={description}
+      />
       <AnimatePresence>
         {openModalScore && (
           <ModalScore
@@ -407,7 +407,11 @@ const PassedApplicants: React.FC = () => {
                         {profile.educationDetails &&
                         profile.educationDetails.length > 0
                           ? profile.educationDetails.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>
                                     School name: {edu.institutionName}
@@ -418,6 +422,9 @@ const PassedApplicants: React.FC = () => {
                                     Field of Study: {edu.fieldOfStudy} - GPA:{" "}
                                     {edu.gpa}
                                   </span>
+                                </div>
+                                <div className={classes.main27}>
+                                  <span>Degree: {edu.degree}</span>
                                 </div>
                                 <div className={classes.main27}>
                                   <span>
@@ -449,7 +456,11 @@ const PassedApplicants: React.FC = () => {
                         </div>
                         {profile.certificates && profile.certificates.length > 0
                           ? profile.certificates.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}>
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>
                                     Certificates name: {edu.certificateName}
@@ -457,8 +468,8 @@ const PassedApplicants: React.FC = () => {
                                 </div>
                                 <div className={classes.main27}>
                                   <span>
-                                     Organization:{" "}
-                                    {edu.certificateOrganization} - URL:{" "}
+                                    Organization: {edu.certificateOrganization}{" "}
+                                    - URL:{" "}
                                     <a
                                       href={edu.certificateURL}
                                       target="_blank"
@@ -507,7 +518,11 @@ const PassedApplicants: React.FC = () => {
                         </div>
                         {profile.awards && profile.awards.length > 0
                           ? profile.awards.map((edu) => (
-                              <div key={edu.id} className={classes.main25} style={{marginBottom:'10px'}}> 
+                              <div
+                                key={edu.id}
+                                className={classes.main25}
+                                style={{ marginBottom: "10px" }}
+                              >
                                 <div className={classes.main26}>
                                   <span>Awards name: {edu.awardName}</span>
                                 </div>
@@ -517,13 +532,11 @@ const PassedApplicants: React.FC = () => {
                                     description: {edu.description}
                                   </span>
                                 </div>
-                                
+
                                 <div className={classes.main27}>
                                   <span>
-                                  Issue Date:{" "}
-                                    {moment(edu.issueDate).format(
-                                      "DD-MM-YYYY"
-                                    )}{" "}
+                                    Issue Date:{" "}
+                                    {moment(edu.issueDate).format("DD-MM-YYYY")}{" "}
                                     {/* - To:{" "}
                                     {moment(edu.endDate).format("DD-MM-YYYY")} */}
                                   </span>
@@ -601,24 +614,24 @@ const PassedApplicants: React.FC = () => {
                         </div>
                       </div>
                     </div>
-                    <div className={classes.main33} style={{ top: 230  }}>
+                    <div className={classes.main33} style={{ top: 230 }}>
                       <div>
                         <button
                           type="button"
                           className={classes.button5}
-                          onClick={()=>
+                          onClick={() =>
                             handleOpenModalCoverLetter(profile?.coverLetter)
                           }
                         >
                           <span className={classes.spanicon}>
-                          <DescriptionIcon/>
+                            <DescriptionIcon />
                           </span>
                         </button>
                       </div>
                     </div>
                     <div className={classes.main33} style={{ top: 70 }}>
                       <div>
-                      <button
+                        <button
                           type="button"
                           className={classes.button5}
                           onClick={() => handleOpenMdalScore(data.id, profile)}
