@@ -306,7 +306,7 @@ navigate(`/jobs/detail/${Number(id)}`);
         try {
           // Gửi file đến API upload
           const uploadResponse = await axios.post(
-            "https://fb32-112-197-86-203.ngrok-free.app/upload_and_process",
+            "https://cc72-112-197-86-203.ngrok-free.app/upload_and_process",
             formData,
             {
               headers: {
