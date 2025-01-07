@@ -45,6 +45,7 @@ interface JobPost {
   jobLocationAddressDetail:string[]
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
   benefitObjects?: Benefits[];
+  isDeleted?:boolean
 }
 
 interface FetchError extends Error {
@@ -54,14 +55,15 @@ interface FetchError extends Error {
 
 interface signal{
   signal:AbortSignal
+  boolean?:boolean
 }
 
-export const GetJobPost = async ({signal}:signal): Promise<{
+export const GetJobPost = async ({signal,boolean}:signal): Promise<{
   JobPosts: JobPost[];
 }> => {
   try {
     const response = await httpClient.get({
-      url: apiLinks.JobPosts.GET,
+      url: `${apiLinks.JobPosts.GET}?isDelete=${boolean}`,
       signal:signal
     });
 

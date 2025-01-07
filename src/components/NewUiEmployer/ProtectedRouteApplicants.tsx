@@ -31,7 +31,7 @@ const ProtectedRouteApplicants = ({ children }: { children: ReactNode }) => {
   const companyDataa = CompanyDa?.Companies;
   const { data: JobPosts } = useQuery({
     queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal }),
+    queryFn: ({ signal }) => GetJobPost({ signal ,boolean:true}),
     staleTime: 5000,
   });
   const JobPostsdata = JobPosts?.JobPosts;

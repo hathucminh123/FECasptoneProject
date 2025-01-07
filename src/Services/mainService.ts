@@ -53,6 +53,8 @@ export const apiLinks = {
     GetJobbyId: `${baseURL}/JobPosts`,
     GetSeekerByJobPosts: `${baseURL}/JobPosts/Id`,
     PUT: `${baseURL}/JobPosts/update`,
+    DELETE:`${baseURL}/JobPosts/Soft`,
+    PUTACTIVE:`${baseURL}/JobPosts/Activate`,
   },
   CV: {
     POST: `${baseURL}/CV`,

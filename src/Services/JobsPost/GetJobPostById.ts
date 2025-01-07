@@ -52,6 +52,7 @@ interface JobPost {
   skillSets: string[]; // Array of skill sets, có thể là array rỗng
   skillSetObjects?:SkillSet[];
   benefitObjects?:Benefits[];
+  isDeleted:boolean
 }
 
 interface FetchError extends Error {

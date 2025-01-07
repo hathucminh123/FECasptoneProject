@@ -27,7 +27,7 @@ export default function ListTalent() {
   const { selectJobId, setSelectJobId } = useOutletContext<JobContextType>();
   const { data: JobPosts } = useQuery({
     queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal }),
+    queryFn: ({ signal }) => GetJobPost({ signal, boolean: true }),
     staleTime: 5000,
   });
   const JobPostsdata = JobPosts?.JobPosts;
@@ -85,7 +85,7 @@ export default function ListTalent() {
     //   setOpenModal(true);
     //   return;
     // } else {
-      navigate("/EmployerJob/jobs/create");
+    navigate("/EmployerJob/jobs/create");
     // }
   };
 
@@ -147,7 +147,7 @@ export default function ListTalent() {
                       const cityColumn = uniqueArrayCity;
                       return (
                         <NavLink
-                        key={job.id}
+                          key={job.id}
                           to={`talent/${job.id}`}
                           // className={({ isActive }) =>
                           //   isActive ? classes.active : undefined
@@ -188,11 +188,22 @@ export default function ListTalent() {
                               {companyDataa?.city}
                             </p>
                           )}
-                           <p className={classes.p1}>Skills: </p>
-                          <div style={{display:'flex',alignItems:'center' ,gap:10,flexWrap:'wrap',boxSizing:'border-box'}}>
-                          
-                            {job.skillSets.map((skill,index)=>(
-                               <p className={classes.p1} key={index}>  {skill}{index < job.skillSets.length - 1 && " -"}</p>
+                          <p className={classes.p1}>Skills: </p>
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 10,
+                              flexWrap: "wrap",
+                              boxSizing: "border-box",
+                            }}
+                          >
+                            {job.skillSets.map((skill, index) => (
+                              <p className={classes.p1} key={index}>
+                                {" "}
+                                {skill}
+                                {index < job.skillSets.length - 1 && " -"}
+                              </p>
                             ))}
                           </div>
                           <p className={classes.p1}>Benefits: </p>
@@ -218,6 +229,16 @@ export default function ListTalent() {
                             ) : (
                               <p className={classes.p1}>No Benefit Yet</p>
                             )}
+                            <div>
+                              {job.isDeleted && (
+                                <p
+                                  className={classes.p}
+                                  style={{ color: "red" }}
+                                >
+                                  Is Deleted
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </NavLink>
                       );

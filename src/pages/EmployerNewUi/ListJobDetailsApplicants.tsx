@@ -26,7 +26,7 @@ export default function ListJobDetailsApplicants() {
   const { selectJobId, setSelectJobId } = useOutletContext<JobContextType>();
   const { data: JobPosts } = useQuery({
     queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal }),
+    queryFn: ({ signal }) => GetJobPost({ signal ,boolean:true}),
     staleTime: 5000,
   });
   const JobPostsdata = JobPosts?.JobPosts;
@@ -212,6 +212,16 @@ export default function ListJobDetailsApplicants() {
                             ) : (
                               <p className={classes.p1}>No Benefit Yet</p>
                             )}
+                             <div>
+                              {job.isDeleted && (
+                                <p
+                                  className={classes.p}
+                                  style={{ color: "red" }}
+                                >
+                                  Is Deleted
+                                </p>
+                              )}
+                            </div>
                           </div>
                       </NavLink>
                     );

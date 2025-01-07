@@ -769,7 +769,7 @@ const ElegantTemplate: React.FC = () => {
                             style={{ fontFamily: "Lexend, sans-serif" }}
                           >
                             IssueDate:{""}
-                            {moment(edu.issueDate).format("DD-MM-YYYY")} - To:{" "}
+                            {moment(edu.issueDate).format("DD-MM-YYYY")}
                             {/* {moment(edu.endDate).format("DD-MM-YYYY")} */}
                           </p>
                           <div className={classes.line}></div>
@@ -841,7 +841,7 @@ const ElegantTemplate: React.FC = () => {
                             style={{ fontFamily: "Lexend, sans-serif" }}
                           >
                             IssueDate:{""}
-                            {moment(edu.issueDate).format("DD-MM-YYYY")} - To:{" "}
+                            {moment(edu.issueDate).format("DD-MM-YYYY")}
                             {/* {moment(edu.endDate).format("DD-MM-YYYY")} */}
                           </p>
                           <div className={classes.line}></div>

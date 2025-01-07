@@ -18,7 +18,7 @@ interface JobMatch {
   exact_skills: string;
   description: string;
   minsalary: string;
-  jobtype:string;
+  jobtype: string;
 }
 
 // interface ChatMessage {
@@ -255,6 +255,138 @@ const ChatBox: React.FC = () => {
   //   }
   // };
 
+  // const handleUploadCV = async (): Promise<void> => {
+  //   try {
+  //     const inputElement = document.createElement("input");
+  //     inputElement.type = "file";
+  //     inputElement.accept = ".pdf";
+
+  //     inputElement.onchange = async (event: Event) => {
+  //       const target = event.target as HTMLInputElement;
+  //       const file = target.files?.[0];
+
+  //       if (!file) {
+  //         console.error("No file selected");
+  //         return;
+  //       }
+
+  //       // setSelectedFileName(file.name);
+
+  //       // const newMessage: ChatMessage = {
+  //       //   role: "user",
+  //       //   text: `Uploaded file: ${file.name}`,
+  //       // };
+  //       // setChatHistory((prev) => [...prev, newMessage]);
+  //       const fileDownloadURL = URL.createObjectURL(file);
+
+  //       // Add the uploaded file as a downloadable link in the chat
+  //       const newMessage: ChatMessage = {
+  //         role: "user",
+  //         text: (
+  //           <a
+  //             href={fileDownloadURL}
+  //             download={file.name}
+  //             style={{ color: "#3cbc8c", textDecoration: "underline" }}
+  //           >
+  //             {file.name}
+  //           </a>
+  //         ),
+  //       };
+
+  //       setChatHistory((prev) => [...prev, newMessage]);
+
+  //       // Thêm trạng thái "Bot is typing..."
+  //       setChatHistory((prev) => [
+  //         ...prev,
+  //         { role: "bot", text: "Bot is typing..." },
+  //       ]);
+
+  //       // Tạo FormData và thêm tệp đã chọn
+  //       const formData = new FormData();
+  //       formData.append("file", file);
+
+  //       try {
+  //         // Gửi file đến API upload
+  //         const uploadResponse = await axios.post(
+  //           "https://46f9-112-197-86-203.ngrok-free.app/upload_and_process",
+  //           formData,
+  //           {
+  //             headers: {
+  //               "Content-Type": "multipart/form-data",
+  //             },
+  //           }
+  //         );
+
+  //         console.log("CV uploaded successfully:", uploadResponse.data);
+
+  //         // Extract thông tin cần thiết từ phản hồi
+  //         const { data, file_info, parser_used, message } = uploadResponse.data;
+
+  //         // Chuẩn bị payload cho API compare
+  //         const compareCVPayload = {
+  //           status: "success",
+  //           data,
+  //           file_info,
+  //           parser_used,
+  //           message,
+  //         };
+
+  //         try {
+  //           // Gửi payload đến API compare
+  //           const compareResponse = await axios.post(
+  //             "https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/compare-cv",
+  //             compareCVPayload,
+  //             {
+  //               headers: {
+  //                 "Content-Type": "application/json",
+  //               },
+  //             }
+  //           );
+
+  //           console.log("Comparison result:", compareResponse.data);
+
+  //           // Xóa trạng thái "Bot is typing..."
+  //           setChatHistory((prev) =>
+  //             prev.filter((message) => message.text !== "Bot is typing...")
+  //           );
+
+  //           // Thêm phản hồi từ API compare vào lịch sử chat
+  //           const jobMatches = compareResponse.data.matches;
+  //           setChatHistory((prev) => [
+  //             ...prev,
+  //             {
+  //               role: "bot",
+  //               text: jobMatches,
+  //             },
+  //           ]);
+  //         } catch (compareError) {
+  //           console.error("Error comparing CV:", compareError);
+
+  //           // Xóa trạng thái "Bot is typing..." nếu có lỗi
+  //           setChatHistory((prev) =>
+  //             prev.filter((message) => message.text !== "Bot is typing...")
+  //           );
+  //         }
+  //       } catch (uploadError) {
+  //         console.error("Error uploading CV:", uploadError);
+
+  //         setChatHistory((prev) =>
+  //           prev.filter((message) => message.text !== "Bot is typing...")
+  //         );
+  //       }
+  //     };
+
+  //     // Kích hoạt hộp thoại chọn file
+  //     inputElement.click();
+  //   } catch (error) {
+  //     console.error("Error initializing upload:", error);
+
+  //     // Xóa trạng thái "Bot is typing..." nếu có lỗi
+  //     setChatHistory((prev) =>
+  //       prev.filter((message) => message.text !== "Bot is typing...")
+  //     );
+  //   }
+  // };
   const handleUploadCV = async (): Promise<void> => {
     try {
       const inputElement = document.createElement("input");
@@ -270,13 +402,6 @@ const ChatBox: React.FC = () => {
           return;
         }
 
-        // setSelectedFileName(file.name);
-
-        // const newMessage: ChatMessage = {
-        //   role: "user",
-        //   text: `Uploaded file: ${file.name}`,
-        // };
-        // setChatHistory((prev) => [...prev, newMessage]);
         const fileDownloadURL = URL.createObjectURL(file);
 
         // Add the uploaded file as a downloadable link in the chat
@@ -295,18 +420,18 @@ const ChatBox: React.FC = () => {
 
         setChatHistory((prev) => [...prev, newMessage]);
 
-        // Thêm trạng thái "Bot is typing..."
+        // Add "Bot is typing..." message
         setChatHistory((prev) => [
           ...prev,
           { role: "bot", text: "Bot is typing..." },
         ]);
 
-        // Tạo FormData và thêm tệp đã chọn
+        // Create FormData and add the selected file
         const formData = new FormData();
         formData.append("file", file);
 
         try {
-          // Gửi file đến API upload
+          // Upload file to the API
           const uploadResponse = await axios.post(
             "https://46f9-112-197-86-203.ngrok-free.app/upload_and_process",
             formData,
@@ -319,10 +444,10 @@ const ChatBox: React.FC = () => {
 
           console.log("CV uploaded successfully:", uploadResponse.data);
 
-          // Extract thông tin cần thiết từ phản hồi
+          // Extract necessary information from the response
           const { data, file_info, parser_used, message } = uploadResponse.data;
 
-          // Chuẩn bị payload cho API compare
+          // Prepare payload for comparison API
           const compareCVPayload = {
             status: "success",
             data,
@@ -332,7 +457,7 @@ const ChatBox: React.FC = () => {
           };
 
           try {
-            // Gửi payload đến API compare
+            // Send payload to comparison API
             const compareResponse = await axios.post(
               "https://566f-2404-e801-2007-a3e-e561-2024-4d0b-d404.ngrok-free.app/compare-cv",
               compareCVPayload,
@@ -345,13 +470,17 @@ const ChatBox: React.FC = () => {
 
             console.log("Comparison result:", compareResponse.data);
 
-            // Xóa trạng thái "Bot is typing..."
+            // Remove "Bot is typing..." status
             setChatHistory((prev) =>
               prev.filter((message) => message.text !== "Bot is typing...")
             );
 
-            // Thêm phản hồi từ API compare vào lịch sử chat
-            const jobMatches = compareResponse.data.matches;
+            // Extract job matches
+            const jobMatches = Array.isArray(compareResponse.data.matches)
+              ? compareResponse.data.matches
+              : [];
+
+            // Add job matches or a "No jobs found" message
             setChatHistory((prev) => [
               ...prev,
               {
@@ -362,30 +491,57 @@ const ChatBox: React.FC = () => {
           } catch (compareError) {
             console.error("Error comparing CV:", compareError);
 
-            // Xóa trạng thái "Bot is typing..." nếu có lỗi
+            // Remove "Bot is typing..." status
             setChatHistory((prev) =>
               prev.filter((message) => message.text !== "Bot is typing...")
             );
+
+            // Add error message to chat history
+            setChatHistory((prev) => [
+              ...prev,
+              {
+                role: "bot",
+                text: "Sorry! Cannot process your CVs. Please try again later.",
+              },
+            ]);
           }
         } catch (uploadError) {
           console.error("Error uploading CV:", uploadError);
 
-          // Xóa trạng thái "Bot is typing..." nếu có lỗi
+          // Remove "Bot is typing..." status
           setChatHistory((prev) =>
             prev.filter((message) => message.text !== "Bot is typing...")
           );
+
+          // Add error message to chat history
+          setChatHistory((prev) => [
+            ...prev,
+            {
+              role: "bot",
+              text: "Sorry! Cannot extract your CVs. Please check the file format and try again.",
+            },
+          ]);
         }
       };
 
-      // Kích hoạt hộp thoại chọn file
+      // Trigger the file input dialog
       inputElement.click();
     } catch (error) {
       console.error("Error initializing upload:", error);
 
-      // Xóa trạng thái "Bot is typing..." nếu có lỗi
+      // Remove "Bot is typing..." status
       setChatHistory((prev) =>
         prev.filter((message) => message.text !== "Bot is typing...")
       );
+
+      // Add error message to chat history
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          role: "bot",
+          text: "Sorry! An error occurred. Please try again.",
+        },
+      ]);
     }
   };
 

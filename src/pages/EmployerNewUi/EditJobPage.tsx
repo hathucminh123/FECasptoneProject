@@ -576,7 +576,7 @@ export default function EditJobPage() {
   };
   const { data: JobPosts } = useQuery({
     queryKey: ["JobPosts"],
-    queryFn: ({ signal }) => GetJobPost({ signal }),
+    queryFn: ({ signal }) => GetJobPost({ signal,boolean:true }),
     staleTime: 5000,
   });
   const JobPostsdata = JobPosts?.JobPosts;

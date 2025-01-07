@@ -1,11 +1,14 @@
 import React from "react";
 import { NavLink, Outlet, useParams } from "react-router-dom";
 import classes from "./OverViewJob.module.css";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { GetJobPostById } from "../../Services/JobsPost/GetJobPostById";
+import { queryClient } from "../../Services/mainService";
+import { message } from "antd";
+import { DeleteJobPost } from "../../Services/JobsPost/DeleteJobPost";
+import { PutJobActive } from "../../Services/JobsPost/PutJobActive";
 
-
-const OverViewJob:React.FC =()=> {
+const OverViewJob: React.FC = () => {
   const { id } = useParams();
 
   // const [searchParams] = useSearchParams();
@@ -19,6 +22,49 @@ const OverViewJob:React.FC =()=> {
   });
   const job = jobData?.JobPosts;
 
+  const { mutate, isPending: isPendingJob } = useMutation({
+    mutationFn: DeleteJobPost,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["JobPosts"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["Job-details"],
+        refetchType: "active",
+      });
+      message.success("Award Details Deleted Successfully");
+    },
+    onError: () => {
+      message.error("Failed to delete the Award");
+    },
+  });
+  const handleDelete = () => {
+    mutate({ id: JobId });
+  };
+
+  const { mutate: PutActive, isPending } = useMutation({
+    mutationFn: PutJobActive,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["JobPosts"],
+        refetchType: "active",
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["Job-details"],
+        refetchType: "active",
+      });
+      message.success("Award Details Deleted Successfully");
+    },
+    onError: () => {
+      message.error("Failed to delete the Award");
+    },
+  });
+
+  const handleUpdateJobPost = () => {
+    PutActive({ id: JobId });
+  };
+
   return (
     <div className={classes.main}>
       <header className={classes.header}>
@@ -26,9 +72,55 @@ const OverViewJob:React.FC =()=> {
           <div className={classes.main2}>
             <p className={classes.p}>{job?.jobTitle}</p>
             <div className={classes.main3}>
-              <span className={classes.span}>Live</span>
+              {job?.isDeleted === true ? (
+                <span className={classes.span}>Is Deleted</span>
+              ) : (
+                <span className={classes.span}>Live</span>
+              )}
             </div>
           </div>
+
+          {job?.isDeleted === true ? (
+            isPending ? (
+              <div className={classes.main4}>
+                <button
+                  type="button"
+                  // onClick={handleUpdateJobPost}
+                  className={classes.link1}
+                  disabled={true}
+                >
+                  Wait a seconds
+                </button>
+              </div>
+            ) : (
+              <div className={classes.main4}>
+                <button
+                  type="button"
+                  onClick={handleUpdateJobPost}
+                  className={classes.link1}
+                >
+                  Activate
+                </button>
+              </div>
+            )
+          ) : isPendingJob ? (
+            <div className={classes.main4}>
+              <button type="button" disabled={true} className={classes.link1}>
+                wait a seconds
+              </button>
+            </div>
+          ) : (
+            <div className={classes.main4}>
+              <button
+                type="button"
+                onClick={handleDelete}
+                className={classes.link1}
+              >
+                Delete
+              </button>
+            </div>
+          )}
+
           {/* {isEdit && <div className={classes.main5}>
             <div className={classes.main6}>
               <button type="button" className={classes.button}>
@@ -45,11 +137,13 @@ const OverViewJob:React.FC =()=> {
             }
             end
           >
-            {({ isActive }) =>
-            <div className={classes.main4}>
-              <span  style={isActive ?{color:'#050c26'} :undefined}>Preview</span>
-            </div>
-}
+            {({ isActive }) => (
+              <div className={classes.main4}>
+                <span style={isActive ? { color: "#050c26" } : undefined}>
+                  Preview
+                </span>
+              </div>
+            )}
           </NavLink>
           <NavLink
             to="Edit?mode=Edit"
@@ -59,11 +153,13 @@ const OverViewJob:React.FC =()=> {
             }
             end
           >
-                    {({ isActive }) =>
-            <div className={classes.main4}>
-              <span  style={isActive ?{color:'#050c26'} :undefined}>Edit</span>
-            </div>
-}
+            {({ isActive }) => (
+              <div className={classes.main4}>
+                <span style={isActive ? { color: "#050c26" } : undefined}>
+                  Edit
+                </span>
+              </div>
+            )}
           </NavLink>
           {/* <NavLink
             to="asdas"
@@ -79,11 +175,8 @@ const OverViewJob:React.FC =()=> {
           </NavLink> */}
         </nav>
       </header>
-      <Outlet 
-  
-      
-      />
+      <Outlet />
     </div>
   );
-}
-export default OverViewJob
+};
+export default OverViewJob;
