@@ -17,6 +17,8 @@ interface JobMatch {
   similarity_score?: number;
   exact_skills: string;
   description: string;
+  minsalary: string;
+  jobtype:string;
 }
 
 // interface ChatMessage {
@@ -37,10 +39,10 @@ const ChatBox: React.FC = () => {
 
   console.log("chatHistory:", chatHistory);
 
-  const navigate =useNavigate();
-const   handleNavigate = (id:string) => {
-navigate(`/jobs/detail/${Number(id)}`);  
-};
+  const navigate = useNavigate();
+  const handleNavigate = (id: string) => {
+    navigate(`/jobs/detail/${Number(id)}`);
+  };
   //   const generateBotResponse = (history: ChatMessage[]) => {
   //     // Chuyển đổi lịch sử tin nhắn thành định dạng API yêu cầu
   //     const formattedHistory = history.map(({ role, text }) => ({
@@ -306,7 +308,7 @@ navigate(`/jobs/detail/${Number(id)}`);
         try {
           // Gửi file đến API upload
           const uploadResponse = await axios.post(
-            "https://fb32-112-197-86-203.ngrok-free.app/upload_and_process",
+            "https://46f9-112-197-86-203.ngrok-free.app/upload_and_process",
             formData,
             {
               headers: {
@@ -734,8 +736,9 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                           "#fafafa",
                                                                         letterSpacing:
                                                                           "-.025em",
-                                                                        fontWeight:600,
-                                                                        fontSize:"2rem",
+                                                                        fontWeight: 600,
+                                                                        fontSize:
+                                                                          "2rem",
 
                                                                         margin:
                                                                           "0",
@@ -745,12 +748,18 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                         job.title
                                                                       }
                                                                     </Typography>
-                                                                    <p className={classes.companyName}>
+                                                                    <p
+                                                                      className={
+                                                                        classes.companyName
+                                                                      }
+                                                                    >
                                                                       companyName:{" "}
-                                                                      {job.company}
+                                                                      {
+                                                                        job.company
+                                                                      }
                                                                     </p>
                                                                   </div>
-                                                                 {/* <button className={classes.buttonSave}>
+                                                                  {/* <button className={classes.buttonSave}>
                                                                   Save
                                                                  </button> */}
                                                                 </div>
@@ -760,7 +769,6 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                   classes.mainjob10
                                                                 }
                                                               >
-                                                               
                                                                 <p
                                                                   className={
                                                                     classes.mainjob12
@@ -778,6 +786,23 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                   </strong>
                                                                   {job.location}
                                                                 </p>
+                                                                <p
+                                                                  className={
+                                                                    classes.mainjob12
+                                                                  }
+                                                                >
+                                                                  <strong
+                                                                    style={{
+                                                                      fontWeight:
+                                                                        "bold",
+                                                                      color:
+                                                                        "#fff",
+                                                                    }}
+                                                                  >
+                                                                    JobType:{" "}
+                                                                  </strong>
+                                                                  {job.jobtype}
+                                                                </p>
                                                                 <div
                                                                   className={
                                                                     classes.des
@@ -787,7 +812,10 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                     className={
                                                                       classes.des1
                                                                     }
-                                                                    style={{color: "#fff"}} 
+                                                                    style={{
+                                                                      color:
+                                                                        "#fff",
+                                                                    }}
                                                                   >
                                                                     <div
                                                                       dangerouslySetInnerHTML={{
@@ -795,7 +823,6 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                           job?.description,
                                                                       }}
                                                                     />
-                                                                 
                                                                   </p>
                                                                 </div>
                                                                 <p
@@ -832,7 +859,7 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                   >
                                                                     Salary:{" "}
                                                                   </strong>
-                                                                  {parseInt(
+                                                                  {/* {parseInt(
                                                                     job.salary
                                                                   ) >= 1000000
                                                                     ? parseInt(
@@ -844,7 +871,49 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                     job.salary
                                                                   ) >= 1000000
                                                                     ? "triệu"
-                                                                    : "VNĐ"}
+                                                                    : "VNĐ"} */}
+                                                                  {job?.minsalary &&
+                                                                  job?.salary
+                                                                    ? `${
+                                                                        parseInt(
+                                                                          job?.minsalary
+                                                                        ) >=
+                                                                        1000000
+                                                                          ? parseInt(
+                                                                              job.minsalary
+                                                                            ) /
+                                                                            1000000
+                                                                          : parseInt(
+                                                                              job.minsalary
+                                                                            )
+                                                                      } ${
+                                                                        parseInt(
+                                                                          job.minsalary
+                                                                        ) >=
+                                                                        1000000
+                                                                          ? "triệu"
+                                                                          : "VNĐ"
+                                                                      } - ${
+                                                                        parseInt(
+                                                                          job.salary
+                                                                        ) >=
+                                                                        1000000
+                                                                          ? parseInt(
+                                                                              job.salary
+                                                                            ) /
+                                                                            1000000
+                                                                          : parseInt(
+                                                                              job.salary
+                                                                            )
+                                                                      } ${
+                                                                        parseInt(
+                                                                          job.salary
+                                                                        ) >=
+                                                                        1000000
+                                                                          ? "triệu"
+                                                                          : "VNĐ"
+                                                                      }`
+                                                                    : "Salary not specified"}
                                                                 </p>
                                                                 <p
                                                                   className={
@@ -929,8 +998,21 @@ navigate(`/jobs/detail/${Number(id)}`);
                                                                   </span>
                                                                 </p>
                                                               </div>
-                                                              <div className={classes.Apply}>
-                                                                <button className={classes.buttonApply} onClick={()=>handleNavigate(job.id)}>
+                                                              <div
+                                                                className={
+                                                                  classes.Apply
+                                                                }
+                                                              >
+                                                                <button
+                                                                  className={
+                                                                    classes.buttonApply
+                                                                  }
+                                                                  onClick={() =>
+                                                                    handleNavigate(
+                                                                      job.id
+                                                                    )
+                                                                  }
+                                                                >
                                                                   Apply Now
                                                                 </button>
                                                               </div>
