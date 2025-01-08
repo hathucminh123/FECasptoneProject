@@ -1107,12 +1107,24 @@ const FilterJobbySkill: React.FC = () => {
                                 >
                                   {/* {`${jobDetails?.minsalary} - ${jobDetails?.salary} VNĐ`} */}
                                   {jobDetails?.minsalary && jobDetails?.salary
-      ? `${jobDetails.minsalary >= 1000000 ? jobDetails.minsalary / 1000000 : jobDetails.minsalary} ${
-        jobDetails.minsalary >= 1000000 ? "triệu" : "VNĐ"
-        } - ${jobDetails.salary >= 1000000 ? jobDetails.salary / 1000000 : jobDetails.salary} ${
-          jobDetails.salary >= 1000000 ? "triệu" : "VNĐ"
-        }`
-      : "Salary not specified"}
+                                    ? `${
+                                        jobDetails.minsalary >= 1000000
+                                          ? jobDetails.minsalary / 1000000
+                                          : jobDetails.minsalary
+                                      } ${
+                                        jobDetails.minsalary >= 1000000
+                                          ? "triệu"
+                                          : "VNĐ"
+                                      } - ${
+                                        jobDetails.salary >= 1000000
+                                          ? jobDetails.salary / 1000000
+                                          : jobDetails.salary
+                                      } ${
+                                        jobDetails.salary >= 1000000
+                                          ? "triệu"
+                                          : "VNĐ"
+                                      }`
+                                    : "Salary not specified"}
                                   {/* {jobDetails?.salary} VNĐ */}
                                 </Typography>
                               </div>
@@ -1167,7 +1179,8 @@ const FilterJobbySkill: React.FC = () => {
                                     "DD-MM-YYYY"
                                   )}
                                 </div>
-                                {feedBackUserJob?.status === "Rejected" ||
+                                {feedBackUserJob?.status === "Pending" ||
+                                feedBackUserJob?.status === "Rejected" ||
                                 feedBackUserJob?.status === "Passed" ||
                                 feedBackUserJob?.status === "InterviewStage" ||
                                 feedBackUserJob?.status ===
@@ -1446,10 +1459,9 @@ const FilterJobbySkill: React.FC = () => {
                                     <button
                                       style={{
                                         fontFamily: "Lexend, sans-serif",
-                                        lineHeight:1.5,
+                                        lineHeight: 1.5,
                                         fontSize: "14px",
                                       }}
-                                      
                                       key={item.id}
                                       className={classes.button}
                                     >

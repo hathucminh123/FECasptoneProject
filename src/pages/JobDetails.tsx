@@ -617,7 +617,8 @@ const JobDetails: React.FC = () => {
                           <Comment />
                         </IconButton> */}
                       </span>
-                      {feedBackUserJob?.status === "Rejected" ||
+                      {feedBackUserJob?.status === "Pending" ||
+                      feedBackUserJob?.status === "Rejected" ||
                       feedBackUserJob?.status === "Passed" ||
                       feedBackUserJob?.status === "InterviewStage" ||
                       feedBackUserJob?.status === "CVScreeningPassed" ? (
