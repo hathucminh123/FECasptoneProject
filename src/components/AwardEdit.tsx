@@ -46,7 +46,6 @@ const AwardEdit: React.FC<Props> = ({ onDone, data }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: PutAwards,
     onSuccess: () => {
-      //   queryClient.invalidateQueries({ queryKey: ["AwardDetails"], refetchType: "active" });
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
         refetchType: "active",
@@ -70,12 +69,31 @@ const AwardEdit: React.FC<Props> = ({ onDone, data }) => {
       return;
     }
 
+    // Validate issueDate to ensure it's not in the future
+    const issueDate = new Date(formData.issueDate);
+    const now = new Date();
+    if (issueDate > now) {
+      message.error("Issue Date cannot be in the future.");
+      return;
+    }
+
     // Submit data
     mutate({ data: formData });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "issueDate") {
+      const selectedDate = new Date(value);
+      const now = new Date();
+
+      if (selectedDate > now) {
+        message.error("Issue Date cannot be in the future.");
+        return;
+      }
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -116,6 +134,7 @@ const AwardEdit: React.FC<Props> = ({ onDone, data }) => {
             type="date"
             required
             InputLabelProps={{ shrink: true }}
+            inputProps={{ max: new Date().toISOString().split("T")[0] }} // Max date is today
             value={formData.issueDate}
             onChange={handleChange}
             variant="outlined"

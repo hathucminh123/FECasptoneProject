@@ -15,8 +15,6 @@ interface Props {
   onDone?: () => void;
 }
 
-// Bản đồ tháng (chuyển từ tên tháng sang số tháng)
-
 const Award: React.FC<Props> = ({ onDone }) => {
   const navigate = useNavigate();
 
@@ -30,10 +28,6 @@ const Award: React.FC<Props> = ({ onDone }) => {
   const { mutate, isPending } = useMutation({
     mutationFn: PostAwards,
     onSuccess: () => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: ["Awards"],
-    //     refetchType: "active",
-    //   });
       queryClient.invalidateQueries({
         queryKey: ["UserProfile"],
         refetchType: "active",
@@ -64,6 +58,14 @@ const Award: React.FC<Props> = ({ onDone }) => {
       return;
     }
 
+    // Validate issueDate to ensure it is not in the future
+    const issueDate = new Date(formData.issueDate);
+    const now = new Date();
+    if (issueDate > now) {
+      message.error("Issue Date cannot be in the future.");
+      return;
+    }
+
     mutate({ data: formData });
   };
 
@@ -77,7 +79,15 @@ const Award: React.FC<Props> = ({ onDone }) => {
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const isoDate = new Date(value).toISOString(); // Convert date to ISO format
+    const selectedDate = new Date(value);
+    const now = new Date();
+
+    if (selectedDate > now) {
+      message.error("Issue Date cannot be in the future.");
+      return;
+    }
+
+    const isoDate = selectedDate.toISOString(); // Convert date to ISO format
     setFormData((prevData) => ({
       ...prevData,
       issueDate: isoDate,
@@ -95,15 +105,6 @@ const Award: React.FC<Props> = ({ onDone }) => {
       <Box component="form" noValidate autoComplete="off">
         <div style={{ display: "block" }}>
           <div className={classes.formInput}>
-            {/* <TextField
-              label="School Name"
-              name="name"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              variant="outlined"
-              className={classes.inputGroup}
-            /> */}
             <TextField
               label="Award Name"
               name="awardName"
@@ -128,12 +129,12 @@ const Award: React.FC<Props> = ({ onDone }) => {
               type="date"
               required
               InputLabelProps={{ shrink: true }}
+              inputProps={{ max: new Date().toISOString().split("T")[0] }} // Max date is today
               value={formData.issueDate.split("T")[0] || ""}
               onChange={handleDateChange}
               variant="outlined"
               className={classes.inputGroup}
             />
-
             <TextField
               label="Description"
               name="description"
@@ -141,6 +142,8 @@ const Award: React.FC<Props> = ({ onDone }) => {
               rows={4}
               variant="outlined"
               fullWidth
+              value={formData.description}
+              onChange={handleChange}
               className={classes.inputGroup}
             />
           </div>
