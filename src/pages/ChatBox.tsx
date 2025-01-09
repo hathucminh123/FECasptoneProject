@@ -981,7 +981,7 @@ const ChatBox: React.FC = () => {
                                                                     />
                                                                   </p>
                                                                 </div>
-                                                                <p
+                                                                {/* <p
                                                                   className={
                                                                     classes.mainjob12
                                                                   }
@@ -999,7 +999,7 @@ const ChatBox: React.FC = () => {
                                                                   {
                                                                     job.experience
                                                                   }
-                                                                </p>
+                                                                </p> */}
                                                                 <p
                                                                   className={
                                                                     classes.mainjob12

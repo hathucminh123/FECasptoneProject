@@ -59,7 +59,6 @@ const CertificatesEdit: React.FC<Props> = ({ onDone, data }) => {
   });
 
   const handleSubmit = () => {
-    // Validate required fields
     if (
       !formData.certificateName ||
       !formData.certificateOrganization ||
@@ -70,7 +69,6 @@ const CertificatesEdit: React.FC<Props> = ({ onDone, data }) => {
       return;
     }
 
-    // Validate URL format
     const isValidURL = (url: string): boolean => {
       try {
         new URL(url);
@@ -85,12 +83,29 @@ const CertificatesEdit: React.FC<Props> = ({ onDone, data }) => {
       return;
     }
 
-    // Submit data
+    const issueDate = new Date(formData.issueDate);
+    const now = new Date();
+    if (issueDate > now) {
+      message.error("Issue Date cannot be in the future.");
+      return;
+    }
+
     mutate({ data: formData });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    if (name === "issueDate") {
+      const selectedDate = new Date(value);
+      const now = new Date();
+
+      if (selectedDate > now) {
+        message.error("Issue Date cannot be in the future.");
+        return;
+      }
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -140,6 +155,7 @@ const CertificatesEdit: React.FC<Props> = ({ onDone, data }) => {
             type="date"
             required
             InputLabelProps={{ shrink: true }}
+            inputProps={{ max: new Date().toISOString().split("T")[0] }}
             value={formData.issueDate}
             onChange={handleChange}
             variant="outlined"

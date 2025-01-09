@@ -60,6 +60,26 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
       return false;
     }
   };
+  // const handleSubmit = () => {
+  //   // Ensure all fields are filled
+  //   if (
+  //     !formData.certificateName ||
+  //     !formData.certificateOrganization ||
+  //     !formData.certificateURL ||
+  //     !formData.issueDate
+  //   ) {
+  //     message.error("Please fill in all the required fields.");
+  //     return;
+  //   }
+
+  //   // Validate URL
+  //   if (!isValidURL(formData.certificateURL)) {
+  //     message.error("Please enter a valid URL for the certificate.");
+  //     return;
+  //   }
+
+  //   mutate({ data: formData });
+  // };
   const handleSubmit = () => {
     // Ensure all fields are filled
     if (
@@ -78,6 +98,15 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
       return;
     }
 
+    // Validate issueDate to ensure it is not in the future
+    const issueDate = new Date(formData.issueDate);
+    const now = new Date();
+    if (issueDate > now) {
+      message.error("Issue Date cannot be in the future.");
+      return;
+    }
+
+    // If all validations pass, call the mutation
     mutate({ data: formData });
   };
 
@@ -91,7 +120,15 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const isoDate = new Date(value).toISOString(); // Convert date to ISO format
+    const selectedDate = new Date(value);
+    const now = new Date();
+
+    if (selectedDate > now) {
+      message.error("Issue Date cannot be in the future.");
+      return;
+    }
+
+    const isoDate = selectedDate.toISOString();
     setFormData((prevData) => ({
       ...prevData,
       issueDate: isoDate,
@@ -136,7 +173,7 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
               variant="outlined"
               className={classes.inputGroup}
             />
-            <TextField
+            {/* <TextField
               label="Issue Date"
               name="issueDate"
               type="date"
@@ -146,7 +183,20 @@ const Certificates: React.FC<Props> = ({ onDone }) => {
               onChange={handleDateChange}
               variant="outlined"
               className={classes.inputGroup}
+            /> */}
+            <TextField
+              label="Issue Date"
+              name="issueDate"
+              type="date"
+              required
+              InputLabelProps={{ shrink: true }}
+              inputProps={{ max: new Date().toISOString().split("T")[0] }} // Max date is today
+              value={formData.issueDate.split("T")[0] || ""}
+              onChange={handleDateChange}
+              variant="outlined"
+              className={classes.inputGroup}
             />
+
             <TextField
               label="Description"
               name="description"
