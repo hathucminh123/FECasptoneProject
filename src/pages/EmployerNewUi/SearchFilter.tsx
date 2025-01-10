@@ -6,6 +6,7 @@ import {
   addSkillSetFilter,
   selectSearchFilter,
   resetFilters,
+  // setPageIndex,
 } from "../../redux/slices/searchUserSlice";
 import classes from "./SearchFilter.module.css";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -92,9 +93,15 @@ interface SkillSetFilter {
   totalJobs: number;
   setTotalJobs: (totalJobs: number) => void;
   setUser: React.Dispatch<React.SetStateAction<UserProfile[]>>;
+  pageIndex: number; // Thêm pageIndex vào props
+  setPageIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const SearchFilter: React.FC<SkillSetFilter> = ({ setTotalJobs, setUser }) => {
+const SearchFilter: React.FC<SkillSetFilter> = ({
+  setTotalJobs,
+  setUser,
+  setPageIndex,
+}) => {
   const dispatch = useDispatch();
   const searchFilter = useSelector(selectSearchFilter);
   const { data: SkillSetData } = useQuery({
@@ -159,17 +166,29 @@ const SearchFilter: React.FC<SkillSetFilter> = ({ setTotalJobs, setUser }) => {
     },
   });
 
+  // const handleSearch = () => {
+  //   const apiPayload = {
+  //     keyword: searchFilter.keyword,
+  //     degree: searchFilter.degree,
+  //     skillSetFilters: searchFilter.skillSetFilters,
+  //     pageIndex: searchFilter.pageIndex,
+  //     pageSize: searchFilter.pageSize,
+  //   };
+
+  //   console.log("API Payload:", apiPayload);
+
+  //   mutateAsync({ data: apiPayload });
+  // };
   const handleSearch = () => {
     const apiPayload = {
       keyword: searchFilter.keyword,
       degree: searchFilter.degree,
       skillSetFilters: searchFilter.skillSetFilters,
-      pageIndex: searchFilter.pageIndex,
+      pageIndex: 1,
       pageSize: searchFilter.pageSize,
     };
 
-    console.log("API Payload:", apiPayload);
-
+    setPageIndex(1);
     mutateAsync({ data: apiPayload });
   };
 

@@ -685,6 +685,8 @@ const AllApplicants: React.FC = () => {
                           href={data.cvPath || "#"}
                           download
                           className={classes.button5}
+                          target="_blank" 
+                          rel="noopener noreferrer" 
                         >
                           <span className={classes.spanicon}>
                             <PermContactCalendarIcon />

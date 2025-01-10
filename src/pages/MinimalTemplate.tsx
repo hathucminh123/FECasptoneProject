@@ -540,7 +540,7 @@ const MinimalTemplate: React.FC = () => {
         // Check for page break
         rightY = checkPageBreak(rightY);
       });
-    
+      rightY += 10;
       // AWARDS Section
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(12);

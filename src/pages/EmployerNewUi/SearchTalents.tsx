@@ -18,6 +18,8 @@ import NoJobApplicants from "../../components/NewUiEmployer/NoJobApplicants";
 
 import { GetUserSearchService } from "../../Services/UserSearchSevice/GetUserSearchService";
 import SearchFilter from "./SearchFilter";
+import { useSelector } from "react-redux";
+import { selectSearchFilter } from "../../redux/slices/searchUserSlice";
 // import { PutJobPostActivityStatus } from "../../Services/JobsPostActivity/PutJobPostActivityStatus";
 // import { queryClient } from "../../Services/mainService";
 // import { message } from "antd";
@@ -98,20 +100,19 @@ interface UserProfile {
   // userAccountServices?:data[];
 }
 
-
 type OutletContextType = {
   totalJobs: number;
   // setNextStep: React.Dispatch<React.SetStateAction<boolean>>;
-  setTotalJobs:React.Dispatch<React.SetStateAction<number>>;
+  setTotalJobs: React.Dispatch<React.SetStateAction<number>>;
 };
-
 
 export default function SearchTalents() {
   const { id } = useParams();
   // const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
+  const searchFilter = useSelector(selectSearchFilter);
   const [expandedId, setExpandedId] = useState<number | null>(null);
-    const { totalJobs ,setTotalJobs} = useOutletContext<OutletContextType>();
+  const { totalJobs, setTotalJobs } = useOutletContext<OutletContextType>();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -210,15 +211,19 @@ export default function SearchTalents() {
     _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    setPageIndex(value); 
     setIsLoading(true);
     mutateAsync({
       data: {
         pageIndex: value,
         pageSize: pageSize,
+        keyword: searchFilter.keyword,
+        degree: searchFilter.degree,
+        skillSetFilters: searchFilter.skillSetFilters,
       },
     });
   };
+  
 
   if (isLoading) {
     return <div className={classes.loading}>Loading talents...</div>;
@@ -667,10 +672,17 @@ export default function SearchTalents() {
               })}
             </div>
             <div className={classes.pagination}>
-              <Pagination
+              {/* <Pagination
                 count={totalPages} // Total number of pages
                 page={pageIndex} // Current page
                 onChange={handlePageChange} // Update state when page changes
+                color="primary"
+                shape="rounded"
+              /> */}
+              <Pagination
+                count={totalPages} // Tổng số trang
+                page={pageIndex} // Trang hiện tại từ state
+                onChange={handlePageChange} // Gọi lại API khi thay đổi trang
                 color="primary"
                 shape="rounded"
               />
@@ -688,10 +700,17 @@ export default function SearchTalents() {
                 Specific keywords , Education, degrees or skills
               </h6> */}
               <div className={classes.main50}>
+                {/* <SearchFilter
+                  setUser={setUser}
+                  totalJobs={totalJobs}
+                  setTotalJobs={setTotalJobs}
+                /> */}
                 <SearchFilter
                   setUser={setUser}
                   totalJobs={totalJobs}
                   setTotalJobs={setTotalJobs}
+                  pageIndex={pageIndex} // Truyền pageIndex vào SearchFilter
+                  setPageIndex={setPageIndex} // Truyền hàm setPageIndex vào SearchFilter
                 />
                 {/* <input
                             type="text"

@@ -7,7 +7,15 @@ import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 import jsPDF from "jspdf";
-
+interface ExperienceDetail {
+  id: number;
+  companyName: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  responsibilities: string;
+  achievements: string;
+}
 interface SkillSet {
   id: number;
   name: string;
@@ -69,6 +77,410 @@ const ElegantTemplate: React.FC = () => {
   //       .save(`${UserProfileData?.firstName}${UserProfileData?.lastName}.pdf`);
   //   }
   // };
+  // const handleDownload = () => {
+  //   const doc = new jsPDF("p", "mm", "a4");
+  //   const marginLeft = 15;
+  //   const marginTop = 15;
+  //   const pageWidth = doc.internal.pageSize.getWidth();
+  //   const pageHeight = doc.internal.pageSize.getHeight();
+  //   const sectionWidth = pageWidth - 2 * marginLeft;
+  //   let currentY = marginTop;
+
+  //   // Header Section
+  //   doc.setFillColor(33, 33, 33); // Dark background color
+  //   doc.rect(0, 0, pageWidth, 40, "F");
+  //   doc.setFont("Helvetica", "bold");
+  //   doc.setFontSize(22);
+  //   doc.setTextColor(255, 255, 255); // White text
+  //   doc.text(
+  //     `${UserProfileData?.firstName} ${UserProfileData?.lastName}`,
+  //     marginLeft,
+  //     25
+  //   );
+
+  //   // Contact Details
+  //   doc.setFontSize(12);
+  //   doc.setTextColor(255, 255, 255);
+  //   doc.text(
+  //     `Phone Number : ${UserProfileData?.phoneNumber || "No Phone Number"}`,
+  //     marginLeft,
+  //     35
+  //   );
+
+  //   doc.text(
+  //     `Email: ${UserProfileData?.email || "No Email Yet"}`,
+  //     marginLeft + 80,
+  //     35
+  //   );
+
+  //   currentY = 50; // Move below the header
+
+  //   // Section Title Function
+  //   const addSectionTitle = (title: string) => {
+  //     doc.setFont("Helvetica", "bold");
+  //     doc.setFontSize(14);
+  //     doc.setTextColor(33, 33, 33); // Dark font color
+  //     doc.text(title, marginLeft, currentY);
+  //     currentY += 5;
+
+  //     doc.setDrawColor(200, 200, 200); // Light gray line
+  //     doc.setLineWidth(0.5);
+  //     doc.line(marginLeft, currentY, pageWidth - marginLeft, currentY);
+  //     currentY += 5;
+  //   };
+  //   const addEducationSection = (educationDetails: EducationDetail[]) => {
+  //     // Title for Education Section
+  //     addSectionTitle("Education");
+
+  //     // Iterate through each education detail
+  //     educationDetails.forEach((edu) => {
+  //       // School Name and Major on the same line
+  //       doc.setFont("Helvetica", "bold");
+  //       doc.setFontSize(12);
+  //       doc.text(
+  //         `School name: ${edu?.institutionName || "Not Provided"}`,
+  //         marginLeft,
+  //         currentY
+  //       );
+
+  //       // Display Date Range, Vertical Bar, and Major
+  //       const dateRange = `From: ${moment(edu.startDate).format(
+  //         "DD-MM-YYYY"
+  //       )} - To: ${moment(edu.endDate).format("DD-MM-YYYY")}`;
+  //       const major = `Major: ${edu?.fieldOfStudy || "Not Provided"}`;
+  //       const separator = " | ";
+
+  //       const combinedText = `${dateRange}${separator}${major}`;
+  //       doc.setFontSize(12);
+  //       doc.setFont("Helvetica", "normal");
+  //       doc.text(combinedText, marginLeft, currentY + 6);
+
+  //       // Degree
+  //       currentY += 12;
+  //       doc.text(
+  //         `Degree: ${edu.degree || "Not Provided"}`,
+  //         marginLeft,
+  //         currentY
+  //       );
+  //       currentY += 12; // Add spacing for the next section
+  //     });
+  //   };
+
+  //   // Example call for the above function
+  //   addEducationSection(UserProfileData?.educationDetails || []);
+
+  //   const addCertificatesSection = (certificatesDetails: certificates[]) => {
+  //     // Title for Certificates Section
+  //     addSectionTitle("Certificates");
+
+  //     // Iterate through each certificate detail
+  //     certificatesDetails.forEach((edu) => {
+  //       // Certificate Name
+  //       doc.setFont("Helvetica", "bold");
+  //       doc.setFontSize(12);
+  //       doc.text(
+  //         `Certificate Name: ${edu?.certificateName || "Not Provided"}`,
+  //         marginLeft,
+  //         currentY
+  //       );
+
+  //       // Organization and Issue Date
+  //       const dateRange = `Issue Date: ${moment(edu.issueDate).format("DD-MM-YYYY")}`;
+  //       const organization = `Organization: ${edu?.certificateOrganization || "Not Provided"}`;
+  //       const separator = " | ";
+
+  //       const combinedText = `${dateRange}${separator}${organization}`;
+  //       doc.setFontSize(12);
+  //       doc.setFont("Helvetica", "normal");
+  //       doc.text(combinedText, marginLeft, currentY + 6);
+
+  //       // URL with Text Wrapping or Clickable Link
+  //       currentY += 12;
+  //       if (edu.certificateURL) {
+  //         doc.textWithLink("Certificate URL", marginLeft, currentY, {
+  //           url: edu.certificateURL,
+  //         });
+  //       } else {
+  //         doc.text("Certificate URL: Not Provided", marginLeft, currentY);
+  //       }
+
+  //       // Description
+  //       currentY += 12;
+  //       const wrappedDescription = doc.splitTextToSize(
+  //         `Description: ${edu.description || "Not Provided"}`,
+  //         sectionWidth
+  //       );
+  //       doc.text(wrappedDescription, marginLeft, currentY);
+
+  //       // Update currentY for the next certificate
+  //       currentY += wrappedDescription.length * 6 + 6;
+
+  //       // Add a new page if content overflows
+  //       if (currentY > pageHeight - 30) {
+  //         doc.addPage();
+  //         currentY = marginTop;
+  //       }
+  //     });
+  //   };
+
+  //   // Example call for the above function
+  //   addCertificatesSection(UserProfileData?.certificates || []);
+
+  //   const addAwardsSection = (certificatesDetails: Awards[]) => {
+  //     // Title for Certificates Section
+  //     addSectionTitle("Adward");
+
+  //     // Iterate through each certificate detail
+  //     certificatesDetails.forEach((edu) => {
+  //       // Certificate Name
+  //       doc.setFont("Helvetica", "bold");
+  //       doc.setFontSize(12);
+  //       doc.text(
+  //         `Award Name: ${edu?.awardName || "Not Provided"}`,
+  //         marginLeft,
+  //         currentY
+  //       );
+
+  //       // Organization and Issue Date
+  //       const dateRange = `Issue Date: ${moment(edu.issueDate).format("DD-MM-YYYY")}`;
+  //       const organization = `Organization: ${edu?.awardOrganization || "Not Provided"}`;
+  //       const separator = " | ";
+
+  //       const combinedText = `${dateRange}${separator}${organization}`;
+  //       doc.setFontSize(12);
+  //       doc.setFont("Helvetica", "normal");
+  //       doc.text(combinedText, marginLeft, currentY + 6);
+
+  //       // URL with Text Wrapping or Clickable Link
+  //       // currentY += 12;
+  //       // if (edu.certificateURL) {
+  //       //   doc.textWithLink("Certificate URL", marginLeft, currentY, {
+  //       //     url: edu.certificateURL,
+  //       //   });
+  //       // } else {
+  //       //   doc.text("Certificate URL: Not Provided", marginLeft, currentY);
+  //       // }
+
+  //       // Description
+  //       currentY += 12;
+  //       const wrappedDescription = doc.splitTextToSize(
+  //         `Description: ${edu.description || "Not Provided"}`,
+  //         sectionWidth
+  //       );
+  //       doc.text(wrappedDescription, marginLeft, currentY);
+
+  //       // Update currentY for the next certificate
+  //       currentY += wrappedDescription.length * 6 + 6;
+
+  //       // Add a new page if content overflows
+  //       if (currentY > pageHeight - 30) {
+  //         doc.addPage();
+  //         currentY = marginTop;
+  //       }
+  //     });
+  //   };
+
+  //   // Example call for the above function
+  //   addAwardsSection(UserProfileData?.awards || []);
+  //   // Add Education Section
+  //   // addSectionTitle("Education");
+
+  //   // UserProfileData?.educationDetails.forEach((edu) => {
+  //   //   doc.setFont("Helvetica", "normal");
+  //   //   doc.setFontSize(12);
+  //   //   doc.text(`School: ${edu?.institutionName || ""}`, marginLeft, currentY);
+  //   //   currentY += 6;
+  //   //   doc.text(`Major: ${edu?.fieldOfStudy || ""}`, marginLeft, currentY);
+  //   //   currentY += 6;
+  //   //   doc.text(
+  //   //     `From: ${moment(edu.startDate).format("DD-MM-YYYY") || ""} To: ${moment(
+  //   //       edu.endDate
+  //   //     ).format("DD-MM-YYYY") || "Present"
+  //   //       }`,
+  //   //     marginLeft,
+  //   //     currentY
+  //   //   );
+  //   //   currentY += 6;
+  //   //   doc.text(
+  //   //     `Degree:${edu.degree || ""}`,
+  //   //     marginLeft,
+  //   //     currentY
+  //   //   );
+  //   //   currentY += 12;
+
+  //   //   // Add Skills Section
+
+  //   // });
+  //   // addSectionTitle("Skills");
+  //   //   doc.setFont("Helvetica", "normal");
+  //   //   UserProfileData?.skillSets.forEach((skill) => {
+  //   //     doc.text(`- ${skill.name}`, marginLeft, currentY);
+  //   //     currentY += 6;
+  //   //   });
+  //   //   currentY += 10;
+  //   const addSkillsSection = (skillSets: SkillSet[]) => {
+  //     // Add Skills Title
+  //     addSectionTitle("Skills");
+
+  //     const boxHeight = 8; // Height of each skill box
+  //     const boxPadding = 3; // Padding inside the box for text
+  //     const boxMargin = 5; // Space between boxes
+  //     let currentX = marginLeft; // Start from the left margin
+  //     const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
+
+  //     // Reduce the vertical gap after the title (smaller than before)
+
+  //     skillSets.forEach((skill) => {
+  //       const skillText = skill.name || "Skill";
+  //       const skillLevel = skill.proficiencyLevel || "Level";
+  //       const textWidth =
+  //         doc.getTextWidth(`${skillLevel}: ${skillText}`) + boxPadding * 2;
+
+  //       // Wrap to next row if it exceeds the page width
+  //       if (currentX + textWidth > maxWidth) {
+  //         currentX = marginLeft; // Reset X position
+  //         currentY += boxHeight + boxMargin; // Move to the next row
+  //       }
+
+  //       // Draw the rectangle for the skill
+  //       doc.setDrawColor(200, 200, 200); // Light gray border color
+  //       doc.setFillColor(240, 240, 240); // Light background color
+  //       doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
+
+  //       // Add the skill text inside the rectangle
+  //       doc.setFont("Helvetica", "normal");
+  //       doc.setFontSize(10);
+  //       doc.setTextColor(33, 33, 33); // Dark text color
+  //       doc.text(
+  //         ` ${skillLevel}: ${skillText} `,
+  //         currentX + boxPadding,
+  //         currentY + boxHeight / 2 + 2.5
+  //       ); // Center text vertically
+
+  //       // Update X position for the next box
+  //       currentX += textWidth + boxMargin;
+  //     });
+
+  //     // Update Y position for the next section
+  //     currentY += 20;
+  //   };
+
+  //   // Example call for the above function
+  //   addSkillsSection(UserProfileData?.skillSets || []);
+
+  //   //benefits
+  //   const addBenefitsSection = (Benefits: Benefits[]) => {
+  //     // Add Skills Title
+  //     addSectionTitle("Benefits");
+
+  //     const boxHeight = 8; // Height of each skill box
+  //     const boxPadding = 3; // Padding inside the box for text
+  //     const boxMargin = 5; // Space between boxes
+  //     let currentX = marginLeft; // Start from the left margin
+  //     const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
+
+  //     // Reduce the vertical gap after the title (smaller than before)
+
+  //     Benefits.forEach((benefit) => {
+  //       const skillText = benefit.name || "Skill";
+  //       const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
+
+  //       // Wrap to next row if it exceeds the page width
+  //       if (currentX + textWidth > maxWidth) {
+  //         currentX = marginLeft; // Reset X position
+  //         currentY += boxHeight + boxMargin; // Move to the next row
+  //       }
+
+  //       // Draw the rectangle for the skill
+  //       doc.setDrawColor(200, 200, 200); // Light gray border color
+  //       doc.setFillColor(240, 240, 240); // Light background color
+  //       doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
+
+  //       // Add the skill text inside the rectangle
+  //       doc.setFont("Helvetica", "normal");
+  //       doc.setFontSize(10);
+  //       doc.setTextColor(33, 33, 33); // Dark text color
+  //       doc.text(
+  //         skillText,
+  //         currentX + boxPadding,
+  //         currentY + boxHeight / 2 + 2.5
+  //       ); // Center text vertically
+
+  //       // Update X position for the next box
+  //       currentX += textWidth + boxMargin;
+  //     });
+
+  //     // Update Y position for the next section
+  //     currentY += 20;
+  //   };
+
+  //   // Example call for the above function
+  //   addBenefitsSection(UserProfileData?.benefits || []);
+  //   // Add Work Experience Section
+
+  //   addSectionTitle("Work Experience");
+  //   UserProfileData?.experienceDetails.forEach((exp) => {
+  //     doc.setFont("Helvetica", "bold");
+  //     doc.text(
+  //       `Position: ${exp.position} | CompanyName:${exp.companyName}`,
+  //       marginLeft,
+  //       currentY
+  //     );
+  //     currentY += 6;
+  //     doc.setFont("Helvetica", "normal");
+  //     doc.text(
+  //       `From: ${moment(exp.startDate).format("DD-MM-YYYY")} To: ${
+  //         moment(exp.endDate).format("DD-MM-YYYY") || "Present"
+  //       }`,
+  //       marginLeft,
+  //       currentY
+  //     );
+  //     currentY += 6;
+
+  //     doc.text("Daily Tasks:", marginLeft, currentY);
+  //     currentY += 6;
+
+  //     const extractTextFromHTML = (htmlString: string) => {
+  //       const tempDiv = document.createElement("div");
+  //       tempDiv.innerHTML = htmlString;
+  //       return tempDiv.textContent || tempDiv.innerText || "";
+  //     };
+  //     const responsibilitiesText = extractTextFromHTML(
+  //       exp.responsibilities || ""
+  //     );
+  //     const responsibilities = doc.splitTextToSize(
+  //       responsibilitiesText,
+  //       sectionWidth
+  //     );
+  //     responsibilities.forEach((task: string) => {
+  //       doc.text(`- ${task.trim()}`, marginLeft + 5, currentY);
+  //       currentY += 6;
+  //     });
+
+  //     doc.text("Achievements:", marginLeft, currentY);
+  //     currentY += 6;
+
+  //     // Handle achievements (convert to array if it's a string)
+  //     const achievementsText = extractTextFromHTML(exp.achievements || "");
+  //     const achievements = doc.splitTextToSize(achievementsText, sectionWidth);
+  //     achievements.forEach((ach: string) => {
+  //       doc.text(`- ${ach.trim()}`, marginLeft + 5, currentY);
+  //       currentY += 6;
+  //     });
+
+  //     currentY += 12;
+
+  //     if (currentY > pageHeight - 30) {
+  //       doc.addPage();
+  //       currentY = marginTop;
+  //     }
+  //   });
+
+  //   // Save the PDF
+  //   doc.save(
+  //     `${UserProfileData?.firstName}_${UserProfileData?.lastName}_Resume.pdf`
+  //   );
+  // };
   const handleDownload = () => {
     const doc = new jsPDF("p", "mm", "a4");
     const marginLeft = 15;
@@ -78,402 +490,294 @@ const ElegantTemplate: React.FC = () => {
     const sectionWidth = pageWidth - 2 * marginLeft;
     let currentY = marginTop;
 
+    // Utility function to handle page breaks
+    const checkPageBreak = (currentY: number) => {
+      if (currentY > pageHeight - 30) {
+        doc.addPage();
+        return marginTop; // Reset Y position on a new page
+      }
+      return currentY;
+    };
+
     // Header Section
-    doc.setFillColor(33, 33, 33); // Dark background color
+    doc.setFillColor(33, 33, 33);
     doc.rect(0, 0, pageWidth, 40, "F");
     doc.setFont("Helvetica", "bold");
     doc.setFontSize(22);
-    doc.setTextColor(255, 255, 255); // White text
+    doc.setTextColor(255, 255, 255);
     doc.text(
-      `${UserProfileData?.firstName} ${UserProfileData?.lastName}`,
+      `${UserProfileData?.firstName || ""} ${UserProfileData?.lastName || ""}`,
       marginLeft,
       25
     );
 
-    // Contact Details
     doc.setFontSize(12);
-    doc.setTextColor(255, 255, 255);
     doc.text(
-      `Phone Number : ${UserProfileData?.phoneNumber || "No Phone Number"}`,
+      `Phone: ${UserProfileData?.phoneNumber || "No Phone Number"}`,
       marginLeft,
       35
     );
-
     doc.text(
-      `Email: ${UserProfileData?.email || "No Email Yet"}`,
+      `Email: ${UserProfileData?.email || "No Email"}`,
       marginLeft + 80,
       35
     );
-
-    currentY = 50; // Move below the header
+    currentY = 50;
 
     // Section Title Function
     const addSectionTitle = (title: string) => {
+      currentY = checkPageBreak(currentY);
       doc.setFont("Helvetica", "bold");
       doc.setFontSize(14);
-      doc.setTextColor(33, 33, 33); // Dark font color
+      doc.setTextColor(33, 33, 33);
       doc.text(title, marginLeft, currentY);
       currentY += 5;
 
-      doc.setDrawColor(200, 200, 200); // Light gray line
-      doc.setLineWidth(0.5);
+      doc.setDrawColor(200, 200, 200);
       doc.line(marginLeft, currentY, pageWidth - marginLeft, currentY);
       currentY += 5;
     };
+
+    // Education Section
     const addEducationSection = (educationDetails: EducationDetail[]) => {
-      // Title for Education Section
+      if (!educationDetails?.length) return;
       addSectionTitle("Education");
 
-      // Iterate through each education detail
       educationDetails.forEach((edu) => {
-        // School Name and Major on the same line
+        currentY = checkPageBreak(currentY);
         doc.setFont("Helvetica", "bold");
         doc.setFontSize(12);
         doc.text(
-          `School name: ${edu?.institutionName || "Not Provided"}`,
+          `School: ${edu?.institutionName || "Not Provided"}`,
           marginLeft,
           currentY
         );
 
-        // Display Date Range, Vertical Bar, and Major
-        const dateRange = `From: ${moment(edu.startDate).format(
+        const details = `From: ${moment(edu.startDate).format(
           "DD-MM-YYYY"
-        )} - To: ${moment(edu.endDate).format("DD-MM-YYYY")}`;
-        const major = `Major: ${edu?.fieldOfStudy || "Not Provided"}`;
-        const separator = " | ";
-
-        const combinedText = `${dateRange}${separator}${major}`;
-        doc.setFontSize(12);
+        )} - To: ${
+          moment(edu.endDate).format("DD-MM-YYYY") || "Present"
+        } | Major: ${edu.fieldOfStudy || "Not Provided"}`;
         doc.setFont("Helvetica", "normal");
-        doc.text(combinedText, marginLeft, currentY + 6);
+        doc.text(details, marginLeft, currentY + 6);
 
-        // Degree
         currentY += 12;
         doc.text(
           `Degree: ${edu.degree || "Not Provided"}`,
           marginLeft,
           currentY
         );
-        currentY += 12; // Add spacing for the next section
+        currentY += 12;
       });
     };
 
-    // Example call for the above function
     addEducationSection(UserProfileData?.educationDetails || []);
 
-
-    const addCertificatesSection = (certificatesDetails: certificates[]) => {
-      // Title for Certificates Section
+    // Certificates Section
+    const addCertificatesSection = (certificates: certificates[]) => {
+      if (!certificates?.length) return;
       addSectionTitle("Certificates");
-    
-      // Iterate through each certificate detail
-      certificatesDetails.forEach((edu) => {
-        // Certificate Name
+
+      certificates.forEach((cert) => {
+        currentY = checkPageBreak(currentY);
         doc.setFont("Helvetica", "bold");
-        doc.setFontSize(12);
         doc.text(
-          `Certificate Name: ${edu?.certificateName || "Not Provided"}`,
+          `Certificate: ${cert.certificateName || "Not Provided"}`,
           marginLeft,
           currentY
         );
-    
-        // Organization and Issue Date
-        const dateRange = `Issue Date: ${moment(edu.issueDate).format("DD-MM-YYYY")}`;
-        const organization = `Organization: ${edu?.certificateOrganization || "Not Provided"}`;
-        const separator = " | ";
-    
-        const combinedText = `${dateRange}${separator}${organization}`;
-        doc.setFontSize(12);
+
+        const details = `Issue Date: ${moment(cert.issueDate).format(
+          "DD-MM-YYYY"
+        )} | Organization: ${cert.certificateOrganization || "Not Provided"}`;
         doc.setFont("Helvetica", "normal");
-        doc.text(combinedText, marginLeft, currentY + 6);
-    
-        // URL with Text Wrapping or Clickable Link
-        currentY += 12;
-        if (edu.certificateURL) {
-          doc.textWithLink("Certificate URL", marginLeft, currentY, {
-            url: edu.certificateURL,
+        doc.text(details, marginLeft, currentY + 6);
+
+        if (cert.certificateURL) {
+          currentY += 12;
+          doc.textWithLink("View Certificate", marginLeft, currentY, {
+            url: cert.certificateURL,
           });
-        } else {
-          doc.text("Certificate URL: Not Provided", marginLeft, currentY);
         }
-    
-        // Description
+
         currentY += 12;
-        const wrappedDescription = doc.splitTextToSize(
-          `Description: ${edu.description || "Not Provided"}`,
+        const description = doc.splitTextToSize(
+          `Description: ${cert.description || "Not Provided"}`,
           sectionWidth
         );
-        doc.text(wrappedDescription, marginLeft, currentY);
-    
-        // Update currentY for the next certificate
-        currentY += wrappedDescription.length * 6 + 6;
-    
-        // Add a new page if content overflows
-        if (currentY > pageHeight - 30) {
-          doc.addPage();
-          currentY = marginTop;
-        }
+        doc.text(description, marginLeft, currentY);
+        currentY += description.length * 6 + 6;
       });
     };
 
-    // Example call for the above function
     addCertificatesSection(UserProfileData?.certificates || []);
 
+    // Awards Section
+    const addAwardsSection = (awards: Awards[]) => {
+      if (!awards?.length) return;
+      addSectionTitle("Awards");
 
-
-    const addAwardsSection = (certificatesDetails: Awards[]) => {
-      // Title for Certificates Section
-      addSectionTitle("Adward");
-    
-      // Iterate through each certificate detail
-      certificatesDetails.forEach((edu) => {
-        // Certificate Name
+      awards.forEach((award) => {
+        currentY = checkPageBreak(currentY);
         doc.setFont("Helvetica", "bold");
-        doc.setFontSize(12);
         doc.text(
-          `Award Name: ${edu?.awardName || "Not Provided"}`,
+          `Award: ${award.awardName || "Not Provided"}`,
+          marginLeft,
+          currentY
+        );
+
+        const details = `Issue Date: ${moment(award.issueDate).format(
+          "DD-MM-YYYY"
+        )} | Organization: ${award.awardOrganization || "Not Provided"}`;
+        doc.setFont("Helvetica", "normal");
+        doc.text(details, marginLeft, currentY + 6);
+
+        currentY += 12;
+        const description = doc.splitTextToSize(
+          `Description: ${award.description || "Not Provided"}`,
+          sectionWidth
+        );
+        doc.text(description, marginLeft, currentY);
+        currentY += description.length * 6 + 6;
+      });
+    };
+
+    addAwardsSection(UserProfileData?.awards || []);
+
+    // Skills Section
+    const addSkillsSection = (skills: SkillSet[]) => {
+      if (!skills?.length) return;
+      addSectionTitle("Skills");
+
+      const boxHeight = 8;
+      const boxMargin = 5;
+      let currentX = marginLeft;
+
+      skills.forEach((skill) => {
+        const skillText = `${skill.proficiencyLevel || ""}: ${
+          skill.name || ""
+        }`;
+        const textWidth = doc.getTextWidth(skillText) + 6;
+
+        if (currentX + textWidth > pageWidth - marginLeft) {
+          currentX = marginLeft;
+          currentY += boxHeight + boxMargin;
+        }
+
+        doc.setDrawColor(200, 200, 200);
+        doc.setFillColor(240, 240, 240);
+        doc.rect(currentX, currentY, textWidth, boxHeight, "FD");
+
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text(skillText, currentX + 3, currentY + boxHeight / 2 + 2.5);
+
+        currentX += textWidth + boxMargin;
+      });
+
+      currentY += boxHeight + 10;
+    };
+
+    addSkillsSection(UserProfileData?.skillSets || []);
+
+    // Benefits Section
+    const addBenefitsSection = (benefits: Benefits[]) => {
+      if (!benefits?.length) return;
+      addSectionTitle("Benefits");
+
+      const boxHeight = 8;
+      const boxMargin = 5;
+      let currentX = marginLeft;
+
+      benefits.forEach((benefit: Benefits) => {
+        const benefitText = benefit.name || "Benefit";
+        const textWidth = doc.getTextWidth(benefitText) + 6;
+
+        if (currentX + textWidth > pageWidth - marginLeft) {
+          currentX = marginLeft;
+          currentY += boxHeight + boxMargin;
+        }
+
+        doc.setDrawColor(200, 200, 200);
+        doc.setFillColor(240, 240, 240);
+        doc.rect(currentX, currentY, textWidth, boxHeight, "FD");
+
+        doc.setFont("Helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text(benefitText, currentX + 3, currentY + boxHeight / 2 + 2.5);
+
+        currentX += textWidth + boxMargin;
+      });
+
+      currentY += boxHeight + 10;
+    };
+
+    addBenefitsSection(UserProfileData?.benefits || []);
+
+    // Work Experience Section
+
+    const stripHTMLTags = (html: string): string => {
+      const tempDiv = document.createElement("div");
+      tempDiv.innerHTML = html;
+      return tempDiv.textContent || tempDiv.innerText || "";
+    };  
+    const addWorkExperienceSection = (experiences: ExperienceDetail[]) => {
+      if (!experiences?.length) return;
+      addSectionTitle("Work Experience");
+    
+      experiences.forEach((exp) => {
+        currentY = checkPageBreak(currentY);
+    
+        doc.setFont("Helvetica", "bold");
+        doc.text(
+          `Position: ${exp.position || ""} | Company: ${exp.companyName || ""}`,
           marginLeft,
           currentY
         );
     
-        // Organization and Issue Date
-        const dateRange = `Issue Date: ${moment(edu.issueDate).format("DD-MM-YYYY")}`;
-        const organization = `Organization: ${edu?.awardOrganization || "Not Provided"}`;
-        const separator = " | ";
-    
-        const combinedText = `${dateRange}${separator}${organization}`;
-        doc.setFontSize(12);
         doc.setFont("Helvetica", "normal");
-        doc.text(combinedText, marginLeft, currentY + 6);
+        doc.text(
+          `From: ${moment(exp.startDate).format("DD-MM-YYYY")} To: ${
+            moment(exp.endDate).format("DD-MM-YYYY") || "Present"
+          }`,
+          marginLeft,
+          currentY + 6
+        );
     
-        // URL with Text Wrapping or Clickable Link
-        // currentY += 12;
-        // if (edu.certificateURL) {
-        //   doc.textWithLink("Certificate URL", marginLeft, currentY, {
-        //     url: edu.certificateURL,
-        //   });
-        // } else {
-        //   doc.text("Certificate URL: Not Provided", marginLeft, currentY);
-        // }
-    
-        // Description
         currentY += 12;
-        const wrappedDescription = doc.splitTextToSize(
-          `Description: ${edu.description || "Not Provided"}`,
+    
+        doc.text("Daily Tasks:", marginLeft, currentY);
+        currentY += 6;
+    
+        // Clean HTML tags from responsibilities
+        const responsibilities = doc.splitTextToSize(
+          stripHTMLTags(exp.responsibilities || "No details provided"),
           sectionWidth
         );
-        doc.text(wrappedDescription, marginLeft, currentY);
+        doc.text(responsibilities, marginLeft + 5, currentY);
+        currentY += responsibilities.length * 6 + 6;
     
-        // Update currentY for the next certificate
-        currentY += wrappedDescription.length * 6 + 6;
+        doc.text("Achievements:", marginLeft, currentY);
+        currentY += 6;
     
-        // Add a new page if content overflows
-        if (currentY > pageHeight - 30) {
-          doc.addPage();
-          currentY = marginTop;
-        }
+        // Clean HTML tags from achievements
+        const achievements = doc.splitTextToSize(
+          stripHTMLTags(exp.achievements || "No achievements provided"),
+          sectionWidth
+        );
+        doc.text(achievements, marginLeft + 5, currentY);
+        currentY += achievements.length * 6 + 6;
       });
     };
+    
 
-    // Example call for the above function
-    addAwardsSection(UserProfileData?.awards || []);
-    // Add Education Section
-    // addSectionTitle("Education");
+    addWorkExperienceSection(UserProfileData?.experienceDetails || []);
 
-    // UserProfileData?.educationDetails.forEach((edu) => {
-    //   doc.setFont("Helvetica", "normal");
-    //   doc.setFontSize(12);
-    //   doc.text(`School: ${edu?.institutionName || ""}`, marginLeft, currentY);
-    //   currentY += 6;
-    //   doc.text(`Major: ${edu?.fieldOfStudy || ""}`, marginLeft, currentY);
-    //   currentY += 6;
-    //   doc.text(
-    //     `From: ${moment(edu.startDate).format("DD-MM-YYYY") || ""} To: ${moment(
-    //       edu.endDate
-    //     ).format("DD-MM-YYYY") || "Present"
-    //       }`,
-    //     marginLeft,
-    //     currentY
-    //   );
-    //   currentY += 6;
-    //   doc.text(
-    //     `Degree:${edu.degree || ""}`,
-    //     marginLeft,
-    //     currentY
-    //   );
-    //   currentY += 12;
-
-    //   // Add Skills Section
-
-    // });
-    // addSectionTitle("Skills");
-    //   doc.setFont("Helvetica", "normal");
-    //   UserProfileData?.skillSets.forEach((skill) => {
-    //     doc.text(`- ${skill.name}`, marginLeft, currentY);
-    //     currentY += 6;
-    //   });
-    //   currentY += 10;
-    const addSkillsSection = (skillSets: SkillSet[]) => {
-      // Add Skills Title
-      addSectionTitle("Skills");
-
-      const boxHeight = 8; // Height of each skill box
-      const boxPadding = 3; // Padding inside the box for text
-      const boxMargin = 5; // Space between boxes
-      let currentX = marginLeft; // Start from the left margin
-      const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
-
-      // Reduce the vertical gap after the title (smaller than before)
-
-      skillSets.forEach((skill) => {
-        const skillText = skill.name || "Skill";
-        const skillLevel = skill.proficiencyLevel || "Level";
-        const textWidth =
-          doc.getTextWidth(`${skillLevel}: ${skillText}`) + boxPadding * 2;
-
-        // Wrap to next row if it exceeds the page width
-        if (currentX + textWidth > maxWidth) {
-          currentX = marginLeft; // Reset X position
-          currentY += boxHeight + boxMargin; // Move to the next row
-        }
-
-        // Draw the rectangle for the skill
-        doc.setDrawColor(200, 200, 200); // Light gray border color
-        doc.setFillColor(240, 240, 240); // Light background color
-        doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
-
-        // Add the skill text inside the rectangle
-        doc.setFont("Helvetica", "normal");
-        doc.setFontSize(10);
-        doc.setTextColor(33, 33, 33); // Dark text color
-        doc.text(
-          ` ${skillLevel}: ${skillText} `,
-          currentX + boxPadding,
-          currentY + boxHeight / 2 + 2.5
-        ); // Center text vertically
-
-        // Update X position for the next box
-        currentX += textWidth + boxMargin;
-      });
-
-      // Update Y position for the next section
-      currentY += 20;
-    };
-
-    // Example call for the above function
-    addSkillsSection(UserProfileData?.skillSets || []);
-
-    //benefits
-    const addBenefitsSection = (Benefits: Benefits[]) => {
-      // Add Skills Title
-      addSectionTitle("Benefits");
-
-      const boxHeight = 8; // Height of each skill box
-      const boxPadding = 3; // Padding inside the box for text
-      const boxMargin = 5; // Space between boxes
-      let currentX = marginLeft; // Start from the left margin
-      const maxWidth = pageWidth - marginLeft * 2; // Maximum width of the section
-
-      // Reduce the vertical gap after the title (smaller than before)
-
-      Benefits.forEach((benefit) => {
-        const skillText = benefit.name || "Skill";
-        const textWidth = doc.getTextWidth(skillText) + boxPadding * 2; // Calculate box width
-
-        // Wrap to next row if it exceeds the page width
-        if (currentX + textWidth > maxWidth) {
-          currentX = marginLeft; // Reset X position
-          currentY += boxHeight + boxMargin; // Move to the next row
-        }
-
-        // Draw the rectangle for the skill
-        doc.setDrawColor(200, 200, 200); // Light gray border color
-        doc.setFillColor(240, 240, 240); // Light background color
-        doc.rect(currentX, currentY, textWidth, boxHeight, "FD"); // Draw filled rectangle with border
-
-        // Add the skill text inside the rectangle
-        doc.setFont("Helvetica", "normal");
-        doc.setFontSize(10);
-        doc.setTextColor(33, 33, 33); // Dark text color
-        doc.text(
-          skillText,
-          currentX + boxPadding,
-          currentY + boxHeight / 2 + 2.5
-        ); // Center text vertically
-
-        // Update X position for the next box
-        currentX += textWidth + boxMargin;
-      });
-
-      // Update Y position for the next section
-      currentY += 20;
-    };
-
-    // Example call for the above function
-    addBenefitsSection(UserProfileData?.benefits || []);
-    // Add Work Experience Section
-
-    addSectionTitle("Work Experience");
-    UserProfileData?.experienceDetails.forEach((exp) => {
-      doc.setFont("Helvetica", "bold");
-      doc.text(
-        `Position: ${exp.position} | CompanyName:${exp.companyName}`,
-        marginLeft,
-        currentY
-      );
-      currentY += 6;
-      doc.setFont("Helvetica", "normal");
-      doc.text(
-        `From: ${moment(exp.startDate).format("DD-MM-YYYY")} To: ${
-          moment(exp.endDate).format("DD-MM-YYYY") || "Present"
-        }`,
-        marginLeft,
-        currentY
-      );
-      currentY += 6;
-
-      doc.text("Daily Tasks:", marginLeft, currentY);
-      currentY += 6;
-
-      const extractTextFromHTML = (htmlString: string) => {
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = htmlString;
-        return tempDiv.textContent || tempDiv.innerText || "";
-      };
-      const responsibilitiesText = extractTextFromHTML(
-        exp.responsibilities || ""
-      );
-      const responsibilities = doc.splitTextToSize(
-        responsibilitiesText,
-        sectionWidth
-      );
-      responsibilities.forEach((task: string) => {
-        doc.text(`- ${task.trim()}`, marginLeft + 5, currentY);
-        currentY += 6;
-      });
-
-      doc.text("Achievements:", marginLeft, currentY);
-      currentY += 6;
-
-      // Handle achievements (convert to array if it's a string)
-      const achievementsText = extractTextFromHTML(exp.achievements || "");
-      const achievements = doc.splitTextToSize(achievementsText, sectionWidth);
-      achievements.forEach((ach: string) => {
-        doc.text(`- ${ach.trim()}`, marginLeft + 5, currentY);
-        currentY += 6;
-      });
-
-      currentY += 12;
-
-      if (currentY > pageHeight - 30) {
-        doc.addPage();
-        currentY = marginTop;
-      }
-    });
-
-    // Save the PDF
+    // Save PDF
     doc.save(
-      `${UserProfileData?.firstName}_${UserProfileData?.lastName}_Resume.pdf`
+      `${UserProfileData?.firstName || "User"}_${
+        UserProfileData?.lastName || "Profile"
+      }_Resume.pdf`
     );
   };
 
@@ -779,7 +1083,6 @@ const ElegantTemplate: React.FC = () => {
                           >
                             Organization: {edu.certificateOrganization}
                           </p>
-                          
                         </div>
                         {/* <span
                           className={classes.span1}
@@ -807,16 +1110,16 @@ const ElegantTemplate: React.FC = () => {
                         </span>
                         <span
                           className={classes.span1}
-                         
-                          style={{ fontFamily: "Lexend, sans-serif",display:"block" }}
+                          style={{
+                            fontFamily: "Lexend, sans-serif",
+                            display: "block",
+                          }}
                         >
                           Description: {edu.description}
                         </span>
-                      
                       </div>
                     ))}
                   </div>
-                
                 </div>
                 <div className={classes.education}>
                   <div
@@ -851,7 +1154,6 @@ const ElegantTemplate: React.FC = () => {
                           >
                             Organization: {edu.awardOrganization}
                           </p>
-                          
                         </div>
                         {/* <span
                           className={classes.span1}
@@ -879,16 +1181,16 @@ const ElegantTemplate: React.FC = () => {
                         </span> */}
                         <span
                           className={classes.span1}
-                         
-                          style={{ fontFamily: "Lexend, sans-serif",display:"block" }}
+                          style={{
+                            fontFamily: "Lexend, sans-serif",
+                            display: "block",
+                          }}
                         >
                           Description: {edu.description}
                         </span>
-                      
                       </div>
                     ))}
                   </div>
-                
                 </div>
               </div>
             </div>
