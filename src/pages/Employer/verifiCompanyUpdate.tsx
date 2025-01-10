@@ -1381,6 +1381,7 @@ export default function VerifiCompanyUpdate() {
                 <button
                   className={classes.btn1}
                   style={{ marginLeft: 10 }}
+                  disabled={true}
                   // type="submit"
                 >
                   Wait a seconds

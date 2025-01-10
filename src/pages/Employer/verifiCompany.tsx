@@ -1303,6 +1303,7 @@ export default function VerifiCompany() {
                   className={classes.btn1}
                   style={{ marginLeft: 10 }}
                   // type="submit"
+                  disabled={true}
                 >
                   Wait a seconds
                 </button>
