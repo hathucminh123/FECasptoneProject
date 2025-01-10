@@ -16,85 +16,85 @@ import { message } from "antd";
 // Mock skill data (replace with API call if needed)
 
 interface EducationDetail {
-    id: number;
-    institutionName: string;
-    degree: string;
-    fieldOfStudy: string;
-    startDate: string;
-    endDate: string;
-    gpa: number;
-  }
-  
-  interface ExperienceDetail {
-    id: number;
-    companyName: string;
-    position: string;
-    startDate: string;
-    endDate: string;
-    responsibilities: string;
-    achievements: string;
-  }
-  
-  interface SkillSet {
-    id: number;
-    name: string;
-    shorthand: string | null;
-    description: string | null;
-    proficiencyLevel?: string | null;
-  }
-  
-  interface CVs {
-    id: number;
-    url: string;
-    name: string;
-  }
-  interface Benefits {
-    id: number;
-    name: string;
-  }
-  interface certificates {
-    id: number;
-    certificateName: string;
-    certificateOrganization: string;
-    description: string;
-    certificateURL: string;
-    issueDate: string;
-  }
-  
-  interface Awards {
-    id: number;
-    awardName: string;
-    awardOrganization: string;
-    description: string;
-    issueDate: string;
-  }
-  
-  interface UserProfile {
-    id: number;
-    userName: string;
-    isLookingForJob: boolean;
-    firstName: string;
-    lastName: string;
-    email: string;
-    phoneNumber: string | null;
-    coverLetter?: string;
-    educationDetails: EducationDetail[];
-    experienceDetails: ExperienceDetail[];
-    cvs: CVs[];
-    skillSets: SkillSet[];
-    benefits: Benefits[];
-    awards: Awards[];
-    certificates: certificates[];
-    // userAccountServices?:data[];
-  }
+  id: number;
+  institutionName: string;
+  degree: string;
+  fieldOfStudy: string;
+  startDate: string;
+  endDate: string;
+  gpa: number;
+}
+
+interface ExperienceDetail {
+  id: number;
+  companyName: string;
+  position: string;
+  startDate: string;
+  endDate: string;
+  responsibilities: string;
+  achievements: string;
+}
+
+interface SkillSet {
+  id: number;
+  name: string;
+  shorthand: string | null;
+  description: string | null;
+  proficiencyLevel?: string | null;
+}
+
+interface CVs {
+  id: number;
+  url: string;
+  name: string;
+}
+interface Benefits {
+  id: number;
+  name: string;
+}
+interface certificates {
+  id: number;
+  certificateName: string;
+  certificateOrganization: string;
+  description: string;
+  certificateURL: string;
+  issueDate: string;
+}
+
+interface Awards {
+  id: number;
+  awardName: string;
+  awardOrganization: string;
+  description: string;
+  issueDate: string;
+}
+
+interface UserProfile {
+  id: number;
+  userName: string;
+  isLookingForJob: boolean;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string | null;
+  coverLetter?: string;
+  educationDetails: EducationDetail[];
+  experienceDetails: ExperienceDetail[];
+  cvs: CVs[];
+  skillSets: SkillSet[];
+  benefits: Benefits[];
+  awards: Awards[];
+  certificates: certificates[];
+  // userAccountServices?:data[];
+}
 
 interface SkillSetFilter {
   totalJobs: number;
   setTotalJobs: (totalJobs: number) => void;
   setUser: React.Dispatch<React.SetStateAction<UserProfile[]>>;
-    }
+}
 
-const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
+const SearchFilter: React.FC<SkillSetFilter> = ({ setTotalJobs, setUser }) => {
   const dispatch = useDispatch();
   const searchFilter = useSelector(selectSearchFilter);
   const { data: SkillSetData } = useQuery({
@@ -109,7 +109,6 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
   const flattenedArray = skills?.flat();
   const uniqueArray = [...new Set(flattenedArray)];
 
-  
   const skillsColumns = uniqueArray;
 
   console.log("SkillSetData", skillsColumns);
@@ -117,8 +116,6 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
   // Local state for selected skill and proficiency
   const [selectedSkill, setSelectedSkill] = useState<string>("");
   const [proficiency, setProficiency] = useState<string>("Beginner");
-
-
 
   // Add selected skill to Redux
   const handleAddSkill = () => {
@@ -143,7 +140,7 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
     updatedSkills.forEach((skill) => dispatch(addSkillSetFilter(skill)));
   };
 
-    //   const [totalJobs, setTotalJobs] = useState<number>(0);
+  //   const [totalJobs, setTotalJobs] = useState<number>(0);
   const { mutateAsync } = useMutation({
     mutationFn: GetUserSearchService,
     onSuccess: (data) => {
@@ -173,9 +170,8 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
 
     console.log("API Payload:", apiPayload);
 
-    mutateAsync({data: apiPayload});    
-  }
-
+    mutateAsync({ data: apiPayload });
+  };
 
   // Reset all filters
   const handleResetFilters = () => {
@@ -185,7 +181,6 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
   };
 
   // Submit API payload
-
 
   return (
     <div className={classes.container}>
@@ -227,11 +222,19 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
           onChange={(e) => setSelectedSkill(e.target.value)}
         >
           <option value="">Select Skills</option>
-          {skillsColumns.map((skill,index) => (
+          {/* {skillsColumns.map((skill,index) => (
             <option key={index} value={skill}>
               {skill}
             </option>
-          ))}
+          ))} */}
+          {skillsColumns
+            .sort((a, b) => a.localeCompare(b))
+            .map((skill, index) => (
+              <option key={index} value={skill}>
+                {" "}
+                {skill}{" "}
+              </option>
+            ))}
         </select>
 
         <select
@@ -267,7 +270,7 @@ const SearchFilter: React.FC<SkillSetFilter> = ({setTotalJobs,setUser}) => {
         Find Talents
       </button>
       <button className={classes.resetButton} onClick={handleResetFilters}>
-      Reset Filter
+        Reset Filter
       </button>
     </div>
   );

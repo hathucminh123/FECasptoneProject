@@ -25,7 +25,7 @@ const RecommendNew: React.FC = () => {
   //   enabled: !!JobId,
   // });
   // const [currentPage, setCurrentPage] = useState(1);
-    const [totalJobs, setTotalJobs] = useState<number>(0);
+  const [totalJobs, setTotalJobs] = useState<number>(0);
   const { mutateAsync } = useMutation({
     mutationFn: GetUserSearchService,
     onSuccess: (data) => {
@@ -49,8 +49,7 @@ const RecommendNew: React.FC = () => {
         pageSize: 1000,
       },
     });
-  }, [ mutateAsync]);
-
+  }, [mutateAsync]);
 
   const {
     data: ListSeeker,
@@ -122,7 +121,7 @@ const RecommendNew: React.FC = () => {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                   Passive
+                      Passive
                     </span>
                   </div>
                   <div className={classes.main7}>
@@ -145,7 +144,7 @@ const RecommendNew: React.FC = () => {
                 <>
                   <div className={classes.main4}>
                     <span style={isActive ? { color: "#050c26" } : undefined}>
-                    Active
+                      Active
                     </span>
                   </div>
                   <div className={classes.main7}>
@@ -205,7 +204,7 @@ const RecommendNew: React.FC = () => {
           </nav>
         </div>
       </header>
-      <Outlet />
+      <Outlet context={{ totalJobs,setTotalJobs }} />
     </div>
   );
 };

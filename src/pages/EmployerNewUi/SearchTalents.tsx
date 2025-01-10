@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./SearchTalents.module.css";
 import Typography from "@mui/material/Typography";
 
-import { useParams } from "react-router-dom";
+import { useOutletContext, useParams } from "react-router-dom";
 
 import { useMutation } from "@tanstack/react-query";
 import Pagination from "@mui/material/Pagination";
@@ -98,11 +98,20 @@ interface UserProfile {
   // userAccountServices?:data[];
 }
 
+
+type OutletContextType = {
+  totalJobs: number;
+  // setNextStep: React.Dispatch<React.SetStateAction<boolean>>;
+  setTotalJobs:React.Dispatch<React.SetStateAction<number>>;
+};
+
+
 export default function SearchTalents() {
   const { id } = useParams();
   // const JobId = Number(id);
   // const [openExp, setOpenExp] = useState<boolean>(false);
   const [expandedId, setExpandedId] = useState<number | null>(null);
+    const { totalJobs ,setTotalJobs} = useOutletContext<OutletContextType>();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -164,9 +173,9 @@ export default function SearchTalents() {
     // setIdApplicants(id);
   };
   const [pageIndex, setPageIndex] = useState(1);
-  const pageSize = 5;
+  const pageSize = 10;
   const [user, setUser] = useState<UserProfile[]>([]);
-  const [totalJobs, setTotalJobs] = useState<number>(0);
+  // const [totalJobs, setTotalJobs] = useState<number>(0);
   const { mutateAsync } = useMutation({
     mutationFn: GetUserSearchService,
     onSuccess: (data) => {
