@@ -34,7 +34,7 @@ interface form {
   title,
   text,
   icon,
-  img,
+  // img,
   icon2,
   onClick,
   data,
@@ -204,13 +204,13 @@ interface form {
           </Typography>
         )}
 
-        <span className={classes.img}>
+        {/* <span className={classes.img}>
           <img
             style={{ width: "80px", height: "80px", verticalAlign: "middle" }}
             src={img}
             alt="custom image"
           />{" "}
-        </span>
+        </span> */}
       </div>
       <AnimatePresence>
         {openExperience && (

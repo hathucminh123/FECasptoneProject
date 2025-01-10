@@ -249,7 +249,7 @@ export default function Profilecv() {
     let newPercent = 0;
 
     if (UserProfileData) {
-      const weight = 25; // Mỗi yếu tố chiếm 25%
+      const weight = 20; // Mỗi yếu tố chiếm 25%
 
       if (UserProfileData.educationDetails.length > 0) {
         newPercent += weight;
@@ -261,6 +261,9 @@ export default function Profilecv() {
         newPercent += weight;
       }
       if (UserProfileData.benefits.length > 0) {
+        newPercent += weight;
+      }
+      if(UserProfileData.certificates.length >0){
         newPercent += weight;
       }
     }
