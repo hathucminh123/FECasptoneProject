@@ -433,7 +433,7 @@ const ChatBoxBackUp: React.FC = () => {
         try {
           // Upload file to the API
           const uploadResponse = await axios.post(
-            "https://d9d9-14-187-144-184.ngrok-free.app/upload_and_process",
+            "https://363c-14-187-132-114.ngrok-free.app/upload_and_process",
             formData,
             {
               headers: {
