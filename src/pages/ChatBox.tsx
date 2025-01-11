@@ -433,7 +433,7 @@ const ChatBox: React.FC = () => {
         try {
           // Upload file to the API
           const uploadResponse = await axios.post(
-            "https://46f9-112-197-86-203.ngrok-free.app/upload_and_process",
+            "https://d5b1-112-197-86-203.ngrok-free.app/upload_and_process",
             formData,
             {
               headers: {
