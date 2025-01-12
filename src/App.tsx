@@ -135,7 +135,7 @@ import ReviewPage from "./pages/Admin/ReviewPage";
 import ChatBox from "./pages/ChatBox";
 import LocationPage from "./pages/Admin/LocationPage";
 import SearchTalents from "./pages/EmployerNewUi/SearchTalents";
-// import ChatBoxBackUp from "./pages/ChatBoxBackUp";
+import ChatBoxBackUp from "./pages/ChatBoxBackUp";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -895,10 +895,10 @@ const router = createBrowserRouter([
     path: "Chatbox",
     element: <ChatBox/>,
   },
-  // {
-  //   path: "Chatbox",
-  //   element: <ChatBoxBackUp />,
-  // },
+  {
+    path: "ChatboxBackup",
+    element: <ChatBoxBackUp />,
+  },
   
 ]);
 
